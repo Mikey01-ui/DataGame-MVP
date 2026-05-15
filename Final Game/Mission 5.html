@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Data Heist: Operation OMNI — Mission 5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --void: #1e0f1a;
+    --green-matrix: #00FF41;
+    --green-stable: #00c41c;
+    --purple-light: #8f44e8;
+    --orange: #f79421;
+    --white: #faf7f2;
+    --grey-text: #cccccc;
+    --panel-bg: #221829;
+    --panel-border: rgba(0,196,28,0.35);
+    --font-mono: 'Share Tech Mono', monospace;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  html, body { width: 100%; min-height: 100%; font-family: var(--font-body); background: var(--void); color: var(--white); }
+  .ambient-glow {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 50% at 30% 50%, rgba(84,0,173,0.16) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 70% 60%, rgba(0,196,28,0.11) 0%, transparent 70%);
+  }
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    background: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
+    mix-blend-mode: multiply;
+  }
+  .bg-grid {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,196,28,0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,196,28,0.09) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .status-bar {
+    position: relative;
+    z-index: 2;
+    margin-top: 36px;
+    padding: clamp(2rem, 6vh, 4rem) clamp(1rem, 5vw, 3rem) 1rem;
+    display: flex;
+    justify-content: center;
+  }
+  .status-bar-inner {
+    width: min(640px, 92vw);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--green-stable);
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid rgba(0,196,28,0.28);
+    text-align: center;
+  }
+  main {
+    position: relative;
+    z-index: 2;
+    min-height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 3vh, 2rem) clamp(1rem, 5vw, 2rem) clamp(3rem, 8vh, 5rem);
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: clamp(0.52rem, 0.65vw, 0.65rem);
+    color: var(--green-stable);
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 4vw, 2.35rem);
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.18;
+    margin-bottom: clamp(1rem, 2.5vh, 1.5rem);
+    background: linear-gradient(135deg, var(--white) 55%, var(--purple-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .card {
+    width: min(560px, 92vw);
+    background: var(--panel-bg);
+    border: 1px solid var(--panel-border);
+    border-radius: 4px;
+    padding: clamp(1.35rem, 3vh, 2rem) clamp(1.25rem, 4vw, 2rem);
+    box-shadow: 0 0 60px rgba(84,0,173,0.12), inset 0 1px 0 rgba(0,196,28,0.1);
+  }
+  .card p {
+    font-size: clamp(0.92rem, 1.05vw, 1.05rem);
+    color: var(--grey-text);
+    line-height: 1.72;
+    font-weight: 300;
+    margin-bottom: 1em;
+  }
+  .card p:last-child { margin-bottom: 0; }
+  .card strong { color: var(--orange); font-weight: 600; }
+  .actions {
+    margin-top: clamp(1.5rem, 3vh, 2rem);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .actions a {
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    border: 1px solid rgba(247,148,33,0.55);
+    color: var(--orange);
+    background: rgba(247,148,33,0.08);
+    transition: background 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+  }
+  .actions a:hover {
+    background: rgba(247,148,33,0.18);
+    box-shadow: 0 4px 24px rgba(247,148,33,0.2);
+    transform: translateY(-2px);
+  }
+  .actions a.secondary {
+    border-color: rgba(0,196,28,0.45);
+    color: var(--green-matrix);
+    background: rgba(0,196,28,0.06);
+  }
+  .actions a.secondary:hover {
+    background: rgba(0,196,28,0.12);
+    box-shadow: 0 4px 20px rgba(0,255,65,0.12);
+  }
+</style>
+</head>
+<body data-playtest-mission="5">
+
+<div class="ambient-glow"></div>
+<div class="scanlines"></div>
+<div class="bg-grid"></div>
+
+<div class="status-bar">
+  <div class="status-bar-inner">Operation OMNI &mdash; Mission 05 placeholder</div>
+</div>
+
+<main>
+  <p class="eyebrow">// End of current playtest build</p>
+  <h1>Mission 05<br>Not built in this drop</h1>
+  <div class="card">
+    <p>Missions <strong>1&ndash;4</strong> are fully playable in this package. This screen holds the slot for <strong>Mission 05</strong> when the next build lands.</p>
+    <p>Use the <strong>arrow controls</strong> on the sides to jump to any mission, or start again from Mission 1.</p>
+  </div>
+  <div class="actions">
+    <a href="Mission 1.html">Restart from Mission 1</a>
+    <a class="secondary" href="Mission 4.html">&larr; Back to Mission 4</a>
+  </div>
+</main>
+
+<script src="playtest-mission-nav.js" defer></script>
+</body>
+</html>

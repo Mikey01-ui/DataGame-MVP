@@ -1,0 +1,2682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Data Heist: Operation OMNI — Mission 04: The Onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --void:#1e0f1a;--green-stable:#00c41c;--green-matrix:#00FF41;--purple:#5400ad;--purple-light:#8f44e8;--orange:#f79421;--pink:#d31972;
+    --white:#faf7f2;--panel-bg:#221829;--panel-border:rgba(0,196,28,0.35);--grey-text:#cccccc;--grey-light:#edeae5;
+    --font-mono:'Share Tech Mono',monospace;--font-display:'Space Grotesk',sans-serif;--font-body:'DM Sans',sans-serif;
+    --cyan:#56d6ff;--text-w:#faf7f2;--text:rgba(250,247,242,.82);
+    --fold-hr:#f472b6;--fold-it:#38bdf8;--fold-legal:#a78bfa;--fold-ops:#fbbf24;
+  }
+  html{font-size:clamp(15px,1.2vw,22px)}
+  html,body{width:100%;min-height:100%;overflow:auto;font-family:var(--font-body);background:var(--void);color:var(--white)}
+  .ambient-glow{position:fixed;inset:0;z-index:0;pointer-events:none;background:
+    radial-gradient(ellipse 60% 50% at 30% 50%, rgba(84,0,173,0.16) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 70% 60%, rgba(0,196,28,0.11) 0%, transparent 70%);}
+  .corner{position:fixed;z-index:2;width:40px;height:40px;pointer-events:none}
+  .corner--tl{top:10px;left:10px;border-top:1px solid rgba(0,196,28,0.65);border-left:1px solid rgba(0,196,28,0.65)}
+  .corner--tr{top:10px;right:10px;border-top:1px solid rgba(0,196,28,0.65);border-right:1px solid rgba(0,196,28,0.65)}
+  .corner--bl{bottom:10px;left:10px;border-bottom:1px solid rgba(0,196,28,0.65);border-left:1px solid rgba(0,196,28,0.65)}
+  .corner--br{bottom:10px;right:10px;border-bottom:1px solid rgba(0,196,28,0.65);border-right:1px solid rgba(0,196,28,0.65)}
+  .scanlines{position:fixed;inset:0;z-index:10;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent,transparent 2px,rgba(0,0,0,0.05) 2px,rgba(0,0,0,0.05) 4px);mix-blend-mode:multiply}
+  .bg-grid{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,196,28,0.11) 1px,transparent 1px),linear-gradient(90deg,rgba(0,196,28,0.11) 1px,transparent 1px);background-size:40px 40px}
+  .status-bar{position:fixed;top:0;left:0;right:0;z-index:5;height:36px;padding:0 clamp(1rem,4vw,64px);display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,196,28,0.28);background:linear-gradient(180deg,rgba(30,15,26,0.9) 0%,transparent 100%)}
+  .status-left,.status-right{font-family:var(--font-mono);font-size:0.65rem;color:var(--green-stable);letter-spacing:0.08em;display:flex;gap:1.5rem;align-items:center}
+  .status-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green-matrix);margin-right:6px;animation:blink 2.4s ease-in-out infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+
+  #intro-root{position:relative;z-index:1}
+  #intro-root .page{position:relative;z-index:2;margin-top:36px;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:1.5vh 6vw 1.2rem;min-height:calc(100vh - 36px);overflow-x:hidden;overflow-y:auto}
+  #intro-root .page.active{display:flex}
+  #intro-root .page-eyebrow{font-family:var(--font-mono);font-size:0.55rem;color:var(--green-stable);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:0.4vh}
+  #intro-root .page-title{font-family:var(--font-display);font-size:clamp(1.35rem,3.2vh,2rem);font-weight:700;margin-bottom:0.8vh;background:linear-gradient(135deg,var(--white) 60%,var(--purple-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .page-subtitle{font-family:var(--font-body);font-size:clamp(0.85rem,1.2vw,1.05rem);color:var(--grey-text);text-align:center;max-width:560px;margin-bottom:1rem;line-height:1.6}
+  .content{width:min(920px,90vw);display:flex;flex-direction:column;gap:clamp(0.3rem,0.8vh,0.8rem);flex:1;justify-content:flex-start;overflow:visible}
+  #intro-root .brief-section{flex:0 0 auto;display:flex;flex-direction:column}
+  #intro-root .brief-card{background:var(--panel-bg);border:1px solid var(--panel-border);border-radius:2px;padding:1.2rem 2.5vw;position:relative;box-shadow:0 0 60px rgba(84,0,173,0.14),inset 0 1px 0 rgba(0,196,28,0.12)}
+  #intro-root .brief-text{font-family:var(--font-body);font-size:0.9rem;line-height:1.75;color:var(--grey-light);font-weight:300}
+  #intro-root .brief-text p{margin-bottom:0.7vh}
+  #intro-root .brief-text strong{color:var(--orange);font-weight:600}
+  .section-label{font-family:var(--font-mono);font-size:clamp(0.46rem,0.58vw,0.63rem);color:var(--purple-light);letter-spacing:0.22em;text-transform:uppercase;margin-bottom:clamp(0.2rem,0.6vh,0.6rem);display:flex;align-items:center;gap:0.8rem}
+  .section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(84,0,173,0.42),transparent)}
+  .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(0.4rem,0.8vw,0.9rem)}
+  @media(max-width:680px){.steps-grid{grid-template-columns:1fr}}
+  .step-card{background:var(--panel-bg);border:1px solid var(--panel-border);border-radius:2px;padding:0.72rem 0.9rem;display:flex;flex-direction:column}
+  .step-number{font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--green-matrix)}
+  .step-title{font-family:var(--font-mono);font-size:0.6rem;color:var(--purple-light);letter-spacing:0.18em;text-transform:uppercase;margin:0.4vh 0;padding-bottom:0.35vh;border-bottom:1px solid rgba(0,196,28,0.28)}
+  .step-desc{font-family:var(--font-body);font-size:0.82rem;line-height:1.6;color:var(--grey-text);font-weight:300}
+  #intro-root .detection-card{background:var(--panel-bg);border:1px solid rgba(247,148,33,0.45);border-radius:2px;padding:0.8rem 1.3vw;margin-top:0.6rem}
+  #intro-root .detection-title{font-family:var(--font-mono);font-size:0.6rem;color:var(--orange);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:0.5rem}
+  #intro-root .detection-desc{font-size:0.82rem;line-height:1.6;color:var(--grey-text)}
+  .demo-step-hint{font-family:var(--font-mono);font-size:clamp(10px,1.05vw,12px);color:rgba(0,196,28,.9);line-height:1.45;letter-spacing:.04em;min-height:2.6em;padding:8px 10px;margin-bottom:8px;border-left:3px solid rgba(0,196,28,.45);background:rgba(0,20,8,.25);border-radius:0 6px 6px 0;max-width:100%;text-wrap:balance}
+  .demo-step-hint:empty{min-height:0;padding:0;margin:0;border:none;background:transparent}
+
+  /* ── Pre-Mission Brief — aligned with Mission 1 / M03 ── */
+  @keyframes fadeUpPremission{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  #intro-root .page.premission-brief-page{height:calc(100vh - 36px);min-height:0;overflow:hidden;padding:0.3vh 6vw 1.2vh}
+  #intro-root .premission-brief-page .page-eyebrow{margin-bottom:0.15vh;flex-shrink:0}
+  #intro-root .premission-brief-page .page-title{font-size:clamp(1.25rem,0.85vw + 0.9vh,1.7rem);line-height:1.1;margin-bottom:0.5vh;flex-shrink:0;background:linear-gradient(135deg,var(--white) 60%,var(--purple-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  #intro-root .page.premission-brief-page .content{flex:1 1 auto;width:min(92vw,1600px);min-height:0;gap:1.2vh;justify-content:flex-start;overflow:hidden}
+  #intro-root .page.premission-brief-page .button-section{flex-shrink:0;margin-top:1vh;padding-bottom:0}
+  #intro-root .premission-brief-page .dossier-col .brief-section{height:100%;min-height:0}
+  #intro-root .premission-brief-page .mission-params{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid rgba(247,148,33,0.55);background:rgba(38,22,12,0.97);margin-bottom:0.4vh;animation:fadeUpPremission 0.5s 0.15s both;transition:border-color 0.2s ease,box-shadow 0.2s ease,transform 0.2s ease}
+  #intro-root .premission-brief-page .mission-params:hover{border-color:rgba(247,148,33,0.9);box-shadow:0 0 36px rgba(247,148,33,0.15),0 0 56px rgba(247,148,33,0.12);transform:translateY(-1px)}
+  #intro-root .premission-brief-page .mp-cell{padding:0.5rem 0.85rem;border-right:1px solid rgba(247,148,33,0.28);display:flex;flex-direction:column;gap:0.22rem;min-width:0}
+  #intro-root .premission-brief-page .mp-cell:last-child{border-right:none}
+  #intro-root .premission-brief-page .mp-label{font-family:var(--font-mono);font-size:0.52rem;color:var(--orange);letter-spacing:0.22em;text-transform:uppercase;opacity:0.85}
+  #intro-root .premission-brief-page .mp-value{font-family:var(--font-display);font-size:0.88rem;font-weight:600;color:var(--white);letter-spacing:0.01em;line-height:1.15;word-break:break-word}
+  #intro-root .premission-brief-page .brief-grid{display:grid;grid-template-columns:2.6fr 1fr;gap:1.2rem;align-items:stretch;flex:1 1 auto;min-height:0;animation:fadeUpPremission 0.55s 0.2s both}
+  #intro-root .premission-brief-page .brief-col,#intro-root .premission-brief-page .dossier-col{display:flex;flex-direction:column;min-width:0}
+  #intro-root .premission-brief-page .brief-col .brief-section,#intro-root .premission-brief-page .dossier-col .brief-section{flex:1 1 auto;display:flex;flex-direction:column;animation:fadeUpPremission 0.6s 0.3s both}
+  #intro-root .premission-brief-page .brief-col .brief-card{flex:1 1 auto;position:relative;overflow:hidden;display:flex;flex-direction:column;background:var(--panel-bg);border:1px solid var(--panel-border);padding:1.1rem 2.5vw;border-radius:2px;box-shadow:0 0 60px rgba(84,0,173,0.14),0 0 120px rgba(0,196,28,0.08),inset 0 1px 0 rgba(0,196,28,0.12);transition:border-color 0.3s,box-shadow 0.3s,transform 0.3s}
+  #intro-root .premission-brief-page .brief-col .brief-card:hover{border-color:rgba(0,196,28,0.65);box-shadow:0 0 80px rgba(84,0,173,0.25),0 0 140px rgba(0,196,28,0.15),inset 0 1px 0 rgba(0,196,28,0.3);transform:translateY(-1px)}
+  #intro-root .premission-brief-page .brief-card .brief-scanlines{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,transparent,transparent 2px,rgba(255,255,255,0.018) 2px,rgba(255,255,255,0.018) 3px);z-index:1;mix-blend-mode:screen}
+  #intro-root .premission-brief-page .brief-col .brief-card::before{content:'';position:absolute;top:10px;left:10px;width:16px;height:16px;border-top:1px solid rgba(247,148,33,0.75);border-left:1px solid rgba(247,148,33,0.75);pointer-events:none;z-index:3;border-bottom:none;border-right:none}
+  #intro-root .premission-brief-page .brief-col .brief-card::after{content:'';position:absolute;bottom:10px;right:10px;width:16px;height:16px;border-bottom:1px solid rgba(247,148,33,0.75);border-right:1px solid rgba(247,148,33,0.75);pointer-events:none;z-index:3;border-top:none;border-left:none}
+  #intro-root .premission-brief-page .brief-col .brief-card>*:not(.brief-scanlines){position:relative;z-index:2}
+  #intro-root .premission-brief-page .encrypted-indicator{font-family:var(--font-mono);font-size:0.55rem;color:var(--green-stable);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.8vh;display:flex;align-items:center;gap:0.6rem}
+  #intro-root .premission-brief-page .encrypted-dot{width:5px;height:5px;border-radius:50%;background:var(--green-stable);box-shadow:0 0 8px rgba(0,196,28,0.6),0 0 20px rgba(0,196,28,0.2)}
+  #intro-root .premission-brief-page .brief-text{font-size:clamp(0.95rem,0.55vw + 0.9vh,1.3rem);line-height:1.6;color:var(--grey-light)}
+  #intro-root .premission-brief-page .pullquote{margin:0.5vh 0 0;padding:0.2rem 0 0.2rem 0.8rem;border-left:2px solid var(--orange);font-family:var(--font-display);font-style:italic;font-weight:500;font-size:clamp(0.95rem,0.5vw + 0.9vh,1.25rem);line-height:1.35;color:var(--white);letter-spacing:0.01em}
+  #intro-root .premission-brief-page .dossier-backdrop{flex:1 1 auto;min-height:0;background:rgba(20,12,28,0.55);border:1px solid rgba(143,68,232,0.32);border-radius:2px;padding:clamp(0.6rem,1vh,1rem);display:flex;flex-direction:column;gap:clamp(0.5rem,0.9vh,0.85rem);animation:fadeUpPremission 0.6s 0.35s both}
+  #intro-root .premission-brief-page .dossier-card{flex:1 1 0;background:rgba(34,24,41,0.85);border:1px solid rgba(143,68,232,0.22);border-left:2px solid var(--purple-light);border-radius:2px;padding:clamp(0.7rem,1.3vh,1.1rem) clamp(0.85rem,1vw,1.3rem);display:flex;flex-direction:column;justify-content:center;gap:clamp(0.3rem,0.55vh,0.5rem);min-height:0;transition:border-color 0.3s,box-shadow 0.3s,transform 0.3s}
+  #intro-root .premission-brief-page .dossier-card:hover{border-color:rgba(143,68,232,0.65);box-shadow:0 0 36px rgba(143,68,232,0.15),0 0 56px rgba(84,0,173,0.15);transform:translateY(-1px)}
+  #intro-root .premission-brief-page .dc-label{font-family:var(--font-mono);font-size:clamp(0.55rem,0.25vw + 0.35vh,0.72rem);letter-spacing:0.24em;color:var(--purple-light);text-transform:uppercase}
+  #intro-root .premission-brief-page .dc-name{font-family:var(--font-display);font-size:clamp(0.95rem,0.45vw + 0.85vh,1.35rem);font-weight:600;color:var(--white);letter-spacing:0.01em;line-height:1.15}
+  #intro-root .premission-brief-page .dc-role{font-family:var(--font-body);font-size:clamp(0.72rem,0.3vw + 0.55vh,0.95rem);color:var(--grey-text);line-height:1.35;font-weight:300}
+  #intro-root .premission-brief-page .btn-next.btn-next--ghost-premission{width:auto;min-width:clamp(200px,22vw,280px);padding:14px 36px;background:rgba(247,148,33,0.08);border:1px solid var(--orange);color:var(--orange);font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:1.5px;border-radius:4px;text-transform:uppercase;transition:background 0.25s,box-shadow 0.25s,transform 0.25s}
+  #intro-root .premission-brief-page .btn-next.btn-next--ghost-premission::before{display:none!important}
+  #intro-root .premission-brief-page .btn-next.btn-next--ghost-premission:hover:not(.is-locked):not(:disabled){background:rgba(247,148,33,0.22);box-shadow:0 0 18px rgba(247,148,33,0.35);transform:translateY(-2px)}
+  #intro-root .premission-brief-page .btn-next.btn-next--ghost-premission:active:not(.is-locked):not(:disabled){transform:translateY(0);box-shadow:none}
+  @media (max-width:1020px){#intro-root .premission-brief-page .brief-grid{grid-template-columns:1fr}}
+  @media (max-width:780px){#intro-root .premission-brief-page .mission-params{grid-template-columns:1fr}#intro-root .premission-brief-page .mp-cell{border-right:none;border-bottom:1px solid rgba(247,148,33,0.22)}#intro-root .premission-brief-page .mp-cell:last-child{border-bottom:none}}
+
+  /* === Walkthrough demo: compact replica of the real gameplay === */
+  #r4-demo-panel{position:relative;border:1px solid rgba(0,196,28,.22);border-radius:10px;background:linear-gradient(180deg,rgba(12,16,22,.94),rgba(30,15,26,.78));padding:14px;margin-bottom:clamp(.5rem,.9vh,.85rem);overflow:hidden;min-height:248px}
+  .r4-demo-phase-row{margin-bottom:10px}
+  .r4-demo-phase{
+    display:inline-block;font-family:var(--font-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;
+    color:#67e8f9;padding:6px 12px;border-radius:8px;border:1px solid rgba(34,211,238,.4);
+    background:linear-gradient(180deg,rgba(34,211,238,.12),rgba(34,211,238,.04));transition:color .25s,border-color .25s,background .25s
+  }
+  .r4-demo-phase.r4-demo-phase-2{color:#fde68a;border-color:rgba(251,191,36,.5);background:linear-gradient(180deg,rgba(251,191,36,.14),rgba(251,191,36,.05))}
+  .r4-demo-datasets-hdr{font-family:var(--font-mono);font-size:8px;letter-spacing:.14em;color:#64748b;text-transform:uppercase;margin:0 0 6px 2px}
+  .r4-demo-stage{display:flex;gap:14px;align-items:stretch}
+  /* Left column: step details popup (mirrors .r4-step-pop in real gameplay) */
+  .r4-demo-pop{flex:0 0 38%;min-width:170px;max-width:260px;background:rgba(15,23,42,.96);border:1px solid rgba(56,189,248,.45);border-radius:10px;padding:10px 12px;font-family:var(--font-body);font-size:10px;color:#cbd5e1;transition:opacity .25s ease,transform .25s ease;position:relative}
+  .r4-demo-pop.hidden{opacity:0;transform:translateY(8px);pointer-events:none;visibility:hidden}
+  .r4-demo-pop-h{font-family:var(--font-mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--orange)}
+  .r4-demo-pop-t{font-family:var(--font-display);font-weight:700;font-size:12px;color:#f8fafc;margin:3px 0 2px;line-height:1.2}
+  .r4-demo-pop-lane{font-size:9px;color:#38bdf8;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+  .r4-demo-pop-lane i{font-size:8px;opacity:.7}
+  .r4-demo-pop-section{font-size:9px;color:#94a3b8;line-height:1.45;padding:6px 7px;border-radius:6px;background:rgba(0,0,0,.25);border-left:2px solid rgba(56,189,248,.4)}
+  .r4-demo-pop-label{color:#64748b;font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:8px;letter-spacing:.04em;margin-right:4px}
+  /* Right column: flow row + dataset cards */
+  .r4-demo-right{flex:1;display:flex;flex-direction:column;gap:10px;min-width:0}
+  .r4-demo-flow{display:flex;align-items:center;gap:6px;padding:10px 6px;background:rgba(0,0,0,.22);border-radius:8px;border:1px solid rgba(0,196,28,.12)}
+  .r4-demo-node{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:54px;position:relative;transition:transform .2s ease,filter .25s ease}
+  .r4-demo-node-box{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1e293b,#0f172a);border:2px solid rgba(100,116,139,.55);color:#94a3b8;font-size:14px;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+  .r4-demo-node-label{font-family:var(--font-mono);font-size:8.5px;color:#94a3b8;letter-spacing:.04em;white-space:nowrap}
+  .r4-dnode-legal .r4-demo-node-box{border-color:rgba(167,139,250,.55);color:#ddd6fe}
+  .r4-dnode-it .r4-demo-node-box{border-color:rgba(56,189,248,.6);color:#bae6fd}
+  .r4-dnode-hr .r4-demo-node-box{border-color:rgba(244,114,182,.55);color:#fce7f3}
+  .r4-dnode-ops .r4-demo-node-box{border-color:rgba(251,191,36,.55);color:#fef3c7}
+  .r4-demo-node.avail .r4-demo-node-box{border-color:#22d3ee;color:#a5f3fc;animation:r4DemoPulse 1.6s ease-in-out infinite}
+  @keyframes r4DemoPulse{0%,100%{box-shadow:0 4px 14px rgba(0,0,0,.4),0 0 0 0 rgba(34,211,238,.55)}50%{box-shadow:0 4px 14px rgba(0,0,0,.4),0 0 0 6px rgba(34,211,238,0)}}
+  .r4-demo-node.sel .r4-demo-node-box{border-color:#fbbf24;color:#fef3c7;box-shadow:0 0 0 2px rgba(251,191,36,.4),0 4px 14px rgba(251,191,36,.3)}
+  .r4-demo-node.drop .r4-demo-node-box{border-color:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.35),0 4px 14px rgba(34,197,94,.4)}
+  .r4-demo-node.done .r4-demo-node-box{border-color:#22c55e;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(15,23,42,.95));color:#bbf7d0;filter:saturate(.85);opacity:.92}
+  .r4-demo-node.done .r4-demo-node-label{color:#86efac}
+  .r4-demo-node.done::after{content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;position:absolute;top:-3px;right:-3px;width:14px;height:14px;border-radius:50%;background:#22c55e;color:#0c0c0c;font-size:7px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+  .r4-demo-edge{flex:1;height:24px;min-width:24px;display:flex;align-items:center}
+  .r4-demo-edge svg{width:100%;height:100%;display:block;overflow:visible}
+  .r4-demo-edge svg path{stroke:rgba(56,189,248,.32);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .3s ease}
+  .r4-demo-edge.done svg path{stroke:#22c55e;filter:drop-shadow(0 0 4px rgba(34,197,94,.55))}
+  /* Dataset cards row (mirrors .ds-card in the real round) */
+  .r4-demo-cards{display:flex;gap:8px}
+  .r4-demo-card{flex:1;padding:8px 10px;border-radius:8px;background:rgba(30,41,59,.85);border:1px solid rgba(71,85,105,.55);display:flex;flex-direction:column;gap:3px;transition:border-color .2s ease,box-shadow .2s ease,transform .12s ease,opacity .3s ease}
+  .r4-demo-card.r4-dcard-legal{border-left:3px solid #a78bfa}
+  .r4-demo-card.r4-dcard-it{border-left:3px solid #38bdf8}
+  .r4-demo-card.r4-dcard-hr{border-left:3px solid #f472b6}
+  .r4-demo-card.r4-dcard-ops{border-left:3px solid #fbbf24}
+  .r4-demo-card.sel{border-color:rgba(56,189,248,.75);box-shadow:0 0 0 2px rgba(56,189,248,.28);background:rgba(30,58,95,.55)}
+  .r4-demo-card.drag{border-color:rgba(251,191,36,.7);box-shadow:0 0 0 2px rgba(251,191,36,.25);transform:translateY(-1px)}
+  .r4-demo-card.used{opacity:.3;filter:grayscale(.4)}
+  .r4-demo-card-row{display:flex;align-items:center;gap:6px}
+  .r4-demo-card-ico{font-size:13px}
+  .r4-demo-card-name{font-size:9.5px;font-family:var(--font-mono);color:#e2e8f0;word-break:break-all}
+  .r4-demo-card-desc{font-size:8px;color:#7a9aaa;line-height:1.4}
+  /* Ghost label that follows the cursor while "dragging" */
+  .r4-demo-ghost{position:absolute;pointer-events:none;opacity:0;z-index:11;padding:5px 9px;border-radius:6px;background:rgba(15,23,42,.96);border:1px solid rgba(251,191,36,.7);box-shadow:0 8px 20px rgba(0,0,0,.55);font-family:var(--font-mono);font-size:9px;color:#fde68a;white-space:nowrap;top:0;left:0;transform:translate(-50%,-110%)}
+  /* Confidence bar */
+  .r4-demo-coh{display:flex;align-items:center;gap:8px;margin-top:10px}
+  .r4-demo-coh-bar{flex:1;height:6px;background:rgba(0,0,0,.45);border-radius:3px;overflow:hidden}
+  .r4-demo-coh-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--green-stable),var(--green-matrix));transition:width .35s ease}
+  /* Animated cursor */
+  .r4-demo-cursor{position:absolute;pointer-events:none;z-index:12;top:0;left:0;opacity:0}
+  .r4-demo-cur-ring{position:absolute;top:-4px;left:-2px;width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.4);opacity:0;transform:scale(.5);pointer-events:none}
+  @media (max-width:760px){.r4-demo-stage{flex-direction:column}.r4-demo-pop{max-width:none;flex:0 0 auto}}
+
+  .button-section{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:0.5rem;margin-top:clamp(0.3rem,1vh,1rem)}
+  #intro-root .btn-next.is-locked{opacity:.4;cursor:not-allowed;filter:grayscale(.4);pointer-events:none}
+  .btn-next{width:clamp(200px,22vw,300px);padding:clamp(0.6rem,1.1vh,1rem) 2vw;background:var(--orange);border:1px solid var(--orange);color:var(--void);font-family:var(--font-display);font-size:clamp(0.85rem,1.1vw,1.05rem);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer}
+  .btn-inner{display:flex;align-items:center;justify-content:center;gap:0.6rem}
+
+  #gp-root{position:fixed;inset:0;z-index:100;background:#0b0f14}
+  html.gp-html-active{overflow:hidden;height:100%}
+  #gp-root *,#gp-root *::before,#gp-root *::after{box-sizing:border-box}
+  body.gp-gameplay-active{font-family:'DM Sans',sans-serif;background:var(--void);color:#c8ddf0;width:100vw;height:100vh;overflow:hidden}
+  body.gp-gameplay-active::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,196,28,0.11) 1px,transparent 1px),linear-gradient(90deg,rgba(0,196,28,0.11) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+  button{font-family:var(--font-body);cursor:pointer}
+  button:focus{outline:2px solid rgba(143,68,232,0.5);outline-offset:2px}
+  #game{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+  #game::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 30% 50%,rgba(84,0,173,0.16) 0%,transparent 70%),radial-gradient(ellipse 50% 60% at 70% 60%,rgba(0,196,28,0.11) 0%,transparent 70%)}
+  #hdr{min-height:54px;background:linear-gradient(180deg,rgba(34,24,41,.96) 0%,rgba(30,15,26,.94) 100%);border-bottom:1px solid rgba(0,196,28,.28);display:flex;align-items:center;padding:6px 18px;flex-shrink:0;z-index:3;position:relative}
+  .hdr-left{font-family:var(--font-display);font-size:clamp(11px,1.2vw,14px);color:var(--cyan);letter-spacing:1px;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  .hdr-center{flex:1;text-align:center;font-family:var(--font-display);font-size:clamp(11px,1.2vw,14px);color:var(--purple-light);letter-spacing:1.5px}
+  .hdr-right{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:clamp(11px,1.2vw,14px);color:var(--text);white-space:nowrap}
+  .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green-matrix);box-shadow:0 0 6px var(--green-matrix);animation:liveP 1.5s ease-in-out infinite}
+  @keyframes liveP{0%,100%{opacity:1}50%{opacity:.35}}
+  .coh-wrap{display:flex;align-items:center;gap:8px;min-width:0}
+  .coh-label{font-size:9px;letter-spacing:1px;color:rgba(143,68,232,.95)}
+  .coh-bar{flex:0 0 clamp(72px,14vw,120px);height:6px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden;border:1px solid rgba(0,196,28,.2)}
+  .coh-fill{height:100%;width:100%;transition:width .4s ease,background .35s ease,box-shadow .35s ease;background:linear-gradient(90deg,var(--green-stable),var(--purple-light));box-shadow:0 0 8px rgba(0,196,28,.25)}
+  .coh-fill.conf-ok{background:linear-gradient(90deg,var(--green-stable),var(--purple-light));box-shadow:0 0 8px rgba(0,196,28,.25)}
+  .coh-fill.conf-warn{background:linear-gradient(90deg,#c9a000,var(--orange));box-shadow:0 0 6px rgba(247,148,33,.35)}
+  .coh-fill.conf-crit{background:linear-gradient(90deg,var(--pink),#ff4466);box-shadow:0 0 10px rgba(211,25,114,.35)}
+
+  #sort-banner{min-height:40px;background:rgba(84,0,173,0.10);border-bottom:1px solid rgba(0,196,28,.22);padding:8px 14px;font-size:clamp(11px,2.5vw,13px);color:var(--text-w);flex-shrink:0}
+  #sort-banner strong{color:var(--orange)}
+  #sort-help{font-size:11px;color:#7a9aaa;padding:8px 14px;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(0,196,28,.14);flex-shrink:0;line-height:1.5}
+
+  #main-row{display:flex;flex:1;overflow:hidden;min-height:0;align-items:stretch}
+  /* Left: full process canvas (Flow Architect style) */
+  #flow-canvas-wrap{
+    flex:1 1 62%;min-width:0;display:flex;flex-direction:column;position:relative;overflow:hidden;
+    background:linear-gradient(165deg,#0a0e16 0%,#0d1320 45%,#0a0c10 100%);
+    border-right:1px solid rgba(0,196,28,.2)
+  }
+  #flow-canvas-inner{flex:1;min-height:0;display:flex;flex-direction:column;position:relative}
+  .flow-canvas-footer{
+    flex-shrink:0;display:flex;align-items:center;gap:12px;padding:8px 14px;
+    background:rgba(8,12,20,.9);border-top:1px solid rgba(0,196,28,.18);z-index:2
+  }
+  .flow-canvas-footer #btn-submit-sort{margin-top:0;flex:0 0 auto;min-width:160px}
+  .flow-canvas-footer #r4-routed-count{margin:0;flex:1}
+  /* Floating step summary on the diagram */
+  .r4-step-pop{
+    position:absolute;left:12px;bottom:10px;z-index:6;max-width:min(420px,50vw);
+    background:rgba(15,23,42,.97);border:1px solid rgba(245,158,11,.38);border-radius:14px;
+    padding:18px 20px;box-shadow:0 20px 60px rgba(0,0,0,.6),0 0 40px rgba(0,0,0,.2);pointer-events:auto;
+    font-family:var(--font-body);font-size:11px;line-height:1.55;color:#e2e8f0;
+    backdrop-filter:blur(12px);transition:opacity .2s,transform .2s
+  }
+  .r4-step-pop.hidden{opacity:0;transform:translateY(10px);pointer-events:none}
+  .r4-step-pop.has-step{border-color:rgba(56,189,248,.5);background:rgba(15,23,42,.98)}
+  .r4-step-pop-close{
+    position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:8px;
+    background:rgba(100,116,139,.2);border:1px solid rgba(100,116,139,.3);
+    color:#94a3b8;font-size:14px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .15s ease
+  }
+  .r4-step-pop-close:hover{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);color:#f87171}
+  .r4-step-pop-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+  .r4-step-pop-h{font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;color:var(--orange);text-transform:uppercase}
+  .r4-step-pop-t{font-family:var(--font-display);font-weight:700;font-size:16px;color:#f8fafc;margin-bottom:4px;line-height:1.25}
+  .r4-step-pop-lane{font-size:11px;color:#38bdf8;margin-bottom:12px;font-weight:500;display:flex;align-items:center;gap:6px}
+  .r4-step-pop-lane i{font-size:10px;opacity:.7}
+  .r4-step-pop-purpose{font-size:12px;color:#cbd5e1;line-height:1.6;margin-bottom:12px;padding:10px 12px;background:rgba(0,0,0,.25);border-radius:8px;border-left:3px solid rgba(56,189,248,.4)}
+  .r4-step-pop-section{font-size:10px;color:#94a3b8;margin-bottom:6px;line-height:1.5}
+  .r4-step-pop-label{color:#64748b;font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:9px;letter-spacing:.05em}
+  .r4-step-pop-m{color:#94a3b8;font-size:10px;margin:0 0 8px}
+  .r4-step-pop-meta{font-size:9px;color:#64748b;font-family:var(--font-mono);line-height:1.45}
+  .r4-step-pop-bottleneck{margin-top:10px;padding:8px 10px;border-radius:6px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);color:#fcd34d;font-size:10px;line-height:1.4}
+  .r4-step-pop-bottleneck i{margin-right:6px;color:#f59e0b}
+  .r4-step-pop-ok{margin-top:10px;padding:8px 10px;border-radius:6px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.35);color:#bbf7d0;font-size:10px}
+  .r4-step-pop-ok i{margin-right:6px;color:#22c55e}
+
+  /* Right rail: datasets + detail + channel */
+  #right-rail{
+    flex:0 0 clamp(292px,32vw,408px);max-width:100%;display:flex;flex-direction:column;min-height:0;
+    background:linear-gradient(180deg,rgba(34,24,41,.98) 0%,rgba(30,15,26,.98) 100%);
+    border-left:1px solid rgba(0,196,28,.22);overflow:hidden
+  }
+  .datasets-panel{
+    flex-shrink:0;padding:10px 12px 12px;border-bottom:1px solid rgba(0,196,28,.2);
+    background:linear-gradient(180deg,rgba(18,26,38,.95),rgba(12,16,24,.88))
+  }
+  .datasets-panel-hdr{
+    font-family:var(--font-display);font-size:clamp(12px,1.15vw,14px);font-weight:700;color:var(--text-w);
+    letter-spacing:.04em;display:flex;align-items:center;gap:8px
+  }
+  .datasets-panel-hdr i{color:var(--orange);font-size:13px}
+  .datasets-panel-sub{
+    font-size:10px;color:#7a9aaa;line-height:1.45;margin:6px 0 10px
+  }
+  #r4-file-list.datasets-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;max-height:min(220px,28vh);overflow-y:auto;
+    scrollbar-width:thin;scrollbar-color:rgba(247,148,33,.4) rgba(0,0,0,.2)
+  }
+  .datasets-empty{
+    grid-column:1/-1;text-align:center;padding:16px 10px;font-size:10px;color:#64748b;line-height:1.6;
+    border:1px dashed rgba(100,116,139,.35);border-radius:8px;background:rgba(0,0,0,.2)
+  }
+  .ds-card{
+    padding:10px 8px;cursor:grab;border-radius:8px;display:flex;flex-direction:column;gap:4px;min-width:0;touch-action:manipulation;
+    background:rgba(30,41,59,.85);border:1px solid rgba(71,85,105,.55);transition:box-shadow .15s,border-color .15s,transform .1s
+  }
+  .ds-card:active{cursor:grabbing}
+  .ds-card:hover{border-color:rgba(245,158,11,.45);box-shadow:0 0 0 1px rgba(245,158,11,.15)}
+  .ds-card.sel{border-color:rgba(56,189,248,.65);box-shadow:0 0 0 2px rgba(56,189,248,.2)}
+  .ds-card .ds-ico{font-size:14px;line-height:1}
+  .ds-card .ds-name{font-size:10px;font-family:var(--font-mono);color:#e2e8f0;line-height:1.3;word-break:break-word}
+  .ds-card .ds-desc{font-size:9px;color:#7a9aaa;line-height:1.4;margin-top:4px}
+  .ds-card .ds-tag{font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:#94a3b8;align-self:flex-start;padding:2px 5px;border-radius:3px;background:rgba(0,0,0,.25);margin-top:6px}
+  .ds-card.ds-dept-it{border-left:3px solid #38bdf8}
+  .ds-card.ds-dept-legal{border-left:3px solid #a78bfa}
+  .ds-card.ds-dept-hr{border-left:3px solid #f472b6}
+  .ds-card.ds-dept-ops{border-left:3px solid #fbbf24}
+  #nexus-taskbar{position:absolute;bottom:0;left:0;right:0;height:30px;background:#0c1a26;border-top:1px solid #1a2a3a;display:flex;align-items:center;padding:0 8px;font-size:10px;color:#6a7a8a;z-index:2}
+
+  #dist-panel{display:flex;flex-direction:column;flex:1 1 0%;padding:6px 8px 8px;overflow:hidden;gap:6px;min-height:0;background:transparent}
+  .dist-hdr{text-align:left;padding:2px 2px 6px;border-bottom:1px solid rgba(0,196,28,.12);margin-bottom:4px}
+  .dist-title{font-family:var(--font-display);font-size:clamp(11px,1.15vw,13px);color:var(--text-w);letter-spacing:.04em}
+  .dist-sub{font-size:8px;color:var(--purple-light);letter-spacing:.14em;margin-top:3px;line-height:1.35}
+  /* ========== FLOW CHART (Game-style) ========== */
+  .fc-phase-bar{
+    display:flex;align-items:center;gap:0;padding:0;margin:0 0 12px 0;
+    background:transparent
+  }
+  .fc-phase{
+    display:flex;align-items:center;gap:0;
+    font-family:var(--font-display);font-size:11px;font-weight:600;color:#cbd5e1;letter-spacing:.02em
+  }
+  .fc-phase-label{
+    padding:6px 18px;background:linear-gradient(135deg,rgba(51,65,85,.85),rgba(30,41,59,.9));
+    border:1px solid rgba(100,116,139,.4);position:relative;
+    clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%, 12px 50%)
+  }
+  .fc-phase:first-child .fc-phase-label{clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 0 100%)}
+  .fc-phase.done .fc-phase-label{background:linear-gradient(135deg,rgba(6,78,59,.7),rgba(6,95,70,.6));color:#86efac}
+  .fc-canvas{
+    position:relative;width:100%;min-height:360px;padding:32px 40px 40px;
+    background:
+      linear-gradient(135deg,rgba(15,23,42,.98) 0%,rgba(30,41,59,.92) 50%,rgba(15,23,42,.98) 100%);
+    border-radius:20px;border:1px solid rgba(56,189,248,.2);
+    overflow:auto;-webkit-overflow-scrolling:touch;
+    box-shadow:
+      inset 0 0 100px rgba(56,189,248,.04),
+      inset 0 0 50px rgba(124,58,237,.03),
+      0 20px 60px rgba(0,0,0,.4)
+  }
+  .fc-canvas::before{
+    content:'';position:absolute;inset:0;pointer-events:none;border-radius:20px;
+    background:
+      radial-gradient(ellipse 100% 60% at 10% 10%,rgba(56,189,248,.08) 0%,transparent 40%),
+      radial-gradient(ellipse 80% 80% at 90% 90%,rgba(124,58,237,.06) 0%,transparent 40%),
+      radial-gradient(ellipse 50% 50% at 50% 50%,rgba(34,197,94,.03) 0%,transparent 50%)
+  }
+  .fc-canvas::after{
+    content:'';position:absolute;inset:0;pointer-events:none;border-radius:20px;opacity:.15;
+    background-image:
+      linear-gradient(rgba(56,189,248,.08) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(56,189,248,.08) 1px,transparent 1px);
+    background-size:40px 40px
+  }
+  .fc-canvas-inner{
+    position:relative;min-width:900px;min-height:300px
+  }
+  .fc-edges{
+    position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible
+  }
+  .fc-edge{fill:none;stroke:#3d4a5c;stroke-width:2;stroke-linecap:round;transition:stroke .4s}
+  .fc-edge.done{
+    stroke:var(--green-matrix);stroke-width:2.5;
+    filter:drop-shadow(0 0 6px rgba(0,255,65,.7)) drop-shadow(0 0 14px rgba(0,255,65,.35))
+  }
+  .fc-edge.done.fc-edge-pulse{animation:fcEdgePulse 2.4s ease-in-out infinite}
+  @keyframes fcEdgePulse{0%,100%{filter:drop-shadow(0 0 6px rgba(0,255,65,.7)) drop-shadow(0 0 14px rgba(0,255,65,.35))}50%{filter:drop-shadow(0 0 10px rgba(0,255,65,.9)) drop-shadow(0 0 22px rgba(0,255,65,.55))}}
+  .fc-edge-arrow{fill:#3d4a5c;transition:fill .4s,filter .4s}
+  .fc-edge.done + .fc-edge-arrow,.fc-edge-arrow.done{fill:var(--green-matrix);filter:drop-shadow(0 0 5px rgba(0,255,65,.6))}
+  
+  .fc-node{
+    position:absolute;width:82px;height:82px;cursor:pointer;z-index:2;
+    margin-left:-41px;margin-top:-41px;
+    transition:opacity .4s ease,filter .2s ease
+  }
+  .fc-node:hover .fc-node-box{transform:translateY(-4px) scale(1.06);filter:brightness(1.12)}
+  .fc-node-box{
+    width:100%;height:100%;border-radius:18px;
+    background:linear-gradient(145deg,rgba(51,65,85,.95),rgba(30,41,59,.98));
+    border:2px solid rgba(100,116,139,.45);
+    box-shadow:0 10px 40px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.04),inset 0 1px 0 rgba(255,255,255,.1);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    transition:all .25s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden
+  }
+  .fc-node-box::before{
+    content:'';position:absolute;inset:0;border-radius:16px;
+    background:radial-gradient(ellipse 120% 80% at 50% -20%,rgba(255,255,255,.12) 0%,transparent 50%);
+    pointer-events:none
+  }
+  .fc-node:hover .fc-node-box{
+    border-color:rgba(56,189,248,.7);
+    box-shadow:0 15px 50px rgba(0,0,0,.6),0 0 30px rgba(56,189,248,.2),0 0 60px rgba(56,189,248,.1)
+  }
+  .fc-node.sel .fc-node-box{
+    border:2px solid #fbbf24;
+    box-shadow:0 0 0 4px rgba(251,191,36,.3),0 0 40px rgba(251,191,36,.25),0 10px 40px rgba(0,0,0,.5);
+    animation:fcPulse 2s ease-in-out infinite
+  }
+  @keyframes fcPulse{0%,100%{box-shadow:0 0 0 4px rgba(251,191,36,.3),0 0 40px rgba(251,191,36,.25),0 10px 40px rgba(0,0,0,.5)}50%{box-shadow:0 0 0 6px rgba(251,191,36,.2),0 0 60px rgba(251,191,36,.35),0 10px 40px rgba(0,0,0,.5)}}
+  .fc-node.done{opacity:.75}
+  .fc-node.done .fc-node-box{
+    background:linear-gradient(145deg,rgba(6,78,59,.75),rgba(6,95,70,.65));
+    border-color:rgba(34,197,94,.65);
+    box-shadow:0 10px 40px rgba(0,0,0,.4),0 0 25px rgba(34,197,94,.2)
+  }
+  .fc-node.done .fc-node-ico{color:#86efac;text-shadow:0 0 15px rgba(134,239,172,.5)}
+  .fc-node-ico{font-size:30px;color:#e2e8f0;margin-bottom:6px;transition:all .25s;text-shadow:0 3px 10px rgba(0,0,0,.4)}
+  .fc-node:hover .fc-node-ico{color:#38bdf8;text-shadow:0 0 20px rgba(56,189,248,.6),0 3px 10px rgba(0,0,0,.4)}
+  .fc-node-label{
+    font-family:var(--font-display);font-size:9px;font-weight:600;color:#f1f5f9;
+    text-align:center;line-height:1.2;padding:0 6px;max-width:100%;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    text-shadow:0 2px 6px rgba(0,0,0,.6)
+  }
+  .fc-node-badge{
+    position:absolute;top:-7px;right:-7px;width:26px;height:26px;border-radius:50%;
+    background:linear-gradient(145deg,#22c55e,#16a34a);border:2px solid rgba(15,23,42,.95);
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;color:#fff;opacity:0;transform:scale(0);transition:all .35s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 4px 15px rgba(34,197,94,.5)
+  }
+  .fc-node.done .fc-node-badge{opacity:1;transform:scale(1)}
+  .fc-node-status{
+    position:absolute;bottom:-24px;left:50%;transform:translateX(-50%);
+    font-size:8px;font-family:var(--font-mono);color:#94a3b8;white-space:nowrap;
+    padding:4px 10px;background:rgba(15,23,42,.92);border-radius:8px;opacity:0;
+    transition:all .2s;border:1px solid rgba(100,116,139,.35);
+    box-shadow:0 6px 20px rgba(0,0,0,.4);backdrop-filter:blur(4px)
+  }
+  .fc-node:hover .fc-node-status,.fc-node.sel .fc-node-status{opacity:1}
+  .fc-node.done .fc-node-status{color:#86efac;border-color:rgba(34,197,94,.4)}
+
+  .fc-node-bad{animation:fcShake .4s ease}
+  @keyframes fcShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+
+  /* Drop zone overlay when dragging */
+  .fc-node .fc-drop-zone{
+    position:absolute;inset:0;border-radius:18px;opacity:0;pointer-events:none;
+    background:rgba(124,58,237,.2);border:2px dashed transparent;transition:all .2s
+  }
+  .fc-node.drag-target .fc-drop-zone{
+    opacity:1;pointer-events:auto;border-color:#a78bfa;
+    background:rgba(124,58,237,.35);
+    box-shadow:inset 0 0 30px rgba(124,58,237,.4)
+  }
+  .fc-node.correct .fc-node-box{
+    border-color:#22c55e;
+    background:linear-gradient(145deg,rgba(6,78,59,.8),rgba(6,95,70,.7));
+    box-shadow:0 0 40px rgba(34,197,94,.35),0 10px 40px rgba(0,0,0,.4)
+  }
+  .fc-node.wrong .fc-node-box{
+    border-color:#ef4444;
+    background:linear-gradient(145deg,rgba(127,29,29,.75),rgba(153,27,27,.65));
+    box-shadow:0 0 40px rgba(239,68,68,.35),0 10px 40px rgba(0,0,0,.4)
+  }
+  .fc-node.wrong .fc-node-ico{color:#fca5a5;text-shadow:0 0 15px rgba(252,165,165,.5)}
+  
+  /* Locked steps */
+  .fc-node.locked{opacity:.4;cursor:not-allowed}
+  .fc-node.locked:hover{transform:scale(1);filter:none}
+  .fc-node.locked .fc-node-box{
+    background:linear-gradient(145deg,rgba(30,41,59,.9),rgba(15,23,42,.95));
+    border-color:rgba(71,85,105,.4)
+  }
+  .fc-node.locked .fc-node-ico{color:#64748b}
+  .fc-node.locked .fc-node-status{color:#64748b}
+  .fc-node-lock{
+    position:absolute;top:6px;right:6px;font-size:10px;color:#64748b;
+    background:rgba(0,0,0,.3);padding:3px 5px;border-radius:4px
+  }
+  
+  /* Available steps - pulse animation */
+  .fc-node.available .fc-node-box{
+    animation:fcAvailPulse 2.5s ease-in-out infinite
+  }
+  @keyframes fcAvailPulse{
+    0%,100%{box-shadow:0 10px 40px rgba(0,0,0,.5),0 0 0 0 rgba(56,189,248,.3)}
+    50%{box-shadow:0 10px 40px rgba(0,0,0,.5),0 0 0 6px rgba(56,189,248,.1)}
+  }
+  .fc-node.available .fc-node-status{color:#38bdf8}
+  .pf-chip{font-size:clamp(7px,.8vw,8px);font-family:system-ui,sans-serif;padding:5px 4px;border-radius:4px;line-height:1.15;word-break:break-word;width:100%;text-align:center;cursor:grab;touch-action:manipulation}
+  .pf-chip:active{cursor:grabbing}
+  .pf-chip.hr{background:#fce7f3;border:1px solid #db2777;color:#831843}
+  .pf-chip.it{background:#e0f2fe;border:1px solid #0284c7;color:#0c4a6e}
+  .pf-chip.legal{background:#ede9fe;border:1px solid #7c3aed;color:#4c1d95}
+  .pf-chip.ops{background:#fffbeb;border:1px solid #d97706;color:#78350f}
+  .pf-chip.ok{box-shadow:inset 0 0 0 1.5px #16a34a}
+  .pf-chip.bad{box-shadow:inset 0 0 0 1.5px #dc2626}
+  #r4-routed-count{font-size:clamp(10px,1vw,12px);color:var(--purple-light)}
+  #btn-submit-sort{width:100%;padding:10px 12px;margin-top:6px;background:rgba(247,148,33,.12);border:1px solid var(--orange);color:var(--orange);font-weight:700;border-radius:4px;font-size:11px;letter-spacing:.05em;font-family:var(--font-display)}
+  #flow-canvas-wrap #btn-submit-sort{width:auto;margin-top:0}
+  #btn-submit-sort:disabled{opacity:.45;cursor:not-allowed}
+
+  #broker-wrap{flex:1 1 0%;display:flex;flex-direction:column;overflow:hidden;min-height:120px}
+  .broker-hdr{flex-shrink:0;background:var(--panel-bg);border-bottom:1px solid rgba(0,196,28,.22);display:flex;align-items:center;padding:6px 12px;gap:10px}
+  .bk-avatar{width:32px;height:32px;border-radius:50%;background:#2f2238;border:1px solid rgba(0,196,28,.16);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--green-stable)}
+  .bk-name{color:var(--text-w);font-size:13px;font-weight:600}
+  .bk-members{font-size:10px;line-height:1.35;color:var(--green-matrix)}
+  .bk-icons{margin-left:auto;color:var(--green-stable)}
+  #broker-body{flex:1;overflow-y:auto;padding:10px 12px;background:var(--void);min-height:0}
+  .bm-sep{display:flex;justify-content:center;margin:4px 0 12px}
+  .bm-sep-pill{background:rgba(43,32,52,.92);color:var(--green-stable);font-size:10px;padding:3px 12px;border-radius:12px;border:1px solid rgba(0,196,28,.18)}
+  .bm-group{margin-bottom:14px}
+  .bm-sender{font-size:10px;margin-bottom:4px;padding-left:2px}
+  .bm-bubble{padding:9px 11px;border-radius:12px 12px 12px 3px;line-height:1.5;font-size:clamp(10px,1.2vw,13px);max-width:min(400px,100%)}
+  .bm-bubble.bm-d{background:rgba(43,32,52,.92);color:var(--text-w);border:1px solid rgba(0,196,28,.1)}
+  .bm-bubble.bm-ok{background:rgba(0,196,28,.08);color:#cfead2;border-left:2px solid rgba(0,196,28,.55)}
+  .bm-bubble.bm-err{background:rgba(211,25,114,.1);color:#fecddd;border-left:2px solid rgba(244,63,94,.55)}
+  .bm-bubble.bm-nova{background:rgba(56,189,248,.08);color:#bae6fd;border-left:2px solid rgba(56,189,248,.5)}
+  .bm-bubble.bm-zex{background:rgba(168,85,247,.08);color:#e9d5ff;border-left:2px solid rgba(168,85,247,.45)}
+  .bm-ts{font-size:9px;color:rgba(0,196,28,.65);margin-top:3px}
+  .bm-typing-wrap{margin-bottom:12px}
+  .bm-typing{background:rgba(43,32,52,.92);padding:10px 14px;border-radius:12px;display:inline-flex;gap:4px;border:1px solid rgba(0,196,28,.1)}
+  .tdot{width:5px;height:5px;border-radius:50%;background:var(--green-stable);animation:tB 1s ease-in-out infinite}
+  .tdot:nth-child(2){animation-delay:.15s}.tdot:nth-child(3){animation-delay:.3s}
+  @keyframes tB{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-4px);opacity:1}}
+
+  #hack-overlay{position:fixed;inset:0;background:#000;z-index:200;padding:28px 22px;font-family:var(--font-mono);font-size:clamp(11px,2.5vw,13px);line-height:1.85;display:none;overflow:auto}
+  #hack-overlay.active{display:block}
+  .ht{opacity:0;transition:opacity .3s}.ht.show{opacity:1}
+  .ht-g{color:#00ff41}.ht-a{color:#ffb000}.ht-r{color:#ff4040}
+  .ht-cur{display:inline-block;width:8px;height:14px;background:#00ff41;animation:cb .7s step-end infinite;vertical-align:middle}
+  @keyframes cb{0%,100%{opacity:1}50%{opacity:0}}
+
+  #debrief-overlay{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:455;display:none;align-items:center;justify-content:center;padding:16px}
+  #debrief-overlay.show{display:flex}
+  .db-card{max-width:640px;width:100%;background:var(--panel-bg);border:1px solid rgba(0,255,65,.55);border-radius:10px;padding:clamp(1.1rem,2vh,1.75rem)}
+  .db-badge{font-size:10px;color:var(--green-matrix);letter-spacing:3px;margin-bottom:6px}
+  .db-head{font-size:clamp(16px,1.8vw,21px);color:var(--text-w);margin-bottom:12px}
+  .db-metrics{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #2d5b36}
+  .db-m{flex:1;min-width:90px;text-align:center}
+  .db-mv{font-size:clamp(17px,2vw,22px);color:var(--purple-light);font-weight:700}
+  .db-ml{font-size:9px;color:var(--green-stable);margin-top:4px;letter-spacing:1px}
+  .db-rw-ttl{font-size:10px;color:var(--orange);letter-spacing:2px;margin:10px 0 6px}
+  .db-rw-txt{font-size:13px;line-height:1.72;color:var(--text-w)}
+  .db-next{width:100%;margin-top:14px;padding:11px;background:rgba(247,148,33,.1);border:1px solid var(--orange);color:var(--orange);font-weight:700;cursor:pointer;border-radius:4px}
+
+  @media(max-width:1024px){
+    #main-row{flex-direction:column;min-height:0}
+    #flow-canvas-wrap{flex:1 1 56%;border-right:none;border-bottom:1px solid rgba(0,196,28,.22)}
+    #right-rail{flex:1 1 44%;flex-basis:auto;min-height:min(360px,44vh);border-left:none;width:100%}
+    .fc-canvas{min-height:240px}
+    .r4-step-pop{max-width:calc(100% - 24px);left:8px;right:8px;bottom:8px;font-size:10px;max-height:50vh;overflow-y:auto}
+    #r4-file-list.datasets-grid{max-height:min(200px,24vh)}
+  }
+  @media(max-width:768px){
+    .fc-node{width:56px;height:56px;margin-left:-28px;margin-top:-28px}
+    .fc-node-ico{font-size:20px}
+    .fc-node-label{font-size:7px}
+    .fc-canvas-inner{min-width:700px}
+    #r4-file-list.datasets-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body data-playtest-mission="4">
+<div class="ambient-glow"></div>
+<div class="scanlines"></div>
+<div class="bg-grid"></div>
+<div class="corner corner--tl"></div><div class="corner corner--tr"></div>
+<div class="corner corner--bl"></div><div class="corner corner--br"></div>
+
+<div id="intro-root">
+  <div class="status-bar">
+    <div class="status-left"><span><span class="status-dot"></span>TERMINAL ACTIVE</span><span id="clock">--:--:--</span></div>
+    <div class="status-right"><span>OP-OMNI / M04</span><span>ENCRYPTED</span></div>
+  </div>
+  <div class="page premission-brief-page active" id="page1">
+    <div class="page-eyebrow">// Mission 04 — The Onboarding</div>
+    <div class="page-title">Pre-Mission Brief</div>
+    <div class="content">
+      <div class="mission-params" aria-label="Mission parameters">
+        <div class="mp-cell"><div class="mp-label">// Confidence start</div><div class="mp-value">100%</div></div>
+        <div class="mp-cell"><div class="mp-label">// Handoffs</div><div class="mp-value">10</div></div>
+        <div class="mp-cell"><div class="mp-label">// Datasets</div><div class="mp-value">10 · staged leak set</div></div>
+        <div class="mp-cell"><div class="mp-label">// Flow source</div><div class="mp-value">OMNI case-flow</div></div>
+        <div class="mp-cell"><div class="mp-label">// Outcome</div><div class="mp-value">Map finalized</div></div>
+      </div>
+      <div class="brief-grid">
+        <div class="brief-col">
+          <div class="brief-section">
+            <div class="section-label">// Intelligence Brief</div>
+            <div class="brief-card">
+              <div class="brief-scanlines" aria-hidden="true"></div>
+              <div class="encrypted-indicator"><span class="encrypted-dot"></span>VOSS · CHANNEL</div>
+              <div class="brief-text">
+                <p><strong>VOSS.</strong> Not org-chart theater for its own sake — this is their <strong>published flow</strong>. Each artifact either <strong>feeds a gate</strong> or it doesn’t. Mis-link and we’re proving their chaos, not our rigor.</p>
+                <p><strong>NOVA.</strong> Mission 03 was <strong>audience</strong> — who may see the truth. This is <strong>process</strong> — where that truth enters their machine. My <strong>confidence</strong> starts at 100%. Wrong gate, wrong timeline story — I’ll say why.</p>
+                <p><strong>ZEX.</strong> Ten files on the rail. Ten icons on the <strong>flow spine</strong> — click each node, match data, drag before the “random dump” headline sets.</p>
+                <div class="pullquote">Link the spine. Beat the random-dump headline.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dossier-col">
+          <div class="brief-section">
+            <div class="section-label">// Dossier</div>
+            <div class="dossier-backdrop">
+              <div class="dossier-card">
+                <div class="dc-label">Target</div>
+                <div class="dc-name">MegaCorp</div>
+                <div class="dc-role">Global conglomerate · regulated onboarding chain · OMNI case-flow</div>
+              </div>
+              <div class="dossier-card">
+                <div class="dc-label">Handler</div>
+                <div class="dc-name">Voss</div>
+                <div class="dc-role">Analyst · encrypted channel · flow reconstruction lead</div>
+              </div>
+              <div class="dossier-card">
+                <div class="dc-label">Operators</div>
+                <div class="dc-name">Nova · Zex</div>
+                <div class="dc-role">Confidence audit · field timeline · analysts won’t wait</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="button-section">
+      <button type="button" class="btn-next btn-next--ghost-premission is-locked" id="btn-continue-r4-brief" disabled onclick="goToPage(2)"><div class="btn-inner"><span>Continue</span><span>→</span></div></button>
+    </div>
+  </div>
+  <div class="page" id="page2">
+    <div class="page-eyebrow">// Mission 04 — Protocol</div>
+    <div class="page-title">Mission protocol</div>
+    <div class="content">
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">01</div>
+          <div class="step-title">INSPECT THE STEP</div>
+          <div class="step-desc">Click any <strong>step icon</strong> on the onboarding flow — its <strong>purpose</strong>, <strong>inputs</strong>, <strong>outputs</strong>, and bottleneck appear on the canvas. Each dataset card lists its <strong>table headers</strong> as a clue.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">02</div>
+          <div class="step-title">DRAG TO THE OPEN STEP</div>
+          <div class="step-desc">Steps unlock <strong>in order</strong> — locked icons show a 🔒, available ones pulse cyan. Drag the right dataset onto the active step; a correct drop draws a <strong>green arrow</strong> to the next stage.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-number">03</div>
+          <div class="step-title">CONFIDENCE</div>
+          <div class="step-desc"><strong>Wrong drop</strong> — Nova explains, <strong>confidence</strong> drops, the meter does not heal. <strong>Right drop</strong> locks that step and unlocks the next. Complete all ten to finalize the onboarding map.</div>
+        </div>
+      </div>
+      <div class="section-label" style="margin-top:clamp(.45rem,1vh,.75rem)">// Live walkthrough</div>
+      <div id="demo-step-hint" class="demo-step-hint" aria-live="polite">Two beats: open the step, pick the matching dataset, then drag it onto that icon.</div>
+      <div id="r4-demo-panel">
+        <div class="r4-demo-phase-row"><span class="r4-demo-phase" id="r4-demo-phase">Part 1 — Inspect</span></div>
+        <div class="r4-demo-stage">
+          <!-- LEFT: step-details popup, hidden until the demo clicks a node -->
+          <aside class="r4-demo-pop hidden" id="r4-demo-pop" aria-hidden="true">
+            <div class="r4-demo-pop-h">// Step details</div>
+            <div class="r4-demo-pop-t" id="r4-demo-pop-t">Offer Letter Review</div>
+            <div class="r4-demo-pop-lane" id="r4-demo-pop-lane"><i class="fas fa-building"></i> Legal &amp; Compliance</div>
+            <div class="r4-demo-pop-section"><span class="r4-demo-pop-label">Expects</span><span id="r4-demo-pop-expects">offer terms, NDA, IP clauses</span></div>
+          </aside>
+          <!-- RIGHT: mini flow row + dataset cards -->
+          <div class="r4-demo-right">
+            <div class="r4-demo-flow" id="r4-demo-flow">
+              <div class="r4-demo-node r4-dnode-legal avail" id="r4-dn-1" data-label="Offer">
+                <div class="r4-demo-node-box"><i class="fas fa-file-signature"></i></div>
+                <div class="r4-demo-node-label">Offer</div>
+              </div>
+              <div class="r4-demo-edge" id="r4-de-1">
+                <svg viewBox="0 0 60 24" preserveAspectRatio="none"><path d="M 2 12 L 50 12 M 46 8 L 50 12 L 46 16" /></svg>
+              </div>
+              <div class="r4-demo-node r4-dnode-it" id="r4-dn-2" data-label="Identity">
+                <div class="r4-demo-node-box"><i class="fas fa-fingerprint"></i></div>
+                <div class="r4-demo-node-label">Identity</div>
+              </div>
+              <div class="r4-demo-edge" id="r4-de-2">
+                <svg viewBox="0 0 60 24" preserveAspectRatio="none"><path d="M 2 12 L 50 12 M 46 8 L 50 12 L 46 16" /></svg>
+              </div>
+              <div class="r4-demo-node r4-dnode-hr" id="r4-dn-3" data-label="Background">
+                <div class="r4-demo-node-box"><i class="fas fa-user-check"></i></div>
+                <div class="r4-demo-node-label">Background</div>
+              </div>
+              <div class="r4-demo-edge" id="r4-de-3">
+                <svg viewBox="0 0 60 24" preserveAspectRatio="none"><path d="M 2 12 L 50 12 M 46 8 L 50 12 L 46 16" /></svg>
+              </div>
+              <div class="r4-demo-node r4-dnode-hr" id="r4-dn-4" data-label="Payroll">
+                <div class="r4-demo-node-box"><i class="fas fa-id-badge"></i></div>
+                <div class="r4-demo-node-label">Payroll</div>
+              </div>
+            </div>
+            <div class="r4-demo-datasets-hdr">Candidate datasets</div>
+            <div class="r4-demo-cards" id="r4-demo-cards">
+              <div class="r4-demo-card r4-dcard-legal" id="r4-dc-card-1">
+                <div class="r4-demo-card-row"><span class="r4-demo-card-ico">📄</span><span class="r4-demo-card-name">Internal_Policy_Review.md</span></div>
+                <div class="r4-demo-card-desc">## Terms, ### NDA_Clause, ### IP_Assignment</div>
+              </div>
+              <div class="r4-demo-card r4-dcard-it" id="r4-dc-card-2">
+                <div class="r4-demo-card-row"><span class="r4-demo-card-ico">📄</span><span class="r4-demo-card-name">Session_Traffic_Log.dat</span></div>
+                <div class="r4-demo-card-desc">session_id, ip_address, user_agent, 2fa_verified</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="r4-demo-coh">
+          <span style="font-family:var(--font-mono);font-size:9px;color:#4a8aa0">DEMO NOVA CONFIDENCE</span>
+          <div class="r4-demo-coh-bar"><div class="r4-demo-coh-fill" id="r4-demo-coh-fill" style="width:100%"></div></div>
+        </div>
+        <div class="r4-demo-ghost" id="r4-demo-ghost"></div>
+        <div class="r4-demo-cursor" id="r4-demo-cursor">
+          <svg width="18" height="22" viewBox="0 0 18 22" fill="none" style="display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))">
+            <path d="M1 1L1 17.5L5.5 13L10 21L13 19.5L8.5 11.5L14.5 11.5L1 1Z" fill="white" stroke="#222" stroke-width="1.2" stroke-linejoin="round"/>
+          </svg>
+          <div class="r4-demo-cur-ring"></div>
+        </div>
+      </div>
+      <div class="detection-card">
+        <div class="detection-title">NOT ROUND 3 — SAME FILES, NEW AXIS</div>
+        <div class="detection-desc">Mission 03 trained <strong>who may receive which data</strong>. Mission 04 trains <strong>when each department takes custody</strong> along one continuous case — proving the package isn’t a random pile if their own flow is real.</div>
+      </div>
+    </div>
+    <div class="button-section">
+      <div style="font-family:var(--font-mono);font-size:10px;color:var(--green-stable);letter-spacing:.15em">// Ready</div>
+      <button type="button" class="btn-next" onclick="startRound4Game()"><div class="btn-inner"><span>Open process terminal</span><span>→</span></div></button>
+    </div>
+  </div>
+</div>
+
+<div id="gp-root" style="display:none">
+<div id="game" style="display:none;flex-direction:column">
+  <div id="hdr">
+    <div class="hdr-left"><i class="fas fa-terminal"></i> MASTERMIND TERMINAL | OPERATION OMNI</div>
+    <div class="hdr-center">MISSION 04 OF 05 / THE ONBOARDING</div>
+    <div class="hdr-right">
+      <div class="coh-wrap">
+        <span class="coh-label">CONFIDENCE</span>
+        <div class="coh-bar"><div class="coh-fill conf-ok" id="hdr-coh-fill" style="width:100%"></div></div>
+        <span id="hdr-coh-pct" style="font-size:11px">100%</span>
+      </div>
+      <span style="color:rgba(0,196,28,.25)">|</span>
+      <span id="timer">00:00</span>
+      <span class="live-dot"></span><span style="letter-spacing:1px;font-size:11px">LIVE</span>
+    </div>
+  </div>
+  <div id="sort-banner"><strong>Case-flow reconstruction</strong> — MegaCorp’s OMNI diagram is one regulated disclosure from open to close; your leak files are the <strong>payload each department receives</strong> at its handoff.</div>
+  <div id="sort-help"><strong>How:</strong> <strong>1)</strong> Click a <strong>step icon</strong> — summary pops on the canvas; up to <strong>four datasets</strong> load top-right. <strong>2)</strong> Drag the matching leak onto that step’s <strong>drop zone</strong>. <strong>3)</strong> Right match → step goes quiet and the <strong>next arrow turns green</strong>. Wrong drop → Nova. Return strip undoes a chip.</div>
+  <div id="main-row">
+    <div id="flow-canvas-wrap">
+      <div id="flow-canvas-inner">
+        <div id="dist-panel">
+          <div class="dist-hdr">
+            <div class="dist-title">OMNI — NEW EMPLOYEE ONBOARDING FLOW</div>
+            <div class="dist-sub">OFFER → INTEGRATION · CLICK AN ICON · DRAG DATA FROM THE RIGHT RAIL · GREEN ARROWS = STEP COMPLETE</div>
+          </div>
+          <div class="fc-phase-bar" id="fc-phase-bar">
+            <div class="fc-phase" data-phase="0"><span class="fc-phase-label">Offer</span></div>
+            <div class="fc-phase" data-phase="1"><span class="fc-phase-label">Verification</span></div>
+            <div class="fc-phase" data-phase="2"><span class="fc-phase-label">Provisioning</span></div>
+            <div class="fc-phase" data-phase="3"><span class="fc-phase-label">Integration</span></div>
+          </div>
+          <div class="fc-canvas">
+            <div class="fc-canvas-inner" id="flow-row"></div>
+          </div>
+        </div>
+        <aside id="r4-step-pop" class="r4-step-pop hidden" aria-live="polite"></aside>
+      </div>
+      <div class="flow-canvas-footer">
+        <span id="r4-routed-count">Linked: 0 / 10</span>
+        <button type="button" id="btn-submit-sort" disabled onclick="submitSort()">FINALIZE PROCESS MAP</button>
+      </div>
+    </div>
+    <aside id="right-rail">
+      <div class="datasets-panel">
+        <div class="datasets-panel-hdr"><i class="fas fa-database" aria-hidden="true"></i> Available datasets</div>
+        <div class="datasets-panel-sub">Candidates refresh per step. Pick the data artifact for the <strong>selected</strong> onboarding step, then drop it on that node.</div>
+        <div id="r4-file-list" class="datasets-grid"></div>
+      </div>
+      <div id="broker-wrap">
+        <div class="broker-hdr">
+          <div class="bk-avatar"><i class="fas fa-shield-halved"></i></div>
+          <div style="flex:1;min-width:0">
+            <div class="bk-name">Operation channel</div>
+            <div class="bk-members">Voss · Nova · Zex</div>
+          </div>
+          <div class="bk-icons"><i class="fas fa-lock"></i></div>
+        </div>
+        <div id="broker-body"></div>
+      </div>
+    </aside>
+  </div>
+</div>
+<div id="hack-overlay">
+  <span class="ht ht-g" id="h1">OPERATION OMNI — MISSION 04 OF 05</span><br>
+  <span class="ht ht-g" id="h2">CONTINUITY BRIDGE · POST–MISSION 03</span><br><br>
+  <span class="ht" id="h3">Payload: <span class="ht-a">STRUCTURE_QUEUE.enc</span> — reconstruct one cross-dept disclosure case</span><br>
+  <span class="ht" id="h4">Objective: <span class="ht-g">PLACE EACH LEAK AT THE RIGHT HANDOFF · DEFEAT “RANDOM DUMP”</span></span><br>
+  <span class="ht" id="h5"><span class="ht-r">⚠</span> <span class="ht-a">10 DATASETS · PROCESS GATES</span></span><br>
+  <span class="ht" id="h6">Channel: <span class="ht-g">BUNDLE REVIEW</span></span><br>
+  <span class="ht" id="h7"><span class="ht-cur"></span></span>
+</div>
+<div id="debrief-overlay">
+  <div class="db-card">
+    <div class="db-badge" id="db-badge">MISSION 04</div>
+    <div class="db-head" id="db-head">THE ONBOARDING</div>
+    <div class="db-metrics" id="db-metrics"></div>
+    <div class="db-rw-ttl">REAL-WORLD TRANSLATION</div>
+    <div class="db-rw-txt" id="db-rw"></div>
+    <button type="button" class="db-next" onclick="nextRound()">CONTINUE TO MISSION 05 →</button>
+  </div>
+</div>
+</div>
+
+<script>
+'use strict';
+
+/**
+ * NEW EMPLOYEE ONBOARDING PROCESS at MegaCorp
+ * A realistic end-to-end flow showing how a new hire moves through the organization
+ * from offer acceptance to fully integrated team member.
+ */
+const STEPS = [
+  {
+    id: 'offer-review',
+    lane: 'Legal & Compliance',
+    deptCls: 'dept-legal',
+    chipCls: 'legal',
+    title: 'Offer Letter Review',
+    bottleneck: 'No signed offer → candidate not legally committed',
+    purpose: 'Legal reviews the **offer terms, NDA, and IP assignment** clauses. HR cannot proceed until Legal signs off on employment contract compliance.',
+    inputs: 'Draft offer letter, compensation terms, NDA templates, IP agreements.',
+    outputs: 'Approved offer package ready for candidate signature.',
+    okFile: 'memo_847'
+  },
+  {
+    id: 'identity-verify',
+    lane: 'IT — Security',
+    deptCls: 'dept-it',
+    chipCls: 'it',
+    title: 'Identity Verification',
+    bottleneck: 'Unverified identity → cannot create secure credentials',
+    purpose: 'IT Security runs **identity verification** using login attempts from the candidate portal, device fingerprints, and 2FA. Confirms the person is who they claim.',
+    inputs: 'Portal session logs, IP traces, device metadata, 2FA verification records.',
+    outputs: 'Verified identity profile linked to employee record.',
+    okFile: 'web_logs'
+  },
+  {
+    id: 'background-check',
+    lane: 'HR — Compliance',
+    deptCls: 'dept-hr',
+    chipCls: 'hr',
+    title: 'Background Check',
+    bottleneck: 'Failed background → offer rescinded before Day 1',
+    purpose: 'HR Compliance runs **criminal, education, and employment verification**. Risk scoring determines if candidate meets company standards.',
+    inputs: 'Background check results, criminal records, education verification, employment history.',
+    outputs: 'Risk assessment score and compliance clearance for hire.',
+    okFile: 'risk_full'
+  },
+  {
+    id: 'health-screen',
+    lane: 'HR — Benefits',
+    deptCls: 'dept-hr',
+    chipCls: 'hr',
+    title: 'Health Screening',
+    bottleneck: 'Missing health data → cannot enroll in benefits',
+    purpose: 'HR Benefits collects **pre-employment health screening** results for insurance enrollment and workplace safety compliance.',
+    inputs: 'Drug screening results, physical exam data, vaccination records.',
+    outputs: 'Health clearance and benefits eligibility confirmation.',
+    okFile: 'health'
+  },
+  {
+    id: 'payroll-setup',
+    lane: 'HR — Payroll',
+    deptCls: 'dept-hr',
+    chipCls: 'hr',
+    title: 'Payroll & Tax Setup',
+    bottleneck: 'Incomplete tax forms → cannot process first paycheck',
+    purpose: 'HR Payroll configures **salary, tax withholdings, and direct deposit**. Employee completes W-4, I-9, and banking information.',
+    inputs: 'Salary data, tax forms (W-4, I-9), direct deposit info, equity grant details.',
+    outputs: 'Active payroll record ready for first pay cycle.',
+    okFile: 'payroll'
+  },
+  {
+    id: 'data-access',
+    lane: 'IT — Data Governance',
+    deptCls: 'dept-it',
+    chipCls: 'it',
+    title: 'Data Access Setup',
+    bottleneck: 'No data access → cannot perform job duties',
+    purpose: 'IT Data Gov provisions **database and system access** based on role. New hire gets permissions to customer data, internal tools, and reporting.',
+    inputs: 'Role access matrix, database permissions, customer data scope.',
+    outputs: 'Provisioned access to all required data systems.',
+    okFile: 'cust_dump'
+  },
+  {
+    id: 'security-creds',
+    lane: 'IT — Security',
+    deptCls: 'dept-it',
+    chipCls: 'it',
+    title: 'Security Credentials',
+    bottleneck: 'No credentials → locked out of all systems',
+    purpose: 'IT Security generates **login credentials, badges, and MFA tokens**. Security logs are initialized to track all access from Day 1.',
+    inputs: 'Badge photo, MFA device registration, initial password, access control lists.',
+    outputs: 'Active credentials and security audit trail initialized.',
+    okFile: 'api_abuse'
+  },
+  {
+    id: 'systems-training',
+    lane: 'IT — Architecture',
+    deptCls: 'dept-it',
+    chipCls: 'it',
+    title: 'Systems Training',
+    bottleneck: 'Unknown systems → mistakes and security violations',
+    purpose: 'IT Architecture provides **systems overview and data flow training**. New hire learns how the tech stack works and security protocols.',
+    inputs: 'System architecture docs, data flow diagrams, API documentation.',
+    outputs: 'Completed systems orientation and architecture acknowledgment.',
+    okFile: 'pipeline'
+  },
+  {
+    id: 'dependent-benefits',
+    lane: 'HR — Benefits',
+    deptCls: 'dept-hr',
+    chipCls: 'hr',
+    title: 'Dependent Enrollment',
+    bottleneck: 'Missing dependent info → family not covered',
+    purpose: 'HR Benefits enrolls **family members and dependents** in health, dental, and life insurance. Includes children education benefits.',
+    inputs: 'Dependent names, birth dates, SSNs, school enrollment data.',
+    outputs: 'Full family benefits package activated.',
+    okFile: 'schools'
+  },
+  {
+    id: 'performance-goals',
+    lane: 'Operations — Management',
+    deptCls: 'dept-ops',
+    chipCls: 'ops',
+    title: 'Performance Setup',
+    bottleneck: 'No goals → cannot measure success or bonus eligibility',
+    purpose: 'Management sets **90-day objectives and KPIs** aligned with team goals. Performance review cycle is initialized with baseline metrics.',
+    inputs: 'Team OKRs, individual goals, success metrics, bonus structure.',
+    outputs: 'Documented performance plan and probation review schedule.',
+    okFile: 'omni_exec'
+  }
+];
+
+/** Same ids + filenames as Mission 03 `DATASETS`. Preview: `getDocumentPreview`. */
+const FILES = [
+  { id: 'omni_exec', name: 'Q4_Performance_Review.pdf', desc: 'goal_title, metric_target, review_date, manager_id' },
+  { id: 'risk_full', name: 'Personnel_Assessment_Export.xlsx', desc: 'criminal_flag, education_verified, prior_employer, risk_score' },
+  { id: 'pipeline', name: 'System_Architecture.json', desc: 'service_name, data_flow, api_endpoint, dependencies[]' },
+  { id: 'health', name: 'Health_Screening_Results.dat', desc: 'test_type, result_status, exam_date, physician_id' },
+  { id: 'web_logs', name: 'Session_Traffic_Log.dat', desc: 'session_id, ip_address, user_agent, 2fa_verified' },
+  { id: 'cust_dump', name: 'User_Database_Backup.csv', desc: 'table_name, permission_level, read_write, schema_access' },
+  { id: 'memo_847', name: 'Internal_Policy_Review.md', desc: '## Terms, ### NDA_Clause, ### IP_Assignment, signatory' },
+  { id: 'payroll', name: 'Compensation_Review_Report.csv', desc: 'base_salary, tax_withholding, bank_routing, equity_grant' },
+  { id: 'schools', name: 'Community_Program_Roster.csv', desc: 'dependent_name, birth_date, relationship, enrollment_id' },
+  { id: 'api_abuse', name: 'Security_Alert_Log.txt', desc: 'badge_id, mfa_token, access_level, credential_issued' }
+];
+
+const DATASET_CANDIDATE_CAP = 4;
+
+function shuffleArray(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const t = a[i];
+    a[i] = a[j];
+    a[j] = t;
+  }
+  return a;
+}
+
+/** Up to four leak files for the selected task (correct answer + distractors from the remaining pool). */
+/**
+ * Candidate set cache.
+ *
+ * For each step the four-card candidate set is generated ONCE (correct + 3 distractors,
+ * shuffled into a stable order) and cached as a list of file ids. Subsequent clicks on
+ * the same step re-use the same array so cards do not jump around between renders.
+ *
+ * The cache is invalidated only by:
+ *   - a successful assignment (the assigned file leaves the pool, distractors may need
+ *     a refresh on other steps that referenced it)
+ *   - mission restart (`beginMission` clears it)
+ */
+const FC_CANDIDATE_CACHE = Object.create(null);
+
+function resetCandidateCache() {
+  for (const k in FC_CANDIDATE_CACHE) delete FC_CANDIDATE_CACHE[k];
+}
+
+function getDatasetCandidatesForStep(stepId) {
+  if (!stepId) return [];
+  const st = getStepById(stepId);
+  if (!st) return [];
+
+  // If this step is already solved, just show whatever is left in the pool (unshuffled-stable).
+  const assignedHere = FILES.find((f) => GS.picks[f.id] === st.id);
+  if (assignedHere) {
+    const remaining = FILES.filter((f) => !GS.picks[f.id]);
+    return remaining.slice(0, Math.min(DATASET_CANDIDATE_CAP, remaining.length));
+  }
+
+  // Drop any cached entries whose files are now assigned elsewhere — they are stale.
+  const cachedIds = FC_CANDIDATE_CACHE[stepId];
+  if (cachedIds) {
+    const stillValid = cachedIds.every((fid) => !GS.picks[fid]) &&
+      cachedIds.includes(st.okFile);
+    if (stillValid) {
+      return cachedIds.map((fid) => getFileById(fid)).filter(Boolean);
+    }
+    delete FC_CANDIDATE_CACHE[stepId];
+  }
+
+  const pool = FILES.filter((f) => !GS.picks[f.id]);
+  if (pool.length === 0) return [];
+
+  const correctId = st.okFile;
+  const correctF = pool.find((f) => f.id === correctId);
+  const wrongPool = pool.filter((f) => f.id !== correctId);
+
+  const out = [];
+  if (correctF) out.push(correctF);
+  const need = Math.min(DATASET_CANDIDATE_CAP - out.length, wrongPool.length);
+  const shuffledWrong = shuffleArray(wrongPool);
+  for (let i = 0; i < need; i++) out.push(shuffledWrong[i]);
+
+  const finalOrder = shuffleArray(out);
+  FC_CANDIDATE_CACHE[stepId] = finalOrder.map((f) => f.id);
+  return finalOrder;
+}
+
+/** Optional Nova copy when a file hits a specific wrong gate (sparse). */
+const WRONG_STEP_OVERRIDES = {
+  memo_847: {
+    'identity-verify': 'The offer letter is <strong>Legal\'s first step</strong> — it must be approved before IT can verify identity.',
+    'background-check': 'Legal reviews the <strong>offer terms</strong> first, then HR runs background checks.'
+  },
+  web_logs: {
+    'offer-review': 'Session logs verify <strong>identity</strong>, not <strong>contract terms</strong> — wrong starting step.',
+    'background-check': 'Portal logs are for <strong>identity verification</strong>, not <strong>background screening</strong>.'
+  },
+  risk_full: {
+    'health-screen': 'Background checks are <strong>risk assessment</strong>, not <strong>health screening</strong> — different HR lane.',
+    'identity-verify': 'This is <strong>HR compliance data</strong>, not <strong>IT identity verification</strong>.'
+  },
+  health: {
+    'background-check': 'Health screening is <strong>benefits enrollment</strong>, not <strong>compliance risk check</strong>.',
+    'payroll-setup': 'Medical data goes to <strong>health screening</strong>, not <strong>payroll setup</strong>.'
+  },
+  payroll: {
+    'health-screen': 'Compensation data is for <strong>payroll setup</strong>, not <strong>health screening</strong>.',
+    'data-access': 'Tax forms and salary go to <strong>HR Payroll</strong>, not <strong>IT Data Governance</strong>.'
+  },
+  cust_dump: {
+    'security-creds': 'Database access permissions go to <strong>Data Governance</strong>, not <strong>Security Credentials</strong>.',
+    'payroll-setup': 'System access isn\'t <strong>payroll</strong> — this is <strong>IT data provisioning</strong>.'
+  },
+  api_abuse: {
+    'data-access': 'Security logs are for <strong>credential setup</strong>, not <strong>data access provisioning</strong>.',
+    'systems-training': 'Security audit trails belong at <strong>credential generation</strong>, not <strong>systems training</strong>.'
+  },
+  pipeline: {
+    'security-creds': 'Architecture docs are for <strong>systems training</strong>, not <strong>credential generation</strong>.',
+    'data-access': 'System diagrams are <strong>training material</strong>, not <strong>access permissions</strong>.'
+  },
+  schools: {
+    'performance-goals': 'Dependent info is for <strong>benefits enrollment</strong>, not <strong>performance goals</strong>.',
+    'systems-training': 'Family data belongs at <strong>HR Benefits</strong>, not <strong>IT Architecture</strong>.'
+  },
+  omni_exec: {
+    'dependent-benefits': 'Performance reviews set <strong>goals</strong>, not <strong>benefits enrollment</strong>.',
+    'systems-training': 'KPIs and OKRs are for <strong>Management</strong>, not <strong>IT training</strong>.'
+  }
+};
+
+function getStepById(sid) {
+  return STEPS.find((s) => s.id === sid);
+}
+
+function correctStepIdForFile(fid) {
+  const s = STEPS.find((st) => st.okFile === fid);
+  return s ? s.id : null;
+}
+
+/**
+ * Short "expected input" hint per step — match queue filename to this + icon title.
+ */
+const STEP_DATA_HINT = {
+  'offer-review': 'Offer letter, NDA, IP clauses (Legal)',
+  'identity-verify': 'Session logs, 2FA verification (IT)',
+  'background-check': 'Criminal, education, employment check (HR)',
+  'health-screen': 'Drug test, physical, vaccination records (HR)',
+  'payroll-setup': 'W-4, I-9, direct deposit, salary (HR)',
+  'data-access': 'Database permissions, role access (IT)',
+  'security-creds': 'Badge, MFA token, login credentials (IT)',
+  'systems-training': 'Architecture docs, data flow training (IT)',
+  'dependent-benefits': 'Family info, school enrollment (HR)',
+  'performance-goals': 'OKRs, KPIs, 90-day objectives (Ops)'
+};
+
+const STEP_FLOW_ICONS = {
+  'offer-review': 'fa-file-signature',
+  'identity-verify': 'fa-fingerprint',
+  'background-check': 'fa-user-check',
+  'health-screen': 'fa-heart-pulse',
+  'payroll-setup': 'fa-money-bill-wave',
+  'data-access': 'fa-database',
+  'security-creds': 'fa-key',
+  'systems-training': 'fa-laptop-code',
+  'dependent-benefits': 'fa-people-roof',
+  'performance-goals': 'fa-chart-line'
+};
+
+function isStepSatisfied(stepId) {
+  const st = getStepById(stepId);
+  if (!st) return false;
+  return GS.picks[st.okFile] === stepId;
+}
+
+/** Edge i connects node i → i+1. Greens when the step at node i is satisfied (arrow leaves a completed icon). Start→first edge has no completed source; first green appears after STEPS[0] locks. */
+function isFlowEdgeComplete(i) {
+  if (i >= 1 && i <= 10) return isStepSatisfied(STEPS[i - 1].id);
+  return false;
+}
+
+function layoutFlowDiagramEdges() {
+  const svg = document.getElementById('fd-edges-svg');
+  const mount = document.querySelector('.fd-mount');
+  if (!svg || !mount) return;
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  [['fd-ar-pend', '#64748b'], ['fd-ar-done', '#00ff41']].forEach(([mid, fill]) => {
+    const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+    marker.setAttribute('id', mid);
+    marker.setAttribute('markerWidth', '7');
+    marker.setAttribute('markerHeight', '7');
+    marker.setAttribute('refX', '6');
+    marker.setAttribute('refY', '3.5');
+    marker.setAttribute('orient', 'auto');
+    const tri = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    tri.setAttribute('d', 'M0,0 L7,3.5 L0,7 z');
+    tri.setAttribute('fill', fill);
+    marker.appendChild(tri);
+    defs.appendChild(marker);
+  });
+  svg.appendChild(defs);
+
+  const w = mount.offsetWidth;
+  const h = mount.offsetHeight;
+  if (w < 16 || h < 16) return;
+  svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+  svg.setAttribute('width', String(w));
+  svg.setAttribute('height', String(h));
+
+  const mr = mount.getBoundingClientRect();
+  const nodes = Array.from(mount.querySelectorAll('[data-fd-ix]')).sort(
+    (a, b) => Number(a.getAttribute('data-fd-ix')) - Number(b.getAttribute('data-fd-ix'))
+  );
+  if (nodes.length < 2) return;
+
+  function anchor(el) {
+    const r = el.getBoundingClientRect();
+    return {
+      rx: r.right - mr.left,
+      lx: r.left - mr.left,
+      my: r.top - mr.top + r.height / 2
+    };
+  }
+
+  for (let i = 0; i < nodes.length - 1; i++) {
+    const a = anchor(nodes[i]);
+    const b = anchor(nodes[i + 1]);
+    const x1 = a.rx;
+    const y1 = a.my;
+    const x2 = b.lx;
+    const y2 = b.my;
+    const done = isFlowEdgeComplete(i);
+    const d = 'M ' + x1 + ' ' + y1 + ' L ' + x2 + ' ' + y2;
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('class', done ? 'fd-edge fd-edge-done' : 'fd-edge');
+    path.setAttribute('marker-end', done ? 'url(#fd-ar-done)' : 'url(#fd-ar-pend)');
+    svg.appendChild(path);
+  }
+}
+
+function scheduleFlowLayout() {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(layoutFlowDiagramEdges);
+  });
+  setTimeout(layoutFlowDiagramEdges, 120);
+}
+
+function getDocumentPreview(id) {
+  switch (id) {
+    case 'omni_exec':
+      return `<div style="background:#ffffff;padding:50px 60px;font-family:'Calibri','Arial',sans-serif;font-size:11px;color:#222;line-height:1.7;max-width:900px;margin:0 auto">
+        <div style="text-align:center;margin-bottom:40px">
+          <div style="font-size:24px;font-weight:bold;color:#1a1a1a;margin-bottom:8px">Q4 Performance Review</div>
+          <div style="font-size:11px;color:#666;letter-spacing:0.5px">Executive Summary — Fiscal Year 2024</div>
+        </div>
+        <div style="border-bottom:2px solid #333;padding-bottom:25px;margin-bottom:30px">
+          <div style="display:grid;grid-template-columns:150px 1fr;gap:15px;font-size:10px">
+            <div style="font-weight:bold;color:#333">Date Prepared:</div>
+            <div>April 8, 2024</div>
+            <div style="font-weight:bold;color:#333">Document type:</div>
+            <div>Executive summary (aggregates only)</div>
+          </div>
+        </div>
+        <div style="margin-bottom:30px">
+          <div style="font-size:13px;font-weight:bold;color:#1a1a1a;margin-bottom:15px">Performance Metrics</div>
+          <div style="margin-left:20px;line-height:2">
+            <div><strong>Revenue Impact:</strong> \$2.3M</div>
+            <div><strong>Implementation Cost:</strong> \$847K</div>
+            <div><strong>Net Benefit:</strong> \$1.45M (171% ROI)</div>
+          </div>
+        </div>
+        <div style="margin-bottom:30px">
+          <div style="font-size:13px;font-weight:bold;color:#1a1a1a;margin-bottom:15px">Market Adoption by Segment</div>
+          <div style="margin-left:20px;line-height:2">
+            <div>Healthcare: 34% adoption</div>
+            <div>Finance: 28% adoption</div>
+            <div>Retail: 22% adoption</div>
+            <div>Other sectors: 16% adoption</div>
+          </div>
+        </div>
+        <div style="background:#f9f9f9;border-left:4px solid #366092;padding:15px 20px;margin:30px 0;font-size:10px;line-height:1.8">
+          <div style="font-weight:bold;margin-bottom:8px">Summary</div>
+          <div>This analysis reflects aggregated operational performance data across all regional offices. All figures represent consolidated metrics without individual identifiers or personal records.</div>
+        </div>
+        <div style="margin-top:40px;padding-top:20px;border-top:1px solid #ddd;text-align:center;font-size:9px;color:#888">
+          <div>Page 1 of 1 | FY2024 regional performance roll-up</div>
+        </div>
+      </div>`;
+    
+    case 'risk_full':
+      return `<div style="background:#fff;border-radius:0;padding:0;font-family:'Calibri','Arial',sans-serif;font-size:9px;color:#222;overflow:hidden;border:2px solid #366092">
+        <table style="width:100%;border-collapse:collapse;font-size:9px">
+          <thead>
+            <tr style="background:#366092;color:#fff;font-weight:bold">
+              <td style="border:1px solid #366092;padding:6px;text-align:left">Employee ID</td>
+              <td style="border:1px solid #366092;padding:6px;text-align:left">Full Name</td>
+              <td style="border:1px solid #366092;padding:6px;text-align:left">Department</td>
+              <td style="border:1px solid #366092;padding:6px;text-align:center">Risk Score</td>
+              <td style="border:1px solid #366092;padding:6px;text-align:center">Status</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-4847</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Sarah Chen</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Risk Analytics</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">87%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#c00">HIGH</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-5921</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Marcus Johnson</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Data Engineering</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">72%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#f0a000">WARN</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-3104</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Jennifer Park</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Compliance</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">32%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-6245</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">David Torres</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Security</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">91%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#900"><strong>CRIT</strong></td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-2156</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Lisa Patterson</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Operations</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">58%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#f0a000">WARN</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-7834</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Michael Rodriguez</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Finance</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">44%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-5012</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Amanda Kumar</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Systems Admin</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">79%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#c00">HIGH</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-8901</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Kevin Walsh</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">HR Services</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">25%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-6739</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Rachel Thompson</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Legal & Compliance</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">85%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#900"><strong>CRIT</strong></td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-4521</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">James Martinez</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Database Admin</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">68%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#f0a000">WARN</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-9284</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Nicole Brooks</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Marketing</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">31%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-3567</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Robert Chen</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Infrastructure</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">88%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#900"><strong>CRIT</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>`;
+    
+    case 'pipeline':
+      return `<div style="background:#f5f5f5;border-radius:3px;padding:12px;font-family:'Consolas','Courier New',monospace;font-size:9px;color:#222;line-height:1.5;border:1px solid #999">
+        {<br>
+&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"pipeline_version"</span>: <span style="color:#0a7900">"2.1.4"</span>,<br>
+&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"stages"</span>: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span style="color:#7f0055;font-weight:bold">"name"</span>: <span style="color:#0a7900">"ingress"</span>, <span style="color:#7f0055;font-weight:bold">"protocol"</span>: <span style="color:#0a7900">"HTTPS"</span> },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span style="color:#7f0055;font-weight:bold">"name"</span>: <span style="color:#0a7900">"normalize"</span>, <span style="color:#7f0055;font-weight:bold">"transforms"</span>: [<span style="color:#0a7900">"PII_strip"</span>] },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span style="color:#7f0055;font-weight:bold">"name"</span>: <span style="color:#0a7900">"process"</span>, <span style="color:#7f0055;font-weight:bold">"workers"</span>: <span style="color:#325cc0">128</span> }<br>
+&nbsp;&nbsp;],<br>
+&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"output_targets"</span>: [<span style="color:#0a7900">"warehouse"</span>, <span style="color:#0a7900">"analytics_hub"</span>]\n}\n      </div>`;
+    
+    case 'health':
+      return `<div style="background:#fff;border-radius:0;padding:0;font-family:'Calibri','Arial',sans-serif;font-size:9px;color:#222;overflow:hidden;border:2px solid #203864">
+        <table style="width:100%;border-collapse:collapse;font-size:9px">
+          <thead>
+            <tr style="background:#203864;color:#fff;font-weight:bold">
+              <td style="border:1px solid #203864;padding:6px;text-align:left">Employee ID</td>
+              <td style="border:1px solid #203864;padding:6px;text-align:center">Heart Rate</td>
+              <td style="border:1px solid #203864;padding:6px;text-align:center">Blood Pressure</td>
+              <td style="border:1px solid #203864;padding:6px;text-align:center">BMI</td>
+              <td style="border:1px solid #203864;padding:6px;text-align:center">Stress</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-4847</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">78 bpm</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">124/82</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">26.4</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">7/10</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-5921</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">82 bpm</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">131/85</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">28.1</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">8/10</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-3104</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">71 bpm</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">119/76</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">23.6</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">4/10</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-6245</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">85 bpm</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">138/89</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">29.2</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">9/10</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-2156</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">74 bpm</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">121/78</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">24.8</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">5/10</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-7834</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">88 bpm</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">142/91</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">30.5</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">8/10</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-5012</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">76 bpm</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">128/80</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">25.2</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">6/10</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-6739</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">91 bpm</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">145/93</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">31.1</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">9/10</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px">EMP-4521</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">79 bpm</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">125/81</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">26.9</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">7/10</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>`;
+    
+    case 'web_logs':
+      return `<div style="background:#1e1e1e;border-radius:3px;padding:10px;font-family:'Courier New',monospace;font-size:9px;color:#d4d4d4;line-height:1.5;overflow-y:auto;max-height:180px;border:1px solid #333">
+[2024-04-09 14:23:15] sess_9f4a2b | 142.175.48.221 | /api/payroll<br>
+[2024-04-09 14:23:47] sess_7d3c1e | 142.175.49.105 | /api/employees<br>
+[2024-04-09 14:24:02] sess_4b2f6a | 142.175.48.156 | /dashboard/reports<br>
+[2024-04-09 14:24:18] sess_8e1d9c | 142.175.48.221 | /api/audit-log<br>
+[2024-04-09 14:24:35] sess_5a3f7b | 203.42.61.178 | /settings/access-control<br>
+[2024-04-09 14:25:12] sess_2k9x1m | 142.175.49.201 | /api/timesheets<br>
+[2024-04-09 14:26:03] sess_4h7d2n | 142.175.48.345 | /reports/compensation<br>
+[2024-04-09 14:26:49] sess_8p3q9f | 203.42.61.215 | /api/hrms-modules<br>
+[2024-04-09 14:27:31] sess_1r5b4e | 142.175.49.112 | /admin/users<br>
+[2024-04-09 14:28:15] sess_6v2c8h | 142.175.48.398 | /api/analytics-data<br>
+[2024-04-09 14:29:02] sess_3j6w7k | 203.42.61.289 | /data/export-all<br>
+[2024-04-09 14:29:47] sess_9m4t1p | 142.175.49.067 | /api/vault-access
+      </div>`;
+    
+    case 'cust_dump':
+      return `<div style="background:#fff;border-radius:4px;padding:0;font-family:'Arial',sans-serif;font-size:9px;color:#333;overflow:hidden;border:1px solid #ccc">
+        <div style="background:#70ad47;color:#fff;padding:8px;font-weight:bold;display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px">
+          <div>Name</div><div>Email</div><div>Address</div><div>Account</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;background:#f9f9f9;font-size:8px">
+          <div>Rebecca Martinez</div><div>r.martinez@email.com</div><div>4521 Oak Lane, Portland OR</div><div>ACC-7842194</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
+          <div>Thomas Weinstein</div><div>t.weinstein@email.com</div><div>89 Maple Ave, Boston MA</div><div>ACC-5109847</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;background:#f9f9f9;font-size:8px">
+          <div>Amina Patel</div><div>a.patel@email.com</div><div>712 Cedar St, Austin TX</div><div>ACC-9284756</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
+          <div>David Johnson</div><div>d.johnson@email.com</div><div>156 Birch Rd, Seattle WA</div><div>ACC-4521038</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;background:#f9f9f9;font-size:8px">
+          <div>Sarah Chen</div><div>s.chen@email.com</div><div>923 Pine Ave, Denver CO</div><div>ACC-8374625</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
+          <div>Marcus Brown</div><div>m.brown@email.com</div><div>742 Elm Street, Chicago IL</div><div>ACC-6192847</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;background:#f9f9f9;font-size:8px">
+          <div>Jessica Kumar</div><div>j.kumar@email.com</div><div>501 Oak Pl, Miami FL</div><div>ACC-7458291</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
+          <div>Robert Garcia</div><div>r.garcia@email.com</div><div>834 Spruce Dr, Atlanta GA</div><div>ACC-5937684</div>
+        </div>
+      </div>`;
+    
+    case 'memo_847':
+      return `<div style="background:#ffffff;padding:50px 60px;font-family:'Calibri','Arial',sans-serif;font-size:11px;color:#222;line-height:1.65;max-width:900px;margin:0 auto">
+        <div style="text-align:center;margin-bottom:50px;border-bottom:3px solid #1a1a1a;padding-bottom:20px">
+          <div style="font-size:18px;font-weight:bold;letter-spacing:2px;tracking:0.05em">MEMORANDUM</div>
+          <div style="font-size:9px;color:#777;margin-top:6px;letter-spacing:1px">Steering committee · scope review</div>
+        </div>
+        <div style="margin-bottom:30px;font-size:11px">
+          <table style="width:100%;border-collapse:collapse">
+            <tr>
+              <td style="font-weight:bold;width:80px;vertical-align:top;padding:4px 0">TO:</td>
+              <td style="padding:4px 0">Executive Steering Committee</td>
+            </tr>
+            <tr>
+              <td style="font-weight:bold;vertical-align:top;padding:4px 0">FROM:</td>
+              <td style="padding:4px 0">Project Management Office</td>
+            </tr>
+            <tr>
+              <td style="font-weight:bold;vertical-align:top;padding:4px 0">DATE:</td>
+              <td style="padding:4px 0">March 15, 2024</td>
+            </tr>
+            <tr>
+              <td style="font-weight:bold;vertical-align:top;padding:4px 0">RE:</td>
+              <td style="padding:4px 0">OMNI System Scope Review</td>
+            </tr>
+          </table>
+        </div>
+        <div style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:20px 0;margin:30px 0">
+        </div>
+        <div style="margin-bottom:20px;text-align:justify;line-height:1.75">
+          <p>The OMNI system was designed to optimize employee workspace allocation using environmental sensing. The system collected behavioral patterns to improve facility management and workforce scheduling across all regional offices.</p>
+        </div>
+        <div style="margin-bottom:20px">
+          <div style="font-weight:bold;margin-bottom:12px;font-size:11px">Key Findings</div>
+          <ul style="margin:0;padding-left:20px;line-height:2">
+            <li>System exceeded stated scope without employee consent</li>
+            <li>Data collection protocols lacked transparency mechanisms</li>
+            <li>Retention policies did not align with stated minimization objectives</li>
+          </ul>
+        </div>
+        <div style="margin-bottom:30px">
+          <div style="font-weight:bold;margin-bottom:12px;font-size:11px">Recommended Action</div>
+          <p style="margin:0;text-align:justify">Conduct full audit of collection practices and revise consent procedures to align with operational scope and stakeholder expectations.</p>
+        </div>
+        <div style="margin-top:50px;padding-top:20px;border-top:1px solid #ccc;font-size:9px;color:#999;text-align:right">
+          <div>Page 1 of 1 | Policy &amp; operations review</div>
+        </div>
+      </div>`;
+    
+    case 'payroll':
+      return `<div style="background:#fff;border-radius:0;padding:0;font-family:'Calibri','Arial',sans-serif;font-size:9px;color:#222;overflow:hidden;border:2px solid #305496">
+        <table style="width:100%;border-collapse:collapse;font-size:9px">
+          <thead>
+            <tr style="background:#305496;color:#fff;font-weight:bold">
+              <td style="border:1px solid #305496;padding:6px;text-align:left">Row ref (masked)</td>
+              <td style="border:1px solid #305496;padding:6px;text-align:left">Region</td>
+              <td style="border:1px solid #305496;padding:6px;text-align:right">Base salary (review)</td>
+              <td style="border:1px solid #305496;padding:6px;text-align:center">Flag</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-01 ••••</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">West</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right"><strong>$421,800</strong></td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;background:#fff3cd;color:#856404">ADJ_GND</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-02 ••••</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">East</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right"><strong>$398,200</strong></td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;background:#fff3cd;color:#856404">ADJ_ROL</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-03 ••••</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Central</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right">$158,750</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-04 ••••</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">South</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right">$172,200</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-05 ••••</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">North</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right"><strong>$385,000</strong></td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;background:#fff3cd;color:#856404">ADJ_GEO</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-06 ••••</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">West</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right">$168,900</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-07 ••••</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">East</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right"><strong>$405,100</strong></td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;background:#fff3cd;color:#856404">ADJ_ROL</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-08 ••••</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">Central</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right">$175,600</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-09 ••••</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">South</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right"><strong>$433,500</strong></td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;background:#fff3cd;color:#856404">ADJ_GND</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>`;
+    
+    case 'schools':
+      return `<div style="background:#fff;border-radius:0;padding:0;font-family:'Calibri','Arial',sans-serif;font-size:8px;color:#222;overflow:hidden;border:2px solid #366092">
+        <table style="width:100%;border-collapse:collapse;font-size:8px">
+          <thead>
+            <tr style="background:#366092;color:#fff;font-weight:bold">
+              <td style="border:1px solid #366092;padding:5px;text-align:left">Student Name</td>
+              <td style="border:1px solid #366092;padding:5px;text-align:center">Grade</td>
+              <td style="border:1px solid #366092;padding:5px;text-align:left">Guardian Name(s)</td>
+              <td style="border:1px solid #366092;padding:5px;text-align:left">School Name</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:5px">Alex Thompson</td>
+              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Maria Thompson</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Lincoln Middle School</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:5px">Jordan Kim</td>
+              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">8th</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Susan & Michael Kim</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Jackson Academy</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:5px">Casey Rodriguez</td>
+              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">6th</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Carlos Rodriguez</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Jefferson Elem. School</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:5px">Morgan Fischer</td>
+              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Rebecca & David Fischer</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Roosevelt Middle</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:5px">Sienna Williams</td>
+              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">6th</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">James Williams</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Harrison Elementary</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:5px">Ethan Lopez</td>
+              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">8th</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Maria & Fernando Lopez</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Jackson Academy</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:5px">Olivia Khan</td>
+              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Hassan Khan</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Lincoln Middle School</td>
+            </tr>
+            <tr>
+              <td style="border:1px solid #d0d0d0;padding:5px">Lucas Anderson</td>
+              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">6th</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Patricia Anderson</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Jefferson Elem. School</td>
+            </tr>
+            <tr style="background:#f2f2f2">
+              <td style="border:1px solid #d0d0d0;padding:5px">Zoe Mitchell</td>
+              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Robert & Lisa Mitchell</td>
+              <td style="border:1px solid #d0d0d0;padding:5px">Roosevelt Middle</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>`;
+    
+    case 'api_abuse':
+      return `<div style="background:#1e1e1e;border-radius:3px;padding:10px;font-family:'Courier New',monospace;font-size:9px;color:#d4d4d4;line-height:1.5;overflow-y:auto;max-height:180px;border:1px solid #333">
+[2024-04-08 11:47:03] ALERT: Excessive queries /api/employees (5200 req/min vs 600 threshold)<br>
+[2024-04-08 12:15:22] ALERT: Unauthorized access attempt audit_log (role mismatch, 127 queries)<br>
+[2024-04-08 13:04:51] ALERT: Data aggregation query 18400 records (anomalous speed 3.2s)<br>
+[2024-04-08 14:02:15] WARNING: Suspicious pattern detected - bulk extraction behavior<br>
+[2024-04-08 14:15:33] INFO: Security team notified - investigation pending<br>
+[2024-04-08 15:23:41] ALERT: Large data export initiated (2.3GB download, 8 minutes)<br>
+[2024-04-08 16:04:18] WARNING: Multiple concurrent sessions from single credential (IP variance)<br>
+[2024-04-08 16:47:52] ALERT: API token abuse - rate limit exceeded (42000 req/hour)<br>
+[2024-04-08 17:12:35] CRITICAL: Unauthorized schema access detected - sensitive tables queried<br>
+[2024-04-08 18:00:09] INFO: Security lockdown initiated - all personal data APIs disabled
+      </div>`;
+    
+    default:
+      return '<div style="color:#888">Unknown file</div>';
+  }
+}
+
+const GS = {
+  picks: {},
+  selectedId: null,
+  selectedStepId: null,
+  timerSec: 0,
+  timerInt: null,
+  submitted: false,
+  confidence: 100,
+  wrongAttempts: 0
+};
+
+let r4DemoTl = null;
+
+function updateClock() {
+  const el = document.getElementById('clock');
+  if (el) el.textContent = new Date().toTimeString().slice(0, 8);
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+function wireContinueDelayR4() {
+  const btn = document.getElementById('btn-continue-r4-brief');
+  if (!btn) return;
+  setTimeout(() => {
+    btn.classList.remove('is-locked');
+    btn.disabled = false;
+  }, 3000);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireContinueDelayR4);
+else wireContinueDelayR4();
+
+function r4DemoGetPos(el, panel) {
+  const pr = panel.getBoundingClientRect();
+  const er = el.getBoundingClientRect();
+  return {
+    x: er.left - pr.left + er.width * 0.5,
+    y: er.top - pr.top + er.height * 0.5
+  };
+}
+
+/** Animate a demo edge from invisible → fully drawn green arrow. */
+function r4DemoDrawEdge(tl, edgeId, t) {
+  const edge = document.getElementById(edgeId);
+  if (!edge) return;
+  const path = edge.querySelector('path');
+  if (!path) return;
+  tl.call(() => {
+    edge.classList.add('done');
+    if (typeof path.getTotalLength === 'function') {
+      const len = path.getTotalLength();
+      path.style.strokeDasharray = len;
+      path.style.strokeDashoffset = len;
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+        onComplete: () => {
+          path.style.strokeDasharray = '';
+          path.style.strokeDashoffset = '';
+        }
+      });
+    }
+  }, null, t);
+}
+
+function stopR4ProtocolDemo() {
+  if (r4DemoTl) {
+    r4DemoTl.pause(0);
+    r4DemoTl.kill();
+    r4DemoTl = null;
+  }
+  // Reset all demo state so the next play() starts from a clean slate
+  document.querySelectorAll('#r4-demo-flow .r4-demo-node').forEach((n) => {
+    n.classList.remove('sel', 'done', 'avail', 'drop');
+  });
+  const firstNode = document.getElementById('r4-dn-1');
+  if (firstNode) firstNode.classList.add('avail');
+  document.querySelectorAll('#r4-demo-flow .r4-demo-edge').forEach((e) => {
+    e.classList.remove('done');
+    const p = e.querySelector('path');
+    if (p) { p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; }
+  });
+  document.querySelectorAll('#r4-demo-cards .r4-demo-card').forEach((c) => c.classList.remove('drag', 'used', 'sel'));
+  const pop = document.getElementById('r4-demo-pop');
+  if (pop) {
+    pop.classList.add('hidden');
+    if (typeof gsap !== 'undefined') gsap.set(pop, { opacity: 0, y: 8 });
+  }
+  const phaseEl = document.getElementById('r4-demo-phase');
+  if (phaseEl) {
+    phaseEl.textContent = 'Part 1 — Inspect';
+    phaseEl.classList.remove('r4-demo-phase-2');
+  }
+  const ghost = document.getElementById('r4-demo-ghost');
+  if (ghost && typeof gsap !== 'undefined') gsap.set(ghost, { opacity: 0 });
+  const f = document.getElementById('r4-demo-coh-fill');
+  if (f) f.style.width = '100%';
+  const h = document.getElementById('demo-step-hint');
+  if (h) h.innerHTML = '';
+}
+
+function startR4ProtocolDemo() {
+  if (typeof gsap === 'undefined') {
+    const h = document.getElementById('demo-step-hint');
+    if (h) {
+      h.innerHTML = '<strong>Part 1</strong> — click a step, read the brief, pick the matching dataset. <strong>Part 2</strong> — drag it onto that step icon.';
+    }
+    return;
+  }
+  stopR4ProtocolDemo();
+
+  const panel = document.getElementById('r4-demo-panel');
+  const cursor = document.getElementById('r4-demo-cursor');
+  const ring = cursor ? cursor.querySelector('.r4-demo-cur-ring') : null;
+  const ghost = document.getElementById('r4-demo-ghost');
+  const stepHint = document.getElementById('demo-step-hint');
+  const phaseEl = document.getElementById('r4-demo-phase');
+  const pop = document.getElementById('r4-demo-pop');
+  const popT = document.getElementById('r4-demo-pop-t');
+  const popLane = document.getElementById('r4-demo-pop-lane');
+  const popExp = document.getElementById('r4-demo-pop-expects');
+  const dn1 = document.getElementById('r4-dn-1');
+  const dn2 = document.getElementById('r4-dn-2');
+  const card1 = document.getElementById('r4-dc-card-1');
+  const card2 = document.getElementById('r4-dc-card-2');
+  const cohFill = document.getElementById('r4-demo-coh-fill');
+  if (!panel || !cursor || !pop || !dn1 || !card1 || !card2) return;
+
+  const setHint = (t) => { if (stepHint) stepHint.innerHTML = t; };
+  const setPhase1 = () => {
+    if (phaseEl) {
+      phaseEl.textContent = 'Part 1 — Inspect';
+      phaseEl.classList.remove('r4-demo-phase-2');
+    }
+  };
+  const setPhase2 = () => {
+    if (phaseEl) {
+      phaseEl.textContent = 'Part 2 — Route';
+      phaseEl.classList.add('r4-demo-phase-2');
+    }
+  };
+
+  const tl = gsap.timeline({ repeat: -1, repeatDelay: 3.2, defaults: { ease: 'power2.inOut' } });
+  r4DemoTl = tl;
+
+  const pulseAt = (t) => {
+    if (!ring) return;
+    tl.to(ring, { opacity: 0.55, scale: 1.32, duration: 0.12, ease: 'power1.out' }, t)
+      .to(ring, { opacity: 0, scale: 0.45, duration: 0.22 }, t + 0.14);
+  };
+
+  gsap.set(cursor, { opacity: 0, x: 24, y: 48 });
+  if (ring) gsap.set(ring, { opacity: 0, scale: 0.5 });
+  gsap.set(ghost, { opacity: 0, x: 0, y: 0 });
+
+  /* ── Loop head: full reset ─────────────────────────────────────────── */
+  tl.call(() => {
+    document.querySelectorAll('#r4-demo-flow .r4-demo-node').forEach((n) => n.classList.remove('sel', 'done', 'avail', 'drop'));
+    dn1.classList.add('avail');
+    dn2.classList.remove('avail');
+    document.querySelectorAll('#r4-demo-flow .r4-demo-edge').forEach((e) => {
+      e.classList.remove('done');
+      const p = e.querySelector('path');
+      if (p) {
+        p.style.strokeDasharray = '';
+        p.style.strokeDashoffset = '';
+      }
+    });
+    document.querySelectorAll('#r4-demo-cards .r4-demo-card').forEach((c) => c.classList.remove('drag', 'used', 'sel'));
+    pop.classList.add('hidden');
+    gsap.set(pop, { opacity: 0, y: 8 });
+    if (cohFill) cohFill.style.width = '100%';
+    setPhase1();
+    setHint('<strong>Part 1</strong> — Click the <strong>pulsing cyan</strong> step. The brief opens on the left.');
+  }, null, 0);
+
+  /* Part 1a — open step */
+  tl.to(cursor, { opacity: 1, duration: 0.32, ease: 'power2.out' }, 0.12);
+  tl.to(cursor, {
+    x: () => r4DemoGetPos(dn1, panel).x,
+    y: () => r4DemoGetPos(dn1, panel).y,
+    duration: 1.05
+  }, 0.35);
+  pulseAt(1.38);
+  tl.call(() => {
+    gsap.set(pop, { opacity: 0, y: 10 });
+    pop.classList.remove('hidden');
+    dn1.classList.remove('avail');
+    dn1.classList.add('sel');
+    popT.textContent = 'Offer Letter Review';
+    popLane.innerHTML = '<i class="fas fa-building"></i> Legal &amp; Compliance';
+    popExp.textContent = 'offer terms, NDA, IP clauses (Legal)';
+  }, null, 1.45);
+  tl.to(pop, { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' }, 1.45);
+
+  /* Part 1b — read, then pick dataset on the right */
+  tl.call(() => setHint('<strong>Part 1</strong> — Read the brief: it says what kind of record this gate needs.'), null, 2.05);
+  tl.to({}, { duration: 1.5 }, 2.1);
+  tl.call(() => setHint('<strong>Part 1</strong> — On the right, select the file whose <strong>table headers</strong> match that story.'), null, 3.65);
+  tl.to(cursor, {
+    x: () => r4DemoGetPos(card1, panel).x,
+    y: () => r4DemoGetPos(card1, panel).y,
+    duration: 0.95
+  }, 3.78);
+  pulseAt(4.68);
+  tl.call(() => {
+    card1.classList.add('sel');
+    card2.classList.remove('sel');
+  }, null, 4.76);
+  tl.to({}, { duration: 0.95 }, 4.82);
+
+  /* Part 2 — drag from dataset strip onto the flow icon */
+  tl.call(() => {
+    setPhase2();
+    setHint('<strong>Part 2</strong> — Drag that dataset from the <strong>bottom row</strong> onto the <strong>same step icon</strong> above.');
+  }, null, 5.78);
+  tl.call(() => {
+    card1.classList.remove('sel');
+    card1.classList.add('drag');
+    ghost.textContent = '📄 Internal_Policy_Review.md';
+    const pos = r4DemoGetPos(card1, panel);
+    gsap.set(ghost, { x: pos.x, y: pos.y });
+  }, null, 5.95);
+  tl.to(ghost, { opacity: 1, duration: 0.22, ease: 'power2.out' }, 5.95);
+
+  tl.to(cursor, {
+    x: () => r4DemoGetPos(dn1, panel).x,
+    y: () => r4DemoGetPos(dn1, panel).y,
+    duration: 1.1
+  }, 6.08);
+  tl.to(ghost, {
+    x: () => r4DemoGetPos(dn1, panel).x,
+    y: () => r4DemoGetPos(dn1, panel).y - 10,
+    duration: 1.1
+  }, 6.08);
+  pulseAt(7.05);
+  tl.call(() => dn1.classList.add('drop'), null, 7.18);
+  tl.to(ghost, { opacity: 0, duration: 0.2, ease: 'power2.in' }, 7.28);
+  tl.call(() => {
+    dn1.classList.remove('sel', 'drop');
+    dn1.classList.add('done');
+    card1.classList.remove('drag');
+    card1.classList.add('used');
+    pop.classList.add('hidden');
+    dn2.classList.add('avail');
+    setHint('Correct — the step <strong>locks</strong>, the arrow draws <strong>green</strong>, and the next icon unlocks. (Wrong drops cut confidence.)');
+  }, null, 7.38);
+  r4DemoDrawEdge(tl, 'r4-de-1', 7.38);
+
+  tl.to(cursor, { opacity: 0, duration: 0.35, ease: 'power2.in' }, 8.55);
+  tl.to({}, { duration: 0.55 }, 8.9);
+
+  tl.play(0);
+}
+
+function goToPage(n) {
+  const cur = document.querySelector('#intro-root .page.active');
+  if (cur && cur.id === 'page2') stopR4ProtocolDemo();
+  document.querySelectorAll('#intro-root .page').forEach((p) => p.classList.remove('active'));
+  const next = document.getElementById('page' + n);
+  if (next) next.classList.add('active');
+  if (n === 2) requestAnimationFrame(() => startR4ProtocolDemo());
+}
+
+function startRound4Game() {
+  stopR4ProtocolDemo();
+  const intro = document.getElementById('intro-root');
+  const gp = document.getElementById('gp-root');
+  const fin = () => {
+    intro.style.display = 'none';
+    document.documentElement.classList.add('gp-html-active');
+    document.body.classList.add('gp-gameplay-active');
+    gp.style.display = 'block';
+    document.getElementById('game').style.display = 'flex';
+    runHackThenPlay();
+  };
+  if (typeof gsap !== 'undefined') {
+    gsap.to(intro, { opacity: 0, y: -16, duration: 0.32, ease: 'power2.in', onComplete: fin });
+  } else fin();
+}
+
+function runHackThenPlay() {
+  const ho = document.getElementById('hack-overlay');
+  ho.classList.add('active');
+  const ids = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7'];
+  const delays = [200, 450, 750, 1000, 1300, 1600, 1900];
+  ids.forEach((id, i) => setTimeout(() => {
+    const e = document.getElementById(id);
+    if (e) e.classList.add('show');
+  }, delays[i]));
+  setTimeout(() => {
+    ho.style.transition = 'opacity 0.6s ease';
+    ho.style.opacity = '0';
+    setTimeout(() => {
+      ho.classList.remove('active');
+      ho.style.opacity = '';
+      ho.style.transition = '';
+      beginMission();
+    }, 620);
+  }, 2600);
+}
+
+function beginMission() {
+  GS.picks = {};
+  GS.selectedId = null;
+  GS.selectedStepId = null;
+  GS.submitted = false;
+  GS.confidence = 100;
+  GS.wrongAttempts = 0;
+  GS.timerSec = 0;
+  if (typeof FC_ANIMATED_EDGES !== 'undefined') FC_ANIMATED_EDGES.clear();
+  resetCandidateCache();
+  if (GS.timerInt) clearInterval(GS.timerInt);
+  GS.timerInt = setInterval(() => {
+    GS.timerSec++;
+    const m = String(Math.floor(GS.timerSec / 60)).padStart(2, '0');
+    const s = String(GS.timerSec % 60).padStart(2, '0');
+    const t = document.getElementById('timer');
+    if (t) t.textContent = m + ':' + s;
+  }, 1000);
+
+  refreshAll();
+
+  const body = document.getElementById('broker-body');
+  if (body) {
+    body.innerHTML = '<div class="bm-sep"><div class="bm-sep-pill">Process map queue · live</div></div>';
+  }
+  systemSay('MegaCorp PR · “Unauthorized disclosures are incomplete and misleading…”', 300);
+  brokerSay('Same ten Mission 03 previews. <strong>Click an icon</strong> on the chain — four candidates appear top-right. Correct drop fades that step and <strong>greens the outgoing arrow</strong>. Nova’s confidence starts at 100%.', 'bm-d', 1200);
+  novaSay('Mis-link the spine and analysts will read “random dump” — we need a believable <strong>department-to-department</strong> path.', 2400);
+}
+
+function getFileById(fid) {
+  return FILES.find((f) => f.id === fid);
+}
+
+function wrongStepExplain(f, wrongStepId) {
+  const ovr = WRONG_STEP_OVERRIDES[f.id] && WRONG_STEP_OVERRIDES[f.id][wrongStepId];
+  if (ovr) return ovr;
+  const correct = getStepById(correctStepIdForFile(f.id));
+  const wrong = getStepById(wrongStepId);
+  if (correct && wrong) {
+    return 'This artifact belongs at <strong>' + correct.title + '</strong> — not <strong>' + wrong.title + '</strong>. Compare inputs on the step card.';
+  }
+  return 'Wrong gate — re-read the step purpose and the document preview.';
+}
+
+function confidenceHitAmount(fileId) {
+  return ['schools', 'health', 'cust_dump', 'risk_full'].includes(fileId) ? 14 : 10;
+}
+
+function applyWrongPlacement(fileId, wrongStepId) {
+  const f = getFileById(fileId);
+  const correct = correctStepIdForFile(fileId);
+  if (!f || wrongStepId === correct) return;
+  const hit = confidenceHitAmount(fileId);
+  GS.wrongAttempts++;
+  GS.confidence = Math.max(0, GS.confidence - hit);
+  updateConfidenceUI();
+  novaSay('<strong>Wrong link.</strong> ' + wrongStepExplain(f, wrongStepId) + ' <em>(−' + hit + '% confidence)</em>', 100);
+}
+
+/** Check if a step is available (all predecessor steps must be completed) */
+function isStepAvailable(stepIdx) {
+  if (stepIdx === 0) return true; // First step always available
+  // Find all edges where this step is the target
+  const predecessors = FLOW_EDGES.filter(([from, to]) => to === stepIdx).map(([from]) => from);
+  if (predecessors.length === 0) return true;
+  // All predecessors must be satisfied
+  return predecessors.every(predIdx => {
+    const predStep = STEPS[predIdx];
+    return predStep && isStepSatisfied(predStep.id);
+  });
+}
+
+function getStepIndex(stepId) {
+  return STEPS.findIndex(s => s.id === stepId);
+}
+
+function assignToStep(fileId, stepId) {
+  if (GS.submitted || !getFileById(fileId)) return;
+  
+  // Check if step is available (sequential enforcement)
+  const stepIdx = getStepIndex(stepId);
+  if (!isStepAvailable(stepIdx)) {
+    const node = document.querySelector('#flow-row .fc-node[data-step-id="' + stepId + '"]');
+    if (node) {
+      node.classList.add('fc-node-bad');
+      setTimeout(() => node.classList.remove('fc-node-bad'), 400);
+    }
+    novaSay('Complete the <strong>previous steps</strong> first — the onboarding flow must proceed in order.', 0);
+    return;
+  }
+  
+  const correct = correctStepIdForFile(fileId);
+  if (!correct || stepId !== correct) {
+    if (GS.picks[fileId]) delete GS.picks[fileId];
+    applyWrongPlacement(fileId, stepId);
+    const node = document.querySelector('#flow-row .fc-node[data-step-id="' + stepId + '"]');
+    if (node) {
+      node.classList.add('fc-node-bad');
+      setTimeout(() => node.classList.remove('fc-node-bad'), 400);
+    }
+    refreshAll();
+    return;
+  }
+  Object.keys(GS.picks).forEach((k) => {
+    if (GS.picks[k] === stepId) delete GS.picks[k];
+  });
+  GS.picks[fileId] = stepId;
+  if (GS.selectedId === fileId) GS.selectedId = null;
+  // A successful assignment may invalidate other steps' cached distractor lists
+  // (this file was a distractor on a different step). Reset the cache once.
+  resetCandidateCache();
+  // The step the user was inspecting is now solved — close the side popup so
+  // they can immediately click the next available icon without an extra step.
+  if (GS.selectedStepId === stepId) {
+    GS.selectedStepId = null;
+    closeStepPop();
+  }
+  refreshAll();
+  // Celebrate the successful placement with a quick pop on the node
+  requestAnimationFrame(() => {
+    const node = document.querySelector('#flow-row .fc-node[data-step-id="' + stepId + '"]');
+    const box = node ? node.querySelector('.fc-node-box') : null;
+    if (box && typeof gsap !== 'undefined') {
+      gsap.fromTo(box,
+        { scale: 1 },
+        { scale: 1.18, duration: 0.22, ease: 'back.out(2)', yoyo: true, repeat: 1, transformOrigin: '50% 50%' }
+      );
+    }
+  });
+}
+
+function unassignFile(fileId) {
+  if (GS.submitted || !GS.picks[fileId]) return;
+  delete GS.picks[fileId];
+  resetCandidateCache();
+  refreshAll();
+}
+
+function selectStep(stepId) {
+  if (GS.submitted || !getStepById(stepId)) return;
+  GS.selectedStepId = stepId;
+  GS.selectedId = null;
+  document.querySelectorAll('#r4-file-list .ds-card').forEach((el) => el.classList.remove('sel'));
+  document.querySelectorAll('#flow-row .fc-node').forEach((n) => {
+    n.classList.toggle('sel', n.getAttribute('data-step-id') === stepId);
+  });
+  renderQueue();
+  updateStepPop();
+}
+
+function selectFile(fileId) {
+  if (GS.submitted) return;
+  if (GS.picks[fileId]) return;
+  const f = getFileById(fileId);
+  if (!f) return;
+  GS.selectedId = fileId;
+  document.querySelectorAll('#r4-file-list .ds-card').forEach((el) => {
+    el.classList.toggle('sel', el.getAttribute('data-file-id') === fileId);
+  });
+}
+
+function dragStartHandler(e) {
+  const id = e.currentTarget.getAttribute('data-file-id');
+  if (!id || GS.submitted) {
+    e.preventDefault();
+    return;
+  }
+  e.dataTransfer.setData('text/r4-file', id);
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+/** Node positions for the flow chart (x, y percentages of canvas) */
+const FLOW_NODE_POSITIONS = [
+  { x: 5, y: 30 },    // 0: offer-review (Legal start)
+  { x: 18, y: 30 },   // 1: identity-verify (IT check)
+  { x: 31, y: 30 },   // 2: background-check (HR compliance)
+  { x: 44, y: 20 },   // 3: health-screen (HR benefits - branch up)
+  { x: 44, y: 50 },   // 4: payroll-setup (HR payroll - branch down)
+  { x: 57, y: 35 },   // 5: data-access (IT merge point)
+  { x: 70, y: 35 },   // 6: security-creds (IT security)
+  { x: 83, y: 35 },   // 7: systems-training (IT architecture)
+  { x: 70, y: 70 },   // 8: dependent-benefits (HR benefits)
+  { x: 83, y: 70 }    // 9: performance-goals (Ops finish)
+];
+
+/** Edge connections: [fromIdx, toIdx] - shows onboarding flow */
+const FLOW_EDGES = [
+  [0, 1],   // offer → identity
+  [1, 2],   // identity → background
+  [2, 3],   // background → health (branch up)
+  [2, 4],   // background → payroll (branch down)
+  [3, 5],   // health → data-access (merge)
+  [4, 5],   // payroll → data-access (merge)
+  [5, 6],   // data-access → security
+  [6, 7],   // security → systems
+  [7, 8],   // systems → dependents
+  [8, 9]    // dependents → performance
+];
+
+function renderFlowNodes() {
+  const root = document.getElementById('flow-row');
+  if (!root) return;
+
+  root.innerHTML = '';
+  
+  // SVG for edges
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('class', 'fc-edges');
+  svg.setAttribute('id', 'fc-edges');
+  svg.style.width = '100%';
+  svg.style.height = '100%';
+  
+  // Create nodes
+  STEPS.forEach((s, idx) => {
+    const pos = FLOW_NODE_POSITIONS[idx];
+    const assignedFile = FILES.find((f) => GS.picks[f.id] === s.id);
+    const isDone = !!assignedFile;
+    const isSelected = GS.selectedStepId === s.id;
+    const isAvailable = isStepAvailable(idx);
+    const isLocked = !isDone && !isAvailable;
+    
+    const node = document.createElement('div');
+    node.className = 'fc-node' + (isDone ? ' done' : '') + (isSelected ? ' sel' : '') + (isLocked ? ' locked' : '') + (isAvailable && !isDone ? ' available' : '');
+    node.setAttribute('data-step-id', s.id);
+    node.setAttribute('data-idx', String(idx));
+    node.style.left = pos.x + '%';
+    node.style.top = pos.y + '%';
+    
+    const ic = STEP_FLOW_ICONS[s.id] || 'fa-circle-dot';
+    const statusText = isDone ? 'Complete' : (isLocked ? 'Locked' : 'Available');
+    
+    node.innerHTML = 
+      '<div class="fc-node-box">' +
+        (isLocked ? '<div class="fc-node-lock"><i class="fas fa-lock"></i></div>' : '') +
+        '<i class="fas ' + ic + ' fc-node-ico"></i>' +
+        '<div class="fc-node-label">' + s.title.split(' ')[0] + '</div>' +
+      '</div>' +
+      '<div class="fc-node-badge"><i class="fas fa-check"></i></div>' +
+      '<div class="fc-node-status">' + statusText + '</div>' +
+      '<div class="fc-drop-zone" data-step-id="' + s.id + '"></div>';
+    
+    root.appendChild(node);
+  });
+  
+  root.appendChild(svg);
+  scheduleFlowLayout();
+}
+
+/** Track which edges have already been animated in this session so they don't replay on re-renders */
+const FC_ANIMATED_EDGES = new Set();
+
+function edgeKey(fromIdx, toIdx) {
+  return fromIdx + '->' + toIdx;
+}
+
+function layoutFlowDiagramEdges() {
+  const svg = document.getElementById('fc-edges');
+  const root = document.getElementById('flow-row');
+  if (!svg || !root) return;
+  
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+  
+  const w = root.offsetWidth;
+  const h = root.offsetHeight;
+  if (w < 50 || h < 50) return;
+  
+  svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+  
+  // Arrow marker definitions (smaller, more refined)
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  ['pending', 'done'].forEach(state => {
+    const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+    marker.setAttribute('id', 'arrow-' + state);
+    marker.setAttribute('markerWidth', '7');
+    marker.setAttribute('markerHeight', '7');
+    marker.setAttribute('refX', '6');
+    marker.setAttribute('refY', '3.5');
+    marker.setAttribute('orient', 'auto');
+    marker.setAttribute('markerUnits', 'strokeWidth');
+    const arrowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    arrowPath.setAttribute('d', 'M0,0 L7,3.5 L0,7 L2,3.5 Z');
+    arrowPath.setAttribute('fill', state === 'done' ? '#00ff41' : '#475569');
+    marker.appendChild(arrowPath);
+    defs.appendChild(marker);
+  });
+  svg.appendChild(defs);
+  
+  const newlyDonePaths = [];
+  
+  // Draw edges
+  FLOW_EDGES.forEach(([fromIdx, toIdx]) => {
+    const fromPos = FLOW_NODE_POSITIONS[fromIdx];
+    const toPos = FLOW_NODE_POSITIONS[toIdx];
+    
+    const x1 = (fromPos.x / 100) * w + 40;
+    const y1 = (fromPos.y / 100) * h;
+    const x2 = (toPos.x / 100) * w - 40;
+    const y2 = (toPos.y / 100) * h;
+    
+    // Check if this edge is "done" (source node is completed)
+    const fromStep = STEPS[fromIdx];
+    const isDone = fromStep && isStepSatisfied(fromStep.id);
+    
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    
+    // Create curved path for branching, straight for horizontal
+    let d;
+    if (Math.abs(y1 - y2) < 10) {
+      d = 'M' + x1 + ',' + y1 + ' L' + x2 + ',' + y2;
+    } else {
+      const midX = (x1 + x2) / 2;
+      d = 'M' + x1 + ',' + y1 + ' C' + midX + ',' + y1 + ' ' + midX + ',' + y2 + ' ' + x2 + ',' + y2;
+    }
+    
+    path.setAttribute('d', d);
+    path.setAttribute('class', 'fc-edge' + (isDone ? ' done' : ''));
+    path.setAttribute('marker-end', 'url(#arrow-' + (isDone ? 'done' : 'pending') + ')');
+    svg.appendChild(path);
+    
+    const key = edgeKey(fromIdx, toIdx);
+    if (isDone && !FC_ANIMATED_EDGES.has(key)) {
+      newlyDonePaths.push({ path, key });
+    } else if (isDone) {
+      path.classList.add('fc-edge-pulse');
+    }
+  });
+  
+  // Animate newly-completed edges with GSAP draw-on (left → right)
+  newlyDonePaths.forEach(({ path, key }) => {
+    animateEdgeDraw(path, key);
+  });
+  
+  // Update phase bar
+  updatePhaseBar();
+}
+
+/** Animate a single edge path drawing from start to end using stroke-dashoffset. */
+function animateEdgeDraw(path, key) {
+  try {
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = length;
+    path.style.strokeDashoffset = length;
+    // Temporarily hide arrowhead so it appears only when the line reaches it
+    const origMarker = path.getAttribute('marker-end');
+    path.removeAttribute('marker-end');
+    
+    if (typeof gsap !== 'undefined') {
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        duration: 0.9,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          path.style.strokeDasharray = '';
+          path.style.strokeDashoffset = '';
+          if (origMarker) path.setAttribute('marker-end', origMarker);
+          path.classList.add('fc-edge-pulse');
+          FC_ANIMATED_EDGES.add(key);
+        }
+      });
+    } else {
+      // Fallback without GSAP
+      path.style.transition = 'stroke-dashoffset 0.9s ease-in-out';
+      requestAnimationFrame(() => {
+        path.style.strokeDashoffset = 0;
+        setTimeout(() => {
+          path.style.strokeDasharray = '';
+          path.style.strokeDashoffset = '';
+          path.style.transition = '';
+          if (origMarker) path.setAttribute('marker-end', origMarker);
+          path.classList.add('fc-edge-pulse');
+          FC_ANIMATED_EDGES.add(key);
+        }, 950);
+      });
+    }
+  } catch (e) {
+    // If getTotalLength fails (path not in DOM yet), just mark as animated
+    FC_ANIMATED_EDGES.add(key);
+    path.classList.add('fc-edge-pulse');
+  }
+}
+
+function updatePhaseBar() {
+  const phases = document.querySelectorAll('.fc-phase');
+  // Phase 0 (Offer): steps 0-1 (offer-review, identity-verify)
+  // Phase 1 (Verification): steps 2-4 (background, health, payroll)
+  // Phase 2 (Provisioning): steps 5-7 (data-access, security, systems)
+  // Phase 3 (Integration): steps 8-9 (dependents, performance)
+  const phaseSteps = [[0,1], [2,3,4], [5,6,7], [8,9]];
+  phases.forEach((ph, pi) => {
+    const steps = phaseSteps[pi] || [];
+    const allDone = steps.every(si => STEPS[si] && isStepSatisfied(STEPS[si].id));
+    ph.classList.toggle('done', allDone);
+  });
+}
+
+function closeStepPop() {
+  const el = document.getElementById('r4-step-pop');
+  if (el) el.classList.add('hidden');
+  // Also clear the visual "selected" state on nodes so the user is free to
+  // click whichever icon is next without an obviously-selected stale node.
+  GS.selectedStepId = null;
+  document.querySelectorAll('#flow-row .fc-node.sel').forEach((n) => n.classList.remove('sel'));
+}
+
+function updateStepPop() {
+  const el = document.getElementById('r4-step-pop');
+  if (!el) return;
+  if (GS.submitted) {
+    el.innerHTML = '';
+    el.classList.remove('has-step');
+    el.classList.add('hidden');
+    return;
+  }
+  const st = GS.selectedStepId ? getStepById(GS.selectedStepId) : null;
+  if (!st) {
+    el.classList.remove('has-step');
+    el.classList.add('hidden');
+    el.innerHTML = '';
+    return;
+  }
+  el.classList.add('has-step');
+  el.classList.remove('hidden');
+  const assigned = FILES.find((f) => GS.picks[f.id] === st.id);
+  const hint = STEP_DATA_HINT[st.id] || st.inputs;
+  let html =
+    '<button type="button" class="r4-step-pop-close" onclick="closeStepPop()" title="Close"><i class="fas fa-times"></i></button>' +
+    '<div class="r4-step-pop-h">Step details</div>' +
+    '<div class="r4-step-pop-t">' + st.title + '</div>' +
+    '<div class="r4-step-pop-lane"><i class="fas fa-building"></i> ' + st.lane + '</div>' +
+    '<div class="r4-step-pop-purpose">' + st.purpose + '</div>' +
+    '<div class="r4-step-pop-section">' +
+      '<span class="r4-step-pop-label">Expects:</span> ' + hint +
+    '</div>' +
+    '<div class="r4-step-pop-section">' +
+      '<span class="r4-step-pop-label">Inputs:</span> ' + st.inputs +
+    '</div>' +
+    '<div class="r4-step-pop-section">' +
+      '<span class="r4-step-pop-label">Outputs:</span> ' + st.outputs +
+    '</div>' +
+    '<div class="r4-step-pop-bottleneck">' +
+      '<i class="fas fa-exclamation-triangle"></i> ' + st.bottleneck +
+    '</div>';
+  if (assigned) {
+    html += '<div class="r4-step-pop-ok"><i class="fas fa-check-circle"></i> Artifact attached: ' + assigned.name + '</div>';
+  }
+  el.innerHTML = html;
+}
+
+function refreshAll() {
+  if (GS.selectedId && GS.picks[GS.selectedId]) GS.selectedId = null;
+  renderQueue();
+  renderFlowNodes();
+  updateStepPop();
+  updateConfidenceUI();
+  updateProgress();
+}
+
+function renderQueue() {
+  const list = document.getElementById('r4-file-list');
+  if (!list) return;
+  list.innerHTML = '';
+  if (GS.submitted) {
+    const empty = document.createElement('div');
+    empty.className = 'datasets-empty';
+    empty.innerHTML = 'Map finalized — review linked chips on the flow.';
+    list.appendChild(empty);
+    return;
+  }
+  if (!GS.selectedStepId) {
+    const empty = document.createElement('div');
+    empty.className = 'datasets-empty';
+    empty.innerHTML =
+      'Select a <strong>step icon</strong> on the flow. Up to <strong>four</strong> candidate leak files appear here for that handoff.';
+    list.appendChild(empty);
+    return;
+  }
+  const candidates = getDatasetCandidatesForStep(GS.selectedStepId);
+  if (candidates.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'datasets-empty';
+    empty.innerHTML = 'No files left in the pool for this view — choose another task or return a chip to the pool.';
+    list.appendChild(empty);
+    return;
+  }
+  candidates.forEach((f) => {
+    const stOk = correctStepIdForFile(f.id) ? getStepById(correctStepIdForFile(f.id)) : null;
+    const deptClass = stOk ? ' ds-' + stOk.deptCls : '';
+    const row = document.createElement('div');
+    row.className = 'ds-card' + deptClass + (GS.selectedId === f.id ? ' sel' : '');
+    row.setAttribute('data-file-id', f.id);
+    row.draggable = !GS.submitted;
+    row.innerHTML =
+      '<span class="ds-ico" aria-hidden="true">📄</span>' +
+      '<span class="ds-name">' + f.name + '</span>' +
+      '<span class="ds-desc">' + (f.desc || '') + '</span>' +
+      '<span class="ds-tag">Leak file</span>';
+    row.addEventListener('click', () => selectFile(f.id));
+    row.addEventListener('dragstart', dragStartHandler);
+    list.appendChild(row);
+  });
+}
+
+function bindDragDropOnce() {
+  if (bindDragDropOnce.done) return;
+  bindDragDropOnce.done = true;
+
+  const flowRow = document.getElementById('flow-row');
+  if (flowRow) {
+    flowRow.addEventListener('click', (e) => {
+      if (GS.submitted) return;
+      const node = e.target.closest('.fc-node');
+      if (node) selectStep(node.getAttribute('data-step-id'));
+    });
+
+    flowRow.addEventListener('dragover', (e) => {
+      if (GS.submitted) return;
+      const node = e.target.closest('.fc-node');
+      const dropZone = e.target.closest('.fc-drop-zone');
+      document.querySelectorAll('#flow-row .fc-node').forEach((n) => n.classList.remove('drag-target'));
+      if (node || dropZone) {
+        const targetNode = node || dropZone.closest('.fc-node');
+        if (targetNode && !targetNode.classList.contains('done')) {
+          const stepIdx = parseInt(targetNode.getAttribute('data-idx'), 10);
+          if (isStepAvailable(stepIdx)) {
+            targetNode.classList.add('drag-target');
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+          }
+        }
+      }
+    });
+
+    flowRow.addEventListener('dragleave', (e) => {
+      if (GS.submitted) return;
+      const related = e.relatedTarget;
+      if (!related || !flowRow.contains(related)) {
+        document.querySelectorAll('#flow-row .fc-node').forEach((n) => n.classList.remove('drag-target'));
+      }
+    });
+
+    flowRow.addEventListener('drop', (e) => {
+      if (GS.submitted) return;
+      document.querySelectorAll('#flow-row .fc-node').forEach((n) => n.classList.remove('drag-target'));
+      const node = e.target.closest('.fc-node');
+      const dropZone = e.target.closest('.fc-drop-zone');
+      const targetNode = node || (dropZone ? dropZone.closest('.fc-node') : null);
+      if (!targetNode) return;
+      e.preventDefault();
+      const fid = e.dataTransfer.getData('text/r4-file');
+      const sid = targetNode.getAttribute('data-step-id') || (dropZone ? dropZone.getAttribute('data-step-id') : null);
+      if (fid && sid) assignToStep(fid, sid);
+    });
+
+    if (!window.__r4FlowResize) {
+      window.__r4FlowResize = true;
+      window.addEventListener('resize', () => {
+        layoutFlowDiagramEdges();
+      });
+    }
+  }
+
+  }
+
+function countAssigned() {
+  return FILES.filter((f) => GS.picks[f.id]).length;
+}
+
+function updateProgress() {
+  const n = countAssigned();
+  const el = document.getElementById('r4-routed-count');
+  if (el) el.textContent = 'Linked: ' + n + ' / ' + FILES.length;
+  const btn = document.getElementById('btn-submit-sort');
+  if (btn) btn.disabled = n < FILES.length || GS.submitted;
+}
+
+function updateConfidenceUI() {
+  const c = Math.round(GS.confidence);
+  const fill = document.getElementById('hdr-coh-fill');
+  const hp = document.getElementById('hdr-coh-pct');
+  if (fill) {
+    fill.style.width = c + '%';
+    fill.classList.remove('conf-ok', 'conf-warn', 'conf-crit');
+    if (c < 40) fill.classList.add('conf-crit');
+    else if (c < 70) fill.classList.add('conf-warn');
+    else fill.classList.add('conf-ok');
+  }
+  if (hp) hp.textContent = c + '%';
+}
+
+function submitSort() {
+  if (countAssigned() < FILES.length || GS.submitted) return;
+  GS.submitted = true;
+  clearInterval(GS.timerInt);
+  GS.timerInt = null;
+  updateProgress();
+
+  let correct = 0;
+  FILES.forEach((f) => {
+    const assignedStep = GS.picks[f.id];
+    const correctStep = correctStepIdForFile(f.id);
+    if (assignedStep === correctStep) correct++;
+  });
+  
+  // Mark nodes as correct/wrong
+  document.querySelectorAll('#flow-row .fc-node').forEach((node) => {
+    const stepId = node.getAttribute('data-step-id');
+    const step = getStepById(stepId);
+    if (!step) return;
+    const assignedFile = FILES.find((f) => GS.picks[f.id] === stepId);
+    if (assignedFile) {
+      const isCorrect = correctStepIdForFile(assignedFile.id) === stepId;
+      node.classList.add(isCorrect ? 'correct' : 'wrong');
+    }
+  });
+
+  document.querySelectorAll('#r4-file-list .ds-card').forEach((el) => {
+    el.draggable = false;
+  });
+
+  if (correct === FILES.length) {
+    const wa = GS.wrongAttempts || 0;
+    if (wa === 0) {
+      brokerSay('That packages. We can brief counsel and press with a straight face.', 'bm-ok', 400);
+      novaSay('Every handoff is clean — confidence stayed at 100%.', 1400);
+    } else {
+      brokerSay('Final map is sound, but we felt the misses — confidence ended at ' + Math.round(GS.confidence) + '%.', 'bm-ok', 400);
+      novaSay('You recovered the spine; don’t pretend the wrong links didn’t cost us.', 1400);
+    }
+  } else if (correct >= FILES.length - 2) {
+    brokerSay('Close. Note the red highlights — adjust next pass if we re-export.', 'bm-d', 400);
+  } else {
+    novaSay('Too many mis-links — that feeds the “messy leak” line.', 'bm-nova', 400);
+    zexSay('Re-walk the flow against the inspector copy.', 1200);
+  }
+
+  setTimeout(() => showDebrief(correct), 2800);
+}
+
+function showDebrief(correct) {
+  const solidBar = Math.max(1, Math.ceil(FILES.length * 0.75));
+  const tier = correct === FILES.length ? 'CLEAN STRUCTURE' : correct >= solidBar ? 'SOLID' : 'NEEDS REWORK';
+  const badge = document.getElementById('db-badge');
+  const head = document.getElementById('db-head');
+  const met = document.getElementById('db-metrics');
+  const rw = document.getElementById('db-rw');
+  if (badge) badge.textContent = 'MISSION 04 — COMPLETE';
+  if (head) head.textContent = 'THE ONBOARDING — ' + tier;
+
+  const m = String(Math.floor(GS.timerSec / 60)).padStart(2, '0');
+  const s = String(GS.timerSec % 60).padStart(2, '0');
+  const conf = Math.round(GS.confidence);
+  if (met) {
+    met.innerHTML =
+      '<div class="db-m"><div class="db-mv">' + m + ':' + s + '</div><div class="db-ml">TIME</div></div>' +
+      '<div class="db-m"><div class="db-mv">' + correct + '/' + FILES.length + '</div><div class="db-ml">CORRECT</div></div>' +
+      '<div class="db-m"><div class="db-mv">' + conf + '%</div><div class="db-ml">NOVA CONFIDENCE</div></div>';
+  }
+  if (rw) {
+    const wa = GS.wrongAttempts || 0;
+    const stumb = wa > 0
+      ? (' You took <strong>' + wa + '</strong> wrong ' + (wa === 1 ? 'stab' : 'stabs') + ' — confidence finished at <strong>' + conf + '%</strong>.')
+      : ' Nova confidence stayed at <strong>100%</strong>.';
+    rw.innerHTML =
+      '<p>Mission 03 trained <strong>who may receive which data</strong> on the <strong>same ten filenames</strong>. Mission 04 trains <strong>how those artifacts travel between departments</strong> in one disclosure case — so the package cannot be dismissed as a meaningless pile.</p>' +
+      '<p>You placed <strong>' + correct + ' of ' + FILES.length + '</strong> feeds on the correct gates.' + stumb + ' That is the difference between “noise” and <strong>narrative that holds up</strong>.</p>';
+  }
+  document.getElementById('debrief-overlay').classList.add('show');
+}
+
+function nextRound() {
+  window.location.href = 'Mission 5.html';
+}
+
+bindDragDropOnce();
+
+function bubble(sender, color, cls, text, delay) {
+  const body = document.getElementById('broker-body');
+  if (!body) return;
+  setTimeout(() => {
+    const tw = document.createElement('div');
+    tw.className = 'bm-typing-wrap';
+    tw.innerHTML = '<div class="bm-typing"><span class="tdot"></span><span class="tdot"></span><span class="tdot"></span></div>';
+    body.appendChild(tw);
+    body.scrollTop = body.scrollHeight;
+    setTimeout(() => {
+      tw.remove();
+      const ts = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
+      const g = document.createElement('div');
+      g.className = 'bm-group';
+      const sd = document.createElement('div');
+      sd.className = 'bm-sender';
+      sd.style.color = color;
+      sd.textContent = sender;
+      const bb = document.createElement('div');
+      bb.className = 'bm-bubble ' + cls;
+      bb.innerHTML = text.split('\n').join('<br>');
+      const te = document.createElement('div');
+      te.className = 'bm-ts';
+      te.textContent = ts;
+      g.appendChild(sd);
+      g.appendChild(bb);
+      g.appendChild(te);
+      body.appendChild(g);
+      body.scrollTop = body.scrollHeight;
+    }, 600);
+  }, delay || 0);
+}
+
+function brokerSay(msg, cls, delayMs) {
+  bubble('VOSS', 'var(--green-matrix)', cls || 'bm-d', msg, delayMs != null ? delayMs : 0);
+}
+function zexSay(text, delay) {
+  bubble('ZEX', '#a855f7', 'bm-zex', text, delay);
+}
+function novaSay(text, delay) {
+  bubble('NOVA', '#38bdf8', 'bm-nova', text, delay);
+}
+function systemSay(text, delay) {
+  bubble('SYSTEM', '#9ca3af', 'bm-d', text, delay);
+}
+</script>
+<script src="playtest-mission-nav.js" defer></script>
+</body>
+</html>
