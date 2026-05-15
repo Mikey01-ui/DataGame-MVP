@@ -138,6 +138,18 @@
   #intro-root .dpill-low  { color:rgba(0,196,28,0.85);  border-color:rgba(0,196,28,0.3);  background:rgba(0,196,28,0.07); }
   #intro-root .dpill-mid  { color:var(--orange); border-color:rgba(247,148,33,0.3); background:rgba(247,148,33,0.07); }
   #intro-root .dpill-high { color:var(--pink); border-color:rgba(211,25,114,0.3); background:rgba(211,25,114,0.07); }
+  #intro-root .dpill-hint { color:#f5c518; border-color:rgba(245,197,24,0.45); background:rgba(245,197,24,0.10); }
+  #intro-root .detection-hint-row {
+    margin-top:0.55vh; padding-top:0.5vh; border-top:1px dashed rgba(211,25,114,0.3);
+    display:flex; align-items:flex-start; gap:0.6rem;
+  }
+  #intro-root .detection-hint-row .dh-icon { color:#f5c518; font-size:0.95rem; text-shadow:0 0 10px rgba(245,197,24,0.5); flex-shrink:0; margin-top:0.12rem; line-height:1; }
+  #intro-root .detection-hint-row .dh-body { display:flex; flex-direction:column; gap:0.5vh; flex:1; min-width:0; }
+  #intro-root .detection-hint-row .dh-text {
+    font-family:var(--font-body); font-size:0.72rem; line-height:1.45; color:var(--grey-text); font-weight:300; margin:0;
+  }
+  #intro-root .detection-hint-row strong { color:#f5c518; font-weight:700; }
+  #intro-root .detection-hint-row .dh-pills { display:flex; flex-wrap:wrap; gap:0.4rem; }
   .button-section { flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:0.5rem; margin-top:clamp(0.3rem,1vh,1rem); }
   #intro-root .button-section { gap:0.4vh; margin-top:0.8vh; animation:fadeUpIntro 0.5s 0.5s both; }
   #intro-root .btn-next.is-locked { opacity:0.4; cursor:not-allowed; filter:grayscale(0.4); pointer-events:none; }
@@ -617,9 +629,18 @@
           </div>
           <div class="detection-pills">
             <span class="dpill dpill-high">Wrong channel / exposure · trust drops</span>
-            <span class="dpill dpill-mid">Hint requested · budget + heat</span>
             <span class="dpill dpill-mid">Mis-routed sensitive file · spike</span>
             <span class="dpill dpill-low">Clean routing · stable</span>
+          </div>
+          <div class="detection-hint-row">
+            <i class="fas fa-lightbulb dh-icon"></i>
+            <div class="dh-body">
+              <p class="dh-text"><strong>Stuck?</strong> Click the lightbulb at the bottom-left of the Mission Channel to pull a channel hint from the crew.</p>
+              <div class="dh-pills">
+                <span class="dpill dpill-hint">Hint requested · −$2,500 budget</span>
+                <span class="dpill dpill-hint">Cooldown · 25s</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

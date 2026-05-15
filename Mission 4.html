@@ -55,9 +55,38 @@
   .step-number{font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--green-matrix)}
   .step-title{font-family:var(--font-mono);font-size:0.6rem;color:var(--purple-light);letter-spacing:0.18em;text-transform:uppercase;margin:0.4vh 0;padding-bottom:0.35vh;border-bottom:1px solid rgba(0,196,28,0.28)}
   .step-desc{font-family:var(--font-body);font-size:0.82rem;line-height:1.6;color:var(--grey-text);font-weight:300}
-  #intro-root .detection-card{background:var(--panel-bg);border:1px solid rgba(247,148,33,0.45);border-radius:2px;padding:0.8rem 1.3vw;margin-top:0.6rem}
-  #intro-root .detection-title{font-family:var(--font-mono);font-size:0.6rem;color:var(--orange);letter-spacing:0.18em;text-transform:uppercase;margin-bottom:0.5rem}
-  #intro-root .detection-desc{font-size:0.82rem;line-height:1.6;color:var(--grey-text)}
+  #intro-root .detection-section{flex:0 0 auto;margin-top:clamp(.35rem,.9vh,.85rem)}
+  #intro-root .detection-card{
+    background:var(--panel-bg);border:1px solid rgba(211,25,114,.45);border-radius:2px;padding:.55vh 1.3vw 1.35vh;
+    position:relative;overflow:visible;transition:border-color .3s,box-shadow .3s,transform .3s;
+    box-shadow:0 0 0 1px rgba(211,25,114,.45),0 0 36px rgba(211,25,114,.12),0 0 56px rgba(84,0,173,.12),inset 0 1px 0 rgba(211,25,114,.10),inset 0 -1px 0 rgba(211,25,114,.85);
+  }
+  #intro-root .detection-card::before{content:'';position:absolute;top:-1px;left:18%;right:18%;height:1px;background:linear-gradient(90deg,transparent,var(--pink),transparent);opacity:.55;pointer-events:none}
+  #intro-root .detection-card:hover{border-color:rgba(211,25,114,.65);transform:translateY(-1px)}
+  #intro-root .detection-body{flex:1;min-width:0}
+  #intro-root .detection-title{
+    font-family:var(--font-mono);font-size:.6rem;color:var(--pink);letter-spacing:.18em;text-transform:uppercase;
+    margin-bottom:.7vh;padding-bottom:.6vh;border-bottom:1px solid rgba(211,25,114,.28);display:flex;align-items:center;gap:.6rem;flex-wrap:wrap
+  }
+  #intro-root .detection-title-tag{display:inline-flex;align-items:center;gap:.35rem;background:rgba(211,25,114,.12);border:1px solid rgba(211,25,114,.3);border-radius:2px;padding:.1rem .5rem;font-size:.5rem;color:rgba(211,25,114,.85);letter-spacing:.15em}
+  #intro-root .detection-desc{font-family:var(--font-body);font-size:.82rem;line-height:1.6;color:var(--grey-text);font-weight:300}
+  #intro-root .detection-desc strong{color:var(--pink);font-weight:600}
+  #intro-root .detection-desc p{margin-bottom:.35vh}
+  #intro-root .detection-desc p:last-child{margin-bottom:0}
+  #intro-root .detection-pills{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1vh}
+  #intro-root .dpill{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;padding:.2rem .6rem;border-radius:2px;border:1px solid;white-space:nowrap}
+  #intro-root .dpill-low{color:rgba(0,196,28,.85);border-color:rgba(0,196,28,.3);background:rgba(0,196,28,.07)}
+  #intro-root .dpill-mid{color:var(--orange);border-color:rgba(247,148,33,.3);background:rgba(247,148,33,.07)}
+  #intro-root .dpill-high{color:#ff5566;border-color:rgba(255,51,68,.65);background:rgba(255,51,68,.2)}
+  #intro-root .dpill-hint{color:#f5c518;border-color:rgba(245,197,24,.45);background:rgba(245,197,24,.1)}
+  #intro-root .detection-hint-row{
+    margin-top:.55vh;padding-top:.5vh;border-top:1px dashed rgba(211,25,114,.3);display:flex;align-items:flex-start;gap:.6rem
+  }
+  #intro-root .detection-hint-row .dh-icon{color:#f5c518;font-size:.95rem;text-shadow:0 0 10px rgba(245,197,24,.5);flex-shrink:0;margin-top:.12rem;line-height:1}
+  #intro-root .detection-hint-row .dh-body{display:flex;flex-direction:column;gap:.5vh;flex:1;min-width:0}
+  #intro-root .detection-hint-row .dh-text{font-family:var(--font-body);font-size:.72rem;line-height:1.45;color:var(--grey-text);font-weight:300;margin:0}
+  #intro-root .detection-hint-row strong{color:#f5c518;font-weight:700}
+  #intro-root .detection-hint-row .dh-pills{display:flex;flex-wrap:wrap;gap:.4rem}
   .demo-step-hint{font-family:var(--font-mono);font-size:clamp(10px,1.05vw,12px);color:rgba(0,196,28,.9);line-height:1.45;letter-spacing:.04em;min-height:2.6em;padding:8px 10px;margin-bottom:8px;border-left:3px solid rgba(0,196,28,.45);background:rgba(0,20,8,.25);border-radius:0 6px 6px 0;max-width:100%;text-wrap:balance}
   .demo-step-hint:empty{min-height:0;padding:0;margin:0;border:none;background:transparent}
 
@@ -589,7 +618,7 @@
               </div>
               <div class="dossier-card">
                 <div class="dc-label">Operators</div>
-                <div class="dc-name">Nova · Zex</div>
+                <div class="dc-name">Kade</div>
                 <div class="dc-role">Confidence audit · field timeline · analysts won’t wait</div>
               </div>
             </div>
@@ -688,9 +717,34 @@
           <div class="r4-demo-cur-ring"></div>
         </div>
       </div>
-      <div class="detection-card">
-        <div class="detection-title">NOT ROUND 3 — SAME FILES, NEW AXIS</div>
-        <div class="detection-desc">Mission 03 trained <strong>who may receive which data</strong>. Mission 04 trains <strong>when each department takes custody</strong> along one continuous case — proving the package isn’t a random pile if their own flow is real.</div>
+      <div class="detection-section">
+        <div class="detection-card">
+          <div class="detection-body">
+            <div class="detection-title">
+              NOVA CONFIDENCE METER
+              <span class="detection-title-tag"><i class="fas fa-exclamation-triangle"></i> HANDOFF AUDIT</span>
+            </div>
+            <div class="detection-desc">
+              <p>Mission 03 trained <strong>who may see the data</strong>. Mission 04 is <strong>when each department takes custody</strong> along one regulated case — proving the package isn’t a random pile.</p>
+              <p>Every <strong>wrong drop</strong> cuts Nova’s <strong>confidence</strong>; the meter doesn’t heal. Complete all ten handoffs with the spine intact.</p>
+            </div>
+            <div class="detection-pills">
+              <span class="dpill dpill-high">Wrong handoff · confidence drop</span>
+              <span class="dpill dpill-mid">Step pop-up · read Expects &amp; inputs</span>
+              <span class="dpill dpill-low">Correct drop · green arrow unlocks next</span>
+            </div>
+            <div class="detection-hint-row">
+              <i class="fas fa-lightbulb dh-icon"></i>
+              <div class="dh-body">
+                <p class="dh-text"><strong>Stuck?</strong> Line up each step’s <strong>Expects</strong> line with the dataset <strong>table headers</strong> in the rail. Use the <strong>return strip</strong> to undo a chip if you mis-drop.</p>
+                <div class="dh-pills">
+                  <span class="dpill dpill-hint">Inspect step · four candidates</span>
+                  <span class="dpill dpill-hint">Return strip · undo drag</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="button-section">
@@ -754,7 +808,7 @@
           <div class="bk-avatar"><i class="fas fa-shield-halved"></i></div>
           <div style="flex:1;min-width:0">
             <div class="bk-name">Operation channel</div>
-            <div class="bk-members">Voss · Nova · Zex</div>
+            <div class="bk-members">Voss · Nova · Kade</div>
           </div>
           <div class="bk-icons"><i class="fas fa-lock"></i></div>
         </div>
