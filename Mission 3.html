@@ -455,18 +455,47 @@
   #signoff-overlay{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:450;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px}
   #signoff-overlay.show{display:flex}
   #signoff-term{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--green-matrix);line-height:1.85;max-width:min(520px,92vw);white-space:pre-wrap;text-align:center}
-  #debrief-overlay{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:455;display:none;align-items:center;justify-content:center;padding:16px}
-  .db-card{max-width:680px;width:100%;background:var(--panel-bg);border:1px solid rgba(0,255,65,.55);border-radius:10px;padding:clamp(1.2rem,2.5vh,2rem);position:relative}
-  .db-badge{font-size:11px;color:var(--green);letter-spacing:3px;margin-bottom:6px}
-  .db-head{font-size:clamp(16px,1.8vw,22px);color:var(--text-w);margin-bottom:16px}
-  .db-metrics{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #2d5b36}
-  .db-m{flex:1;min-width:100px;text-align:center}
-  .db-mv{font-size:clamp(18px,2vw,24px);color:var(--purple-light);font-weight:700}
-  .db-ml{font-size:10px;color:var(--green-stable);margin-top:4px;letter-spacing:1px}
-  .db-rw-ttl{font-size:11px;color:var(--orange);letter-spacing:2px;margin:12px 0 8px}
-  .db-rw-txt{font-size:14px;line-height:1.72;color:var(--text-w)}
-  .db-quote{font-family:'Share Tech Mono';font-size:12px;color:var(--green-stable);border-left:2px solid var(--green-stable);padding-left:12px;margin-top:12px}
-  .db-next{width:100%;margin-top:14px;padding:12px;background:rgba(247,148,33,.1);border:1px solid var(--orange);color:var(--orange);font-weight:700;cursor:pointer;border-radius:4px}
+  /* ══ DEBRIEF — same full layout as Mission 1 ══ */
+  #debrief-screen{--amber:var(--orange);--debrief-dim:rgba(0,0,0,.95);--debrief-blur:3px;position:fixed;inset:0;z-index:455;display:none;flex-direction:column;padding:clamp(16px,1.8vh,24px) clamp(28px,3.5vw,64px);background:var(--debrief-dim);backdrop-filter:blur(var(--debrief-blur)) saturate(.85);-webkit-backdrop-filter:blur(var(--debrief-blur)) saturate(.85);overflow-x:hidden;overflow-y:auto}
+  #debrief-screen.active{display:flex}
+  #debrief-screen::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(143,68,232,.08) 0%,transparent 60%)}
+  #debrief-screen>*{position:relative;z-index:1}
+  #debrief-screen .db-header{display:flex;flex-direction:column;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(0,255,65,.18);flex-shrink:0}
+  #debrief-screen .deb-eyebrow{font-family:var(--font-mono);font-size:.55rem;color:var(--green-stable);letter-spacing:.25em;text-transform:uppercase;margin-bottom:.35rem;text-align:center}
+  #debrief-screen .deb-title{font-family:var(--font-display);font-size:clamp(1.25rem,.85vw + .9vh,1.75rem);font-weight:700;letter-spacing:-.01em;line-height:1.1;text-align:center;background:linear-gradient(135deg,var(--white) 60%,var(--purple-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  #debrief-screen .db-main{flex:1;display:grid;grid-template-columns:minmax(320px,36%) 1fr;gap:28px;min-height:0}
+  #debrief-screen .db-panel{background:linear-gradient(145deg,rgba(34,24,41,.78),rgba(30,15,26,.84));border:1px solid rgba(0,255,65,.22);border-radius:8px;padding:22px 26px;position:relative;overflow:hidden;display:flex;flex-direction:column;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+  #debrief-screen .db-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green-stable) 30%,var(--purple-light) 70%,transparent);opacity:.55}
+  #debrief-screen .db-panel-label{font-family:var(--font-display);font-size:11px;color:var(--amber);letter-spacing:3px;margin-bottom:14px;flex-shrink:0}
+  #debrief-screen .mr-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;flex-shrink:0}
+  #debrief-screen .mr-metric{background:rgba(0,0,0,.3);border:1px solid rgba(0,255,65,.12);border-radius:6px;padding:14px 16px}
+  #debrief-screen .mr-metric-val{font-family:var(--font-display);font-size:clamp(22px,2.6vw,36px);font-weight:700;color:var(--purple-light);line-height:1;letter-spacing:1px}
+  #debrief-screen .mr-metric-val.det-green{color:var(--green-matrix)}#debrief-screen .mr-metric-val.det-amber{color:var(--orange)}#debrief-screen .mr-metric-val.det-red{color:var(--pink)}
+  #debrief-screen .mr-metric-lbl{font-family:var(--font-display);font-size:10px;color:var(--text);letter-spacing:2px;margin-top:8px}
+  #debrief-screen .mr-detect{padding-top:18px;border-top:1px solid rgba(0,255,65,.14);overflow-y:auto;flex:1;min-height:0;padding-right:10px}
+  #debrief-screen .mr-detect-ttl{font-family:var(--font-display);font-size:10px;color:var(--pink);letter-spacing:2.5px;margin-bottom:12px}
+  #debrief-screen .mr-detect-row{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--text-w);padding:5px 0;opacity:.85;gap:12px}
+  #debrief-screen .mr-detect-row.total{border-top:1px solid rgba(0,255,65,.18);margin-top:6px;padding-top:10px;font-weight:700;opacity:1}
+  #debrief-screen .mr-rating{margin-top:14px;padding:10px 12px;font-family:var(--font-display);font-size:12px;color:var(--purple-light);letter-spacing:1.5px;text-align:center;background:rgba(143,68,232,.08);border:1px solid rgba(143,68,232,.25);border-radius:4px}
+  #debrief-screen .tc-content{display:flex;flex-direction:column;gap:6px;justify-content:flex-start;overflow-y:auto;flex:1;min-height:0;padding-right:10px}
+  #debrief-screen .tc-block{position:relative;padding:4px 0 4px 18px;opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease}
+  #debrief-screen .tc-block.show{opacity:1;transform:translateY(0)}
+  #debrief-screen .tc-block::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--green-matrix) 0%,var(--purple-light) 100%);border-radius:1px;opacity:.55}
+  #debrief-screen .tc-block p{font-family:var(--font-body);font-size:clamp(14px,1.15vw,16px);line-height:1.65;color:var(--text-w)}
+  #debrief-screen .tc-block p strong{color:var(--purple-light);font-weight:600}
+  #debrief-screen .tc-block p + p{margin-top:10px}
+  #debrief-screen .tc-quote{font-family:var(--font-mono);font-size:12px;color:var(--green-stable);border-left:2px solid var(--green-stable);padding-left:12px;margin:0}
+  #debrief-screen .tc-subhead{font-family:var(--font-display);font-size:10px;color:var(--orange);letter-spacing:2.5px;text-transform:uppercase;display:block;margin-bottom:8px}
+  #debrief-screen .db-cta-row{display:flex;justify-content:center;margin-top:18px;flex-shrink:0;opacity:0;transition:opacity .4s}
+  #debrief-screen .db-cta-row.show{opacity:1}
+  #debrief-screen .db-cta{padding:14px 36px;background:rgba(247,148,33,.32);border:1px solid var(--orange);color:var(--orange);font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:1.5px;border-radius:4px;cursor:pointer;box-shadow:0 0 10px rgba(247,148,33,.22);transition:all .25s}
+  #debrief-screen .db-cta:hover{background:rgba(247,148,33,.46);box-shadow:0 0 26px rgba(247,148,33,.55);transform:translateY(-2px)}
+  #debrief-screen .mr-detect::-webkit-scrollbar,#debrief-screen .tc-content::-webkit-scrollbar{width:8px}
+  #debrief-screen .mr-detect::-webkit-scrollbar-track,#debrief-screen .tc-content::-webkit-scrollbar-track{background:rgba(0,255,65,.05);border-radius:4px}
+  #debrief-screen .mr-detect::-webkit-scrollbar-thumb,#debrief-screen .tc-content::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--green-stable),var(--purple-light));border-radius:4px}
+  #debrief-screen .db-panel.has-overflow::after{content:'';position:absolute;left:0;right:0;bottom:0;height:42px;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(30,15,26,.92) 75%);border-radius:0 0 8px 8px;z-index:2}
+  #debrief-screen .db-panel.has-overflow.scrolled-bottom::after{opacity:0}
+  @media (max-width:900px){#debrief-screen .db-main{grid-template-columns:1fr}}
   #budget.budget-green{color:var(--green)}#budget.budget-amber{color:var(--orange)}#budget.budget-red{color:var(--pink)}
   .budget-toast{position:fixed;font-size:14px;font-weight:700;color:var(--pink);z-index:601;animation:budgetFloat 2.4s ease forwards}
   @keyframes budgetFloat{0%{opacity:1}100%{opacity:0;transform:translateY(-40px)}}
@@ -802,14 +831,24 @@
   <pre id="signoff-term"></pre>
 </div>
 
-<div id="debrief-overlay" style="display:none">
-  <div class="db-card">
-    <div class="db-badge" id="db-badge">MISSION 03</div>
-    <div class="db-head" id="db-head-title">THE HUMAN SHIELD</div>
-    <div class="db-metrics" id="db-metrics"></div>
-    <div class="db-rw-ttl">REAL-WORLD TRANSLATION</div>
-    <div class="db-rw-txt" id="db-rw-body"></div>
-    <button type="button" class="db-next" onclick="nextRound()">CONTINUE TO MISSION 4 →</button>
+<div id="debrief-screen">
+  <div class="db-header">
+    <div class="deb-eyebrow" id="deb-eyebrow">// Mission 03</div>
+    <div class="deb-title" id="deb-title">THE HUMAN SHIELD</div>
+  </div>
+  <div class="db-main">
+    <div class="db-panel">
+      <div class="db-panel-label">// MISSION REPORT</div>
+      <div class="mr-metrics" id="mr-metrics"></div>
+      <div class="mr-detect" id="mr-detect"></div>
+    </div>
+    <div class="db-panel">
+      <div class="db-panel-label" id="deb-tradecraft-label">// TRADECRAFT — NOVA · VOSS</div>
+      <div class="tc-content" id="tc-content"></div>
+    </div>
+  </div>
+  <div class="db-cta-row" id="cta-row">
+    <button type="button" class="db-cta" onclick="nextRound()">CONTINUE TO MISSION 4 — THE ONBOARDING →</button>
   </div>
 </div>
 </div>
@@ -2222,40 +2261,105 @@ function requestSignOff() {
   tick();
 }
 
+function _wireDebriefScrollCueRoot(root) {
+  if (!root) return;
+  const wire = (scrollEl) => {
+    const panel = scrollEl && scrollEl.closest('.db-panel');
+    if (!panel) return;
+    const sync = () => {
+      const overflow = scrollEl.scrollHeight > scrollEl.clientHeight + 4;
+      panel.classList.toggle('has-overflow', overflow);
+      const atBottom = scrollEl.scrollHeight - scrollEl.scrollTop - scrollEl.clientHeight < 8;
+      panel.classList.toggle('scrolled-bottom', atBottom);
+    };
+    scrollEl.addEventListener('scroll', sync);
+    sync();
+  };
+  wire(root.querySelector('.mr-detect'));
+  wire(root.querySelector('.tc-content'));
+}
+
+function _debriefRevealStagger(root) {
+  if (!root) return;
+  root.querySelectorAll('.tc-block').forEach((el) => el.classList.remove('show'));
+  const cta = root.querySelector('#cta-row');
+  if (cta) cta.classList.remove('show');
+  const blocks = root.querySelectorAll('.tc-block');
+  blocks.forEach((el, i) => {
+    setTimeout(() => el.classList.add('show'), 180 + i * 300);
+  });
+  const delay = 180 + blocks.length * 300 + 380;
+  setTimeout(() => { if (cta) cta.classList.add('show'); }, delay);
+}
+
 function showDebrief(success) {
   clearInterval(GS.timerInt);
+  const screen = document.getElementById('debrief-screen');
+  if (!screen) return;
   const m = String(Math.floor(GS.timerSec / 60)).padStart(2, '0');
   const s = String(GS.timerSec % 60).padStart(2, '0');
-  const correctN = DATASETS.filter(d => GS.assigned[d.id] === d.correct).length;
-  const acc = Math.round(correctN / 10 * 100);
-  document.getElementById('db-metrics').innerHTML =
-    '<div class="db-m"><div class="db-mv">' + m + ':' + s + '</div><div class="db-ml">TIME</div></div>' +
-    '<div class="db-m"><div class="db-mv">' + acc + '%</div><div class="db-ml">ACCURACY</div></div>' +
-    '<div class="db-m"><div class="db-mv">' + GS.hintsUsed + '</div><div class="db-ml">HINTS USED</div></div>' +
-    '<div class="db-m"><div class="db-mv">' + Math.round(GS.novaTrust) + '%</div><div class="db-ml">NOVA TRUST</div></div>';
+  const correctN = DATASETS.filter((d) => GS.assigned[d.id] === d.correct).length;
+  const acc = Math.round((correctN / 10) * 100);
+  const trust = Math.round(GS.novaTrust);
+  const trustCls = trust >= 70 ? 'det-green' : trust >= 40 ? 'det-amber' : 'det-red';
 
-  const badge = document.getElementById('db-badge');
-  const title = document.getElementById('db-head-title');
-  const body = document.getElementById('db-rw-body');
+  document.getElementById('mr-metrics').innerHTML =
+    '<div class="mr-metric"><div class="mr-metric-val">' + m + ':' + s + '</div><div class="mr-metric-lbl">TIME</div></div>' +
+    '<div class="mr-metric"><div class="mr-metric-val">' + acc + '%</div><div class="mr-metric-lbl">ACCURACY</div></div>' +
+    '<div class="mr-metric"><div class="mr-metric-val">' + GS.hintsUsed + '</div><div class="mr-metric-lbl">HINTS USED</div></div>' +
+    '<div class="mr-metric"><div class="mr-metric-val ' + trustCls + '">' + trust + '%</div><div class="mr-metric-lbl">NOVA TRUST</div></div>';
+
+  const eyebrow = document.getElementById('deb-eyebrow');
+  const title = document.getElementById('deb-title');
+  const tc = document.getElementById('tc-content');
+  let rating = '';
+
   if (!success) {
-    if (badge) badge.textContent = 'MISSION 03 — SIGN-OFF DENIED';
-    title.textContent = GS.catastrophic > 0 ? 'PUBLIC CHANNEL BREACH' : 'ROUTING TRUST TOO LOW';
-    body.innerHTML =
-      '<p>' + (GS.catastrophic > 0
+    if (eyebrow) eyebrow.textContent = '// Mission 03 — Sign-off denied';
+    if (title) title.textContent = GS.catastrophic > 0 ? 'PUBLIC CHANNEL BREACH' : 'ROUTING TRUST TOO LOW';
+    document.getElementById('mr-detect').innerHTML =
+      '<div class="mr-detect-ttl">ROUTING SUMMARY</div>' +
+      '<div class="mr-detect-row"><span>Correct assignments</span><span>' + correctN + ' / 10</span></div>' +
+      '<div class="mr-detect-row"><span>Wrong route attempts</span><span>' + GS.wrongRoutes + '</span></div>' +
+      '<div class="mr-detect-row"><span>Public-wall breaches</span><span>' + GS.catastrophic + '</span></div>' +
+      '<div class="mr-detect-row"><span>Hints used</span><span>' + GS.hintsUsed + '</span></div>' +
+      '<div class="mr-detect-row total"><span>Final Nova trust</span><span class="' + trustCls + '">' + trust + '%</span></div>';
+    rating = GS.catastrophic > 0
+      ? 'ETHICS BREAK — Vault material surfaced on the wrong audience.'
+      : 'MAP REJECTED — The crew will not endorse this distribution posture.';
+    if (tc) {
+      tc.innerHTML =
+      '<div class="tc-block"><p>' + (GS.catastrophic > 0
         ? 'Material that should stay sealed was routed to the <strong>public</strong> channel. That is exactly the harm Nova refused to sign.'
-        : 'Too many misroutes — the distribution map did not reflect a defensible ethics posture.') + '</p>' +
-      '<p class="db-rw-ttl" style="margin-top:12px">REAL-WORLD TRANSLATION</p>' +
-      '<p>Privacy and data ethics are not only about <strong>redaction</strong> — they are about <strong>appropriate disclosure</strong>: which audiences may receive which data under which safeguards. Laws and policies (GDPR lawful basis, HIPAA, sector rules) encode <em>who</em> may process what — not just whether a field exists.</p>';
+        : 'Too many misroutes — the distribution map did not reflect a defensible ethics posture.') + '</p></div>' +
+      '<div class="tc-block"><p><span class="tc-subhead">Real-world translation</span>Privacy and data ethics are not only about <strong>redaction</strong> — they are about <strong>appropriate disclosure</strong>: which audiences may receive which data under which safeguards. Laws and policies (GDPR lawful basis, HIPAA, sector rules) encode <em>who</em> may process what — not just whether a field exists.</p></div>';
+    }
   } else {
-    if (badge) badge.textContent = 'MISSION 03 — COMPLETE';
-    title.textContent = 'THE HUMAN SHIELD — SIGNED';
-    body.innerHTML =
-      '<p>You separated <strong>public proof</strong>, <strong>official accountability</strong>, and <strong>material that must not ship</strong>. Nova\'s sign-off means the crew stands behind <em>how</em> this leaks, not only <em>that</em> it does.</p>' +
-      '<div class="db-quote">"We had the access. We chose the boundaries."</div>' +
-      '<p class="db-rw-ttl" style="margin-top:12px">REAL-WORLD TRANSLATION</p>' +
-      '<p><strong>Privacy classification</strong> and <strong>minimum necessary</strong> disclosure apply to <strong>audiences</strong>: regulators, press, and the public are not interchangeable. Ethical handling means matching sensitivity to channel — the lesson Mission 2 set up (ownership) extended to <strong>release posture</strong>.</p>';
+    if (eyebrow) eyebrow.textContent = '// Mission 03 — Complete';
+    if (title) title.textContent = 'THE HUMAN SHIELD — SIGNED';
+    document.getElementById('mr-detect').innerHTML =
+      '<div class="mr-detect-ttl">ROUTING SUMMARY</div>' +
+      '<div class="mr-detect-row"><span>Correct assignments</span><span>10 / 10</span></div>' +
+      '<div class="mr-detect-row"><span>Wrong route attempts</span><span>' + GS.wrongRoutes + '</span></div>' +
+      '<div class="mr-detect-row"><span>Hints used</span><span>' + GS.hintsUsed + '</span></div>' +
+      '<div class="mr-detect-row total"><span>Final Nova trust</span><span class="' + trustCls + '">' + trust + '%</span></div>';
+    rating = trust >= 85 ? 'SIGNED — Distribution map matches minimum necessary disclosure.'
+      : trust >= 55 ? 'SIGNED — Acceptable, with friction on the trust line.'
+      : 'SIGNED — Borderline; review misroutes before release.';
+    if (tc) {
+      tc.innerHTML =
+      '<div class="tc-block"><p>You separated <strong>public proof</strong>, <strong>official accountability</strong>, and <strong>material that must not ship</strong>. Nova\'s sign-off means the crew stands behind <em>how</em> this leaks, not only <em>that</em> it does.</p></div>' +
+      '<div class="tc-block"><p class="tc-quote">"We had the access. We chose the boundaries."</p></div>' +
+      '<div class="tc-block"><p><span class="tc-subhead">Real-world translation</span><strong>Privacy classification</strong> and <strong>minimum necessary</strong> disclosure apply to <strong>audiences</strong>: regulators, press, and the public are not interchangeable. Ethical handling means matching sensitivity to channel — the lesson Mission 2 set up (ownership) extended to <strong>release posture</strong>.</p></div>';
+    }
   }
-  document.getElementById('debrief-overlay').style.display = 'flex';
+
+  document.getElementById('mr-detect').insertAdjacentHTML('beforeend', '<div class="mr-rating">' + rating + '</div>');
+  screen.classList.add('active');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    _wireDebriefScrollCueRoot(screen);
+    _debriefRevealStagger(screen);
+  }));
 }
 
 function nextRound() {
