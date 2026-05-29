@@ -527,41 +527,45 @@ html.gp-html-active { overflow:hidden; height:100%; }
   background:linear-gradient(180deg,rgba(34,24,41,.98) 0%,rgba(30,15,26,.98) 100%);
   border-left:1px solid rgba(0,196,28,.28); overflow:hidden; min-height:0; box-shadow:inset 1px 0 0 rgba(0,196,28,.08); }
 
-/* Key Forge / Evidence Board */
-#eboard { flex-shrink:0; padding:clamp(10px,2vh,16px) clamp(12px,2.5vw,20px); border-bottom:1px solid rgba(0,196,28,.22); }
-.eb-hdr { display:flex; justify-content:space-between; align-items:center; padding-bottom:8px; margin-bottom:6px; border-bottom:1px solid rgba(84,0,173,.28); }
+/* Key Forge — Mission 1 Evidence Board layout (4-across, compact) */
+#eboard { flex-shrink:0; max-height:min(42vh,340px); padding:clamp(10px,1.6vh,14px) clamp(12px,2.8vw,22px) clamp(12px,1.8vh,16px);
+  border-bottom:1px solid rgba(0,196,28,.22); overflow-x:hidden; overflow-y:auto; min-height:0; }
+.eb-hdr { display:flex; justify-content:space-between; align-items:center; padding:4px 2px 10px; margin-bottom:2px;
+  border-bottom:1px solid rgba(84,0,173,.28); }
 .eb-htitle { font-family:var(--font-display); font-size:clamp(10px,1.1vw,13px); color:var(--purple-light); letter-spacing:1.5px; }
-.eb-grid { display:grid; grid-template-columns:1fr 1fr; gap:clamp(8px,1.8vw,12px); margin-bottom:8px; }
+#eb-count { font-size:clamp(10px,1.1vw,13px); color:var(--amber); font-family:var(--font-mono); }
+#eb-step { font-family:var(--font-display); font-size:9px; color:var(--purple-light); letter-spacing:3px;
+  text-align:center; margin-bottom:clamp(8px,1.4vh,12px); min-height:12px; padding:4px 4px 0; }
+.eb-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(6px,1.2vw,10px); margin-bottom:8px; padding:4px 0 6px; }
 
-/* Calibration nodes — matching Round 1 style exactly */
-.lead { border:1.5px solid rgba(143,68,232,.30); border-radius:6px; padding:clamp(9px,1.3vh,14px) clamp(7px,0.9vw,12px);
+/* Department nodes — match Mission 1 lead cards */
+.lead { border:1.5px solid rgba(143,68,232,.30); border-radius:6px; padding:clamp(10px,1.4vh,16px) clamp(8px,1vw,14px);
   text-align:center; cursor:pointer; transition:all .3s; background:rgba(43,32,52,.88);
-  min-height:76px; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:inset 0 1px 0 rgba(0,196,28,.08); }
-.lead:hover { border-color:var(--purple-light); box-shadow:0 0 12px rgba(143,68,232,.22),inset 0 1px 0 rgba(0,196,28,.08); }
-.lead-icon { font-size:20px; margin-bottom:4px; color:var(--purple-light); }
+  min-height:80px; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:inset 0 1px 0 rgba(0,196,28,.08); }
+.lead:hover { border-color:var(--purple-light); box-shadow:0 0 12px rgba(143,68,232,.22),0 0 24px rgba(0,196,28,.06),inset 0 1px 0 rgba(0,196,28,.08); }
+.lead-icon { font-size:22px; margin-bottom:3px; color:var(--purple-light); }
 .lead-name { font-family:var(--font-display); font-size:11px; color:var(--text-b); font-weight:600; letter-spacing:1px; margin-bottom:3px; }
-.lead-status { font-size:clamp(9px,1vw,11px); color:rgba(200,180,255,.80); font-family:var(--font-mono); letter-spacing:.8px; }
-/* mission/active state — amber pulse */
+.lead-status { font-size:clamp(9px,1vw,11px); color:rgba(143,68,232,.62); font-family:var(--font-mono); letter-spacing:.8px; }
 .n-mission { border-color:var(--amber)!important; animation:nPulse 1.5s ease-in-out infinite; }
 .n-mission .lead-status,.n-mission .lead-icon { color:var(--amber); }
 @keyframes nPulse { 0%,100%{box-shadow:0 0 6px rgba(255,144,0,.3)} 50%{box-shadow:0 0 18px rgba(255,144,0,.75)} }
-/* next/open state */
+.n-start { border-color:var(--orange)!important; animation:orangePulse 1.5s ease-in-out infinite; }
+.n-start .lead-status,.n-start .lead-name,.n-start .lead-icon { color:var(--orange); }
 .n-next { border-color:var(--orange)!important; animation:orangePulse 1.5s ease-in-out infinite; }
 .n-next .lead-status,.n-next .lead-name,.n-next .lead-icon { color:var(--orange); }
 @keyframes orangePulse { 0%,100%{box-shadow:0 0 6px rgba(247,148,33,.35)} 50%{box-shadow:0 0 22px rgba(247,148,33,.9)} }
-/* locked/done state — green */
 .n-locked { border-color:var(--green)!important; background:rgba(0,255,65,.08); animation:none!important; cursor:default; }
 .n-locked .lead-status,.n-locked .lead-name,.n-locked .lead-icon { color:var(--green); }
 .n-locked:hover { box-shadow:0 0 10px rgba(0,230,118,.25)!important; }
-/* dimmed (not yet reachable) — slightly brighter so text stays readable */
-.n-dimmed { opacity:.58; pointer-events:none; }
+.n-dimmed { opacity:0.45; pointer-events:none; cursor:not-allowed!important; }
+.n-dimmed:hover { border-color:rgba(84,0,173,.25)!important; box-shadow:none!important; }
 
-.eb-progress { display:flex; gap:4px; margin-bottom:10px; height:4px; }
+.eb-progress { display:flex; gap:4px; margin-bottom:12px; height:4px; padding:0 2px; }
 .ep-seg { flex:1; background:rgba(84,0,173,.15); border-radius:3px; transition:background .6s; }
 .ep-seg.filled { background:var(--green); }
-#synth-btn { width:100%; padding:10px 12px; background:rgba(0,196,28,.06); color:var(--text-d);
+#synth-btn { width:100%; margin:4px 0 0; padding:11px 12px; background:rgba(0,196,28,.06); color:var(--text-d);
   border:1px solid rgba(0,196,28,.18); font-family:var(--font-display); font-size:clamp(11px,1.1vw,14px);
-  letter-spacing:2px; cursor:not-allowed; border-radius:4px; transition:all .3s; box-shadow:inset 0 1px 0 rgba(0,196,28,.05); }
+  letter-spacing:2px; cursor:not-allowed; border-radius:4px; transition:all .3s; box-shadow:inset 0 1px 0 rgba(0,196,28,.05); flex-shrink:0; }
 #synth-btn.ready { background:rgba(247,148,33,.1); color:var(--orange); border-color:var(--orange); cursor:pointer; animation:synthPulse 1.5s ease-in-out infinite; }
 #synth-btn.ready:hover { background:rgba(247,148,33,.2); }
 @keyframes synthPulse { 0%,100%{box-shadow:0 0 6px rgba(247,148,33,.2)} 50%{box-shadow:0 0 22px rgba(247,148,33,.7)} }
@@ -1301,28 +1305,29 @@ delete this</div>
       <div id="eboard">
         <div class="eb-hdr">
           <span class="eb-htitle">KEY FORGE</span>
-          <span style="font-family:var(--font-mono);font-size:11px;color:var(--amber)" id="eb-count">0 / 4 TOKENS</span>
+          <span id="eb-count">0 / 4 TOKENS</span>
         </div>
+        <div id="eb-step">DISPUTE 1 OF 4</div>
         <div class="eb-grid">
-          <div class="lead n-next" id="lead-finance" onclick="openDisputeById(1)">
+          <div class="lead n-start" id="lead-finance" onclick="openDisputeById(1)">
             <div class="lead-icon"><i class="fas fa-coins"></i></div>
             <div class="lead-name">FINANCE</div>
-            <div class="lead-status" id="ls-finance">OPEN</div>
+            <div class="lead-status" id="ls-finance">START HERE →</div>
           </div>
           <div class="lead n-dimmed" id="lead-it" onclick="openDisputeById(2)">
             <div class="lead-icon"><i class="fas fa-server"></i></div>
             <div class="lead-name">IT</div>
-            <div class="lead-status" id="ls-it">PENDING</div>
+            <div class="lead-status" id="ls-it">LOCKED</div>
           </div>
           <div class="lead n-dimmed" id="lead-operations" onclick="openDisputeById(3)">
             <div class="lead-icon"><i class="fas fa-cogs"></i></div>
             <div class="lead-name">OPERATIONS</div>
-            <div class="lead-status" id="ls-operations">PENDING</div>
+            <div class="lead-status" id="ls-operations">LOCKED</div>
           </div>
           <div class="lead n-dimmed" id="lead-compliance" onclick="openDisputeById(4)">
             <div class="lead-icon"><i class="fas fa-shield-alt"></i></div>
             <div class="lead-name">COMPLIANCE</div>
-            <div class="lead-status" id="ls-compliance">PENDING</div>
+            <div class="lead-status" id="ls-compliance">LOCKED</div>
           </div>
         </div>
         <div class="eb-progress">
@@ -1842,11 +1847,36 @@ function startBoot(){
 /* ══════════════════════════════════════════════════════
    INIT
 ══════════════════════════════════════════════════════ */
+function initForgeBoard(){
+  DISPUTES.forEach((d,i)=>{
+    const el=document.getElementById(d.leadId);
+    const ls=document.getElementById(d.lsId);
+    if(!el||!ls) return;
+    if(i===0){
+      el.className='lead n-start';
+      ls.textContent='START HERE →';
+    } else {
+      el.className='lead n-dimmed';
+      ls.textContent='LOCKED';
+    }
+  });
+  const step=document.getElementById('eb-step');
+  if(step) step.textContent='DISPUTE 1 OF 4';
+}
+
+function updateForgeStep(){
+  const step=document.getElementById('eb-step');
+  if(!step) return;
+  if(GS.tokens.size>=4) step.textContent='ALL 4 TOKENS SECURED ✓';
+  else step.textContent='DISPUTE '+(GS.tokens.size+1)+' OF 4';
+}
+
 function initGame(){
   document.getElementById('gp-root').classList.add('active');
   document.querySelector('html').classList.add('gp-html-active');
   document.getElementById('wallpaper').classList.add('visible');
   GS.hackDone=true;
+  initForgeBoard();
   buildRegistry();
   startTimer(); startPassive(); clockTick();
   updateTaskbar();
@@ -2133,6 +2163,7 @@ function lockToken(disputeId){
   }
   // Clear registry highlight
   highlightDisputeFiles(null);
+  updateForgeStep();
   if(GS.tokens.size===4){
     const sb=document.getElementById('synth-btn'); sb.disabled=false; sb.classList.add('ready');
     setTimeout(()=>brokerMsg('Atlas','All four tokens extracted. Compile the Master Key.','bm-win'),600);
@@ -2140,7 +2171,7 @@ function lockToken(disputeId){
     const next=DISPUTES.find(x=>!GS.verifyResults[x.id]);
     if(next){
       document.getElementById(next.leadId).className='lead n-next';
-      document.getElementById(next.lsId).textContent='OPEN';
+      document.getElementById(next.lsId).textContent='YOUR TURN →';
       setTimeout(()=>brokerMsg('Atlas','Token secured. Next: '+next.caseId+'.','bm-win'),700);
       setTimeout(()=>loadDispute(next.id),1800);
     }
