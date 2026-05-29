@@ -54,7 +54,6 @@
   #intro-root .page.premission-brief-page { height:calc(100vh - 36px); min-height:0; overflow:hidden; padding:0.3vh 6vw 1.2vh; }
   #intro-root .premission-brief-page .page-eyebrow { margin-bottom:0.15vh; flex-shrink:0; }
   #intro-root .premission-brief-page .page-title { font-size:clamp(1.25rem,0.85vw + 0.9vh,1.7rem); line-height:1.1; margin-bottom:0.5vh; flex-shrink:0; }
-  #intro-root #page2 .content { width:min(88vw, 1400px); gap:1vh; flex:1; justify-content:flex-start; min-height:0; overflow:visible; }
   #intro-root .section-label { font-size: 0.55rem; margin-bottom: 0.5vh; }
   .content { width:min(920px,90vw); display:flex; flex-direction:column; gap:clamp(0.3rem,0.8vh,0.8rem); flex:1; justify-content:center; overflow:hidden; }
   #intro-root .brief-section { flex:0 0 auto; display:flex; flex-direction:column; animation:fadeUpIntro 0.6s 0.3s both; }
@@ -85,33 +84,6 @@
     box-shadow:0 0 38px rgba(84,0,173,0.09), 0 0 70px rgba(0,196,28,0.04), inset 0 1px 0 rgba(0,196,28,0.08); }
   #intro-root .step-card::before { content:''; position:absolute; top:-1px; left:18%; right:18%; height:1px; background:linear-gradient(90deg, transparent, var(--purple), transparent); opacity:0.72; pointer-events:none; }
   #intro-root .step-card:hover { border-color:rgba(0,255,65,0.38); box-shadow:0 0 36px rgba(0,255,65,0.07), 0 0 56px rgba(84,0,173,0.08); transform:translateY(-1px); }
-  /* Live demo: phased instruction line */
-  .demo-step-hint{font-family:var(--font-mono);font-size:clamp(10px,1.05vw,12px);color:rgba(0,196,28,.9);
-    line-height:1.45;letter-spacing:.04em;min-height:2.6em;padding:8px 10px;margin-bottom:8px;border-left:3px solid rgba(0,196,28,.45);
-    background:rgba(0,20,8,.25);border-radius:0 6px 6px 0;max-width:100%;text-wrap:balance}
-  .demo-step-hint:empty{min-height:0;padding:0;margin:0;border:none;background:transparent}
-  /* Demo panel (clipfarm-style sceneTl walkthrough) */
-  #demo-panel{position:relative;border:1px solid rgba(0,196,28,.22);border-radius:8px;
-    background:linear-gradient(180deg,rgba(12,16,22,.88),rgba(30,15,26,.60));
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 0 45px rgba(84,0,173,.10);
-    padding:12px;margin-bottom:clamp(.6rem,1vh,1rem);overflow:hidden;min-height:180px}
-  .demo-row{display:flex;gap:8px;height:156px}
-  .demo-files{width:200px;flex-shrink:0;background:#0c1016;border:1px solid #1a2a3a;border-radius:4px;overflow:hidden;font-family:var(--font-mono);font-size:11px}
-  .demo-fhdr{font-size:9px;letter-spacing:2px;color:#4a8aa0;padding:6px 8px;border-bottom:1px solid #1a2a3a;background:#0c1016}
-  .demo-file{padding:7px 8px;color:#8ab0c0;cursor:default;border-left:3px solid transparent;display:flex;align-items:center;gap:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px}
-  .demo-file.sel{background:rgba(26,58,74,.75);border-left-color:#4a8aa0;color:#c8ddf0}
-  .demo-inspector{flex:1;display:flex;flex-direction:column;background:#0f1419;border:1px solid #1a2a3a;border-radius:4px;overflow:hidden;min-width:0}
-  .demo-ihdr{padding:6px 10px;border-bottom:1px solid #1a2a3a;font-size:10px;color:#8ab0c0;background:linear-gradient(180deg,#101820,#0c1016);font-family:var(--font-mono)}
-  .demo-ibody{flex:1;padding:8px 10px;font-size:10px;color:#c8ddf0;overflow:hidden;font-family:'Courier New',monospace;line-height:1.5}
-  .demo-routebar{display:flex;gap:4px;padding:6px 8px;border-top:1px solid #1a2a3a;background:#0c1016}
-  .demo-rbtn{flex:1;padding:6px 4px;border-radius:3px;font-family:var(--font-display);font-size:8px;font-weight:600;letter-spacing:.04em;text-align:center;border:1px solid;cursor:default}
-  .demo-rb-pub{border-color:rgba(0,196,28,.55);background:rgba(0,196,28,.12);color:#d6f5de}
-  .demo-rb-off{border-color:rgba(247,148,33,.55);background:rgba(247,148,33,.12);color:#fdeccd}
-  .demo-rb-vault{border-color:rgba(143,68,232,.55);background:rgba(211,25,114,.1);color:#f5e0ff}
-  .demo-rbtn.clicked{filter:brightness(1.4);transform:scale(0.94)}
-  .demo-cursor{position:absolute;pointer-events:none;z-index:10;top:0;left:0;opacity:0}
-  .demo-cur-arrow{display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))}
-  .demo-cur-ring{position:absolute;top:0;left:0;width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.35);opacity:0;transform:scale(.5)}
   .step-number { font-family:var(--font-display); font-size:clamp(1.6rem,2.5vh,2.4rem); font-weight:700; color:var(--green-matrix); line-height:1; margin-bottom:0.4rem; }
   #intro-root .step-number { font-size:1.6rem; margin-bottom:0.35vh; text-shadow:0 0 20px rgba(0,255,65,0.15); }
   .step-title { font-family:var(--font-mono); font-size:clamp(0.68rem,1vw,0.95rem); color:var(--orange); letter-spacing:0.16em; text-transform:uppercase; margin-bottom:0.5rem; padding-bottom:0.4rem; border-bottom:1px solid rgba(0,196,28,0.28); text-shadow:0 0 20px rgba(247,148,33,0.15); }
@@ -214,6 +186,36 @@
   @keyframes fadeUpIntro { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
   @media (max-width:680px){ .steps-grid{grid-template-columns:1fr} .status-bar{padding:0 1.5rem} #intro-root .detection-card{flex-direction:column; gap:0.8rem;} }
 
+  #m3-page-transition{
+    display:none!important;visibility:hidden!important;pointer-events:none!important;
+    position:fixed;inset:0;z-index:500;flex-direction:column;align-items:center;justify-content:center;
+    opacity:0;
+    background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(143,68,232,.12) 0%,transparent 55%),
+      linear-gradient(180deg,rgba(30,15,26,.98) 0%,rgba(10,6,14,.99) 100%);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)
+  }
+  #m3-page-transition.active{visibility:visible;pointer-events:auto}
+  #m3-page-transition .m3-trans-kicker{
+    font-family:var(--font-mono);font-size:clamp(9px,.55rem,11px);letter-spacing:.28em;text-transform:uppercase;
+    color:rgba(0,196,28,.85);margin-bottom:14px
+  }
+  #m3-page-transition .m3-trans-title{
+    font-family:var(--font-display);font-size:clamp(1rem,2vw,1.35rem);font-weight:700;color:var(--white);
+    letter-spacing:.06em;text-align:center
+  }
+  #m3-page-transition .m3-trans-title span{color:var(--orange)}
+  #m3-page-transition .m3-trans-bar{
+    width:min(200px,40vw);height:2px;margin-top:22px;border-radius:2px;overflow:hidden;
+    background:rgba(247,148,33,.15)
+  }
+  #m3-page-transition .m3-trans-bar-fill{
+    display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green-stable),var(--orange));
+    box-shadow:0 0 12px rgba(247,148,33,.45)
+  }
+  @media(prefers-reduced-motion:reduce){
+    #m3-page-transition{backdrop-filter:none;-webkit-backdrop-filter:none;transition:opacity .2s ease}
+  }
+
   #intro-root{position:relative;z-index:1}
   #gp-root { position:fixed; inset:0; z-index:100; background:#0b0f14; }
   html.gp-html-active { overflow:hidden; height:100%; }
@@ -259,6 +261,164 @@
   /* Pre-vault: full Marshall desktop, no right panel */
   body.r3-pre #right{display:none!important}
   body.r3-pre #desktop-panel{flex:1 1 100%!important}
+  body.r3-desktop .r2-layout{display:none!important}
+  body.r3-desktop #vault-access-modal{display:none!important}
+  body.r3-desktop #nexus-taskbar{display:none}
+  body:not(.r3-desktop) #xp-taskbar{display:none}
+  body.r3-routing #xp-taskbar{display:none}
+  body.r3-routing #wallpaper,
+  body.r3-routing #desktop-panel > .di{display:none!important;pointer-events:none!important}
+  body.r3-routing #desktop-panel{background:#13151c}
+  body.r3-routing .r2-layout{z-index:20}
+
+  /* Marshall XP desktop (Mission 1 pattern) */
+  #desktop-panel{background:#000}
+  #wallpaper{position:absolute;top:0;left:0;right:0;bottom:30px;opacity:0;transition:opacity .9s ease;
+    background:linear-gradient(to bottom,#4990d8 0%,#6aaede 18%,#8dc6eb 32%,#a8d6f5 40%,#c4e4fc 43%,#86c44a 44%,#5fa436 52%,#4e9030 60%,#3d7826 70%,#2d6020 82%,#1e4614 100%);
+    z-index:0}
+  #wallpaper.visible{opacity:1}
+  .di{position:absolute;width:70px;text-align:center;cursor:default;padding:5px 4px;border-radius:4px;opacity:0;transition:opacity .6s ease,box-shadow .3s;background:transparent;border:none;z-index:10;font:inherit;color:inherit}
+  .di.visible{opacity:1}
+  .di.di-interactive{cursor:pointer}
+  .di.di-interactive:hover{background:rgba(255,255,255,.18)}
+  .di.di-mission{animation:iconPulse 1.2s ease-in-out infinite}
+  @keyframes iconPulse{0%,100%{box-shadow:0 0 0 transparent}50%{box-shadow:0 0 16px 5px rgba(255,160,0,.75);background:rgba(255,160,0,.12)}}
+  .di-icon{font-size:30px;line-height:1;display:block;margin-bottom:3px;color:#f0c538;filter:drop-shadow(1px 1px 1px rgba(0,0,0,.4))}
+  .di-label{font-family:'Tahoma',sans-serif;font-size:clamp(11px,1vw,13px);color:#fff;text-shadow:1px 1px 3px #000,0 0 6px #000;word-break:break-word;line-height:1.25}
+  .di.di-locked{opacity:.55;cursor:default;animation:none!important}
+  #xp-taskbar{position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(to bottom,#245fd4,#1648b8);display:flex;align-items:center;gap:2px;padding:0 4px;z-index:50;opacity:0;transition:opacity .6s ease;border-top:1px solid #3a7ae0}
+  #xp-taskbar.visible{opacity:1}
+  #start-btn{background:linear-gradient(to bottom,#3da641,#278d2a);border:1px solid #1e7a21;border-radius:10px;padding:2px 10px 2px 5px;color:#fff;font-family:'Tahoma',sans-serif;font-size:11px;font-weight:700;height:24px;display:flex;align-items:center;gap:4px;margin-right:6px;flex-shrink:0;cursor:default}
+  .tb-div{width:1px;height:22px;background:rgba(255,255,255,.15);margin:0 4px;flex-shrink:0}
+  .tb-wb{height:24px;min-width:100px;max-width:200px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:3px;color:#fff;font-family:'Tahoma',sans-serif;font-size:11px;padding:0 10px;cursor:default;flex-shrink:0}
+  #tb-clock{margin-left:auto;font-family:'Tahoma',sans-serif;font-size:11px;color:#fff;padding:0 8px;flex-shrink:0}
+
+  /* Vault door — full-screen immersive overlay */
+  #vault-door-screen{position:fixed;inset:0;z-index:500;display:none;flex-direction:column;
+    background:radial-gradient(ellipse 100% 90% at 50% 42%,#1a1e26 0%,#080a0e 55%,#030406 100%);overflow-x:hidden;overflow-y:auto;user-select:none}
+  #vault-door-screen.active{display:flex}
+  body.r3-desktop.vault-open #wallpaper,
+  body.r3-desktop.vault-open #desktop-panel > .di{opacity:0;pointer-events:none;transition:opacity .25s}
+  body.r3-desktop.vault-open #xp-taskbar{opacity:0;pointer-events:none}
+  .vault-door-hud{position:absolute;top:0;left:0;right:0;z-index:12;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;
+    padding:14px 20px 28px;width:100%;margin:0;
+    background:linear-gradient(180deg,rgba(6,8,12,.92) 0%,rgba(6,8,12,.5) 70%,transparent 100%)}
+  .vault-door-hint{flex:1;min-width:200px;font-family:var(--font-body);font-size:clamp(12px,1.4vw,14px);color:rgba(250,247,242,.65);line-height:1.45;margin:0}
+  .vault-door-hint strong{color:var(--orange);font-weight:600}
+  .vault-door-back{padding:10px 18px;border-radius:4px;font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;
+    background:rgba(255,255,255,.06);border:1px solid rgba(250,247,242,.25);color:rgba(250,247,242,.85)}
+  .vault-door-back:hover{background:rgba(255,255,255,.12)}
+  .vault-scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    padding:52px 2vw 200px;box-sizing:border-box}
+  .vault-scene-inner{position:relative;width:min(94vw,1500px);
+    height:min(calc(min(94vw,1500px) * 0.58),calc(100vh - 260px));
+    max-width:94vw;max-height:calc(100vh - 260px);container-type:size;container-name:vault;overflow:visible}
+  .vault-wall{position:absolute;inset:-5% -6%;border-radius:6px;
+    background:linear-gradient(180deg,#1e2228,#12161c);
+    box-shadow:inset 0 0 0 3px #2a3038,inset 0 0 60px rgba(0,0,0,.7),0 20px 50px rgba(0,0,0,.65)}
+  .vault-wall::before{content:'';position:absolute;inset:10px;border-radius:4px;
+    background:repeating-linear-gradient(90deg,transparent,transparent 18px,rgba(0,0,0,.15) 18px,rgba(0,0,0,.15) 19px),
+    repeating-linear-gradient(0deg,transparent,transparent 14px,rgba(0,0,0,.12) 14px,rgba(0,0,0,.12) 15px);pointer-events:none}
+  .vault-door-assembly{position:absolute;inset:5% 4% 5% 3%;z-index:3;overflow:visible;border-radius:3px}
+  .vault-door-slide{position:absolute;inset:0;z-index:2;will-change:transform;overflow:hidden;border-radius:3px}
+  .vault-door-face{position:absolute;inset:0;border-radius:3px;overflow:hidden;
+    display:flex;flex-direction:row;align-items:center;justify-content:center;gap:clamp(16px,4cqw,56px);
+    padding:clamp(14px,5%,36px) clamp(18px,6%,48px);box-sizing:border-box;
+    background:linear-gradient(168deg,#c4c6ce 0%,#9a9ca6 18%,#b0b2ba 38%,#888a94 62%,#a8aab2 82%,#7e808a 100%);
+    border:3px solid #5c5e68;box-shadow:inset 0 2px 12px rgba(255,255,255,.35),inset 0 -8px 20px rgba(0,0,0,.25),6px 10px 40px rgba(0,0,0,.55)}
+  .vault-door-face::before{content:'';position:absolute;inset:14px;border:1px solid rgba(0,0,0,.2);border-radius:2px;pointer-events:none;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+  .vault-door-face::after{content:'';position:absolute;inset:0;border-radius:3px;pointer-events:none;
+    background:linear-gradient(125deg,rgba(255,255,255,.14) 0%,transparent 35%,transparent 65%,rgba(0,0,0,.08) 100%)}
+  .vault-rivets{position:absolute;inset:10px;pointer-events:none;z-index:1;
+    background-image:radial-gradient(circle at center,#4a4c54 1.5px,transparent 1.5px);
+    background-size:22px 22px;background-position:2px 2px;opacity:.55}
+  .vault-hinges{position:absolute;right:-14px;top:10%;bottom:10%;width:14px;z-index:6;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
+  .vault-hinge{width:100%;height:22%;min-height:36px;border-radius:3px;
+    background:linear-gradient(90deg,#3a3c44,#8a8c96 35%,#6a6c74 65%,#3a3c44);
+    box-shadow:3px 0 8px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.2)}
+  .vault-lock-mechanism{position:absolute;inset:8%;z-index:2;pointer-events:none;overflow:hidden;
+    transition:opacity .4s ease,transform .5s cubic-bezier(.4,0,.2,1);transform-origin:52% 50%}
+  .vault-bolt{position:absolute;height:clamp(5px,.8cqh,8px);border-radius:4px;z-index:2;
+    background:linear-gradient(180deg,#9a9ca4,#6a6c74 45%,#4a4c54);
+    box-shadow:0 2px 4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.25)}
+  .vault-bolt::after{content:'';position:absolute;right:0;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#b0b2ba,#5a5c64);box-shadow:inset 0 -1px 2px rgba(0,0,0,.4)}
+  .vault-bolt--tl{left:18%;top:18%;width:30%;transform:rotate(-38deg);transform-origin:left center}
+  .vault-bolt--bl{left:18%;bottom:18%;width:30%;transform:rotate(38deg);transform-origin:left center}
+  .vault-bolt--mr{right:16%;top:50%;width:24%;margin-top:-3px}
+  .vault-bolt--mr::after{right:auto;left:0}
+  .vault-combo-wrap{position:relative;left:auto;top:auto;flex:0 0 auto;
+    width:min(26cqh,32%,220px);aspect-ratio:1;z-index:8;cursor:grab;touch-action:none}
+  .vault-combo-wrap:active{cursor:grabbing}
+  .vault-combo-wrap.locked{pointer-events:none;opacity:.7;filter:grayscale(.3)}
+  #vault-combo-dial{width:100%;height:100%;position:relative;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
+  .vault-combo-bezel{position:absolute;inset:0;border-radius:50%;
+    background:radial-gradient(circle at 40% 35%,#d8dae2,#8a8c96 55%,#5a5c64);
+    box-shadow:inset 0 -4px 10px rgba(0,0,0,.35),0 2px 0 rgba(255,255,255,.3)}
+  .vault-combo-ring{position:absolute;inset:8%;border-radius:50%;transform-origin:50% 50%;
+    background:repeating-conic-gradient(from -90deg,#0e0e12 0deg 9deg,#1c1c22 9deg 18deg);
+    border:2px solid #3a3c44;box-shadow:inset 0 0 12px rgba(0,0,0,.8)}
+  .vault-combo-ticks{position:absolute;inset:10%;border-radius:50%;pointer-events:none;
+    background:repeating-conic-gradient(from -90deg,transparent 0deg 7deg,rgba(200,200,210,.35) 7deg 8deg)}
+  .vault-combo-knob{position:absolute;left:50%;top:6%;width:10%;height:18%;margin-left:-5%;
+    background:linear-gradient(180deg,#e8eaef,#9a9ca4 60%,#5a5c64);border-radius:2px;
+    box-shadow:0 2px 4px rgba(0,0,0,.5);transform-origin:50% 450%}
+  .vault-combo-face{position:absolute;inset:22%;border-radius:50%;
+    background:radial-gradient(circle at 40% 35%,#1a1a20,#050508 75%);
+    border:2px solid #2a2a32;box-shadow:inset 0 4px 14px rgba(0,0,0,.9)}
+  .vault-combo-letter{position:absolute;inset:28%;display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:clamp(1.4rem,5vh,2.4rem);font-weight:700;color:#c8d4e0;
+    text-shadow:0 0 10px rgba(180,195,215,.35);z-index:2;pointer-events:none}
+  .vault-wheel-wrap{position:relative;left:auto;top:auto;flex:0 1 auto;
+    width:min(44cqh,52%,400px);max-height:78cqh;aspect-ratio:1;z-index:5;pointer-events:none}
+  #vault-handwheel{width:100%;height:100%;position:relative;transform-origin:50% 50%;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))}
+  .vault-wheel-svg{width:100%;height:100%;display:block}
+  .vault-cavity{position:absolute;inset:5% 4% 5% 3%;z-index:1;border-radius:2px;pointer-events:none;overflow:hidden;
+    background:#13151c;opacity:0;transform:scale(.98);transition:opacity .45s ease,transform .5s ease}
+  .vault-cavity.lit{opacity:1;transform:scale(1)}
+  .vault-cavity.has-gameplay{background:#13151c;pointer-events:auto}
+  .vault-cavity-slot{position:absolute;inset:0;z-index:0;overflow:hidden;border-radius:2px;background:#13151c;pointer-events:auto}
+  .r2-layout.vault-inside-reveal{position:absolute!important;inset:0!important;bottom:0!important;display:flex!important;
+    z-index:1!important;opacity:1!important;min-width:0;font-family:var(--font-mono);pointer-events:auto}
+  .r2-layout.vault-inside-reveal .r2-router{width:min(220px,30%);min-width:150px}
+  .r2-layout.vault-inside-reveal .r2-inspector{flex:1;min-width:0}
+  .vault-cavity-glow{position:absolute;inset:-15%;background:radial-gradient(ellipse 70% 80% at 0% 50%,rgba(48,56,72,.55) 0%,rgba(19,21,28,.35) 40%,transparent 68%);
+    opacity:0;transform:scaleX(.3);transform-origin:left center;transition:opacity .55s ease .15s,transform .7s cubic-bezier(.22,1,.36,1)}
+  .vault-cavity.lit .vault-cavity-glow{opacity:1;transform:scaleX(1)}
+  .vault-scene-inner.vault-bolts-out .vault-lock-mechanism{opacity:0;transform:scale(.35)}
+  .vault-tumbler-panel{position:absolute;bottom:0;left:0;right:0;z-index:12;width:100%;max-width:none;margin:0;padding:20px 24px 28px;text-align:center;
+    background:linear-gradient(0deg,rgba(6,8,12,.95) 0%,rgba(6,8,12,.55) 55%,transparent 100%)}
+  .vault-tumblers{display:flex;justify-content:center;gap:12px;margin-bottom:12px}
+  .vault-tumbler{width:min(56px,12vw);height:min(68px,14vw);border-radius:4px;background:linear-gradient(180deg,#1a1816,#0d0c0b);border:2px inset #3d3530;
+    display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:clamp(1.5rem,4vh,2.2rem);font-weight:700;color:#8a8a94;
+    cursor:pointer;transition:border-color .2s,box-shadow .2s,color .2s}
+  .vault-tumbler.active{border-color:rgba(247,148,33,.7);color:var(--orange);box-shadow:0 0 16px rgba(247,148,33,.2)}
+  .vault-tumbler.filled{color:#a8b4c4}
+  .vault-tumbler.correct{border-color:rgba(247,148,33,.65);color:var(--orange)}
+  .vault-door-status{font-family:var(--font-mono);font-size:11px;min-height:1.3em;margin-bottom:8px;color:rgba(255,64,64,.85)}
+  .vault-door-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .vault-door-btn{padding:12px 28px;border-radius:4px;font-family:var(--font-display);font-size:clamp(12px,1.5vw,14px);font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid}
+  .vault-door-btn--open{background:rgba(247,148,33,.2);border-color:var(--orange);color:var(--orange)}
+  .vault-door-btn--open:hover:not(:disabled){background:rgba(247,148,33,.35);box-shadow:0 0 20px rgba(247,148,33,.25)}
+  .vault-door-btn--open:disabled{opacity:.35;cursor:not-allowed}
+  .vault-scene-inner.shake{animation:vaultShake .45s ease}
+  #vault-door-screen.is-opening .vault-combo-wrap,#vault-door-screen.is-opening .vault-tumbler-panel{pointer-events:none;opacity:.6}
+  .vault-open-flash{position:absolute;inset:0;z-index:20;pointer-events:none;opacity:0;
+    background:radial-gradient(ellipse 50% 80% at 15% 50%,rgba(42,50,64,.45) 0%,transparent 55%)}
+  #vault-door-screen.is-opening .vault-door-hud,
+  #vault-door-screen.is-opening .vault-tumbler-panel{opacity:0;transition:opacity .4s ease}
+  #vault-door-screen.is-opening .vault-combo-wrap{opacity:0;transition:opacity .3s ease}
+  @supports not (container-type:size){
+    .vault-combo-wrap{width:min(24vmin,32%,220px)}
+    .vault-wheel-wrap{width:min(38vmin,52%,400px)}
+  }
+  @media (max-height:720px){
+    .vault-scene{padding:44px 2vw 175px}
+    .vault-scene-inner{height:min(calc(100vh - 220px),calc(min(94vw,1500px) * 0.52))}
+    .vault-combo-wrap{width:min(24vmin,30%,180px)}
+    .vault-wheel-wrap{width:min(36vmin,48%,320px)}
+  }
   /* Split right column roughly 50/50 with the chat */
   #dist-panel{display:flex;flex-direction:column;flex:1 1 0%;padding:6px 8px 8px;border-bottom:1px solid rgba(0,196,28,.22);overflow:hidden;gap:6px;min-height:0}
   .dist-hdr{padding:0 0 6px;border-bottom:1px solid rgba(84,0,173,.28)}
@@ -318,14 +478,15 @@
   #hint-btn{width:32px;height:32px;background:transparent;border:none;font-size:19px;color:#f5c518;cursor:pointer}
   .hint-tooltip{position:absolute;bottom:calc(100% + 6px);left:0;background:rgba(34,24,41,.96);color:#dbc7f6;font-size:11px;padding:4px 8px;border-radius:4px;opacity:0;pointer-events:none;border:1px solid rgba(143,68,232,.55)}
   .hint-wrap:hover .hint-tooltip{opacity:1}
-  #hack-overlay{position:absolute;inset:0;background:#000;z-index:200;padding:32px 24px;font-family:'Share Tech Mono';font-size:clamp(11px,2.5vw,13px);line-height:1.9;display:none;overflow:auto}
+  #hack-overlay{position:fixed;inset:0;background:#000;z-index:650;padding:clamp(24px,4vw,48px) clamp(20px,5vw,56px);font-family:'Share Tech Mono';font-size:clamp(12px,1.6vw,15px);line-height:1.9;display:none;overflow:auto}
   #hack-overlay.active{display:block}
+  #hack-overlay::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.06;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,.15) 2px,rgba(0,255,65,.15) 4px)}
   .ht{opacity:0;transition:opacity .3s}.ht.show{opacity:1}
   .ht-g{color:#00ff41}.ht-a{color:#ffb000}.ht-r{color:#ff4040}.ht-o{color:#ff8800}
   .ht-cur{display:inline-block;width:10px;height:16px;background:#00ff41;animation:curBlink .7s step-end infinite;vertical-align:middle}
   @keyframes curBlink{0%,100%{opacity:1}50%{opacity:0}}
-  #wallpaper{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 70% 20%,rgba(84,0,173,.08),transparent),linear-gradient(180deg,#0a0e14 0%,#0f1419 100%);z-index:0}
-  .r2-layout{display:flex;position:absolute;inset:0;bottom:28px;z-index:1;font-family:var(--font-mono);min-width:0}
+  .r2-layout{display:flex;position:absolute;inset:0;bottom:30px;z-index:1;font-family:var(--font-mono);min-width:0}
   .r2-router{width:min(220px,34vw);min-width:min(100%,150px);flex-shrink:0;background:#0c1016;border-right:1px solid #1a2a3a;overflow-y:auto;padding:8px 0;font-size:11px;color:#8ab0c0}
   .r2-r-hdr{font-size:9px;letter-spacing:2px;color:#4a8aa0;padding:6px 10px;border-bottom:1px solid #1a2a3a;position:sticky;top:0;background:#0c1016;z-index:1}
   .r2-file{padding:8px 10px;cursor:pointer;border-left:3px solid transparent;display:flex;align-items:center;gap:6px;min-width:0}
@@ -365,10 +526,7 @@
   .vault-unlock-btn{width:280px;padding:0.8rem;background:var(--orange);border:1px solid var(--orange);color:var(--void);font-family:var(--font-display);font-size:1rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.3s ease;border-radius:2px}
   .vault-unlock-btn:hover:not(:disabled){background:#f7a821;box-shadow:0 0 20px rgba(247,148,33,0.5)}
   .vault-unlock-btn:disabled{opacity:0.5;cursor:not-allowed}
-  /* WALLPAPER & DESKTOP ENVIRONMENT */
-  #wallpaper{position:absolute;top:0;left:0;right:0;bottom:30px;opacity:0;transition:opacity .9s ease;background:linear-gradient(to bottom,#4990d8 0%,#6aaede 18%,#8dc6eb 32%,#a8d6f5 40%,#c4e4fc 43%,#86c44a 44%,#5fa436 52%,#4e9030 60%,#3d7826 70%,#2d6020 82%,#1e4614 100%)}
-  #wallpaper.visible{opacity:1}
-  #nexus-taskbar{position:absolute;bottom:0;left:0;right:0;height:30px;background:#0c1a26;border-top:1px solid #1a2a3a;display:flex;align-items:center;padding:0 8px;font-size:10px;color:#6a7a8a}
+  #nexus-taskbar{position:absolute;bottom:0;left:0;right:0;height:30px;background:#0c1a26;border-top:1px solid #1a2a3a;display:flex;align-items:center;padding:0 8px;font-size:10px;color:#6a7a8a;z-index:50}
   
   /* VAULT ACCESS WINDOW — XP STYLE IN-GAME */
   #vault-access-modal{position:absolute;display:none;min-width:380px;height:auto;border:2px solid #0f2f8a;border-radius:6px 6px 4px 4px;box-shadow:4px 4px 20px rgba(0,0,0,.65),1px 1px 0 rgba(255,255,255,.12);z-index:300;overflow:hidden;flex-direction:column;top:50%;left:50%;transform:translate(-50%,-50%)}
@@ -523,6 +681,12 @@
 <div class="corner corner--bl"></div>
 <div class="corner corner--br"></div>
 
+<div id="m3-page-transition" aria-hidden="true">
+  <span class="m3-trans-kicker">// Channel handoff</span>
+  <div class="m3-trans-title">Breaching <span>Marshall's desktop</span></div>
+  <div class="m3-trans-bar"><span class="m3-trans-bar-fill" id="m3-trans-bar-fill"></span></div>
+</div>
+
 <div id="intro-root">
 <div class="status-bar">
   <div class="status-left"><span><span class="status-dot live"></span>TERMINAL ACTIVE</span><span id="clock">--:--:--</span></div>
@@ -585,99 +749,7 @@
     </div>
   </div>
   <div class="button-section">
-    <button type="button" class="btn-next btn-next--ghost-premission is-locked" id="btn-continue-r3-brief" disabled onclick="goToPage(2)"><div class="btn-inner"><span>Continue</span><span class="btn-arrow">→</span></div></button>
-  </div>
-</div>
-<div class="page" id="page2">
-  <div class="page-eyebrow">// Mission 03 — The Human Shield</div>
-  <div class="page-title">Mission Protocol</div>
-  <div class="content">
-    <div class="ops-section">
-      <div class="section-label">// Live demo</div>
-      <div id="demo-step-hint" class="demo-step-hint" aria-live="polite">Watch how routing works — the steps update as the demo plays.</div>
-      <!-- Gameplay demo panel (like clipfarm sceneTl) -->
-      <div id="demo-panel" aria-hidden="true">
-        <div class="demo-row">
-          <div class="demo-files" id="demo-files">
-            <div class="demo-fhdr">STAGED FILES</div>
-            <div class="demo-file" id="df-1">📄 Vendor_Invoice_2024.pdf</div>
-            <div class="demo-file" id="df-2">📄 Quarterly_Budget_Summary.xlsx</div>
-            <div class="demo-file" id="df-3">📄 Office_Lease_Agreement.doc</div>
-          </div>
-          <div class="demo-inspector" id="demo-inspector">
-            <div class="demo-ihdr" id="demo-ihdr">INSPECTOR — Select a file</div>
-            <div class="demo-ibody" id="demo-ibody">
-              <span style="color:#5a6a7a;font-size:11px">Click a file to inspect its content</span>
-            </div>
-            <div class="demo-routebar" id="demo-routebar">
-              <button class="demo-rbtn demo-rb-pub" id="demo-rb-pub">PUBLIC WALL</button>
-              <button class="demo-rbtn demo-rb-off" id="demo-rb-off">OFFICIAL FILING</button>
-              <button class="demo-rbtn demo-rb-vault" id="demo-rb-vault">NO RELEASE</button>
-            </div>
-          </div>
-        </div>
-        <div class="demo-cursor" id="demo-cursor">
-          <svg class="demo-cur-arrow" width="18" height="22" viewBox="0 0 18 22" fill="none">
-            <path d="M1 1L1 17.5L5.5 13L10 21L13 19.5L8.5 11.5L14.5 11.5L1 1Z" fill="white" stroke="#222" stroke-width="1.2" stroke-linejoin="round"/>
-          </svg>
-          <div class="demo-cur-ring"></div>
-        </div>
-      </div>
-
-      <div class="section-label" style="margin-top:clamp(.6rem,1vh,1rem)">// How to Breach</div>
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-number">01</div>
-          <div class="step-title">PUBLIC WALL</div>
-          <div class="step-desc">Press-facing Proof Wall — only material that is <strong>already safe for open publication</strong> (aggregates, technical diagrams, policy admissions without unjustified PII).</div>
-        </div>
-        <div class="step-card">
-          <div class="step-number">02</div>
-          <div class="step-title">OFFICIAL FILING</div>
-          <div class="step-desc">Sensitive but <strong>accountable</strong> — for regulators, labour boards, or counsel under proper process. Not a dump for the front page.</div>
-        </div>
-        <div class="step-card">
-          <div class="step-number">03</div>
-          <div class="step-title">NO RELEASE</div>
-          <div class="step-desc">Stays in the vault. Health data, minors, raw customer PII — <strong>harm outweighs any headline</strong>, even if OMNI touched it.</div>
-        </div>
-      </div>
-      <p class="atlas-note">Privacy and ethics are partly about <strong>minimum necessary disclosure</strong> — and <strong>who is entitled to see what</strong>.</p>
-    </div>
-
-    <div class="detection-section">
-      <div class="detection-card">
-        <div class="detection-body">
-          <div class="detection-title">
-            THE NOVA TRUST METER
-            <span class="detection-title-tag"><i class="fas fa-user-shield"></i> ETHICS LOCK</span>
-          </div>
-          <div class="detection-desc">
-            <p>Nova’s trust starts <strong>high</strong>. Every sloppy route — treating the Public Wall like a dump, or leaking vault-only material — erodes it. If trust collapses, <strong>she will not sign off</strong> and the disclosure plan stalls.</p>
-            <p>The meter runs from <em>100% (ALIGNED)</em> down toward <em>0% (RECKLESS)</em>. If it bottoms out, assume the operation channel goes cold. Move clean: <strong>audience first, harm second, headlines last.</strong></p>
-          </div>
-          <div class="detection-pills">
-            <span class="dpill dpill-high">Wrong channel / exposure · trust drops</span>
-            <span class="dpill dpill-mid">Mis-routed sensitive file · spike</span>
-            <span class="dpill dpill-low">Clean routing · stable</span>
-          </div>
-          <div class="detection-hint-row">
-            <i class="fas fa-lightbulb dh-icon"></i>
-            <div class="dh-body">
-              <p class="dh-text"><strong>Stuck?</strong> Click the lightbulb at the bottom-left of the Mission Channel to pull a channel hint from the crew.</p>
-              <div class="dh-pills">
-                <span class="dpill dpill-hint">Hint requested · −$2,500 budget</span>
-                <span class="dpill dpill-hint">Cooldown · 25s</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="button-section">
-    <div class="button-label">// Ready to breach?</div>
-    <button type="button" class="btn-next" onclick="startRound3Game()"><div class="btn-inner"><span>Breach the Desktop</span><span class="btn-arrow">→</span></div></button>
+    <button type="button" class="btn-next btn-next--ghost-premission is-locked" id="btn-continue-r3-brief" disabled onclick="goToMission3Tutorial()"><div class="btn-inner"><span>Continue</span><span class="btn-arrow">→</span></div></button>
   </div>
 </div>
 </div>
@@ -737,7 +809,131 @@
   <div id="main-row">
     <div id="desktop-panel">
       <div id="wallpaper"></div>
-      <!-- Vault Access Window (XP-style) -->
+
+      <button type="button" class="di di-interactive di-mission" id="di-data-vault" style="top:22px;left:14px" ondblclick="openDataVaultSafe()" title="Double-click to open">
+        <span class="di-icon"><i class="fas fa-lock"></i></span>
+        <span class="di-label">Data Vault</span>
+      </button>
+      <div class="di di-locked" id="di-disclosure" style="top:106px;left:14px" aria-hidden="true">
+        <span class="di-icon"><i class="fas fa-folder-open"></i></span>
+        <span class="di-label">Disclosure Queue</span>
+      </div>
+      <div class="di di-locked" style="top:190px;left:14px" aria-hidden="true">
+        <span class="di-icon"><i class="fas fa-folder"></i></span>
+        <span class="di-label">HR_Records</span>
+      </div>
+      <div class="di di-locked" style="top:274px;left:14px" aria-hidden="true">
+        <span class="di-icon"><i class="fas fa-chart-bar"></i></span>
+        <span class="di-label">Finance</span>
+      </div>
+      <div class="di di-locked" style="top:358px;left:14px" aria-hidden="true">
+        <span class="di-icon">🗑️</span>
+        <span class="di-label">Recycle Bin</span>
+      </div>
+
+      <div id="vault-door-screen" aria-hidden="true">
+        <div class="vault-open-flash" id="vault-open-flash" aria-hidden="true"></div>
+        <div class="vault-door-hud">
+          <p class="vault-door-hint">Rotate the <strong>combination dial</strong> to set each letter from the breach package, then open the vault.</p>
+          <button type="button" class="vault-door-back" onclick="closeDataVaultSafe()">Back to desktop</button>
+        </div>
+        <div class="vault-scene">
+          <div class="vault-scene-inner" id="vault-scene-inner">
+            <div class="vault-wall" aria-hidden="true"></div>
+            <div class="vault-cavity" id="vault-cavity" aria-hidden="true">
+              <div class="vault-cavity-slot" id="vault-cavity-slot"></div>
+              <div class="vault-cavity-glow" aria-hidden="true"></div>
+            </div>
+            <div class="vault-door-assembly" id="vault-door-assembly">
+              <div class="vault-door-slide" id="vault-door-slide">
+                <div class="vault-door-face" id="vault-door-face">
+                  <div class="vault-rivets" aria-hidden="true"></div>
+                  <div class="vault-lock-mechanism" id="vault-lock-mechanism" aria-hidden="true">
+                    <div class="vault-bolt vault-bolt--tl" id="vault-bolt-tl"></div>
+                    <div class="vault-bolt vault-bolt--bl" id="vault-bolt-bl"></div>
+                    <div class="vault-bolt vault-bolt--mr" id="vault-bolt-mr"></div>
+                  </div>
+                  <div class="vault-combo-wrap" id="vault-combo-wrap" title="Drag or click to rotate — sets active tumbler letter">
+                    <div id="vault-combo-dial">
+                      <div class="vault-combo-bezel" aria-hidden="true"></div>
+                      <div class="vault-combo-ring" aria-hidden="true">
+                        <div class="vault-combo-ticks" aria-hidden="true"></div>
+                        <div class="vault-combo-knob" aria-hidden="true"></div>
+                      </div>
+                      <div class="vault-combo-face" aria-hidden="true"></div>
+                      <div class="vault-combo-letter" id="vault-combo-letter">A</div>
+                    </div>
+                  </div>
+                  <div class="vault-wheel-wrap">
+                    <div id="vault-handwheel">
+                      <svg class="vault-wheel-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <defs>
+                          <radialGradient id="vaultWheelRim" cx="35%" cy="30%" r="70%">
+                            <stop offset="0%" stop-color="#d0d2da"/>
+                            <stop offset="55%" stop-color="#8a8c96"/>
+                            <stop offset="100%" stop-color="#5a5c64"/>
+                          </radialGradient>
+                          <linearGradient id="vaultSpokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#b8bac4"/>
+                            <stop offset="50%" stop-color="#7a7c86"/>
+                            <stop offset="100%" stop-color="#4a4c54"/>
+                          </linearGradient>
+                          <radialGradient id="vaultHubGrad" cx="38%" cy="32%" r="65%">
+                            <stop offset="0%" stop-color="#e4e6ee"/>
+                            <stop offset="60%" stop-color="#9a9ca4"/>
+                            <stop offset="100%" stop-color="#4a4c54"/>
+                          </radialGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="94" fill="url(#vaultWheelRim)" stroke="#4a4c52" stroke-width="2"/>
+                        <g fill="url(#vaultSpokeGrad)" stroke="#3a3c44" stroke-width=".5">
+                          <path d="M100 100 L100 18 A82 82 0 0 1 158 42 Z"/>
+                          <path d="M100 100 L158 42 A82 82 0 0 1 182 100 Z"/>
+                          <path d="M100 100 L182 100 A82 82 0 0 1 158 158 Z"/>
+                          <path d="M100 100 L158 158 A82 82 0 0 1 100 182 Z"/>
+                          <path d="M100 100 L100 182 A82 82 0 0 1 42 158 Z"/>
+                          <path d="M100 100 L42 158 A82 82 0 0 1 18 100 Z"/>
+                          <path d="M100 100 L18 100 A82 82 0 0 1 42 42 Z"/>
+                          <path d="M100 100 L42 42 A82 82 0 0 1 100 18 Z"/>
+                        </g>
+                        <circle cx="100" cy="100" r="34" fill="url(#vaultHubGrad)" stroke="#3a3c44" stroke-width="1.5"/>
+                        <circle cx="100" cy="100" r="14" fill="#2a2c32" stroke="#1a1c22" stroke-width="1"/>
+                        <circle cx="100" cy="100" r="6" fill="#1a1c20"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="vault-hinges" aria-hidden="true">
+                  <div class="vault-hinge"></div>
+                  <div class="vault-hinge"></div>
+                  <div class="vault-hinge"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="vault-tumbler-panel">
+          <div class="vault-tumblers" id="vault-tumblers">
+            <button type="button" class="vault-tumbler active" data-idx="0" id="vault-tumbler-0">·</button>
+            <button type="button" class="vault-tumbler" data-idx="1" id="vault-tumbler-1">·</button>
+            <button type="button" class="vault-tumbler" data-idx="2" id="vault-tumbler-2">·</button>
+            <button type="button" class="vault-tumbler" data-idx="3" id="vault-tumbler-3">·</button>
+          </div>
+          <div class="vault-door-status" id="vault-door-status"></div>
+          <div class="vault-door-actions">
+            <button type="button" class="vault-door-btn vault-door-btn--open" id="vault-door-open" disabled onclick="submitVaultCode()">Turn wheel &amp; open</button>
+          </div>
+        </div>
+        <input type="text" id="vault-safe-input" maxlength="4" autocomplete="off" aria-label="Vault combination (keyboard)" tabindex="-1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">
+      </div>
+
+      <div id="xp-taskbar">
+        <button type="button" id="start-btn">⊞ Start</button>
+        <div class="tb-div"></div>
+        <button type="button" class="tb-wb" id="tbw-vault" ondblclick="openDataVaultSafe()"><i class="fas fa-lock"></i> Data Vault</button>
+        <div id="tb-clock"></div>
+      </div>
+
+      <!-- Legacy XP modal (unused in main path) -->
       <div id="vault-access-modal">
         <div class="vault-xp-tb">
           <div class="vault-xp-title"><span class="vault-xp-icon">🔐</span>Marshall's Vault Access</div>
@@ -771,11 +967,11 @@
       <div id="nexus-taskbar">DISTRIBUTION MATRIX · Audience-separated · Pre-release</div>
       <div id="hack-overlay">
         <span class="ht ht-g" id="ht1">OPERATION OMNI — ROUND 03 OF 05</span><br>
-        <span class="ht ht-g" id="ht2">DISTRIBUTION MATRIX — STAGING</span><br><br>
-        <span class="ht" id="ht3">Payload: <span class="ht-a">MARSHALL_DISCLOSURE_QUEUE.enc</span></span><br>
-        <span class="ht" id="ht4">Files: <span class="ht-g">10</span> · Audience routing: <span class="ht-o">REQUIRED</span></span><br>
-        <span class="ht ht-o" id="ht5">⚠  MIXED SENSITIVITY — NO BULK PUBLISH</span><br>
-        <span class="ht" id="ht6">Nova sign-off: <span class="ht-r">PENDING</span></span><br>
+        <span class="ht ht-g" id="ht2">BREACH VECTOR — MARSHALL.DESKTOP</span><br><br>
+        <span class="ht" id="ht3">Session: <span class="ht-a">RDP_MIRROR_ACTIVE</span></span><br>
+        <span class="ht" id="ht4">Vault: <span class="ht-r">LOCKED</span> · Queue: <span class="ht-o">ENCRYPTED</span></span><br>
+        <span class="ht ht-o" id="ht5">⚠  4-LETTER COMBO REQUIRED TO PROCEED</span><br>
+        <span class="ht" id="ht6">Bypass: <span class="ht-g">IN PROGRESS</span></span><br>
         <span class="ht" id="ht7"><span class="ht-cur"></span></span>
       </div>
     </div>
@@ -853,10 +1049,9 @@
 </div>
 </div>
 
+<script src="m3-routing-shared.js"></script>
 <script>
 'use strict';
-
-const CHANNEL = { public: 'PUBLIC WALL', official: 'OFFICIAL FILING', vault: 'NO RELEASE' };
 
 const GS = {
   budget: 50000, budgetStart: 50000,
@@ -870,79 +1065,6 @@ const GS = {
   catastrophic: 0,
   hintsUsed: 0, hintCooldown: false
 };
-
-const DATASETS = [
-  { id: 'omni_exec', file: 'Q4_Performance_Review.pdf', correct: 'public',
-    classification: 'Internal — Management', identifiers: 'None — aggregates only',
-    harmIfPublic: 'Low — no personal records', note: 'Board-level ROI; safe for public narrative.',
-    wrongRationale: {
-      official: 'This deck is <strong>aggregates and ROI</strong> — no names, no PII. Official filing is for <em>sensitive</em> material that still needs a regulator or counsel. Here the point is <strong>public accountability</strong>, not sealed process.',
-      vault: 'Nothing in this file justifies hiding it. <strong>PUBLIC WALL</strong> is for proof the world can read — vault is for real harm (health, kids, whole identities). This is just business metrics.'
-    } },
-  { id: 'risk_full', file: 'Personnel_Assessment_Export.xlsx', correct: 'vault',
-    classification: 'HR — named employees & model scores', identifiers: 'Names, employee IDs, model scores',
-    harmIfPublic: 'Severe — re-identification & stigma', note: 'Never appropriate for press; vault only.',
-    wrongRationale: {
-      public: 'You’re looking at <strong>names, IDs, and scores</strong> in one file. Dropping that on the public wall <strong>weaponizes</strong> real people. Correct channel: <strong>NO RELEASE</strong> — it never leaves the vault for press.',
-      official: 'Even “official” can leak. This is raw HR intelligence on named employees — the risk doesn’t go away in a filing. <strong>Vault</strong> means we are not using it in disclosure at all unless a separate, lawful process says otherwise.'
-    } },
-  { id: 'pipeline', file: 'System_Architecture.json', correct: 'public',
-    classification: 'Internal — Technical', identifiers: 'System IDs only',
-    harmIfPublic: 'Low — infrastructure evidence', note: 'Helps public understand OMNI without PII.',
-    wrongRationale: {
-      official: 'It’s a <strong>technical map</strong> of systems, not a sealed investigation. The public is entitled to understand <em>what</em> was built without PII. Official filing is overkill; use the <strong>public wall</strong> for this kind of evidence.',
-      vault: 'Burying architecture diagrams is the opposite of transparency. There are no people in this file — it’s <strong>safe to publish</strong> to support the story. Don’t default to “secret.”'
-    } },
-  { id: 'health', file: 'Health_Screening_Results.dat', correct: 'vault',
-    classification: 'Restricted — Health', identifiers: 'Employee IDs + vitals',
-    harmIfPublic: 'Severe — HIPAA-class harm', note: 'Regulatory path if ever needed — not mass disclosure.',
-    wrongRationale: {
-      public: '<strong>Health + identifiers</strong> in one dataset is a privacy catastrophe on the front page. That’s exactly what we <strong>don’t</strong> leak. Correct: <strong>NO RELEASE</strong>.',
-      official: 'Regulators can exist — but <strong>this file</strong> is a raw dump, not a tailored filing. Default for health-linked identifiers in a heist context is <strong>vault</strong>, not “maybe official.” Re-read the harm row.'
-    } },
-  { id: 'web_logs', file: 'Session_Traffic_Log.dat', correct: 'official',
-    classification: 'Security ops — sessions & partial IPs', identifiers: 'Sessions, partial IPs',
-    harmIfPublic: 'High if dumped — regulator/labour context OK', note: 'Official channels can evaluate; not front page.',
-    wrongRationale: {
-      public: 'Session logs and IPs are <strong>fingerprinty</strong> — fine for a regulator or lab case under process, <strong>not</strong> for a viral story. Press wall = public proof without enabling stalking. This belongs in <strong>OFFICIAL FILING</strong>.',
-      vault: 'Hiding the traffic log entirely removes evidence regulators might <em>need</em>. The right move is <strong>official</strong> — accountable channel — not “never existed.”'
-    } },
-  { id: 'cust_dump', file: 'User_Database_Backup.csv', correct: 'vault',
-    classification: 'Full customer PII', identifiers: 'Names, addresses, accounts',
-    harmIfPublic: 'Severe — civilian harm', note: 'Does not belong in public or opportunistic leaks.',
-    wrongRationale: {
-      public: 'This is a <strong>full customer table</strong>. Public = mass doxx. There is no ethical world where this hits the press wall. <strong>NO RELEASE.</strong>',
-      official: 'Even under seal, a wholesale backup is the wrong object to route “officially” in this mission frame — the ethics line is: <strong>it doesn’t get disclosed through our channels</strong>. Vault.'
-    } },
-  { id: 'memo_847', file: 'Internal_Policy_Review.md', correct: 'public',
-    classification: 'Internal', identifiers: 'None in body',
-    harmIfPublic: 'Low — organizational admission', note: 'Supports narrative without doxxing individuals.',
-    wrongRationale: {
-      official: 'The memo is a <strong>policy admission</strong> in plain language — no names, no PII. You don’t need a regulator packet for that. <strong>Public wall</strong> is for narrative proof anyone can read.',
-      vault: 'Stashing a clean policy text in the vault <strong>weakens accountability</strong> — the company’s own words are the story. It’s <strong>safe for public</strong>; don’t hide the smoking gun.'
-    } },
-  { id: 'payroll', file: 'Compensation_Review_Report.csv', correct: 'official',
-    classification: 'Comp review — masked rows + anomaly flags', identifiers: 'Masked IDs; flagged pay bands',
-    harmIfPublic: 'Medium–high — viral pay talk; official process for equity', note: 'Redacted for filing; not a public spreadsheet drop.',
-    wrongRationale: {
-      public: 'Masking row IDs <strong>doesn’t</strong> make this a press handout — it’s still a <strong>pay &amp; equity investigation</strong>. The public wall is for safe narrative proof; salary probe material goes to <strong>labour / regulators under process</strong> → <strong>OFFICIAL FILING</strong>.',
-      vault: 'Hiding the whole review <strong>blocks accountable oversight</strong> (labour, counsel). This export is already minimized — route it <strong>official</strong>, not “never existed.”'
-    } },
-  { id: 'schools', file: 'Community_Program_Roster.csv', correct: 'vault',
-    classification: 'Restricted — Minors', identifiers: 'Students, guardians',
-    harmIfPublic: 'Unacceptable — children', note: 'Vault. Full stop.',
-    wrongRationale: {
-      public: 'That roster is <strong>minors and guardians</strong>. There is no universe where the press wall is OK. <strong>NO RELEASE</strong> — full stop.',
-      official: '“Official” is still disclosure into someone’s file system. For kids, the bar is: <strong>not in this pipeline</strong>. Correct answer: <strong>vault</strong>.'
-    } },
-  { id: 'api_abuse', file: 'Security_Alert_Log.txt', correct: 'public',
-    classification: 'Internal — Security', identifiers: 'None — sanitized operational log',
-    harmIfPublic: 'Low — technical evidence', note: 'Pre-redacted; OK for public wall.',
-    wrongRationale: {
-      official: 'The log is already <strong>sanitized</strong> — it’s public-relations–safe technical evidence, not a sealed investigation. You don’t need a regulator envelope for that; put it on the <strong>public wall</strong>.',
-      vault: 'Hiding a clean alert trail makes OMNI’s story <strong>weaker</strong>. No PII, low harm — it belongs on the <strong>public</strong> channel so people can <em>see</em> the abuse pattern.'
-    } }
-];
 
 function updateClock() {
   const el = document.getElementById('clock');
@@ -962,242 +1084,542 @@ function wireContinueDelayR3() {
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireContinueDelayR3);
 else wireContinueDelayR3();
 
-let _pageTransiting = false;
-function goToPage(n) {
-  if (_pageTransiting) return;
-  const pages = document.querySelectorAll('.page');
-  const currentPage = document.querySelector('.page.active');
-  const nextPage = document.getElementById('page' + n);
-  if (!nextPage || nextPage === currentPage) return;
-
-  const useGsap = typeof window.gsap !== 'undefined';
-
-  if (!useGsap) {
-    pages.forEach(p => p.classList.remove('active'));
-    nextPage.classList.add('active');
-    window.scrollTo(0, 0);
-    if (n === 2) requestAnimationFrame(() => requestAnimationFrame(() => startStepVids()));
-    else stopStepVids();
-    return;
-  }
-
-  _pageTransiting = true;
-
-  const outTl = gsap.timeline({
-    onComplete: () => {
-      if (currentPage) { currentPage.classList.remove('active'); gsap.set(currentPage, { clearProps: 'all' }); }
-      nextPage.classList.add('active');
-      window.scrollTo(0, 0);
-
-      if (n !== 2) stopStepVids();
-
-      const children = nextPage.querySelectorAll('.page-eyebrow, .page-title, .page-subtitle, .intro-stats, .content, .ops-section, .broker-section, .brief-section, .detection-section, .button-section, .button-label, #demo-step-hint, #demo-panel, .steps-grid, .atlas-note, .detection-card, .detection-pills');
-      gsap.set(children, { opacity: 0, y: 22 });
-
-      gsap.timeline({ defaults: { ease: 'power2.out' } })
-        .to(children, { opacity: 1, y: 0, duration: 0.45, stagger: 0.07 }, 0.05)
-        .call(() => {
-          _pageTransiting = false;
-          if (n === 2) requestAnimationFrame(() => requestAnimationFrame(() => startStepVids()));
-        });
-    }
-  });
-
-  if (currentPage) {
-    outTl.to(currentPage, { opacity: 0, y: -18, duration: 0.3, ease: 'power2.in' });
-  } else {
-    outTl.call(() => {}, null, 0);
-  }
-}
-
-let demoTl = null;
-
-function startStepVids() {
-  if (typeof window.gsap === 'undefined') return;
-  if (demoTl) {
-    const h0 = document.getElementById('demo-step-hint');
-    if (h0) h0.textContent = '1 — Click a file to open the inspector.';
-    demoTl.play(0);
-    return;
-  }
-
-  const panel = document.getElementById('demo-panel');
-  const cursor = document.getElementById('demo-cursor');
-  const ring = cursor ? cursor.querySelector('.demo-cur-ring') : null;
-  const df1 = document.getElementById('df-1');
-  const df2 = document.getElementById('df-2');
-  const ihdr = document.getElementById('demo-ihdr');
-  const ibody = document.getElementById('demo-ibody');
-  const routebar = document.getElementById('demo-routebar');
-  const rbOff = document.getElementById('demo-rb-off');
-  const rbPub = document.getElementById('demo-rb-pub');
-  const stepHint = document.getElementById('demo-step-hint');
-  if (!panel || !cursor || !df1 || !ibody || !rbOff) return;
-
-  const docHtml1 = '<div style="font-size:9px;color:#4a8aa0;margin-bottom:4px;letter-spacing:.5px">VENDOR INVOICE</div>'
-    + '<table style="width:100%;border-collapse:collapse;font-size:9px;color:#c8ddf0">'
-    + '<tr><td style="border:1px solid #1a2a3a;padding:2px 4px;color:#4a8aa0">Vendor</td><td style="border:1px solid #1a2a3a;padding:2px 4px">Apex Consulting Ltd.</td></tr>'
-    + '<tr><td style="border:1px solid #1a2a3a;padding:2px 4px;color:#4a8aa0">Amount</td><td style="border:1px solid #1a2a3a;padding:2px 4px">$42,800.00</td></tr>'
-    + '<tr><td style="border:1px solid #1a2a3a;padding:2px 4px;color:#4a8aa0">Status</td><td style="border:1px solid #1a2a3a;padding:2px 4px">Paid — 14 Mar 2024</td></tr>'
-    + '</table>'
-    + '<div style="margin-top:4px;font-size:9px;color:#f79421">⚠ Contains billing details</div>';
-
-  const docHtml2 = '<div style="font-size:9px;color:#4a8aa0;margin-bottom:4px;letter-spacing:.5px">BUDGET SUMMARY — Q3</div>'
-    + '<div style="font-size:9px;color:#c8ddf0;line-height:1.45">"Operating expenses remained within 3% of projected budget across all departments…"</div>'
-    + '<div style="margin-top:4px;font-size:9px;color:#00c41c">✓ Aggregated data · No personal info</div>';
-
-  function getPos(el, type) {
-    const pr = panel.getBoundingClientRect();
-    const er = el.getBoundingClientRect();
-    if (type === 'btn') {
-      return { x: er.left - pr.left + er.width * 0.5 - 1, y: er.top - pr.top + er.height * 0.4 - 1 };
-    }
-    return { x: er.left - pr.left + 14, y: er.top - pr.top + er.height * 0.5 - 1 };
-  }
-
-  gsap.set(cursor, { opacity: 0, x: 10, y: 80 });
-  gsap.set(ring, { opacity: 0, scale: 0.5 });
-  gsap.set(routebar, { opacity: 0.35 });
-
-  const H1 = '1 — Click a file to open the inspector.';
-  const H2 = '2 — Read what’s inside: who is harmed if this spreads, and which audience is fair?';
-  const H3 = '3 — Choose PUBLIC WALL, OFFICIAL FILING, or NO RELEASE.';
-  const HB = 'Next: repeat for each file in the real round.';
-  const H0 = 'Watch how routing works — the steps update as the demo plays.';
-
-  function setHint(text) {
-    if (stepHint) stepHint.textContent = text;
-  }
-
-  const sceneTl = gsap.timeline({
-    repeat: -1,
-    repeatDelay: 2.5,
-    paused: true,
-    defaults: { ease: 'power2.out' }
-  });
-
-  function clickPulse(t) {
-    sceneTl
-      .to(ring, { opacity: 0.5, scale: 1.4, duration: 0.15, ease: 'power1.out' }, t)
-      .to(ring, { opacity: 0, scale: 0.5, duration: 0.25 }, t + 0.18);
-  }
-
-  const cu = 1.1;
-  const readHold = 2.75;
-  const afterH3 = 0.2;
-  /** Non-breaking space: keeps .demo-step-hint from collapsing ( :empty ) between step 1 and 2 */
-  const HGap = '\u00A0';
-
-  sceneTl.call(() => setHint(H1), null, 0);
-
-  // ── SCENE A: Vendor_Invoice_2024.pdf → OFFICIAL FILING ──
-  // tDocReadyA = when ibody (2.0+0.5) and routebar (2.15+0.4) are fully visible
-  const tDocReadyA = 2.55;
-  const tH2A = tDocReadyA;
-  const tH3A = tH2A + readHold;
-
-  sceneTl.to(cursor, { opacity: 1, duration: 0.4 }, 0.25);
-  sceneTl.to(cursor, { x: () => getPos(df1, 'file').x, y: () => getPos(df1, 'file').y, duration: 1.05, ease: 'power2.inOut' }, 0.5);
-  clickPulse(1.6);
-  sceneTl.call(() => { df1.classList.add('sel'); setHint(HGap); }, null, 1.7);
-  sceneTl.to(ihdr, { duration: 0.01, onComplete: () => { ihdr.textContent = 'INSPECTOR — Vendor_Invoice_2024.pdf'; } }, 1.75);
-  sceneTl.to(ibody, { opacity: 0, duration: 0.12 }, 1.8);
-  sceneTl.call(() => { ibody.innerHTML = docHtml1; }, null, 1.95);
-  sceneTl.to(ibody, { opacity: 1, duration: 0.5 }, 2.0);
-  sceneTl.to(routebar, { opacity: 1, duration: 0.4 }, 2.15);
-  sceneTl.call(() => setHint(H2), null, tH2A);
-  sceneTl.call(() => setHint(H3), null, tH3A);
-  sceneTl.to(cursor, { x: () => getPos(rbOff, 'btn').x, y: () => getPos(rbOff, 'btn').y, duration: cu, ease: 'power2.inOut' }, tH3A + afterH3);
-  clickPulse(tH3A + afterH3 + cu);
-  sceneTl.call(() => { rbOff.classList.add('clicked'); }, null, tH3A + afterH3 + cu + 0.08);
-  sceneTl.call(() => { rbOff.classList.remove('clicked'); }, null, tH3A + afterH3 + cu + 0.32);
-
-  const tEndA = tH3A + afterH3 + cu + 0.55;
-  sceneTl.to(cursor, { opacity: 0, duration: 0.3 }, tEndA);
-  sceneTl.call(() => { df1.classList.remove('sel'); }, null, tEndA + 0.2);
-  sceneTl.to(ibody, { opacity: 0, duration: 0.25 }, tEndA + 0.2);
-  sceneTl.to(routebar, { opacity: 0.35, duration: 0.25 }, tEndA + 0.2);
-  sceneTl.call(() => setHint(HB), null, tEndA + 0.1);
-
-  // ── SCENE B: Quarterly_Budget_Summary.xlsx → PUBLIC WALL ──
-  const tB0 = tEndA + 0.9;
-  // tDocReadyOffB: routebar tB0+1.65+0.4 = tB0+2.05 (last of doc + route fades)
-  const tDocReadyOffB = 2.05;
-  const tH2B = tB0 + tDocReadyOffB;
-  const tH3B = tH2B + readHold;
-
-  sceneTl.call(() => setHint(H1), null, tB0);
-  sceneTl.to(cursor, { opacity: 1, duration: 0.35 }, tB0 + 0.15);
-  sceneTl.to(cursor, { x: () => getPos(df2, 'file').x, y: () => getPos(df2, 'file').y, duration: 1.0, ease: 'power2.inOut' }, tB0 + 0.2);
-  clickPulse(tB0 + 1.25);
-  sceneTl.call(() => { df2.classList.add('sel'); setHint(HGap); }, null, tB0 + 1.35);
-  sceneTl.to(ihdr, { duration: 0.01, onComplete: () => { ihdr.textContent = 'INSPECTOR — Quarterly_Budget_Summary.xlsx'; } }, tB0 + 1.4);
-  sceneTl.call(() => { ibody.innerHTML = docHtml2; }, null, tB0 + 1.45);
-  sceneTl.to(ibody, { opacity: 1, duration: 0.5 }, tB0 + 1.5);
-  sceneTl.to(routebar, { opacity: 1, duration: 0.4 }, tB0 + 1.65);
-  sceneTl.call(() => setHint(H2), null, tH2B);
-  sceneTl.call(() => setHint(H3), null, tH3B);
-  sceneTl.to(cursor, { x: () => getPos(rbPub, 'btn').x, y: () => getPos(rbPub, 'btn').y, duration: cu, ease: 'power2.inOut' }, tH3B + afterH3);
-  clickPulse(tH3B + afterH3 + cu);
-  sceneTl.call(() => { rbPub.classList.add('clicked'); }, null, tH3B + afterH3 + cu + 0.08);
-  sceneTl.call(() => { rbPub.classList.remove('clicked'); }, null, tH3B + afterH3 + cu + 0.32);
-
-  const tEndB = tH3B + afterH3 + cu + 0.55;
-  sceneTl.to(cursor, { opacity: 0, duration: 0.3 }, tEndB);
-  sceneTl.to([ibody, routebar], { opacity: 0, duration: 0.25 }, tEndB + 0.12);
-  sceneTl.call(() => {
-    df2.classList.remove('sel');
-    ibody.innerHTML = '<span style="color:#5a6a7a;font-size:11px">Click a file to inspect its content</span>';
-    ihdr.textContent = 'INSPECTOR — Select a file';
-    setHint(H0);
-  }, null, tEndB + 0.45);
-  sceneTl.set([ibody, routebar], { opacity: 1 }, tEndB + 0.5);
-  sceneTl.set(routebar, { opacity: 0.35 }, tEndB + 0.5);
-  sceneTl.set(cursor, { x: 10, y: 80 }, tEndB + 0.52);
-
-  demoTl = sceneTl;
-  demoTl.play(0);
-}
-
-function stopStepVids() {
-  if (demoTl) demoTl.pause(0);
-  const h = document.getElementById('demo-step-hint');
-  if (h) { h.textContent = ''; }
-}
-
 // VAULT ACCESS SYSTEM
-let VAULT_CODE = 'OMNI'; // Test code - generates on each page load
-function startRound3Game() {
-  const intro = document.getElementById('intro-root');
-  const gp = document.getElementById('gp-root');
-  stopStepVids();
+let VAULT_CODE = 'OMNI';
+let _vaultSafeWired = false;
+const VAULT_DIAL_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+let vaultTumblerLetters = ['A', 'A', 'A', 'A'];
+let vaultActiveTumbler = 0;
+let vaultDialIndex = 0;
+let _vaultDialDragging = false;
+let _vaultDialStartAngle = 0;
+let _vaultDialStartIndex = 0;
 
-  if (typeof window.gsap !== 'undefined') {
-    gsap.to(intro, { opacity: 0, y: -20, duration: 0.35, ease: 'power2.in', onComplete: () => {
-      intro.style.display = 'none';
-      intro.style.visibility = 'hidden';
-      _revealGameplay(gp);
-    }});
-  } else {
+function prepGameShellForHack() {
+  const intro = document.getElementById('intro-root');
+  if (intro) {
     intro.style.display = 'none';
     intro.style.visibility = 'hidden';
-    _revealGameplay(gp);
+    intro.style.opacity = '';
   }
-}
-function _revealGameplay(gp) {
-  gp.style.display = 'block';
+
   document.documentElement.classList.add('gp-html-active');
-  document.body.classList.add('gp-gameplay-active');
-  document.body.classList.add('r3-pre');
-  document.getElementById('game').style.display = 'flex';
-  requestAnimationFrame(() => requestAnimationFrame(() => startGame()));
+  document.body.classList.add('gp-gameplay-active', 'r3-pre', 'r3-desktop', 'r3-hack-active');
+  document.body.classList.remove('r3-routing', 'vault-open');
+
+  const gp = document.getElementById('gp-root');
+  const game = document.getElementById('game');
+  if (gp) { gp.style.display = 'block'; gp.style.opacity = '1'; }
+  if (game) game.style.display = 'flex';
+
+  const layout = document.querySelector('.r2-layout');
+  if (layout) layout.style.display = 'none';
+
+  const wallpaper = document.getElementById('wallpaper');
+  if (wallpaper) wallpaper.classList.remove('visible');
+  document.querySelectorAll('#desktop-panel .di').forEach(function (el) {
+    el.classList.remove('visible');
+  });
+  const xptb = document.getElementById('xp-taskbar');
+  if (xptb) xptb.classList.remove('visible');
+
+  const banner = document.getElementById('step-banner');
+  if (banner) banner.textContent = 'Establishing secure connection…';
 }
 
-function startGame() {
+const M3_TUTORIAL_URL = 'Mission 3 Tutorial.html';
+
+function goToMission3Tutorial() {
+  const btn = document.getElementById('btn-continue-r3-brief');
+  const intro = document.getElementById('intro-root');
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add('is-locked');
+  }
+  try { sessionStorage.setItem('m3TutorialEnter', '1'); } catch (_) {}
+
+  if (!intro || typeof gsap === 'undefined') {
+    window.location.href = M3_TUTORIAL_URL;
+    return;
+  }
+
+  const reduced = typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduced) {
+    intro.style.opacity = '0';
+    setTimeout(function () { window.location.href = M3_TUTORIAL_URL; }, 180);
+    return;
+  }
+
+  gsap.to(intro, {
+    opacity: 0,
+    y: -14,
+    duration: 0.42,
+    ease: 'power2.in',
+    onComplete: function () { window.location.href = M3_TUTORIAL_URL; }
+  });
+}
+
+function goToMarshallDesktop() {
+  const btn = document.getElementById('btn-continue-r3-brief');
+  const intro = document.getElementById('intro-root');
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add('is-locked');
+  }
+
+  function launchHack() {
+    prepGameShellForHack();
+    runHackSequence(function () { startMarshallDesktop(true); });
+  }
+
+  if (intro && typeof gsap !== 'undefined') {
+    gsap.to(intro, {
+      opacity: 0,
+      duration: 0.4,
+      ease: 'power2.in',
+      onComplete: launchHack
+    });
+    return;
+  }
+  launchHack();
+}
+
+/** Marshall XP desktop — Data Vault icon → vault door → routing. */
+function startMarshallDesktop(skipIntroFade) {
+  document.body.classList.remove('r3-hack-active');
+
   const wallpaper = document.getElementById('wallpaper');
   if (wallpaper) wallpaper.classList.add('visible');
-  startTimer();
-  showVaultAccessModal();
+
+  document.querySelectorAll('#desktop-panel .di').forEach(function (el) {
+    el.classList.add('visible');
+  });
+  const xptb = document.getElementById('xp-taskbar');
+  if (xptb) xptb.classList.add('visible');
+
+  const layout = document.querySelector('.r2-layout');
+  if (layout) layout.style.display = 'none';
+
+  const banner = document.getElementById('step-banner');
+  if (banner) banner.textContent = 'Marshall\'s desktop — double-click Data Vault to unlock the disclosure queue.';
+
+  wireVaultSafeInput();
+  updateTbClock();
+  if (!window._r3TbClockInt) {
+    window._r3TbClockInt = setInterval(updateTbClock, 30000);
+  }
+
+  setTimeout(function () {
+    novaSay('Marshall left a vault on his mirror. Double-click <strong>Data Vault</strong> and enter the breach code.');
+  }, skipIntroFade ? 500 : 800);
+}
+
+function updateTbClock() {
+  const el = document.getElementById('tb-clock');
+  if (!el) return;
+  const d = new Date();
+  el.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function vaultLetterIndex(ch) {
+  const i = VAULT_DIAL_LETTERS.indexOf((ch || 'A').toUpperCase());
+  return i >= 0 ? i : 0;
+}
+
+function vaultSetDialIndex(idx) {
+  vaultDialIndex = ((idx % 26) + 26) % 26;
+  const letter = VAULT_DIAL_LETTERS[vaultDialIndex];
+  vaultTumblerLetters[vaultActiveTumbler] = letter;
+  const comboLetter = document.getElementById('vault-combo-letter');
+  const ring = document.querySelector('#vault-combo-dial .vault-combo-ring');
+  const rot = (vaultDialIndex * (360 / 26)) + 'deg';
+  if (comboLetter) comboLetter.textContent = letter;
+  if (ring) ring.style.transform = 'rotate(' + rot + ')';
+  refreshVaultTumblerUI();
+}
+
+function refreshVaultTumblerUI() {
+  const code = vaultTumblerLetters.join('');
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById('vault-tumbler-' + i);
+    if (!el) continue;
+    const letter = vaultTumblerLetters[i];
+    el.textContent = letter;
+    el.classList.toggle('active', i === vaultActiveTumbler);
+    el.classList.toggle('filled', !!letter);
+    el.classList.toggle('correct', letter === VAULT_CODE[i]);
+  }
+  const openBtn = document.getElementById('vault-door-open');
+  if (openBtn) openBtn.disabled = code.length !== 4;
+  const input = document.getElementById('vault-safe-input');
+  if (input) input.value = code;
+}
+
+function restoreGameplayToDesktop() {
+  const layout = document.querySelector('.r2-layout');
+  const desktop = document.getElementById('desktop-panel');
+  const cavity = document.getElementById('vault-cavity');
+  const anchor = document.getElementById('vault-door-screen');
+  if (!layout || !desktop) return;
+  layout.classList.remove('vault-inside-reveal');
+  if (cavity) cavity.classList.remove('has-gameplay');
+  if (layout.parentElement !== desktop) {
+    if (anchor && anchor.parentElement === desktop) {
+      desktop.insertBefore(layout, anchor);
+    } else {
+      desktop.appendChild(layout);
+    }
+  }
+}
+
+function hideMarshallDesktopChrome() {
+  const wallpaper = document.getElementById('wallpaper');
+  if (wallpaper) wallpaper.classList.remove('visible');
+  document.querySelectorAll('#desktop-panel .di').forEach(function (el) {
+    el.classList.remove('visible');
+  });
+}
+
+function mountGameplayBehindVaultDoor() {
+  const slot = document.getElementById('vault-cavity-slot');
+  const layout = document.querySelector('.r2-layout');
+  const cavity = document.getElementById('vault-cavity');
+  if (!slot || !layout) return;
+  hideMarshallDesktopChrome();
+  GS.hackDone = true;
+  layout.classList.add('vault-inside-reveal');
+  slot.appendChild(layout);
+  if (cavity) cavity.classList.add('has-gameplay');
+  if (!GS.timerInt) startTimer();
+  buildFileList();
+}
+
+function resetVaultDoorState() {
+  vaultTumblerLetters = ['A', 'A', 'A', 'A'];
+  vaultActiveTumbler = 0;
+  vaultDialIndex = 0;
+  restoreGameplayToDesktop();
+  const slide = document.getElementById('vault-door-slide');
+  const handwheel = document.getElementById('vault-handwheel');
+  const cavity = document.getElementById('vault-cavity');
+  const screen = document.getElementById('vault-door-screen');
+  const comboWrap = document.getElementById('vault-combo-wrap');
+  const scene = document.getElementById('vault-scene-inner');
+  const wall = scene ? scene.querySelector('.vault-wall') : null;
+  const flash = document.getElementById('vault-open-flash');
+
+  if (screen) {
+    screen.classList.remove('is-opening');
+    if (typeof gsap !== 'undefined') gsap.set(screen, { opacity: 1 });
+    else screen.style.opacity = '';
+  }
+  if (flash && typeof gsap !== 'undefined') gsap.set(flash, { opacity: 0 });
+  if (wall && typeof gsap !== 'undefined') gsap.set(wall, { opacity: 1 });
+  if (comboWrap) comboWrap.classList.remove('locked');
+  if (scene) {
+    scene.classList.remove('shake', 'vault-bolts-out');
+  }
+  if (cavity) {
+    cavity.classList.remove('lit');
+    if (typeof gsap !== 'undefined') {
+      gsap.set(cavity, { opacity: 0, scale: 0.96, clearProps: 'opacity,transform' });
+    } else {
+      cavity.style.opacity = '';
+      cavity.style.transform = '';
+    }
+  }
+  if (typeof gsap !== 'undefined') {
+    if (slide) gsap.set(slide, { xPercent: 0, clearProps: 'transform' });
+    if (handwheel) gsap.set(handwheel, { rotation: 0, clearProps: 'transform' });
+  } else {
+    if (slide) slide.style.transform = '';
+    if (handwheel) handwheel.style.transform = '';
+  }
+  const ring = document.querySelector('#vault-combo-dial .vault-combo-ring');
+  if (ring) ring.style.transform = '';
+  vaultSetDialIndex(0);
+  const status = document.getElementById('vault-door-status');
+  if (status) status.textContent = '';
+}
+
+function wireVaultSafeInput() {
+  if (_vaultSafeWired) return;
+  _vaultSafeWired = true;
+
+  document.querySelectorAll('.vault-tumbler').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (document.getElementById('vault-door-screen')?.classList.contains('is-opening')) return;
+      vaultActiveTumbler = parseInt(btn.getAttribute('data-idx'), 10) || 0;
+      vaultDialIndex = vaultLetterIndex(vaultTumblerLetters[vaultActiveTumbler]);
+      vaultSetDialIndex(vaultDialIndex);
+    });
+  });
+
+  const comboWrap = document.getElementById('vault-combo-wrap');
+  const dial = document.getElementById('vault-combo-dial');
+  if (comboWrap && dial) {
+    comboWrap.addEventListener('click', function (e) {
+      if (comboWrap.classList.contains('locked')) return;
+      if (_vaultDialDragging) return;
+      const rect = comboWrap.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const angle = Math.atan2(e.clientY - cy, e.clientX - cx) * (180 / Math.PI);
+      const step = Math.round(((angle + 90) / 360) * 26) % 26;
+      vaultSetDialIndex(step);
+    });
+
+    function dialPointerDown(e) {
+      if (comboWrap.classList.contains('locked')) return;
+      _vaultDialDragging = true;
+      const rect = comboWrap.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      _vaultDialStartAngle = Math.atan2(e.clientY - cy, e.clientX - cx);
+      _vaultDialStartIndex = vaultDialIndex;
+      e.preventDefault();
+    }
+    function dialPointerMove(e) {
+      if (!_vaultDialDragging) return;
+      const rect = comboWrap.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const angle = Math.atan2(e.clientY - cy, e.clientX - cx);
+      const delta = angle - _vaultDialStartAngle;
+      const steps = Math.round((delta / (2 * Math.PI)) * 26);
+      vaultSetDialIndex(_vaultDialStartIndex + steps);
+    }
+    function dialPointerUp() { _vaultDialDragging = false; }
+
+    comboWrap.addEventListener('mousedown', dialPointerDown);
+    window.addEventListener('mousemove', dialPointerMove);
+    window.addEventListener('mouseup', dialPointerUp);
+    comboWrap.addEventListener('touchstart', function (e) { dialPointerDown(e.touches[0]); }, { passive: false });
+    window.addEventListener('touchmove', function (e) { if (_vaultDialDragging) { dialPointerMove(e.touches[0]); e.preventDefault(); } }, { passive: false });
+    window.addEventListener('touchend', dialPointerUp);
+  }
+
+  const input = document.getElementById('vault-safe-input');
+  const openBtn = document.getElementById('vault-door-open');
+  if (input) {
+    input.addEventListener('input', function () {
+      const val = input.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4);
+      input.value = val;
+      for (let i = 0; i < 4; i++) vaultTumblerLetters[i] = val[i] || 'A';
+      vaultActiveTumbler = Math.min(val.length, 3);
+      vaultDialIndex = vaultLetterIndex(vaultTumblerLetters[vaultActiveTumbler]);
+      vaultSetDialIndex(vaultDialIndex);
+      const status = document.getElementById('vault-door-status');
+      const scene = document.getElementById('vault-scene-inner');
+      if (scene) scene.classList.remove('shake');
+      if (status) status.textContent = '';
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && openBtn && !openBtn.disabled) submitVaultCode();
+      if (e.key === 'Escape') closeDataVaultSafe();
+      if (e.key === 'ArrowLeft') {
+        vaultActiveTumbler = Math.max(0, vaultActiveTumbler - 1);
+        vaultDialIndex = vaultLetterIndex(vaultTumblerLetters[vaultActiveTumbler]);
+        vaultSetDialIndex(vaultDialIndex);
+        e.preventDefault();
+      }
+      if (e.key === 'ArrowRight') {
+        vaultActiveTumbler = Math.min(3, vaultActiveTumbler + 1);
+        vaultDialIndex = vaultLetterIndex(vaultTumblerLetters[vaultActiveTumbler]);
+        vaultSetDialIndex(vaultDialIndex);
+        e.preventDefault();
+      }
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        const delta = e.key === 'ArrowUp' ? 1 : -1;
+        vaultSetDialIndex(vaultDialIndex + delta);
+        e.preventDefault();
+      }
+    });
+  }
+}
+
+function openDataVaultSafe() {
+  if (!document.body.classList.contains('r3-desktop') || GS.hackDone) return;
+  const screen = document.getElementById('vault-door-screen');
+  const input = document.getElementById('vault-safe-input');
+  if (!screen) return;
+
+  screen.classList.add('active');
+  screen.setAttribute('aria-hidden', 'false');
+  screen.classList.remove('is-opening');
+  if (typeof gsap !== 'undefined') gsap.set(screen, { opacity: 1 });
+  else screen.style.opacity = '1';
+  document.body.classList.add('vault-open');
+  if (input) { input.value = ''; input.disabled = false; }
+  resetVaultDoorState();
+  setTimeout(function () { if (input) input.focus(); }, 120);
+}
+
+function closeDataVaultSafe() {
+  const screen = document.getElementById('vault-door-screen');
+  if (screen && screen.classList.contains('is-opening')) return;
+  if (screen) {
+    screen.classList.remove('active', 'is-opening');
+    screen.setAttribute('aria-hidden', 'true');
+  }
+  document.body.classList.remove('vault-open');
+}
+
+function submitVaultCode() {
+  const status = document.getElementById('vault-door-status');
+  const openBtn = document.getElementById('vault-door-open');
+  const scene = document.getElementById('vault-scene-inner');
+  const input = document.getElementById('vault-safe-input');
+  const val = vaultTumblerLetters.join('').toUpperCase();
+
+  if (val === VAULT_CODE) {
+    if (status) {
+      status.textContent = '✓ Combination correct — opening vault…';
+      status.style.color = 'rgba(0,196,28,.9)';
+    }
+    if (openBtn) openBtn.disabled = true;
+    if (input) input.disabled = true;
+    playVaultDoorOpenSequence();
+    return;
+  }
+
+  if (scene) {
+    scene.classList.add('shake');
+    setTimeout(function () { scene.classList.remove('shake'); }, 450);
+  }
+  if (status) {
+    status.textContent = '✗ Invalid combination — try again';
+    status.style.color = 'rgba(255,64,64,.85)';
+  }
+  vaultTumblerLetters = ['A', 'A', 'A', 'A'];
+  vaultActiveTumbler = 0;
+  vaultSetDialIndex(0);
+}
+
+function playVaultDoorOpenSequence() {
+  const screen = document.getElementById('vault-door-screen');
+  const scene = document.getElementById('vault-scene-inner');
+  const wall = scene ? scene.querySelector('.vault-wall') : null;
+  const slide = document.getElementById('vault-door-slide');
+  const comboWrap = document.getElementById('vault-combo-wrap');
+  const handwheel = document.getElementById('vault-handwheel');
+  const cavity = document.getElementById('vault-cavity');
+  const flash = document.getElementById('vault-open-flash');
+
+  if (!screen || !slide) {
+    closeDataVaultSafe();
+    continueAfterVault();
+    return;
+  }
+
+  screen.classList.add('is-opening');
+  if (comboWrap) comboWrap.classList.add('locked');
+
+  const reduced = typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const layout = document.querySelector('.r2-layout');
+  const right = document.getElementById('right');
+
+  function prepGameplayFadeIn() {
+    hideMarshallDesktopChrome();
+    restoreGameplayToDesktop();
+    document.body.classList.remove('vault-open', 'r3-pre', 'r3-desktop');
+    document.body.classList.add('r3-routing');
+    GS.hackDone = true;
+    if (layout) {
+      layout.style.display = 'flex';
+      if (typeof gsap !== 'undefined') gsap.set(layout, { opacity: 0 });
+      else layout.style.opacity = '0';
+    }
+    if (right) {
+      if (typeof gsap !== 'undefined') gsap.set(right, { opacity: 0 });
+      else right.style.opacity = '0';
+    }
+  }
+
+  function finishOpen() {
+    resetVaultDoorState();
+    screen.classList.remove('active', 'is-opening');
+    screen.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('vault-open');
+    if (layout && typeof gsap !== 'undefined') gsap.set(layout, { clearProps: 'opacity' });
+    else if (layout) layout.style.opacity = '';
+    if (right && typeof gsap !== 'undefined') gsap.set(right, { clearProps: 'opacity' });
+    else if (right) right.style.opacity = '';
+    continueAfterVault();
+  }
+
+  function runGameplayFadeIn(onDone) {
+    prepGameplayFadeIn();
+    if (typeof gsap === 'undefined') {
+      if (layout) layout.style.opacity = '1';
+      if (right) right.style.opacity = '1';
+      if (screen) screen.style.opacity = '0';
+      onDone();
+      return;
+    }
+    if (screen) gsap.set(screen, { opacity: 1 });
+    const fadeTl = gsap.timeline({ onComplete: onDone });
+    fadeTl.to(screen, { opacity: 0, duration: 0.45, ease: 'power2.inOut' }, 0);
+    if (wall) fadeTl.to(wall, { opacity: 0, duration: 0.4, ease: 'power2.in' }, 0);
+    if (layout) fadeTl.to(layout, { opacity: 1, duration: 0.75, ease: 'power2.out' }, 0.08);
+    if (right) fadeTl.to(right, { opacity: 1, duration: 0.7, ease: 'power2.out' }, 0.12);
+  }
+
+  if (typeof gsap === 'undefined' || reduced) {
+    scene.classList.add('vault-bolts-out');
+    mountGameplayBehindVaultDoor();
+    if (cavity) cavity.classList.add('lit');
+    slide.style.transform = 'translateX(-108%)';
+    setTimeout(function () {
+      runGameplayFadeIn(finishOpen);
+    }, reduced ? 500 : 900);
+    return;
+  }
+
+  gsap.set(slide, { xPercent: 0 });
+  gsap.set(handwheel, { rotation: 0 });
+  gsap.set(cavity, { opacity: 0, scale: 0.98 });
+  if (wall) gsap.set(wall, { opacity: 1 });
+  if (flash) gsap.set(flash, { opacity: 0 });
+  if (screen) gsap.set(screen, { opacity: 1 });
+  scene.classList.remove('vault-bolts-out');
+  if (cavity) cavity.classList.remove('lit', 'has-gameplay');
+  restoreGameplayToDesktop();
+
+  const tl = gsap.timeline();
+
+  tl.to(handwheel, { rotation: 720, duration: 1.5, ease: 'power2.inOut' }, 0.1);
+  tl.call(function () { scene.classList.add('vault-bolts-out'); }, null, 0.55);
+
+  /* Mount routing UI inside vault before the door moves */
+  tl.call(mountGameplayBehindVaultDoor, null, 0.68);
+  tl.to(cavity, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }, 0.68);
+  tl.call(function () { if (cavity) cavity.classList.add('lit'); }, null, 0.72);
+
+  /* Door slides left — reveals Mission 3 gameplay behind it */
+  tl.to(slide, { xPercent: -108, duration: 1.2, ease: 'power3.inOut' }, 0.82);
+
+  if (flash) {
+    tl.to(flash, { opacity: 0.35, duration: 0.3, ease: 'power2.out' }, 0.9)
+      .to(flash, { opacity: 0, duration: 0.35, ease: 'power2.in' }, 1.35);
+  }
+
+  /* Brief hold once vault is fully open, then fade into full mission layout */
+  tl.to({}, { duration: 0.42 }, 2.05);
+  tl.call(function () { runGameplayFadeIn(finishOpen); }, null, 2.47);
+}
+
+function triggerVaultAnimationInGame() {
+  const doorScreen = document.getElementById('vault-door-screen');
+  if (doorScreen && doorScreen.classList.contains('active')) {
+    playVaultDoorOpenSequence();
+    return;
+  }
+  continueAfterVault();
 }
 
 function startTimer() {
@@ -1210,23 +1632,49 @@ function startTimer() {
   }, 1000);
 }
 
-function runHackSequence() {
+function runHackSequence(onComplete) {
   const ho = document.getElementById('hack-overlay');
-  ho.classList.add('active');
-  const delays = [280, 600, 900, 1180, 1500, 1820, 2140];
-  ['ht1', 'ht2', 'ht3', 'ht4', 'ht5', 'ht6', 'ht7'].forEach((id, i) => {
-    setTimeout(() => { const e = document.getElementById(id); if (e) e.classList.add('show'); }, delays[i]);
+  if (!ho) {
+    if (onComplete) onComplete();
+    return;
+  }
+
+  ['ht1', 'ht2', 'ht3', 'ht4', 'ht5', 'ht6', 'ht7'].forEach(function (id) {
+    const e = document.getElementById(id);
+    if (e) e.classList.remove('show');
   });
-  setTimeout(() => {
-    ho.style.transition = 'opacity 0.65s ease';
+  const ht7 = document.getElementById('ht7');
+  if (ht7) ht7.innerHTML = '<span class="ht-cur"></span>';
+
+  ho.classList.add('active');
+  ho.style.opacity = '1';
+  ho.style.transition = '';
+
+  const delays = [260, 520, 780, 1040, 1300, 1560, 1820];
+  ['ht1', 'ht2', 'ht3', 'ht4', 'ht5', 'ht6', 'ht7'].forEach(function (id, i) {
+    setTimeout(function () {
+      const e = document.getElementById(id);
+      if (e) e.classList.add('show');
+    }, delays[i]);
+  });
+
+  setTimeout(function () {
+    if (ht7) {
+      ht7.innerHTML = '<span class="ht-g">MARSHALL.DESKTOP — ONLINE</span>';
+      ht7.classList.add('show');
+    }
+  }, 2200);
+
+  setTimeout(function () {
+    ho.style.transition = 'opacity 0.7s ease';
     ho.style.opacity = '0';
-    setTimeout(() => {
+    setTimeout(function () {
       ho.classList.remove('active');
       ho.style.opacity = '';
       ho.style.transition = '';
-      revealStaging();
-    }, 680);
-  }, 3100);
+      if (onComplete) onComplete();
+    }, 720);
+  }, 3200);
 }
 
 function revealStaging() {
@@ -1304,114 +1752,37 @@ function showVaultAccessModal() {
   }, 400);
 }
 
-function triggerVaultAnimationInGame() {
-  const modal = document.getElementById('vault-access-modal');
-  const overlay = document.getElementById('vault-overlay');
-  if (!overlay) return;
-
-  if (modal) { modal.classList.remove('active'); modal.style.display = 'none'; }
-  overlay.classList.add('active');
-
-  const doorL = document.getElementById('vault-door-l');
-  const doorR = document.getElementById('vault-door-r');
-  const seam = document.getElementById('vault-seam');
-  const light = document.getElementById('vault-light');
-  const status = document.getElementById('vault-status');
-  const statusText = document.getElementById('vault-status-text');
-  const statusFill = document.getElementById('vault-status-fill');
-  const successText = document.getElementById('vault-success-text');
-  const boltsL = [document.getElementById('bolt-l1'), document.getElementById('bolt-l2'), document.getElementById('bolt-l3')];
-  const boltsR = [document.getElementById('bolt-r1'), document.getElementById('bolt-r2'), document.getElementById('bolt-r3')];
-
-  const canGsap = typeof window.gsap !== 'undefined' && doorL && doorR;
-  if (!canGsap) {
-    setTimeout(() => { overlay.classList.remove('active'); continueAfterVault(); }, 2500);
-    return;
-  }
-
-  try {
-    gsap.config({ force3D: true, nullTargetWarn: false });
-    if (gsap.ticker && gsap.ticker.lagSmoothing) gsap.ticker.lagSmoothing(1000, 16);
-  } catch {}
-
-  const stage = document.getElementById('vault-stage');
-
-  // Reset
-  gsap.set(overlay, { opacity: 1 });
-  gsap.set(stage, { x: 0 });
-  gsap.set([doorL, doorR], { x: 0 });
-  gsap.set(seam, { background: 'rgba(255,255,255,0)', boxShadow: 'none' });
-  gsap.set(light, { width: 0, opacity: 0 });
-  gsap.set(status, { opacity: 0 });
-  gsap.set(statusFill, { width: '0%' });
-  gsap.set(successText, { opacity: 0, scale: 0.92, letterSpacing: '0.55em' });
-  boltsL.concat(boltsR).forEach(b => b && b.classList.remove('retracted'));
-
-  const tl = gsap.timeline({
-    defaults: { ease: 'power2.out' },
-    onComplete: () => {
-      overlay.classList.remove('active');
-      overlay.style.display = '';
-      if (modal) { modal.classList.remove('active'); modal.style.display = ''; }
-      continueAfterVault();
-    }
-  });
-
-  // ── Phase 1: Status bar + authentication (0 → 2.0s) ──
-  tl.to(status, { opacity: 1, duration: 0.4 }, 0.2)
-    .to(statusFill, { width: '30%', duration: 0.7, ease: 'power1.inOut' }, 0.35)
-    .to(statusFill, { width: '65%', duration: 0.6, ease: 'power1.inOut' }, 1.1)
-    .call(() => { if (statusText) statusText.textContent = 'ACCESS GRANTED'; statusText.style.color = 'rgba(0,255,65,.95)'; statusText.style.textShadow = '0 0 20px rgba(0,255,65,.25)'; }, null, 1.7)
-    .to(statusFill, { width: '100%', duration: 0.3, ease: 'power2.out' }, 1.7);
-
-  // ── Phase 2: Bolts retract with stagger + micro-shake (2.1 → 3.0s) ──
-  boltsL.forEach((b, i) => {
-    const t = 2.1 + i * 0.18;
-    tl.to(b, { x: -56, duration: 0.3, ease: 'power3.inOut' }, t)
-      .call(() => b && b.classList.add('retracted'), null, t + 0.18);
-    tl.to(stage, { x: 2, duration: 0.04, ease: 'none' }, t + 0.08)
-      .to(stage, { x: -1, duration: 0.04, ease: 'none' }, t + 0.12)
-      .to(stage, { x: 0, duration: 0.06, ease: 'power1.out' }, t + 0.16);
-  });
-  boltsR.forEach((b, i) => {
-    const t = 2.1 + i * 0.18;
-    tl.to(b, { x: 56, duration: 0.3, ease: 'power3.inOut' }, t);
-  });
-
-  // ── Phase 3: Seam glows — bright white/warm crack (2.9 → 3.4s) ──
-  tl.to(status, { opacity: 0, duration: 0.25 }, 2.7)
-    .to(seam, {
-      background: 'rgba(0,255,65,.8)',
-      boxShadow: '0 0 24px rgba(0,255,65,.5), 0 0 70px rgba(0,255,65,.2), 0 0 120px rgba(0,255,65,.08)',
-      duration: 0.5, ease: 'power1.in'
-    }, 2.9);
-
-  // ── Phase 4: Doors split apart (3.3 → 4.8s) ──
-  tl.to(doorL, { x: '-108%', duration: 1.5, ease: 'power3.inOut' }, 3.3)
-    .to(doorR, { x: '108%', duration: 1.5, ease: 'power3.inOut' }, 3.3);
-
-  // Light floods from the seam — green cyberpunk wash
-  tl.to(light, { opacity: 1, width: '30vw',
-    background: 'linear-gradient(180deg,rgba(0,255,65,.02),rgba(0,255,65,.2),rgba(0,255,65,.02))',
-    duration: 0.9, ease: 'power2.out' }, 3.4)
-    .to(light, { width: '110vw', opacity: 0.35, duration: 0.8, ease: 'power1.out' }, 4.3);
-
-  // Seam fades as doors are apart
-  tl.to(seam, { opacity: 0, duration: 0.5 }, 3.7);
-
-  // ── Phase 5: Success text (4.4 → 5.0s) ──
-  tl.to(successText, { opacity: 1, scale: 1, letterSpacing: '0.35em', duration: 0.55, ease: 'power2.out' }, 4.4);
-
-  // ── Phase 6: Fade out (5.3 → 6.0s) ──
-  tl.to(overlay, { opacity: 0, duration: 0.65, ease: 'power2.in' }, 5.3);
-}
-
 function continueAfterVault() {
   GS.hackDone = true;
-  document.body.classList.remove('r3-pre');
+  document.body.classList.remove('r3-pre', 'r3-desktop');
+  document.body.classList.add('r3-routing');
+  hideMarshallDesktopChrome();
+
+  const xptb = document.getElementById('xp-taskbar');
+  if (xptb) xptb.classList.remove('visible');
+
+  const vaultIcon = document.getElementById('di-data-vault');
+  if (vaultIcon) {
+    vaultIcon.classList.remove('di-mission');
+    vaultIcon.classList.add('di-locked');
+    vaultIcon.disabled = true;
+    vaultIcon.style.pointerEvents = 'none';
+  }
+  const discIcon = document.getElementById('di-disclosure');
+  if (discIcon) {
+    discIcon.classList.remove('di-locked');
+    discIcon.classList.add('di-interactive');
+  }
+
   const layout = document.querySelector('.r2-layout');
   if (layout) layout.style.display = 'flex';
-  buildFileList();
+
+  const banner = document.getElementById('step-banner');
+  if (banner) banner.textContent = 'Pick a file. Route it to the channel that matches audience + harm profile.';
+
+  if (!GS.timerInt) startTimer();
+  if (!document.querySelector('.r2-file')) buildFileList();
+
   setTimeout(() => brokerSay(
     'Ten files. Three channels — public wall, official filing, or no release. Read harm profile before you route.',
     'bm-d'
@@ -1547,493 +1918,7 @@ function wrongExplain(ds, choice) {
   return '<strong>Not the right channel.</strong> Re-read <strong>identifiers</strong> and the <strong>harm if public</strong> line in the inspector, then try again.';
 }
 
-function getDocumentPreview(id) {
-  switch (id) {
-    case 'omni_exec':
-      return `<div style="background:#ffffff;padding:50px 60px;font-family:'Calibri','Arial',sans-serif;font-size:11px;color:#222;line-height:1.7;max-width:900px;margin:0 auto">
-        <div style="text-align:center;margin-bottom:40px">
-          <div style="font-size:24px;font-weight:bold;color:#1a1a1a;margin-bottom:8px">Q4 Performance Review</div>
-          <div style="font-size:11px;color:#666;letter-spacing:0.5px">Executive Summary — Fiscal Year 2024</div>
-        </div>
-        <div style="border-bottom:2px solid #333;padding-bottom:25px;margin-bottom:30px">
-          <div style="display:grid;grid-template-columns:150px 1fr;gap:15px;font-size:10px">
-            <div style="font-weight:bold;color:#333">Date Prepared:</div>
-            <div>April 8, 2024</div>
-            <div style="font-weight:bold;color:#333">Document type:</div>
-            <div>Executive summary (aggregates only)</div>
-          </div>
-        </div>
-        <div style="margin-bottom:30px">
-          <div style="font-size:13px;font-weight:bold;color:#1a1a1a;margin-bottom:15px">Performance Metrics</div>
-          <div style="margin-left:20px;line-height:2">
-            <div><strong>Revenue Impact:</strong> \$2.3M</div>
-            <div><strong>Implementation Cost:</strong> \$847K</div>
-            <div><strong>Net Benefit:</strong> \$1.45M (171% ROI)</div>
-          </div>
-        </div>
-        <div style="margin-bottom:30px">
-          <div style="font-size:13px;font-weight:bold;color:#1a1a1a;margin-bottom:15px">Market Adoption by Segment</div>
-          <div style="margin-left:20px;line-height:2">
-            <div>Healthcare: 34% adoption</div>
-            <div>Finance: 28% adoption</div>
-            <div>Retail: 22% adoption</div>
-            <div>Other sectors: 16% adoption</div>
-          </div>
-        </div>
-        <div style="background:#f9f9f9;border-left:4px solid #366092;padding:15px 20px;margin:30px 0;font-size:10px;line-height:1.8">
-          <div style="font-weight:bold;margin-bottom:8px">Summary</div>
-          <div>This analysis reflects aggregated operational performance data across all regional offices. All figures represent consolidated metrics without individual identifiers or personal records.</div>
-        </div>
-        <div style="margin-top:40px;padding-top:20px;border-top:1px solid #ddd;text-align:center;font-size:9px;color:#888">
-          <div>Page 1 of 1 | FY2024 regional performance roll-up</div>
-        </div>
-      </div>`;
-    
-    case 'risk_full':
-      return `<div style="background:#fff;border-radius:0;padding:0;font-family:'Calibri','Arial',sans-serif;font-size:9px;color:#222;overflow:hidden;border:2px solid #366092">
-        <table style="width:100%;border-collapse:collapse;font-size:9px">
-          <thead>
-            <tr style="background:#366092;color:#fff;font-weight:bold">
-              <td style="border:1px solid #366092;padding:6px;text-align:left">Employee ID</td>
-              <td style="border:1px solid #366092;padding:6px;text-align:left">Full Name</td>
-              <td style="border:1px solid #366092;padding:6px;text-align:left">Department</td>
-              <td style="border:1px solid #366092;padding:6px;text-align:center">Risk Score</td>
-              <td style="border:1px solid #366092;padding:6px;text-align:center">Status</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-4847</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Sarah Chen</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Risk Analytics</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">87%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#c00">HIGH</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-5921</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Marcus Johnson</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Data Engineering</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">72%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#f0a000">WARN</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-3104</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Jennifer Park</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Compliance</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">32%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-6245</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">David Torres</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Security</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">91%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#900"><strong>CRIT</strong></td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-2156</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Lisa Patterson</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Operations</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">58%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#f0a000">WARN</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-7834</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Michael Rodriguez</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Finance</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">44%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-5012</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Amanda Kumar</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Systems Admin</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">79%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#c00">HIGH</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-8901</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Kevin Walsh</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">HR Services</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">25%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-6739</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Rachel Thompson</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Legal & Compliance</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">85%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#900"><strong>CRIT</strong></td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-4521</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">James Martinez</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Database Admin</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">68%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#f0a000">WARN</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-9284</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Nicole Brooks</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Marketing</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">31%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-3567</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Robert Chen</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Infrastructure</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">88%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#900"><strong>CRIT</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>`;
-    
-    case 'pipeline':
-      return `<div style="background:#f5f5f5;border-radius:3px;padding:12px;font-family:'Consolas','Courier New',monospace;font-size:9px;color:#222;line-height:1.5;border:1px solid #999">
-        {<br>
-&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"pipeline_version"</span>: <span style="color:#0a7900">"2.1.4"</span>,<br>
-&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"stages"</span>: [<br>
-&nbsp;&nbsp;&nbsp;&nbsp;{ <span style="color:#7f0055;font-weight:bold">"name"</span>: <span style="color:#0a7900">"ingress"</span>, <span style="color:#7f0055;font-weight:bold">"protocol"</span>: <span style="color:#0a7900">"HTTPS"</span> },<br>
-&nbsp;&nbsp;&nbsp;&nbsp;{ <span style="color:#7f0055;font-weight:bold">"name"</span>: <span style="color:#0a7900">"normalize"</span>, <span style="color:#7f0055;font-weight:bold">"transforms"</span>: [<span style="color:#0a7900">"PII_strip"</span>] },<br>
-&nbsp;&nbsp;&nbsp;&nbsp;{ <span style="color:#7f0055;font-weight:bold">"name"</span>: <span style="color:#0a7900">"process"</span>, <span style="color:#7f0055;font-weight:bold">"workers"</span>: <span style="color:#325cc0">128</span> }<br>
-&nbsp;&nbsp;],<br>
-&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"output_targets"</span>: [<span style="color:#0a7900">"warehouse"</span>, <span style="color:#0a7900">"analytics_hub"</span>]\n}\n      </div>`;
-    
-    case 'health':
-      return `<div style="background:#fff;border-radius:0;padding:0;font-family:'Calibri','Arial',sans-serif;font-size:9px;color:#222;overflow:hidden;border:2px solid #203864">
-        <table style="width:100%;border-collapse:collapse;font-size:9px">
-          <thead>
-            <tr style="background:#203864;color:#fff;font-weight:bold">
-              <td style="border:1px solid #203864;padding:6px;text-align:left">Employee ID</td>
-              <td style="border:1px solid #203864;padding:6px;text-align:center">Heart Rate</td>
-              <td style="border:1px solid #203864;padding:6px;text-align:center">Blood Pressure</td>
-              <td style="border:1px solid #203864;padding:6px;text-align:center">BMI</td>
-              <td style="border:1px solid #203864;padding:6px;text-align:center">Stress</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-4847</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">78 bpm</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">124/82</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">26.4</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">7/10</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-5921</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">82 bpm</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">131/85</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">28.1</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">8/10</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-3104</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">71 bpm</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">119/76</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">23.6</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">4/10</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-6245</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">85 bpm</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">138/89</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">29.2</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">9/10</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-2156</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">74 bpm</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">121/78</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">24.8</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">5/10</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-7834</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">88 bpm</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">142/91</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">30.5</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">8/10</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-5012</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">76 bpm</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">128/80</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">25.2</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">6/10</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-6739</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">91 bpm</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">145/93</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">31.1</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">9/10</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-4521</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">79 bpm</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">125/81</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">26.9</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">7/10</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>`;
-    
-    case 'web_logs':
-      return `<div style="background:#1e1e1e;border-radius:3px;padding:10px;font-family:'Courier New',monospace;font-size:9px;color:#d4d4d4;line-height:1.5;overflow-y:auto;max-height:180px;border:1px solid #333">
-[2024-04-09 14:23:15] sess_9f4a2b | 142.175.48.221 | /api/payroll<br>
-[2024-04-09 14:23:47] sess_7d3c1e | 142.175.49.105 | /api/employees<br>
-[2024-04-09 14:24:02] sess_4b2f6a | 142.175.48.156 | /dashboard/reports<br>
-[2024-04-09 14:24:18] sess_8e1d9c | 142.175.48.221 | /api/audit-log<br>
-[2024-04-09 14:24:35] sess_5a3f7b | 203.42.61.178 | /settings/access-control<br>
-[2024-04-09 14:25:12] sess_2k9x1m | 142.175.49.201 | /api/timesheets<br>
-[2024-04-09 14:26:03] sess_4h7d2n | 142.175.48.345 | /reports/compensation<br>
-[2024-04-09 14:26:49] sess_8p3q9f | 203.42.61.215 | /api/hrms-modules<br>
-[2024-04-09 14:27:31] sess_1r5b4e | 142.175.49.112 | /admin/users<br>
-[2024-04-09 14:28:15] sess_6v2c8h | 142.175.48.398 | /api/analytics-data<br>
-[2024-04-09 14:29:02] sess_3j6w7k | 203.42.61.289 | /data/export-all<br>
-[2024-04-09 14:29:47] sess_9m4t1p | 142.175.49.067 | /api/vault-access
-      </div>`;
-    
-    case 'cust_dump':
-      return `<div style="background:#fff;border-radius:4px;padding:0;font-family:'Arial',sans-serif;font-size:9px;color:#333;overflow:hidden;border:1px solid #ccc">
-        <div style="background:#70ad47;color:#fff;padding:8px;font-weight:bold;display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px">
-          <div>Name</div><div>Email</div><div>Address</div><div>Account</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;background:#f9f9f9;font-size:8px">
-          <div>Rebecca Martinez</div><div>r.martinez@email.com</div><div>4521 Oak Lane, Portland OR</div><div>ACC-7842194</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
-          <div>Thomas Weinstein</div><div>t.weinstein@email.com</div><div>89 Maple Ave, Boston MA</div><div>ACC-5109847</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;background:#f9f9f9;font-size:8px">
-          <div>Amina Patel</div><div>a.patel@email.com</div><div>712 Cedar St, Austin TX</div><div>ACC-9284756</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
-          <div>David Johnson</div><div>d.johnson@email.com</div><div>156 Birch Rd, Seattle WA</div><div>ACC-4521038</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;background:#f9f9f9;font-size:8px">
-          <div>Sarah Chen</div><div>s.chen@email.com</div><div>923 Pine Ave, Denver CO</div><div>ACC-8374625</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
-          <div>Marcus Brown</div><div>m.brown@email.com</div><div>742 Elm Street, Chicago IL</div><div>ACC-6192847</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;background:#f9f9f9;font-size:8px">
-          <div>Jessica Kumar</div><div>j.kumar@email.com</div><div>501 Oak Pl, Miami FL</div><div>ACC-7458291</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
-          <div>Robert Garcia</div><div>r.garcia@email.com</div><div>834 Spruce Dr, Atlanta GA</div><div>ACC-5937684</div>
-        </div>
-      </div>`;
-    
-    case 'memo_847':
-      return `<div style="background:#ffffff;padding:50px 60px;font-family:'Calibri','Arial',sans-serif;font-size:11px;color:#222;line-height:1.65;max-width:900px;margin:0 auto">
-        <div style="text-align:center;margin-bottom:50px;border-bottom:3px solid #1a1a1a;padding-bottom:20px">
-          <div style="font-size:18px;font-weight:bold;letter-spacing:2px;tracking:0.05em">MEMORANDUM</div>
-          <div style="font-size:9px;color:#777;margin-top:6px;letter-spacing:1px">Steering committee · scope review</div>
-        </div>
-        <div style="margin-bottom:30px;font-size:11px">
-          <table style="width:100%;border-collapse:collapse">
-            <tr>
-              <td style="font-weight:bold;width:80px;vertical-align:top;padding:4px 0">TO:</td>
-              <td style="padding:4px 0">Executive Steering Committee</td>
-            </tr>
-            <tr>
-              <td style="font-weight:bold;vertical-align:top;padding:4px 0">FROM:</td>
-              <td style="padding:4px 0">Project Management Office</td>
-            </tr>
-            <tr>
-              <td style="font-weight:bold;vertical-align:top;padding:4px 0">DATE:</td>
-              <td style="padding:4px 0">March 15, 2024</td>
-            </tr>
-            <tr>
-              <td style="font-weight:bold;vertical-align:top;padding:4px 0">RE:</td>
-              <td style="padding:4px 0">OMNI System Scope Review</td>
-            </tr>
-          </table>
-        </div>
-        <div style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:20px 0;margin:30px 0">
-        </div>
-        <div style="margin-bottom:20px;text-align:justify;line-height:1.75">
-          <p>The OMNI system was designed to optimize employee workspace allocation using environmental sensing. The system collected behavioral patterns to improve facility management and workforce scheduling across all regional offices.</p>
-        </div>
-        <div style="margin-bottom:20px">
-          <div style="font-weight:bold;margin-bottom:12px;font-size:11px">Key Findings</div>
-          <ul style="margin:0;padding-left:20px;line-height:2">
-            <li>System exceeded stated scope without employee consent</li>
-            <li>Data collection protocols lacked transparency mechanisms</li>
-            <li>Retention policies did not align with stated minimization objectives</li>
-          </ul>
-        </div>
-        <div style="margin-bottom:30px">
-          <div style="font-weight:bold;margin-bottom:12px;font-size:11px">Recommended Action</div>
-          <p style="margin:0;text-align:justify">Conduct full audit of collection practices and revise consent procedures to align with operational scope and stakeholder expectations.</p>
-        </div>
-        <div style="margin-top:50px;padding-top:20px;border-top:1px solid #ccc;font-size:9px;color:#999;text-align:right">
-          <div>Page 1 of 1 | Policy &amp; operations review</div>
-        </div>
-      </div>`;
-    
-    case 'payroll':
-      return `<div style="background:#fff;border-radius:0;padding:0;font-family:'Calibri','Arial',sans-serif;font-size:9px;color:#222;overflow:hidden;border:2px solid #305496">
-        <table style="width:100%;border-collapse:collapse;font-size:9px">
-          <thead>
-            <tr style="background:#305496;color:#fff;font-weight:bold">
-              <td style="border:1px solid #305496;padding:6px;text-align:left">Row ref (masked)</td>
-              <td style="border:1px solid #305496;padding:6px;text-align:left">Region</td>
-              <td style="border:1px solid #305496;padding:6px;text-align:right">Base salary (review)</td>
-              <td style="border:1px solid #305496;padding:6px;text-align:center">Flag</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-01 ••••</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">West</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right"><strong>$421,800</strong></td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;background:#fff3cd;color:#856404">ADJ_GND</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-02 ••••</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">East</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right"><strong>$398,200</strong></td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;background:#fff3cd;color:#856404">ADJ_ROL</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-03 ••••</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Central</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right">$158,750</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-04 ••••</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">South</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right">$172,200</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-05 ••••</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">North</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right"><strong>$385,000</strong></td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;background:#fff3cd;color:#856404">ADJ_GEO</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-06 ••••</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">West</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right">$168,900</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-07 ••••</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">East</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right"><strong>$405,100</strong></td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;background:#fff3cd;color:#856404">ADJ_ROL</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-08 ••••</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Central</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right">$175,600</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px;font-family:Consolas,monospace;color:#555">ANON-09 ••••</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">South</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:right"><strong>$433,500</strong></td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;background:#fff3cd;color:#856404">ADJ_GND</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>`;
-    
-    case 'schools':
-      return `<div style="background:#fff;border-radius:0;padding:0;font-family:'Calibri','Arial',sans-serif;font-size:8px;color:#222;overflow:hidden;border:2px solid #366092">
-        <table style="width:100%;border-collapse:collapse;font-size:8px">
-          <thead>
-            <tr style="background:#366092;color:#fff;font-weight:bold">
-              <td style="border:1px solid #366092;padding:5px;text-align:left">Student Name</td>
-              <td style="border:1px solid #366092;padding:5px;text-align:center">Grade</td>
-              <td style="border:1px solid #366092;padding:5px;text-align:left">Guardian Name(s)</td>
-              <td style="border:1px solid #366092;padding:5px;text-align:left">School Name</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:5px">Alex Thompson</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Maria Thompson</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Lincoln Middle School</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:5px">Jordan Kim</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">8th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Susan & Michael Kim</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Jackson Academy</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:5px">Casey Rodriguez</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">6th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Carlos Rodriguez</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Jefferson Elem. School</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:5px">Morgan Fischer</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Rebecca & David Fischer</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Roosevelt Middle</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:5px">Sienna Williams</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">6th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">James Williams</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Harrison Elementary</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:5px">Ethan Lopez</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">8th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Maria & Fernando Lopez</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Jackson Academy</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:5px">Olivia Khan</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Hassan Khan</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Lincoln Middle School</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:5px">Lucas Anderson</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">6th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Patricia Anderson</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Jefferson Elem. School</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:5px">Zoe Mitchell</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Robert & Lisa Mitchell</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Roosevelt Middle</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>`;
-    
-    case 'api_abuse':
-      return `<div style="background:#1e1e1e;border-radius:3px;padding:10px;font-family:'Courier New',monospace;font-size:9px;color:#d4d4d4;line-height:1.5;overflow-y:auto;max-height:180px;border:1px solid #333">
-[2024-04-08 11:47:03] ALERT: Excessive queries /api/employees (5200 req/min vs 600 threshold)<br>
-[2024-04-08 12:15:22] ALERT: Unauthorized access attempt audit_log (role mismatch, 127 queries)<br>
-[2024-04-08 13:04:51] ALERT: Data aggregation query 18400 records (anomalous speed 3.2s)<br>
-[2024-04-08 14:02:15] WARNING: Suspicious pattern detected - bulk extraction behavior<br>
-[2024-04-08 14:15:33] INFO: Security team notified - investigation pending<br>
-[2024-04-08 15:23:41] ALERT: Large data export initiated (2.3GB download, 8 minutes)<br>
-[2024-04-08 16:04:18] WARNING: Multiple concurrent sessions from single credential (IP variance)<br>
-[2024-04-08 16:47:52] ALERT: API token abuse - rate limit exceeded (42000 req/hour)<br>
-[2024-04-08 17:12:35] CRITICAL: Unauthorized schema access detected - sensitive tables queried<br>
-[2024-04-08 18:00:09] INFO: Security lockdown initiated - all personal data APIs disabled
-      </div>`;
-    
-    default:
-      return '<div style="color:#888">Unknown file</div>';
-  }
-}
+
 
 function updateTrustUI() {
   const t = Math.round(GS.novaTrust);
@@ -2365,6 +2250,33 @@ function showDebrief(success) {
 function nextRound() {
   window.location.href = 'Mission 4.html';
 }
+
+function startRound3GameFromTutorial() {
+  const intro = document.getElementById('intro-root');
+  if (intro) {
+    intro.style.display = 'none';
+    intro.style.visibility = 'hidden';
+  }
+  prepGameShellForHack();
+  runHackSequence(function () { startMarshallDesktop(true); });
+}
+
+(function checkPlayParam() {
+  try {
+    var fromTutorial = false;
+    try {
+      fromTutorial = !!sessionStorage.getItem('m3GameplayEnter');
+      if (fromTutorial) sessionStorage.removeItem('m3GameplayEnter');
+    } catch (_) {}
+    if (fromTutorial) {
+      startRound3GameFromTutorial();
+      return;
+    }
+    if (!new URLSearchParams(location.search).has('play')) return;
+    prepGameShellForHack();
+    runHackSequence(function () { startMarshallDesktop(true); });
+  } catch (_) {}
+})();
 
 // Animate first intro page (pre-mission brief) on load
 window.addEventListener('load', () => {

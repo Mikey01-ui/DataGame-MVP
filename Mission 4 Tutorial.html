@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="gp-html-active">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Data Heist: Operation OMNI — Mission 04: The Onboarding</title>
+<title>Mission 04 — Helios ARGUS · 5-gate gameplay</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -163,6 +163,7 @@
   .r4-demo-node.avail .r4-demo-node-box{border-color:#22d3ee;color:#a5f3fc;animation:r4DemoPulse 1.6s ease-in-out infinite}
   @keyframes r4DemoPulse{0%,100%{box-shadow:0 4px 14px rgba(0,0,0,.4),0 0 0 0 rgba(34,211,238,.55)}50%{box-shadow:0 4px 14px rgba(0,0,0,.4),0 0 0 6px rgba(34,211,238,0)}}
   .r4-demo-node.sel .r4-demo-node-box{border-color:#fbbf24;color:#fef3c7;box-shadow:0 0 0 2px rgba(251,191,36,.4),0 4px 14px rgba(251,191,36,.3)}
+  .r4-demo-node.drag-target .r4-demo-node-box{border-color:#a78bfa;color:#e9d5ff;box-shadow:0 0 0 3px rgba(167,139,250,.5),0 4px 18px rgba(124,58,237,.4)}
   .r4-demo-node.drop .r4-demo-node-box{border-color:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.35),0 4px 14px rgba(34,197,94,.4)}
   .r4-demo-node.done .r4-demo-node-box{border-color:#22c55e;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(15,23,42,.95));color:#bbf7d0;filter:saturate(.85);opacity:.92}
   .r4-demo-node.done .r4-demo-node-label{color:#86efac}
@@ -201,35 +202,6 @@
   .btn-next{width:clamp(200px,22vw,300px);padding:clamp(0.6rem,1.1vh,1rem) 2vw;background:var(--orange);border:1px solid var(--orange);color:var(--void);font-family:var(--font-display);font-size:clamp(0.85rem,1.1vw,1.05rem);font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer}
   .btn-inner{display:flex;align-items:center;justify-content:center;gap:0.6rem}
 
-  #m4-page-transition{
-    position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    pointer-events:none;opacity:0;visibility:hidden;
-    background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(143,68,232,.12) 0%,transparent 55%),
-      linear-gradient(180deg,rgba(30,15,26,.98) 0%,rgba(10,6,14,.99) 100%);
-    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)
-  }
-  #m4-page-transition.active{visibility:visible;pointer-events:auto}
-  #m4-page-transition .m4-trans-kicker{
-    font-family:var(--font-mono);font-size:clamp(9px,.55rem,11px);letter-spacing:.28em;text-transform:uppercase;
-    color:rgba(0,196,28,.85);margin-bottom:14px
-  }
-  #m4-page-transition .m4-trans-title{
-    font-family:var(--font-display);font-size:clamp(1rem,2vw,1.35rem);font-weight:700;color:var(--white);
-    letter-spacing:.06em;text-align:center
-  }
-  #m4-page-transition .m4-trans-title span{color:var(--orange)}
-  #m4-page-transition .m4-trans-bar{
-    width:min(200px,40vw);height:2px;margin-top:22px;border-radius:2px;overflow:hidden;
-    background:rgba(247,148,33,.15)
-  }
-  #m4-page-transition .m4-trans-bar-fill{
-    display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green-stable),var(--orange));
-    box-shadow:0 0 12px rgba(247,148,33,.45)
-  }
-  @media(prefers-reduced-motion:reduce){
-    #m4-page-transition{backdrop-filter:none;-webkit-backdrop-filter:none;transition:opacity .2s ease}
-  }
-
   #gp-root{position:fixed;inset:0;z-index:100;background:#0b0f14}
   html.gp-html-active{overflow:hidden;height:100%}
   #gp-root *,#gp-root *::before,#gp-root *::after{box-sizing:border-box}
@@ -237,8 +209,9 @@
   body.gp-gameplay-active::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,196,28,0.11) 1px,transparent 1px),linear-gradient(90deg,rgba(0,196,28,0.11) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
   button{font-family:var(--font-body);cursor:pointer}
   button:focus{outline:2px solid rgba(143,68,232,0.5);outline-offset:2px}
-  #game{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+  #game{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;isolation:isolate}
   #game::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 30% 50%,rgba(84,0,173,0.16) 0%,transparent 70%),radial-gradient(ellipse 50% 60% at 70% 60%,rgba(0,196,28,0.11) 0%,transparent 70%)}
+  #game > #sort-banner,#game > #sort-help,#game > #main-row{position:relative;z-index:1}
   #hdr{min-height:54px;background:linear-gradient(180deg,rgba(34,24,41,.96) 0%,rgba(30,15,26,.94) 100%);border-bottom:1px solid rgba(0,196,28,.28);display:flex;align-items:center;padding:6px 18px;flex-shrink:0;z-index:3;position:relative}
   .hdr-left{font-family:var(--font-display);font-size:clamp(11px,1.2vw,14px);color:var(--cyan);letter-spacing:1px;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
   .hdr-center{flex:1;text-align:center;font-family:var(--font-display);font-size:clamp(11px,1.2vw,14px);color:var(--purple-light);letter-spacing:1.5px}
@@ -258,7 +231,7 @@
   #sort-help{font-size:11px;color:#7a9aaa;padding:8px 14px;background:rgba(0,0,0,.2);border-bottom:1px solid rgba(0,196,28,.14);flex-shrink:0;line-height:1.5}
 
   #main-row{display:flex;flex:1;overflow:hidden;min-height:0;align-items:stretch}
-  /* Left: full process canvas — fixed 62% like Five Icons */
+  /* Split matches Mission 1: #desktop-panel 62% + #right fills remainder */
   #flow-canvas-wrap{
     flex:0 0 62%;min-width:0;max-width:62%;display:flex;flex-direction:column;position:relative;overflow:hidden;
     background:linear-gradient(165deg,#0a0e16 0%,#0d1320 45%,#0a0c10 100%);
@@ -304,7 +277,7 @@
   .r4-step-pop-ok{margin-top:10px;padding:8px 10px;border-radius:6px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.35);color:#bbf7d0;font-size:10px}
   .r4-step-pop-ok i{margin-right:6px;color:#22c55e}
 
-  /* Right rail: grows to fill remainder (like Five Icons) */
+  /* Right rail: grows like Mission 1 #right (no desktop max-width cap) */
   #right-rail{
     flex:1 1 0%;min-width:0;display:flex;flex-direction:column;min-height:0;
     background:linear-gradient(180deg,rgba(34,24,41,.98) 0%,rgba(30,15,26,.98) 100%);
@@ -371,7 +344,7 @@
     background:
       linear-gradient(135deg,rgba(15,23,42,.98) 0%,rgba(30,41,59,.92) 50%,rgba(15,23,42,.98) 100%);
     border-radius:20px;border:1px solid rgba(56,189,248,.2);
-    overflow:hidden;
+    overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;
     box-shadow:
       inset 0 0 100px rgba(56,189,248,.04),
       inset 0 0 50px rgba(124,58,237,.03),
@@ -392,7 +365,7 @@
     background-size:40px 40px
   }
   .fc-canvas-inner{
-    position:relative;min-width:0;min-height:300px;width:100%
+    position:relative;width:100%;min-width:0;min-height:300px
   }
   .fc-edges{
     position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible
@@ -624,219 +597,146 @@
     .fc-node{width:56px;height:56px;margin-left:-28px;margin-top:-28px}
     .fc-node-ico{font-size:20px}
     .fc-node-label{font-size:7px}
-    .fc-canvas-inner{min-width:0}
     #r4-file-list.datasets-grid{grid-template-columns:1fr}
   }
-  html.m4-direct-play #intro-root{display:none!important}
-  html.m4-direct-play #gp-root{display:block!important}
-  html.m4-direct-play #gp-root{opacity:0}
+
+  /* ── Guided UI tutorial (pre-gameplay; debrief overlay stays above at z-index 455) ── */
+  /* Tutorial overlay above #gp-root (100). Scripted demo cursor/chip are appended to document.body with inline z-index so they always paint on top. */
+  #m4-tutorial{z-index:600;position:fixed;inset:0;pointer-events:none;font-family:var(--font-body);overflow:visible}
+  #m4-tutorial:not(.active){visibility:hidden;display:none}
+  #m4-tutorial.active{display:block;visibility:visible;pointer-events:none}
+  .m4-tut-strip{position:fixed;display:none;background:rgba(10,6,14,.82);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);pointer-events:auto;transition:opacity .2s ease;z-index:601}
+  #m4-tutorial.active .m4-tut-strip.m4-tut-strip--show{display:block}
+  #m4-tut-highlight{position:fixed;display:none;box-sizing:border-box;border:2px solid var(--orange);border-radius:8px;pointer-events:none;box-shadow:0 0 0 1px rgba(247,148,33,.35),0 0 36px rgba(247,148,33,.28),inset 0 0 18px rgba(247,148,33,.12);transition:opacity .2s ease,top .14s ease,left .14s ease,width .14s ease,height .14s ease;z-index:602;opacity:1}
+  #m4-tut-highlight.show{display:block}
+  @keyframes m4TutGlow{50%{box-shadow:0 0 0 2px rgba(247,148,33,.55),0 0 52px rgba(247,148,33,.42),inset 0 0 22px rgba(247,148,33,.18)}}
+  #m4-tut-highlight.animate-pulse{animation:m4TutGlow 2.4s ease-in-out infinite}
+  @media(prefers-reduced-motion:reduce){
+    #m4-tut-highlight,.m4-tut-strip,#m4-tut-footer{transition:none!important}
+    #m4-tut-highlight.animate-pulse{animation:none}
+  }
+  #m4-tut-full{position:fixed;inset:0;background:rgba(10,6,14,.82);backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);pointer-events:auto;display:none;z-index:601}
+  #m4-tut-full.show{display:block}
+  #m4-tut-full.m4-tut-full--demo-reveal.show{
+    background:transparent;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    pointer-events:none;
+  }
+  #m4-tut-footer{
+    position:fixed;left:50%;bottom:clamp(14px,2.5vh,28px);transform:translateX(-50%);
+    width:min(520px,calc(100vw - 24px));max-height:min(48vh,420px);
+    padding:0;
+    background:linear-gradient(175deg,rgba(28,18,36,.97),rgba(14,8,18,.98));
+    border:1px solid rgba(247,148,33,.42);
+    border-radius:10px;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,.4),
+      0 16px 56px rgba(0,0,0,.65),
+      0 0 80px rgba(247,148,33,.08);
+    pointer-events:auto;z-index:605;
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  #m4-tut-footer::before{
+    content:'';position:absolute;top:0;left:10px;right:10px;height:2px;border-radius:2px;
+    background:linear-gradient(90deg,transparent,rgba(0,196,28,.55),rgba(247,148,33,.85),rgba(143,68,232,.4),transparent);
+    opacity:.9;pointer-events:none;
+  }
+  #m4-tut-footer .m4-tut-inner{padding:clamp(16px,2vw,22px) clamp(18px,2.2vw,24px) clamp(14px,1.6vw,18px);display:flex;flex-direction:column;min-height:0}
+  #m4-tut-footer .m4-tut-kicker{
+    font-family:var(--font-mono);font-size:clamp(9px,.52rem,11px);color:rgba(0,196,28,.9);
+    letter-spacing:.22em;text-transform:uppercase;margin:0 0 8px;display:block;font-weight:600;
+  }
+  #m4-tut-title{
+    font-family:var(--font-display);
+    font-size:clamp(15px,.92rem + .5vw,1.15rem);font-weight:700;color:var(--white);
+    margin:0 0 10px;line-height:1.2;letter-spacing:-.02em;
+  }
+  #m4-tut-body{
+    font-size:clamp(13px,.88rem + .15vw,15px);line-height:1.5;color:rgba(250,247,242,.88);
+    margin:0;font-weight:400;max-height:min(28vh,220px);overflow-y:auto;overflow-x:hidden;padding-right:6px;
+    flex:1;min-height:0;scrollbar-width:thin;scrollbar-color:rgba(247,148,33,.4) rgba(0,0,0,.25);
+  }
+  #m4-tut-body::-webkit-scrollbar{width:6px}
+  #m4-tut-body::-webkit-scrollbar-thumb{background:rgba(247,148,33,.35);border-radius:6px}
+  #m4-tut-body::-webkit-scrollbar-track{background:rgba(0,0,0,.2);border-radius:6px}
+  #m4-tut-body strong{color:var(--orange);font-weight:600}
+  #m4-tut-body p{margin:0 0 10px}
+  #m4-tut-body p:last-child{margin-bottom:0}
+  #m4-tut-body ol{
+    list-style:none;counter-reset:m4step;margin:6px 0 0;padding:0;
+    display:flex;flex-direction:column;gap:12px;
+  }
+  #m4-tut-body ol > li{
+    counter-increment:m4step;position:relative;padding:2px 0 2px 2.5rem;margin:0;min-height:1.35em;
+  }
+  #m4-tut-body ol > li::before{
+    content:counter(m4step);
+    position:absolute;left:0;top:1px;width:1.65rem;height:1.65rem;border-radius:6px;
+    background:rgba(247,148,33,.12);border:1px solid rgba(247,148,33,.45);
+    color:var(--orange);font-family:var(--font-display);font-size:11px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;line-height:1;
+  }
+  #m4-tut-body ul{margin:6px 0 0;padding:8px 0 8px 14px;border-left:2px solid rgba(247,148,33,.35);list-style:disc;color:rgba(250,247,242,.88)}
+  #m4-tut-body ul li{margin:0 0 8px;padding-left:4px}
+  #m4-tut-body ul li:last-child{margin-bottom:0}
+  #m4-tut-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:12px;font-family:var(--font-mono);font-size:10px;color:rgba(250,247,242,.5);flex-shrink:0}
+  #m4-tut-counter{letter-spacing:.06em}
+  #m4-tut-phase{
+    font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);
+    padding:3px 10px;border-radius:999px;background:rgba(247,148,33,.1);border:1px solid rgba(247,148,33,.28);
+  }
+  .m4-tut-actions{
+    display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;align-items:center;
+    margin-top:14px;padding-top:14px;border-top:1px solid rgba(250,247,242,.1);flex-shrink:0;
+  }
+  #m4-tut-skip{
+    background:rgba(255,255,255,.03);border:1px solid rgba(250,247,242,.22);color:rgba(250,247,242,.9);
+    padding:10px 16px;border-radius:6px;font-family:var(--font-display);font-size:12px;font-weight:600;cursor:pointer;transition:background .2s,border-color .2s;
+  }
+  #m4-tut-skip:hover{border-color:rgba(250,247,242,.38);background:rgba(255,255,255,.06)}
+  #m4-tut-skip:focus-visible{outline:2px solid rgba(250,247,242,.45);outline-offset:2px}
+  #m4-tut-next{
+    background:rgba(247,148,33,.22);border:2px solid var(--orange);color:var(--orange);
+    padding:10px 22px;border-radius:6px;font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:.04em;cursor:pointer;
+    box-shadow:0 0 0 1px rgba(247,148,33,.15),0 4px 20px rgba(247,148,33,.2);transition:background .2s,box-shadow .2s,transform .12s;
+  }
+  #m4-tut-next:hover{background:rgba(247,148,33,.42);box-shadow:0 0 24px rgba(247,148,33,.35);transform:translateY(-1px)}
+  #m4-tut-next:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(247,148,33,.5),0 0 24px rgba(247,148,33,.35)}
+  #m4-tut-next:disabled,#m4-tut-skip:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+  /* Demo layers: GSAP drives x/y translate only; node lives on body with max stacking (inline z-index set in JS too). */
+  #m4-tut-demo-cursor,#m4-tut-demo-drag-ghost{display:none}
+  #m4-tut-demo-cursor.m4-tut-demo-cursor{
+    position:fixed;left:0;top:0;margin:0;padding:0;border:none;background:none;color:#f79421;
+    pointer-events:none;line-height:1;box-sizing:border-box;font-size:28px;
+    filter:drop-shadow(0 2px 8px rgba(0,0,0,.85));
+    transform-origin:4px 4px;
+  }
+  #m4-tut-demo-cursor .m4-tut-demo-cursor__ico{display:block}
+  #m4-tut-demo-drag-ghost,.m4-tut-demo-drag-ghost{
+    position:fixed;left:0;top:0;margin:0;pointer-events:none;box-sizing:border-box;display:none;
+    max-width:min(260px,56vw);padding:9px 14px;border-radius:10px;font-family:var(--font-mono);font-size:11px;font-weight:700;
+    color:rgba(254,249,242,.98);background:rgba(26,18,34,.98);border:2px solid #f79421;
+    box-shadow:0 4px 0 rgba(0,0,0,.35),0 14px 36px rgba(0,0,0,.55),0 0 40px rgba(247,148,33,.25);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  /* Scripted demo drives position via left/top; kill rail transitions so chips don’t appear to “fly” toward the fake cursor */
+  body:has(#m4-tutorial.m4-tut-demo-playing) #r4-file-list .ds-card{
+    transition:none!important;
+  }
+  html.m4-enter-from-brief #gp-root{opacity:0;transform:translateY(14px)}
+  html.m4-enter-from-brief #m4-tutorial{opacity:0}
 </style>
 <script>
-(function(){try{var s=new URLSearchParams(location.search);if(s.has('play'))document.documentElement.classList.add('m4-direct-play')}catch(e){}})();
+try{if(sessionStorage.getItem('m4TutorialEnter'))document.documentElement.classList.add('m4-enter-from-brief')}catch(e){}
 </script>
 </head>
-<body data-playtest-mission="4">
-<div class="ambient-glow"></div>
-<div class="scanlines"></div>
-<div class="bg-grid"></div>
-<div class="corner corner--tl"></div><div class="corner corner--tr"></div>
-<div class="corner corner--bl"></div><div class="corner corner--br"></div>
-
-<div id="m4-page-transition" aria-hidden="true">
-  <span class="m4-trans-kicker">// Channel handoff</span>
-  <div class="m4-trans-title">Opening <span>flow tutorial</span></div>
-  <div class="m4-trans-bar"><span class="m4-trans-bar-fill" id="m4-trans-bar-fill"></span></div>
-</div>
-
-<div id="intro-root">
-  <div class="status-bar">
-    <div class="status-left"><span><span class="status-dot"></span>TERMINAL ACTIVE</span><span id="clock">--:--:--</span></div>
-    <div class="status-right"><span>OP-OMNI / M04</span><span>ENCRYPTED</span></div>
-  </div>
-  <div class="page premission-brief-page active" id="page1">
-    <div class="page-eyebrow">// Mission 04 — The Onboarding</div>
-    <div class="page-title">Pre-Mission Brief</div>
-    <div class="content">
-      <div class="mission-params" aria-label="Mission parameters">
-        <div class="mp-cell"><div class="mp-label">// Confidence start</div><div class="mp-value">100%</div></div>
-        <div class="mp-cell"><div class="mp-label">// Handoffs</div><div class="mp-value">10</div></div>
-        <div class="mp-cell"><div class="mp-label">// Datasets</div><div class="mp-value">10 · staged leak set</div></div>
-        <div class="mp-cell"><div class="mp-label">// Flow source</div><div class="mp-value">OMNI case-flow</div></div>
-        <div class="mp-cell"><div class="mp-label">// Outcome</div><div class="mp-value">Map finalized</div></div>
-      </div>
-      <div class="brief-grid">
-        <div class="brief-col">
-          <div class="brief-section">
-            <div class="section-label">// Intelligence Brief</div>
-            <div class="brief-card">
-              <div class="brief-scanlines" aria-hidden="true"></div>
-              <div class="encrypted-indicator"><span class="encrypted-dot"></span>VOSS · CHANNEL</div>
-              <div class="brief-text">
-                <p><strong>VOSS.</strong> Not org-chart theater for its own sake — this is their <strong>published flow</strong>. Each artifact either <strong>feeds a gate</strong> or it doesn’t. Mis-link and we’re proving their chaos, not our rigor.</p>
-                <p><strong>NOVA.</strong> Mission 03 was <strong>audience</strong> — who may see the truth. This is <strong>process</strong> — where that truth enters their machine. My <strong>confidence</strong> starts at 100%. Wrong gate, wrong timeline story — I’ll say why.</p>
-                <p><strong>ZEX.</strong> Ten files on the rail. Ten icons on the <strong>flow spine</strong> — click each node, match data, drag before the “random dump” headline sets.</p>
-                <div class="pullquote">Link the spine. Beat the random-dump headline.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="dossier-col">
-          <div class="brief-section">
-            <div class="section-label">// Dossier</div>
-            <div class="dossier-backdrop">
-              <div class="dossier-card">
-                <div class="dc-label">Target</div>
-                <div class="dc-name">MegaCorp</div>
-                <div class="dc-role">Global conglomerate · regulated onboarding chain · OMNI case-flow</div>
-              </div>
-              <div class="dossier-card">
-                <div class="dc-label">Handler</div>
-                <div class="dc-name">Voss</div>
-                <div class="dc-role">Analyst · encrypted channel · flow reconstruction lead</div>
-              </div>
-              <div class="dossier-card">
-                <div class="dc-label">Operators</div>
-                <div class="dc-name">Kade</div>
-                <div class="dc-role">Confidence audit · field timeline · analysts won’t wait</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="button-section">
-      <button type="button" class="btn-next btn-next--ghost-premission is-locked" id="btn-continue-r4-brief" disabled onclick="goToMission4Tutorial()"><div class="btn-inner"><span>Continue</span><span>→</span></div></button>
-    </div>
-  </div>
-  <div class="page" id="page2">
-    <div class="page-eyebrow">// Mission 04 — Protocol</div>
-    <div class="page-title">Mission protocol</div>
-    <div class="content">
-      <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-number">01</div>
-          <div class="step-title">INSPECT THE STEP</div>
-          <div class="step-desc">Click any <strong>step icon</strong> on the onboarding flow — its <strong>purpose</strong>, <strong>inputs</strong>, <strong>outputs</strong>, and bottleneck appear on the canvas. Each dataset card lists its <strong>table headers</strong> as a clue.</div>
-        </div>
-        <div class="step-card">
-          <div class="step-number">02</div>
-          <div class="step-title">DRAG TO THE OPEN STEP</div>
-          <div class="step-desc">Steps unlock <strong>in order</strong> — locked icons show a 🔒, available ones pulse cyan. Drag the right dataset onto the active step; a correct drop draws a <strong>green arrow</strong> to the next stage.</div>
-        </div>
-        <div class="step-card">
-          <div class="step-number">03</div>
-          <div class="step-title">CONFIDENCE</div>
-          <div class="step-desc"><strong>Wrong drop</strong> — Nova explains, <strong>confidence</strong> drops, the meter does not heal. <strong>Right drop</strong> locks that step and unlocks the next. Complete all eight to finalize the onboarding map.</div>
-        </div>
-      </div>
-      <div class="section-label" style="margin-top:clamp(.45rem,1vh,.75rem)">// Live walkthrough</div>
-      <div id="demo-step-hint" class="demo-step-hint" aria-live="polite">Two beats: open the step, pick the matching dataset, then drag it onto that icon.</div>
-      <div id="r4-demo-panel">
-        <div class="r4-demo-phase-row"><span class="r4-demo-phase" id="r4-demo-phase">Part 1 — Inspect</span></div>
-        <div class="r4-demo-stage">
-          <!-- LEFT: step-details popup, hidden until the demo clicks a node -->
-          <aside class="r4-demo-pop hidden" id="r4-demo-pop" aria-hidden="true">
-            <div class="r4-demo-pop-h">// Step details</div>
-            <div class="r4-demo-pop-t" id="r4-demo-pop-t">Offer Letter Review</div>
-            <div class="r4-demo-pop-lane" id="r4-demo-pop-lane"><i class="fas fa-building"></i> Legal &amp; Compliance</div>
-            <div class="r4-demo-pop-section"><span class="r4-demo-pop-label">Expects</span><span id="r4-demo-pop-expects">offer terms, NDA, IP clauses</span></div>
-          </aside>
-          <!-- RIGHT: mini flow row + dataset cards -->
-          <div class="r4-demo-right">
-            <div class="r4-demo-flow" id="r4-demo-flow">
-              <div class="r4-demo-node r4-dnode-legal avail" id="r4-dn-1" data-label="Offer">
-                <div class="r4-demo-node-box"><i class="fas fa-file-signature"></i></div>
-                <div class="r4-demo-node-label">Offer</div>
-              </div>
-              <div class="r4-demo-edge" id="r4-de-1">
-                <svg viewBox="0 0 60 24" preserveAspectRatio="none"><path d="M 2 12 L 50 12 M 46 8 L 50 12 L 46 16" /></svg>
-              </div>
-              <div class="r4-demo-node r4-dnode-it" id="r4-dn-2" data-label="Identity">
-                <div class="r4-demo-node-box"><i class="fas fa-fingerprint"></i></div>
-                <div class="r4-demo-node-label">Identity</div>
-              </div>
-              <div class="r4-demo-edge" id="r4-de-2">
-                <svg viewBox="0 0 60 24" preserveAspectRatio="none"><path d="M 2 12 L 50 12 M 46 8 L 50 12 L 46 16" /></svg>
-              </div>
-              <div class="r4-demo-node r4-dnode-hr" id="r4-dn-3" data-label="Background">
-                <div class="r4-demo-node-box"><i class="fas fa-user-check"></i></div>
-                <div class="r4-demo-node-label">Background</div>
-              </div>
-              <div class="r4-demo-edge" id="r4-de-3">
-                <svg viewBox="0 0 60 24" preserveAspectRatio="none"><path d="M 2 12 L 50 12 M 46 8 L 50 12 L 46 16" /></svg>
-              </div>
-              <div class="r4-demo-node r4-dnode-hr" id="r4-dn-4" data-label="Payroll">
-                <div class="r4-demo-node-box"><i class="fas fa-id-badge"></i></div>
-                <div class="r4-demo-node-label">Payroll</div>
-              </div>
-            </div>
-            <div class="r4-demo-datasets-hdr">Candidate datasets</div>
-            <div class="r4-demo-cards" id="r4-demo-cards">
-              <div class="r4-demo-card r4-dcard-legal" id="r4-dc-card-1">
-                <div class="r4-demo-card-row"><span class="r4-demo-card-ico">📄</span><span class="r4-demo-card-name">Internal_Policy_Review.md</span></div>
-                <div class="r4-demo-card-desc">## Terms, ### NDA_Clause, ### IP_Assignment</div>
-              </div>
-              <div class="r4-demo-card r4-dcard-it" id="r4-dc-card-2">
-                <div class="r4-demo-card-row"><span class="r4-demo-card-ico">📄</span><span class="r4-demo-card-name">Session_Traffic_Log.dat</span></div>
-                <div class="r4-demo-card-desc">session_id, ip_address, user_agent, 2fa_verified</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="r4-demo-coh">
-          <span style="font-family:var(--font-mono);font-size:9px;color:#4a8aa0">DEMO NOVA CONFIDENCE</span>
-          <div class="r4-demo-coh-bar"><div class="r4-demo-coh-fill" id="r4-demo-coh-fill" style="width:100%"></div></div>
-        </div>
-        <div class="r4-demo-ghost" id="r4-demo-ghost"></div>
-        <div class="r4-demo-cursor" id="r4-demo-cursor">
-          <svg width="18" height="22" viewBox="0 0 18 22" fill="none" style="display:block;filter:drop-shadow(0 1px 3px rgba(0,0,0,.5))">
-            <path d="M1 1L1 17.5L5.5 13L10 21L13 19.5L8.5 11.5L14.5 11.5L1 1Z" fill="white" stroke="#222" stroke-width="1.2" stroke-linejoin="round"/>
-          </svg>
-          <div class="r4-demo-cur-ring"></div>
-        </div>
-      </div>
-      <div class="detection-section">
-        <div class="detection-card">
-          <div class="detection-body">
-            <div class="detection-title">
-              NOVA CONFIDENCE METER
-              <span class="detection-title-tag"><i class="fas fa-exclamation-triangle"></i> HANDOFF AUDIT</span>
-            </div>
-            <div class="detection-desc">
-              <p>Mission 03 trained <strong>who may see the data</strong>. Mission 04 is <strong>when each department takes custody</strong> along one regulated case — proving the package isn’t a random pile.</p>
-              <p>Every <strong>wrong drop</strong> cuts Nova’s <strong>confidence</strong>; the meter doesn’t heal. Complete all eight handoffs with the spine intact.</p>
-            </div>
-            <div class="detection-pills">
-              <span class="dpill dpill-high">Wrong handoff · confidence drop</span>
-              <span class="dpill dpill-mid">Step pop-up · read Expects &amp; inputs</span>
-              <span class="dpill dpill-low">Correct drop · green arrow unlocks next</span>
-            </div>
-            <div class="detection-hint-row">
-              <i class="fas fa-lightbulb dh-icon"></i>
-              <div class="dh-body">
-                <p class="dh-text"><strong>Stuck?</strong> Line up each step’s <strong>Expects</strong> line with the dataset <strong>table headers</strong> in the rail. Use the <strong>return strip</strong> to undo a chip if you mis-drop.</p>
-                <div class="dh-pills">
-                  <span class="dpill dpill-hint">Inspect step · four candidates</span>
-                  <span class="dpill dpill-hint">Return strip · undo drag</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="button-section">
-      <div style="font-family:var(--font-mono);font-size:10px;color:var(--green-stable);letter-spacing:.15em">// Ready</div>
-      <button type="button" class="btn-next" onclick="startRound4Game()"><div class="btn-inner"><span>Open process terminal</span><span>→</span></div></button>
-    </div>
-  </div>
-</div>
-
-<div id="gp-root" style="display:none">
-<div id="game" style="display:none;flex-direction:column">
+<body data-playtest-mission="4" class="gp-gameplay-active">
+<div id="gp-root" style="display:block">
+<div id="game" style="display:flex;flex-direction:column">
   <div id="hdr">
-    <div class="hdr-left"><i class="fas fa-terminal"></i> MASTERMIND TERMINAL | OPERATION OMNI</div>
-    <div class="hdr-center">MISSION 04 OF 05 / THE ONBOARDING</div>
+    <div class="hdr-left"><i class="fas fa-terminal"></i> WAR CELL | OPERATION HELIOS · ARGUS-7</div>
+    <div class="hdr-center">MISSION 04 OF 05 / MERGER BREACH RESPONSE · FIVE GATE SPINE</div>
     <div class="hdr-right">
       <div class="coh-wrap">
         <span class="coh-label">CONFIDENCE</span>
@@ -848,21 +748,20 @@
       <span class="live-dot"></span><span style="letter-spacing:1px;font-size:11px">LIVE</span>
     </div>
   </div>
-  <div id="sort-banner"><strong>Case-flow reconstruction</strong> — MegaCorp’s OMNI diagram is one regulated disclosure from open to close; your leak files are the <strong>payload each department receives</strong> at its handoff.</div>
-  <div id="sort-help"><strong>How:</strong> <strong>1)</strong> Click a <strong>gate icon</strong> — the brief opens and up to <strong>four files</strong> load in the rail. <strong>2)</strong> Drag the matching file toward that gate. <strong>3)</strong> While the file is over the icon, the gate turns <strong>purple</strong> (dashed ring) — <strong>release to drop</strong>. Correct link → <strong>green arrow</strong>; wrong link → Nova. Return strip undoes a chip.</div>
+  <div id="sort-banner"><strong>Artifact spine rebuild</strong> — After the Meridian–Vanta stack merge, a <strong>credential-plunder wave</strong> hit shared auth. Investigators leaked five raw pulls; your job is to show <strong>which team consumed which file</strong> along the sanctioned response chain—not a pile of coincidence.</div>
+  <div id="sort-help"><strong>How:</strong> <strong>1)</strong> Click a <strong>gate icon</strong> — the brief opens and candidate files load in the rail. <strong>2)</strong> Drag the matching file toward that gate. <strong>3)</strong> While the file is over the icon, the gate turns <strong>purple</strong> (dashed ring) — that means you can <strong>release to drop</strong>. Correct links <strong>green the spine</strong>; wrong links cut confidence.</div>
   <div id="main-row">
     <div id="flow-canvas-wrap">
       <div id="flow-canvas-inner">
         <div id="dist-panel">
           <div class="dist-hdr">
-            <div class="dist-title">OMNI — NEW EMPLOYEE ONBOARDING FLOW</div>
-            <div class="dist-sub">OFFER → INTEGRATION · CLICK AN ICON · DRAG DATA FROM THE RIGHT RAIL · GREEN ARROWS = STEP COMPLETE</div>
+            <div class="dist-title">HELIOS — ARGUS MERGER RESPONSE · AUTHORIZED 5 GATE SPINE</div>
+            <div class="dist-sub">LEGAL CHARTER → TRUST SESSION → DD RISK EXPORT → ENTITLEMENT FREEZE → CUTOVER ATLAS · DRAG EACH LEAK ONLY ON ITS GATE</div>
           </div>
           <div class="fc-phase-bar" id="fc-phase-bar">
-            <div class="fc-phase" data-phase="0"><span class="fc-phase-label">Offer</span></div>
-            <div class="fc-phase" data-phase="1"><span class="fc-phase-label">Verification</span></div>
-            <div class="fc-phase" data-phase="2"><span class="fc-phase-label">Provisioning</span></div>
-            <div class="fc-phase" data-phase="3"><span class="fc-phase-label">Integration</span></div>
+            <div class="fc-phase" data-phase="0"><span class="fc-phase-label">Charter</span></div>
+            <div class="fc-phase" data-phase="1"><span class="fc-phase-label">Evidence</span></div>
+            <div class="fc-phase" data-phase="2"><span class="fc-phase-label">Containment</span></div>
           </div>
           <div class="fc-canvas">
             <div class="fc-canvas-inner" id="flow-row"></div>
@@ -871,7 +770,7 @@
         <aside id="r4-step-pop" class="r4-step-pop hidden" aria-live="polite"></aside>
       </div>
       <div class="flow-canvas-footer">
-        <span id="r4-routed-count">Linked: 0 / 8</span>
+        <span id="r4-routed-count">Linked: 0 / 5</span>
         <button type="button" id="btn-submit-sort" disabled onclick="submitSort()">FINALIZE PROCESS MAP</button>
       </div>
     </div>
@@ -886,7 +785,7 @@
           <div class="bk-avatar"><i class="fas fa-shield-halved"></i></div>
           <div style="flex:1;min-width:0">
             <div class="bk-name">Operation channel</div>
-            <div class="bk-members">Voss · Nova · Kade</div>
+            <div class="bk-members">Strauss · Reyes · Malik</div>
           </div>
           <div class="bk-icons"><i class="fas fa-lock"></i></div>
         </div>
@@ -895,19 +794,10 @@
     </aside>
   </div>
 </div>
-<div id="hack-overlay">
-  <span class="ht ht-g" id="h1">OPERATION OMNI — MISSION 04 OF 05</span><br>
-  <span class="ht ht-g" id="h2">CONTINUITY BRIDGE · POST–MISSION 03</span><br><br>
-  <span class="ht" id="h3">Payload: <span class="ht-a">STRUCTURE_QUEUE.enc</span> — reconstruct one cross-dept disclosure case</span><br>
-  <span class="ht" id="h4">Objective: <span class="ht-g">PLACE EACH LEAK AT THE RIGHT HANDOFF · DEFEAT “RANDOM DUMP”</span></span><br>
-  <span class="ht" id="h5"><span class="ht-r">⚠</span> <span class="ht-a">8 DATASETS · PROCESS GATES</span></span><br>
-  <span class="ht" id="h6">Channel: <span class="ht-g">BUNDLE REVIEW</span></span><br>
-  <span class="ht" id="h7"><span class="ht-cur"></span></span>
-</div>
 <div id="debrief-screen">
   <div class="db-header">
-    <div class="deb-eyebrow" id="deb-eyebrow">// Mission 04</div>
-    <div class="deb-title" id="deb-title">THE ONBOARDING</div>
+    <div class="deb-eyebrow" id="deb-eyebrow">// ARGUS-7 dossier closed</div>
+    <div class="deb-title" id="deb-title">HELIOS RESPONSE SPINE</div>
   </div>
   <div class="db-main">
     <div class="db-panel">
@@ -916,7 +806,7 @@
       <div class="mr-detect" id="mr-detect"></div>
     </div>
     <div class="db-panel">
-      <div class="db-panel-label" id="deb-tradecraft-label">// TRADECRAFT — VOSS · NOVA</div>
+      <div class="db-panel-label" id="deb-tradecraft-label">// TRADECRAFT — STRAUSS · REYES · MALIK</div>
       <div class="tc-content" id="tc-content"></div>
     </div>
   </div>
@@ -925,124 +815,107 @@
   </div>
 </div>
 </div>
+<div id="m4-tutorial" role="dialog" aria-modal="true" aria-labelledby="m4-tut-title">
+  <div id="m4-tut-strip-t" class="m4-tut-strip" aria-hidden="true"></div>
+  <div id="m4-tut-strip-b" class="m4-tut-strip" aria-hidden="true"></div>
+  <div id="m4-tut-strip-l" class="m4-tut-strip" aria-hidden="true"></div>
+  <div id="m4-tut-strip-r" class="m4-tut-strip" aria-hidden="true"></div>
+  <div id="m4-tut-full" class="m4-tut-full" aria-hidden="true"></div>
+  <div id="m4-tut-highlight" class="animate-pulse" aria-hidden="true"></div>
+  <div id="m4-tut-footer">
+    <div class="m4-tut-inner">
+    <span class="m4-tut-kicker">Briefing overlay</span>
+    <div class="m4-tut-meta">
+      <span id="m4-tut-counter"></span>
+      <span id="m4-tut-phase"></span>
+    </div>
+    <h3 id="m4-tut-title">Title</h3>
+    <div id="m4-tut-body"></div>
+    <div class="m4-tut-actions">
+      <button type="button" id="m4-tut-skip">Skip tutorial</button>
+      <button type="button" id="m4-tut-next">Next</button>
+    </div>
+    </div>
+  </div>
+</div>
 
 <script>
 'use strict';
 
 /**
- * NEW EMPLOYEE ONBOARDING PROCESS at MegaCorp
- * A realistic end-to-end flow showing how a new hire moves through the organization
- * from offer acceptance to fully integrated team member.
+ * Operation Helios / ARGUS-7 — fictional merger-breach war-room chain.
+ * Internal step ids + file ids unchanged for engine grading.
  */
 const STEPS = [
   {
     id: 'offer-review',
-    lane: 'Legal & Compliance',
+    lane: 'Outside counsel — charter',
     deptCls: 'dept-legal',
     chipCls: 'legal',
-    title: 'Offer Letter Review',
-    bottleneck: 'No signed offer → candidate not legally committed',
-    purpose: 'Legal reviews the **offer terms, NDA, and IP assignment** clauses. HR cannot proceed until Legal signs off on employment contract compliance.',
-    inputs: 'Draft offer letter, compensation terms, NDA templates, IP agreements.',
-    outputs: 'Approved offer package ready for candidate signature.',
+    title: 'Charter Freeze',
+    bottleneck: 'No signed charter → regulators posture you as stonewalling evidence.',
+    purpose: 'Counsel locks **privileged boundaries**, **press embargo blocks**, and which artefacts may circulate outside the SOC vault.',
+    inputs: 'Incident_scope, regulator_case placeholders, redaction appendix language.',
+    outputs: 'Signed ARGUS charter + binding redaction appendix for downstream teams.',
     okFile: 'memo_847'
   },
   {
     id: 'identity-verify',
-    lane: 'IT — Security',
+    lane: 'Zero Trust Engineering',
     deptCls: 'dept-it',
     chipCls: 'it',
-    title: 'Identity Verification',
-    bottleneck: 'Unverified identity → cannot create secure credentials',
-    purpose: 'IT Security runs **identity verification** using login attempts from the candidate portal, device fingerprints, and 2FA. Confirms the person is who they claim.',
-    inputs: 'Portal session logs, IP traces, device metadata, 2FA verification records.',
-    outputs: 'Verified identity profile linked to employee record.',
+    title: 'Session Forensics Pass',
+    bottleneck: 'Spoofed employee sessions confuse attribution timelines.',
+    purpose: 'ZTE replays **device posture**, **geo deltas**, and **MFA verdicts** for the Meridian cohort tagged in IOC-ARGUS.',
+    inputs: 'session_id traces, asn_pair, adaptive_auth_challenge_outcome.',
+    outputs: 'Attribution pack separating hostile takeover from traveller-VPN noise.',
     okFile: 'web_logs'
   },
   {
     id: 'background-check',
-    lane: 'HR — Compliance',
+    lane: 'Third-party risk desk',
     deptCls: 'dept-hr',
     chipCls: 'hr',
-    title: 'Background Check',
-    bottleneck: 'Failed background → offer rescinded before Day 1',
-    purpose: 'HR Compliance runs **criminal, education, and employment verification**. Risk scoring determines if candidate meets company standards.',
-    inputs: 'Background check results, criminal records, education verification, employment history.',
-    outputs: 'Risk assessment score and compliance clearance for hire.',
+    title: 'Vendor Diligence Gate',
+    bottleneck: 'Unscoped vendors → AML-style exposure if Meridian auth shim leaks.',
+    purpose: 'TPRM merges **SOC2 deltas**, **subprocessor attestations**, and **open gap tiers** across the integration backlog.',
+    inputs: 'control_family, residual_risk_pct, escalation_tier, auditor_refs.',
+    outputs: 'Go / no-go on keeping processors live during remediation.',
     okFile: 'risk_full'
   },
   {
-    id: 'health-screen',
-    lane: 'HR — Benefits',
-    deptCls: 'dept-hr',
-    chipCls: 'hr',
-    title: 'Health Screening',
-    bottleneck: 'Missing health data → cannot enroll in benefits',
-    purpose: 'HR Benefits collects **pre-employment health screening** results for insurance enrollment and workplace safety compliance.',
-    inputs: 'Drug screening results, physical exam data, vaccination records.',
-    outputs: 'Health clearance and benefits eligibility confirmation.',
-    okFile: 'health'
-  },
-  {
-    id: 'payroll-setup',
-    lane: 'HR — Payroll',
-    deptCls: 'dept-hr',
-    chipCls: 'hr',
-    title: 'Payroll & Tax Setup',
-    bottleneck: 'Incomplete tax forms → cannot process first paycheck',
-    purpose: 'HR Payroll configures **salary, tax withholdings, and direct deposit**. Employee completes W-4, I-9, and banking information.',
-    inputs: 'Salary data, tax forms (W-4, I-9), direct deposit info, equity grant details.',
-    outputs: 'Active payroll record ready for first pay cycle.',
-    okFile: 'payroll'
-  },
-  {
     id: 'data-access',
-    lane: 'IT — Data Governance',
+    lane: 'Data governance war room',
     deptCls: 'dept-it',
     chipCls: 'it',
-    title: 'Data Access Setup',
-    bottleneck: 'No data access → cannot perform job duties',
-    purpose: 'IT Data Gov provisions **database and system access** based on role. New hire gets permissions to customer data, internal tools, and reporting.',
-    inputs: 'Role access matrix, database permissions, customer data scope.',
-    outputs: 'Provisioned access to all required data systems.',
+    title: 'Entitlement Freeze Matrix',
+    bottleneck: 'Stale IAM grants propagate after lateral movement.',
+    purpose: 'Data Gov publishes **effective lakehouse privileges** and **freeze_state** keyed to SKU / shard.',
+    inputs: 'table_name, privilege_tier (L0–L4), rw_flag, owner_svc.',
+    outputs: 'Authoritative revocation batch infra robots replay cluster-wide.',
     okFile: 'cust_dump'
   },
   {
-    id: 'dependent-benefits',
-    lane: 'HR — Benefits',
-    deptCls: 'dept-hr',
-    chipCls: 'hr',
-    title: 'Dependent Enrollment',
-    bottleneck: 'Missing dependent info → family not covered',
-    purpose: 'HR Benefits enrolls **family members and dependents** in health, dental, and life insurance. Includes children education benefits.',
-    inputs: 'Dependent names, birth dates, SSNs, school enrollment data.',
-    outputs: 'Full family benefits package activated.',
-    okFile: 'schools'
-  },
-  {
-    id: 'performance-goals',
-    lane: 'Operations — Management',
-    deptCls: 'dept-ops',
-    chipCls: 'ops',
-    title: 'Performance Setup',
-    bottleneck: 'No goals → cannot measure success or bonus eligibility',
-    purpose: 'Management sets **90-day objectives and KPIs** aligned with team goals. Performance review cycle is initialized with baseline metrics.',
-    inputs: 'Team OKRs, individual goals, success metrics, bonus structure.',
-    outputs: 'Documented performance plan and probation review schedule.',
-    okFile: 'omni_exec'
+    id: 'systems-training',
+    lane: 'Fusion architecture cell',
+    deptCls: 'dept-it',
+    chipCls: 'it',
+    title: 'Cutover Atlas Drill',
+    bottleneck: 'Drift between runbooks and mesh reality → premature all-clear.',
+    purpose: 'Arch ships the **dependency DAG**, **SLO budget burns**, and **pager lanes** so execs rehearse before green-light.',
+    inputs: 'service_mesh_nodes, blast_radius, slo_budget_ms, failover IDs.',
+    outputs: 'Comms-approved cutover atlas + rollback kill-tree.',
+    okFile: 'pipeline'
   }
 ];
 
-/** Same ids + filenames as Mission 03 `DATASETS`. Preview: `getDocumentPreview`. */
+/** Preview bodies in `getDocumentPreview`; internal ids unchanged. */
 const FILES = [
-  { id: 'omni_exec', name: 'Q4_Performance_Review.pdf', desc: 'goal_title, metric_target, review_date, manager_id' },
-  { id: 'risk_full', name: 'Personnel_Assessment_Export.xlsx', desc: 'criminal_flag, education_verified, prior_employer, risk_score' },
-  { id: 'health', name: 'Health_Screening_Results.dat', desc: 'test_type, result_status, exam_date, physician_id' },
-  { id: 'web_logs', name: 'Session_Traffic_Log.dat', desc: 'session_id, ip_address, user_agent, 2fa_verified' },
-  { id: 'cust_dump', name: 'User_Database_Backup.csv', desc: 'table_name, permission_level, read_write, schema_access' },
-  { id: 'memo_847', name: 'Internal_Policy_Review.md', desc: '## Terms, ### NDA_Clause, ### IP_Assignment, signatory' },
-  { id: 'payroll', name: 'Compensation_Review_Report.csv', desc: 'base_salary, tax_withholding, bank_routing, equity_grant' },
-  { id: 'schools', name: 'Community_Program_Roster.csv', desc: 'dependent_name, birth_date, relationship, enrollment_id' },
+  { id: 'risk_full', name: 'VENDOR_CONTROL_GAP_MERIDIAN_Q2.xlsx', desc: 'control_family, residual_risk_pct, escalation_tier, auditor_ref' },
+  { id: 'pipeline', name: 'FUSION_CUTOVER_DAG_revK.json', desc: 'service_name, blast_radius, slo_budget_ms, pager_lane' },
+  { id: 'web_logs', name: 'ADAPTIVE_AUTH_COHORT.tsv', desc: 'session_id, geo_delta_km, device_trust, mfa_challenge_outcome' },
+  { id: 'cust_dump', name: 'PRIV_MATRIX_FREEZE_APPEND.csv', desc: 'table_name, privilege_tier, rw_flag, freeze_state, owner_svc' },
+  { id: 'memo_847', name: 'ARGUS7_CHARTER_REDACTION_v3.md', desc: '# Incident_scope · ## Press_embargo_blocks · regulator_case_id stub' }
 ];
 
 const DATASET_CANDIDATE_CAP = 4;
@@ -1118,36 +991,29 @@ function getDatasetCandidatesForStep(stepId) {
   return finalOrder;
 }
 
-/** Optional Nova copy when a file hits a specific wrong gate (sparse). */
+/** Optional Reyes copy when a file hits a specific wrong gate (five-icon path). */
 const WRONG_STEP_OVERRIDES = {
   memo_847: {
-    'identity-verify': 'The offer letter is <strong>Legal\'s first step</strong> — it must be approved before IT can verify identity.',
-    'background-check': 'Legal reviews the <strong>offer terms</strong> first, then HR runs background checks.'
+    'identity-verify': 'Charter freezes <strong>press + privilege scope</strong> — adaptive auth telemetry comes after counsel binds the narrative.',
+    'background-check': 'Vendor diligence needs the <strong>charter appendix</strong> — this memo is upstream legal glue, not TPRM rows.'
   },
   web_logs: {
-    'offer-review': 'Session logs verify <strong>identity</strong>, not <strong>contract terms</strong> — wrong starting step.',
-    'background-check': 'Portal logs are for <strong>identity verification</strong>, not <strong>background screening</strong>.'
+    'offer-review': 'Forensic cohorts validate <strong>sessions</strong>, not embargo language — wrong first gate.',
+    'background-check': 'Adaptive MFA evidence serves <strong>ZTE attribution</strong>, not subprocess control gaps.'
   },
   risk_full: {
-    'health-screen': 'Background checks are <strong>risk assessment</strong>, not <strong>health screening</strong> — different HR lane.',
-    'identity-verify': 'This is <strong>HR compliance data</strong>, not <strong>IT identity verification</strong>.'
-  },
-  health: {
-    'background-check': 'Health screening is <strong>benefits enrollment</strong>, not <strong>compliance risk check</strong>.',
-    'payroll-setup': 'Medical data goes to <strong>health screening</strong>, not <strong>payroll setup</strong>.'
-  },
-  payroll: {
-    'health-screen': 'Compensation data is for <strong>payroll setup</strong>, not <strong>health screening</strong>.',
-    'data-access': 'Tax forms and salary go to <strong>HR Payroll</strong>, not <strong>IT Data Governance</strong>.'
+    'offer-review': 'Control-gap ledgers unlock after <strong>charter</strong> and <strong>session proof</strong> — not standalone legal.',
+    'identity-verify': 'This sheet is <strong>TPRM</strong>; it does not answer “who spoofed Meridian MFA.”'
   },
   cust_dump: {
-    'payroll-setup': 'System access isn\'t <strong>payroll</strong> — this is <strong>IT data provisioning</strong>.'
+    'offer-review': 'Freeze matrices are Data Gov ops — counsel does not own privilege tiers.',
+    'identity-verify': 'Entitlements follow corroborated sessions + vendor clears — premature drop.',
+    'background-check': '<code>freeze_state</code> / <code>owner_svc</code> live in Data Gov, not vendor scoring.'
   },
-  schools: {
-    'performance-goals': 'Dependent info is for <strong>benefits enrollment</strong>, not <strong>performance goals</strong>.'
-  },
-  omni_exec: {
-    'dependent-benefits': 'Performance reviews set <strong>goals</strong>, not <strong>benefits enrollment</strong>.'
+  pipeline: {
+    'offer-review': 'Cutover atlas is the fuse box — charter does not own mesh DAGs.',
+    'data-access': 'DAG drill is post-freeze rehearsal — permissions come first.',
+    'identity-verify': 'Atlas rehearsals sit <strong>after</strong> we know IAM reality and vendor posture.'
   }
 };
 
@@ -1164,25 +1030,19 @@ function correctStepIdForFile(fid) {
  * Short "expected input" hint per step — match queue filename to this + icon title.
  */
 const STEP_DATA_HINT = {
-  'offer-review': 'Offer letter, NDA, IP clauses (Legal)',
-  'identity-verify': 'Session logs, 2FA verification (IT)',
-  'background-check': 'Criminal, education, employment check (HR)',
-  'health-screen': 'Drug test, physical, vaccination records (HR)',
-  'payroll-setup': 'W-4, I-9, direct deposit, salary (HR)',
-  'data-access': 'Database permissions, role access (IT)',
-  'dependent-benefits': 'Family info, school enrollment (HR)',
-  'performance-goals': 'OKRs, KPIs, 90-day objectives (Ops)'
+  'offer-review': 'ARGUS charter + redaction appendix (outside counsel)',
+  'identity-verify': 'Adaptive MFA / session attribution (ZTE)',
+  'background-check': 'Vendor SOC2 deltas + escalation tiers (TPRM)',
+  'data-access': 'Lakehouse privileges + freeze_state (Data Gov)',
+  'systems-training': 'Cutover DAG + SLO / pager rehearsal (Fusion arch)'
 };
 
 const STEP_FLOW_ICONS = {
   'offer-review': 'fa-file-signature',
   'identity-verify': 'fa-fingerprint',
   'background-check': 'fa-user-check',
-  'health-screen': 'fa-heart-pulse',
-  'payroll-setup': 'fa-money-bill-wave',
   'data-access': 'fa-database',
-  'dependent-benefits': 'fa-people-roof',
-  'performance-goals': 'fa-chart-line'
+  'systems-training': 'fa-laptop-code'
 };
 
 function isStepSatisfied(stepId) {
@@ -1193,7 +1053,7 @@ function isStepSatisfied(stepId) {
 
 /** Edge i connects node i → i+1. Greens when the step at node i is satisfied (arrow leaves a completed icon). Start→first edge has no completed source; first green appears after STEPS[0] locks. */
 function isFlowEdgeComplete(i) {
-  if (i >= 1 && i <= STEPS.length) return isStepSatisfied(STEPS[i - 1].id);
+  if (i >= 1 && i < STEPS.length) return isStepSatisfied(STEPS[i - 1].id);
   return false;
 }
 
@@ -1268,145 +1128,84 @@ function scheduleFlowLayout() {
 
 function getDocumentPreview(id) {
   switch (id) {
-    case 'omni_exec':
-      return `<div style="background:#ffffff;padding:50px 60px;font-family:'Calibri','Arial',sans-serif;font-size:11px;color:#222;line-height:1.7;max-width:900px;margin:0 auto">
-        <div style="text-align:center;margin-bottom:40px">
-          <div style="font-size:24px;font-weight:bold;color:#1a1a1a;margin-bottom:8px">Q4 Performance Review</div>
-          <div style="font-size:11px;color:#666;letter-spacing:0.5px">Executive Summary — Fiscal Year 2024</div>
-        </div>
-        <div style="border-bottom:2px solid #333;padding-bottom:25px;margin-bottom:30px">
-          <div style="display:grid;grid-template-columns:150px 1fr;gap:15px;font-size:10px">
-            <div style="font-weight:bold;color:#333">Date Prepared:</div>
-            <div>April 8, 2024</div>
-            <div style="font-weight:bold;color:#333">Document type:</div>
-            <div>Executive summary (aggregates only)</div>
-          </div>
-        </div>
-        <div style="margin-bottom:30px">
-          <div style="font-size:13px;font-weight:bold;color:#1a1a1a;margin-bottom:15px">Performance Metrics</div>
-          <div style="margin-left:20px;line-height:2">
-            <div><strong>Revenue Impact:</strong> \$2.3M</div>
-            <div><strong>Implementation Cost:</strong> \$847K</div>
-            <div><strong>Net Benefit:</strong> \$1.45M (171% ROI)</div>
-          </div>
-        </div>
-        <div style="margin-bottom:30px">
-          <div style="font-size:13px;font-weight:bold;color:#1a1a1a;margin-bottom:15px">Market Adoption by Segment</div>
-          <div style="margin-left:20px;line-height:2">
-            <div>Healthcare: 34% adoption</div>
-            <div>Finance: 28% adoption</div>
-            <div>Retail: 22% adoption</div>
-            <div>Other sectors: 16% adoption</div>
-          </div>
-        </div>
-        <div style="background:#f9f9f9;border-left:4px solid #366092;padding:15px 20px;margin:30px 0;font-size:10px;line-height:1.8">
-          <div style="font-weight:bold;margin-bottom:8px">Summary</div>
-          <div>This analysis reflects aggregated operational performance data across all regional offices. All figures represent consolidated metrics without individual identifiers or personal records.</div>
-        </div>
-        <div style="margin-top:40px;padding-top:20px;border-top:1px solid #ddd;text-align:center;font-size:9px;color:#888">
-          <div>Page 1 of 1 | FY2024 regional performance roll-up</div>
-        </div>
-      </div>`;
-    
     case 'risk_full':
       return `<div style="background:#fff;border-radius:0;padding:0;font-family:'Calibri','Arial',sans-serif;font-size:9px;color:#222;overflow:hidden;border:2px solid #366092">
         <table style="width:100%;border-collapse:collapse;font-size:9px">
           <thead>
             <tr style="background:#366092;color:#fff;font-weight:bold">
-              <td style="border:1px solid #366092;padding:6px;text-align:left">Employee ID</td>
-              <td style="border:1px solid #366092;padding:6px;text-align:left">Full Name</td>
-              <td style="border:1px solid #366092;padding:6px;text-align:left">Department</td>
-              <td style="border:1px solid #366092;padding:6px;text-align:center">Risk Score</td>
-              <td style="border:1px solid #366092;padding:6px;text-align:center">Status</td>
+              <td style="border:1px solid #366092;padding:6px;text-align:left">Vendor_ref</td>
+              <td style="border:1px solid #366092;padding:6px;text-align:left">control_family</td>
+              <td style="border:1px solid #366092;padding:6px;text-align:center">residual_risk_pct</td>
+              <td style="border:1px solid #366092;padding:6px;text-align:center">escalation_tier</td>
+              <td style="border:1px solid #366092;padding:6px;text-align:left">auditor_ref</td>
             </tr>
           </thead>
           <tbody>
             <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-4847</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Sarah Chen</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Risk Analytics</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">87%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#c00">HIGH</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">VND-KITE-884</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">CC6.7 · incident response SLA</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">71%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#c00">T2</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">A-KPM-4471‑ARG</td>
             </tr>
             <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-5921</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Marcus Johnson</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Data Engineering</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">72%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#f0a000">WARN</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">VND-OATH-091</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">CC7.4 · MFA policy drift</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">64%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#f0a000">T1</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">A-DTT-9820‑SOC2</td>
             </tr>
             <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-3104</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Jennifer Park</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Compliance</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">32%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">VND-MER-auth</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">CC9.3 · subdomain processor list</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">93%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#900"><strong>T3</strong></td>
+              <td style="border:1px solid #d0d0d0;padding:6px">INTERNAL-PRIV-ARGUS7</td>
             </tr>
             <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-6245</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">David Torres</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Security</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">91%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#900"><strong>CRIT</strong></td>
+              <td style="border:1px solid #d0d0d0;padding:6px">VND-LATT-662</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">A1 · availability failover proof</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">41%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">T0</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">A-BDO-7734‑ATL</td>
             </tr>
             <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-2156</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Lisa Patterson</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Operations</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">VND-CIRR-204</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">PRV-18 · DPIA rollover</td>
               <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">58%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#f0a000">WARN</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#f0a000">T1</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">EU-DPA-REV-K</td>
             </tr>
             <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-7834</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Michael Rodriguez</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Finance</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">44%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-5012</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Amanda Kumar</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Systems Admin</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">79%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#c00">HIGH</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-8901</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Kevin Walsh</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">HR Services</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">25%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-6739</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Rachel Thompson</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Legal & Compliance</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">85%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#900"><strong>CRIT</strong></td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-4521</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">James Martinez</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Database Admin</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">68%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#f0a000">WARN</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-9284</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Nicole Brooks</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Marketing</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">31%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#008000">OK</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:6px">EMP-3567</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Robert Chen</td>
-              <td style="border:1px solid #d0d0d0;padding:6px">Infrastructure</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">88%</td>
-              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#900"><strong>CRIT</strong></td>
+              <td style="border:1px solid #d0d0d0;padding:6px">VND-STMP-773</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">CC8 · change ticketing gaps</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center">76%</td>
+              <td style="border:1px solid #d0d0d0;padding:6px;text-align:center;color:#c00">T2</td>
+              <td style="border:1px solid #d0d0d0;padding:6px">A-PWC-ARGUS-CH</td>
             </tr>
           </tbody>
         </table>
+      </div>`;
+    
+    case 'pipeline':
+      return `<div style="background:#f5f5f5;border-radius:3px;padding:12px;font-family:'Consolas','Courier New',monospace;font-size:9px;color:#222;line-height:1.55;border:1px solid #999">
+        {<br>
+&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"cutover_wave"</span>: <span style="color:#0a7900">"ARGUS_MERIDIAN_B"</span>,<br>
+&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"services"</span>: [<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"service_name"</span>: <span style="color:#0a7900">"auth-proxy-east"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"blast_radius"</span>: <span style="color:#0a7900">"edge_login + token mint"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"slo_budget_ms"</span>: <span style="color:#325cc0">120</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"pager_lane"</span>: <span style="color:#0a7900">"oncall/zero-trust"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"service_name"</span>: <span style="color:#0a7900">"lakehouse-ingest"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"blast_radius"</span>: <span style="color:#0a7900">"batch writers + iceberg"</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"slo_budget_ms"</span>: <span style="color:#325cc0">840</span>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#7f0055;font-weight:bold">"pager_lane"</span>: <span style="color:#0a7900">"data-platform/sev2"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;]<br>
+}
       </div>`;
     
     case 'health':
@@ -1490,97 +1289,93 @@ function getDocumentPreview(id) {
       </div>`;
     
     case 'web_logs':
-      return `<div style="background:#1e1e1e;border-radius:3px;padding:10px;font-family:'Courier New',monospace;font-size:9px;color:#d4d4d4;line-height:1.5;overflow-y:auto;max-height:180px;border:1px solid #333">
-[2024-04-09 14:23:15] sess_9f4a2b | 142.175.48.221 | /api/payroll<br>
-[2024-04-09 14:23:47] sess_7d3c1e | 142.175.49.105 | /api/employees<br>
-[2024-04-09 14:24:02] sess_4b2f6a | 142.175.48.156 | /dashboard/reports<br>
-[2024-04-09 14:24:18] sess_8e1d9c | 142.175.48.221 | /api/audit-log<br>
-[2024-04-09 14:24:35] sess_5a3f7b | 203.42.61.178 | /settings/access-control<br>
-[2024-04-09 14:25:12] sess_2k9x1m | 142.175.49.201 | /api/timesheets<br>
-[2024-04-09 14:26:03] sess_4h7d2n | 142.175.48.345 | /reports/compensation<br>
-[2024-04-09 14:26:49] sess_8p3q9f | 203.42.61.215 | /api/hrms-modules<br>
-[2024-04-09 14:27:31] sess_1r5b4e | 142.175.49.112 | /admin/users<br>
-[2024-04-09 14:28:15] sess_6v2c8h | 142.175.48.398 | /api/analytics-data<br>
-[2024-04-09 14:29:02] sess_3j6w7k | 203.42.61.289 | /data/export-all<br>
-[2024-04-09 14:29:47] sess_9m4t1p | 142.175.49.067 | /api/vault-access
+      return `<div style="background:#1e1e1e;border-radius:3px;padding:10px;font-family:'Courier New',monospace;font-size:9px;color:#d4d4d4;line-height:1.55;overflow-y:auto;max-height:180px;border:1px solid #333">
+[2026-03-02 06:41:09] sess_mrd_91 | geo_delta_km=4200 | device_trust=low | outcome=challenge_push<br>
+[2026-03-02 06:41:22] sess_mrd_92 | geo_delta_km=12 | device_trust=high | outcome=grant_token<br>
+[2026-03-02 06:42:01] sess_mrd_93 | geo_delta_km=8600 | device_trust=unknown | outcome=blocked_stepup<br>
+[2026-03-02 06:43:17] sess_mrd_94 | geo_delta_km=28 | device_trust=medium | outcome=passwd_plus_sms<br>
+[2026-03-02 06:44:55] sess_mrd_95 | geo_delta_km=15 | device_trust=high | outcome=sso_resume<br>
+[2026-03-02 06:47:03] sess_mrd_96 | geo_delta_km=11000 | device_trust=stolen_cookie | outcome=hard_fail_audit<br>
+[2026-03-02 06:48:40] sess_mrd_97 | geo_delta_km=3 | device_trust=mdm_bound | outcome=grant_token<br>
+[2026-03-02 06:50:12] sess_mrd_98 | geo_delta_km=720 | device_trust=low | outcome=webauthn_required<br>
+[2026-03-02 06:52:31] sess_mrd_99 | geo_delta_km=55 | device_trust=medium | outcome=timed_lockout<br>
+[2026-03-02 06:53:58] sess_mrd_9a | geo_delta_km=9400 | device_trust=tor_exit | outcome=challenge_push<br>
+[2026-03-02 06:56:41] sess_mrd_9b | geo_delta_km=9 | device_trust=high | outcome=grant_token
       </div>`;
     
     case 'cust_dump':
       return `<div style="background:#fff;border-radius:4px;padding:0;font-family:'Arial',sans-serif;font-size:9px;color:#333;overflow:hidden;border:1px solid #ccc">
-        <div style="background:#70ad47;color:#fff;padding:8px;font-weight:bold;display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px">
-          <div>Name</div><div>Email</div><div>Address</div><div>Account</div>
+        <div style="background:#1e3a5f;color:#fff;padding:8px;font-weight:bold;display:grid;grid-template-columns:1.2fr .7fr .4fr .6fr .9fr;gap:8px;font-size:8px">
+          <div>table_name</div><div>privilege_tier</div><div>rw_flag</div><div>freeze_state</div><div>owner_svc</div>
         </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;background:#f9f9f9;font-size:8px">
-          <div>Rebecca Martinez</div><div>r.martinez@email.com</div><div>4521 Oak Lane, Portland OR</div><div>ACC-7842194</div>
+        <div style="display:grid;grid-template-columns:1.2fr .7fr .4fr .6fr .9fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;background:#f9f9f9;font-size:8px">
+          <div>silver.meridian_profile_v3</div><div>L3</div><div>rw</div><div>HARD</div><div>svc-lake-batch</div>
         </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
-          <div>Thomas Weinstein</div><div>t.weinstein@email.com</div><div>89 Maple Ave, Boston MA</div><div>ACC-5109847</div>
+        <div style="display:grid;grid-template-columns:1.2fr .7fr .4fr .6fr .9fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
+          <div>gold.payroll_aggregate_eu</div><div>L4</div><div>read</div><div>SOFT</div><div>svc-analytics-etl</div>
         </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;background:#f9f9f9;font-size:8px">
-          <div>Amina Patel</div><div>a.patel@email.com</div><div>712 Cedar St, Austin TX</div><div>ACC-9284756</div>
+        <div style="display:grid;grid-template-columns:1.2fr .7fr .4fr .6fr .9fr;gap:8px;padding:8px;background:#f9f9f9;font-size:8px;border-bottom:1px solid #e0e0e0">
+          <div>bronze.firewall_telemetry_dl</div><div>L1</div><div>rw</div><div>OPEN</div><div>svc-soc-stream</div>
         </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
-          <div>David Johnson</div><div>d.johnson@email.com</div><div>156 Birch Rd, Seattle WA</div><div>ACC-4521038</div>
+        <div style="display:grid;grid-template-columns:1.2fr .7fr .4fr .6fr .9fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
+          <div>silver.hr_integration_staging</div><div>L2</div><div>rw</div><div>HARD</div><div>svc-hris-sync</div>
         </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;background:#f9f9f9;font-size:8px">
-          <div>Sarah Chen</div><div>s.chen@email.com</div><div>923 Pine Ave, Denver CO</div><div>ACC-8374625</div>
+        <div style="display:grid;grid-template-columns:1.2fr .7fr .4fr .6fr .9fr;gap:8px;padding:8px;background:#f9f9f9;font-size:8px;border-bottom:1px solid #e0e0e0">
+          <div>gold.customer_360_projection</div><div>L4</div><div>read</div><div>HARD</div><div>svc-cdp-batch</div>
         </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
-          <div>Marcus Brown</div><div>m.brown@email.com</div><div>742 Elm Street, Chicago IL</div><div>ACC-6192847</div>
+        <div style="display:grid;grid-template-columns:1.2fr .7fr .4fr .6fr .9fr;gap:8px;padding:8px;font-size:8px;border-bottom:1px solid #e0e0e0">
+          <div>silver.adaptive_auth_decisions</div><div>L2</div><div>read</div><div>OPEN</div><div>svc-zte-ingest</div>
         </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;background:#f9f9f9;font-size:8px">
-          <div>Jessica Kumar</div><div>j.kumar@email.com</div><div>501 Oak Pl, Miami FL</div><div>ACC-7458291</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1.2fr 1.5fr 1.5fr 1fr;gap:8px;padding:8px;border-bottom:1px solid #e0e0e0;font-size:8px">
-          <div>Robert Garcia</div><div>r.garcia@email.com</div><div>834 Spruce Dr, Atlanta GA</div><div>ACC-5937684</div>
+        <div style="display:grid;grid-template-columns:1.2fr .7fr .4fr .6fr .9fr;gap:8px;padding:8px;background:#fff3cd;font-size:8px">
+          <div>silver.meridian_auth_bridge</div><div>L3</div><div>rw</div><div><strong>HARD</strong></div><div>svc-meridian-core</div>
         </div>
       </div>`;
     
     case 'memo_847':
       return `<div style="background:#ffffff;padding:50px 60px;font-family:'Calibri','Arial',sans-serif;font-size:11px;color:#222;line-height:1.65;max-width:900px;margin:0 auto">
         <div style="text-align:center;margin-bottom:50px;border-bottom:3px solid #1a1a1a;padding-bottom:20px">
-          <div style="font-size:18px;font-weight:bold;letter-spacing:2px;tracking:0.05em">MEMORANDUM</div>
-          <div style="font-size:9px;color:#777;margin-top:6px;letter-spacing:1px">Steering committee · scope review</div>
+          <div style="font-size:18px;font-weight:bold;letter-spacing:2px;tracking:0.05em">REDLINE CHARTER</div>
+          <div style="font-size:9px;color:#777;margin-top:6px;letter-spacing:1px">Helios merger cell · incident_scope lock</div>
         </div>
         <div style="margin-bottom:30px;font-size:11px">
           <table style="width:100%;border-collapse:collapse">
             <tr>
               <td style="font-weight:bold;width:80px;vertical-align:top;padding:4px 0">TO:</td>
-              <td style="padding:4px 0">Executive Steering Committee</td>
+              <td style="padding:4px 0">SOC bridge + Fusion architecture</td>
             </tr>
             <tr>
               <td style="font-weight:bold;vertical-align:top;padding:4px 0">FROM:</td>
-              <td style="padding:4px 0">Project Management Office</td>
+              <td style="padding:4px 0">Outside counsel — ARGUS-7 annex</td>
             </tr>
             <tr>
               <td style="font-weight:bold;vertical-align:top;padding:4px 0">DATE:</td>
-              <td style="padding:4px 0">March 15, 2024</td>
+              <td style="padding:4px 0">March 2, 2026</td>
             </tr>
             <tr>
               <td style="font-weight:bold;vertical-align:top;padding:4px 0">RE:</td>
-              <td style="padding:4px 0">OMNI System Scope Review</td>
+              <td style="padding:4px 0">Incident_scope · press_embargo_blocks · regulator_case_id</td>
             </tr>
           </table>
         </div>
         <div style="border-top:1px solid #ccc;border-bottom:1px solid #ccc;padding:20px 0;margin:30px 0">
         </div>
         <div style="margin-bottom:20px;text-align:justify;line-height:1.75">
-          <p>The OMNI system was designed to optimize employee workspace allocation using environmental sensing. The system collected behavioral patterns to improve facility management and workforce scheduling across all regional offices.</p>
+          <p><strong># Incident_scope</strong> Meridian authenticator federation was weaponized via stale service tokens routed through subcontractor subnets. Custodial data affected: EU payroll aggregates plus adaptive-auth decision shards.</p>
         </div>
         <div style="margin-bottom:20px">
-          <div style="font-weight:bold;margin-bottom:12px;font-size:11px">Key Findings</div>
+          <div style="font-weight:bold;margin-bottom:12px;font-size:11px">## Press_embargo_blocks</div>
           <ul style="margin:0;padding-left:20px;line-height:2">
-            <li>System exceeded stated scope without employee consent</li>
-            <li>Data collection protocols lacked transparency mechanisms</li>
-            <li>Retention policies did not align with stated minimization objectives</li>
+            <li>No vendor attribution until Wave B cutover rehearsals complete.</li>
+            <li>Privilege tag <code>L4_READ</code> artefacts stay air-gapped pending Data Gov freeze matrix replay.</li>
+            <li>Regulator filings reference <code>regulator_case_id: ARG-EU-26-0891-STUB</code> only.</li>
           </ul>
         </div>
         <div style="margin-bottom:30px">
-          <div style="font-weight:bold;margin-bottom:12px;font-size:11px">Recommended Action</div>
-          <p style="margin:0;text-align:justify">Conduct full audit of collection practices and revise consent procedures to align with operational scope and stakeholder expectations.</p>
+          <div style="font-weight:bold;margin-bottom:12px;font-size:11px">Binding directive</div>
+          <p style="margin:0;text-align:justify">Downstream desks may circulate only artefacts bearing the Annex K hash. Anything else defaults to contempt-of-process posture.</p>
         </div>
         <div style="margin-top:50px;padding-top:20px;border-top:1px solid #ccc;font-size:9px;color:#999;text-align:right">
-          <div>Page 1 of 1 | Policy &amp; operations review</div>
+          <div>Page 1 of 1 | Privileged incident response appendix</div>
         </div>
       </div>`;
     
@@ -1654,74 +1449,18 @@ function getDocumentPreview(id) {
         </table>
       </div>`;
     
-    case 'schools':
-      return `<div style="background:#fff;border-radius:0;padding:0;font-family:'Calibri','Arial',sans-serif;font-size:8px;color:#222;overflow:hidden;border:2px solid #366092">
-        <table style="width:100%;border-collapse:collapse;font-size:8px">
-          <thead>
-            <tr style="background:#366092;color:#fff;font-weight:bold">
-              <td style="border:1px solid #366092;padding:5px;text-align:left">Student Name</td>
-              <td style="border:1px solid #366092;padding:5px;text-align:center">Grade</td>
-              <td style="border:1px solid #366092;padding:5px;text-align:left">Guardian Name(s)</td>
-              <td style="border:1px solid #366092;padding:5px;text-align:left">School Name</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:5px">Alex Thompson</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Maria Thompson</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Lincoln Middle School</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:5px">Jordan Kim</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">8th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Susan & Michael Kim</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Jackson Academy</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:5px">Casey Rodriguez</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">6th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Carlos Rodriguez</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Jefferson Elem. School</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:5px">Morgan Fischer</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Rebecca & David Fischer</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Roosevelt Middle</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:5px">Sienna Williams</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">6th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">James Williams</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Harrison Elementary</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:5px">Ethan Lopez</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">8th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Maria & Fernando Lopez</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Jackson Academy</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:5px">Olivia Khan</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Hassan Khan</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Lincoln Middle School</td>
-            </tr>
-            <tr>
-              <td style="border:1px solid #d0d0d0;padding:5px">Lucas Anderson</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">6th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Patricia Anderson</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Jefferson Elem. School</td>
-            </tr>
-            <tr style="background:#f2f2f2">
-              <td style="border:1px solid #d0d0d0;padding:5px">Zoe Mitchell</td>
-              <td style="border:1px solid #d0d0d0;padding:5px;text-align:center">7th</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Robert & Lisa Mitchell</td>
-              <td style="border:1px solid #d0d0d0;padding:5px">Roosevelt Middle</td>
-            </tr>
-          </tbody>
-        </table>
+    case 'api_abuse':
+      return `<div style="background:#1e1e1e;border-radius:3px;padding:10px;font-family:'Courier New',monospace;font-size:9px;color:#d4d4d4;line-height:1.5;overflow-y:auto;max-height:180px;border:1px solid #333">
+[2024-04-08 11:47:03] ALERT: Excessive queries /api/employees (5200 req/min vs 600 threshold)<br>
+[2024-04-08 12:15:22] ALERT: Unauthorized access attempt audit_log (role mismatch, 127 queries)<br>
+[2024-04-08 13:04:51] ALERT: Data aggregation query 18400 records (anomalous speed 3.2s)<br>
+[2024-04-08 14:02:15] WARNING: Suspicious pattern detected - bulk extraction behavior<br>
+[2024-04-08 14:15:33] INFO: Security team notified - investigation pending<br>
+[2024-04-08 15:23:41] ALERT: Large data export initiated (2.3GB download, 8 minutes)<br>
+[2024-04-08 16:04:18] WARNING: Multiple concurrent sessions from single credential (IP variance)<br>
+[2024-04-08 16:47:52] ALERT: API token abuse - rate limit exceeded (42000 req/hour)<br>
+[2024-04-08 17:12:35] CRITICAL: Unauthorized schema access detected - sensitive tables queried<br>
+[2024-04-08 18:00:09] INFO: Security lockdown initiated - all personal data APIs disabled
       </div>`;
     
     default:
@@ -1733,6 +1472,8 @@ const GS = {
   picks: {},
   selectedId: null,
   selectedStepId: null,
+  /** When true, step card stays hidden but gate + rail stay wired (tutorial demo \"×\" simulation). */
+  stepPopDismissed: false,
   timerSec: 0,
   timerInt: null,
   submitted: false,
@@ -1746,68 +1487,6 @@ function updateClock() {
   const el = document.getElementById('clock');
   if (el) el.textContent = new Date().toTimeString().slice(0, 8);
 }
-updateClock();
-setInterval(updateClock, 1000);
-
-function wireContinueDelayR4() {
-  const btn = document.getElementById('btn-continue-r4-brief');
-  if (!btn) return;
-  setTimeout(() => {
-    btn.classList.remove('is-locked');
-    btn.disabled = false;
-  }, 3000);
-}
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireContinueDelayR4);
-else wireContinueDelayR4();
-
-const M4_TUTORIAL_URL = 'Mission 4 Tutorial.html';
-
-function goToMission4Tutorial() {
-  const btn = document.getElementById('btn-continue-r4-brief');
-  const intro = document.getElementById('intro-root');
-  const overlay = document.getElementById('m4-page-transition');
-  const barFill = document.getElementById('m4-trans-bar-fill');
-  if (!intro || !overlay) {
-    window.location.href = M4_TUTORIAL_URL;
-    return;
-  }
-  if (btn) {
-    btn.disabled = true;
-    btn.classList.add('is-locked');
-  }
-  try {
-    sessionStorage.setItem('m4TutorialEnter', '1');
-  } catch (_) {}
-
-  const reduced = typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (typeof gsap === 'undefined' || reduced) {
-    overlay.classList.add('active');
-    overlay.style.opacity = '1';
-    overlay.setAttribute('aria-hidden', 'false');
-    intro.style.opacity = '0';
-    setTimeout(function () {
-      window.location.href = M4_TUTORIAL_URL;
-    }, reduced ? 180 : 320);
-    return;
-  }
-
-  overlay.classList.add('active');
-  overlay.setAttribute('aria-hidden', 'false');
-  gsap.set(overlay, { opacity: 0 });
-  gsap.set(barFill, { width: '0%' });
-  const tl = gsap.timeline({
-    onComplete: function () {
-      window.location.href = M4_TUTORIAL_URL;
-    }
-  });
-  tl.to(overlay, { opacity: 1, duration: 0.28, ease: 'power2.out' }, 0);
-  tl.to(intro, { opacity: 0, y: -18, duration: 0.38, ease: 'power2.in' }, 0.06);
-  tl.to(barFill, { width: '100%', duration: 0.42, ease: 'power2.inOut' }, 0.2);
-  tl.to({}, { duration: 0.22 }, 0.52);
-}
-
 function r4DemoGetPos(el, panel) {
   const pr = panel.getBoundingClientRect();
   const er = el.getBoundingClientRect();
@@ -1882,7 +1561,7 @@ function startR4ProtocolDemo() {
   if (typeof gsap === 'undefined') {
     const h = document.getElementById('demo-step-hint');
     if (h) {
-      h.innerHTML = '<strong>Part 1</strong> — click a step, read the brief, pick the matching dataset. <strong>Part 2</strong> — drag it onto that step icon.';
+      h.innerHTML = '<strong>Part 1</strong> — Inspect a step (training uses fake files). <strong>Part 2</strong> — Drag the matching card to that icon in the real mission — your staged filenames will differ.';
     }
     return;
   }
@@ -1950,7 +1629,7 @@ function startR4ProtocolDemo() {
     gsap.set(pop, { opacity: 0, y: 8 });
     if (cohFill) cohFill.style.width = '100%';
     setPhase1();
-    setHint('<strong>Part 1</strong> — Click the <strong>pulsing cyan</strong> step. The brief opens on the left.');
+    setHint('<strong>Part 1</strong> — Click the <strong>pulsing cyan</strong> gate. The brief opens on the left.');
   }, null, 0);
 
   /* Part 1a — open step */
@@ -1966,9 +1645,9 @@ function startR4ProtocolDemo() {
     pop.classList.remove('hidden');
     dn1.classList.remove('avail');
     dn1.classList.add('sel');
-    popT.textContent = 'Offer Letter Review';
-    popLane.innerHTML = '<i class="fas fa-building"></i> Legal &amp; Compliance';
-    popExp.textContent = 'offer terms, NDA, IP clauses (Legal)';
+    popT.textContent = 'Demo gate — policy checkout';
+    popLane.innerHTML = '<i class="fas fa-flask"></i> Training lane · files below are placeholders';
+    popExp.textContent = 'exhibit_id, witness_line, schedule_ref — match headers to Expects';
   }, null, 1.45);
   tl.to(pop, { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' }, 1.45);
 
@@ -1991,12 +1670,12 @@ function startR4ProtocolDemo() {
   /* Part 2 — drag from dataset strip onto the flow icon */
   tl.call(() => {
     setPhase2();
-    setHint('<strong>Part 2</strong> — Drag that dataset from the <strong>bottom row</strong> onto the <strong>same step icon</strong> above.');
+    setHint('<strong>Part 2</strong> — Drag the file over the gate above. When the icon turns <strong>purple</strong>, release to drop.');
   }, null, 5.78);
   tl.call(() => {
     card1.classList.remove('sel');
     card1.classList.add('drag');
-    ghost.textContent = '📄 Internal_Policy_Review.md';
+    ghost.textContent = '📄 TRAINING_DEMO_Policy_stub.md';
     const pos = r4DemoGetPos(card1, panel);
     gsap.set(ghost, { x: pos.x, y: pos.y });
   }, null, 5.95);
@@ -2013,16 +1692,16 @@ function startR4ProtocolDemo() {
     duration: 1.1
   }, 6.08);
   pulseAt(7.05);
-  tl.call(() => dn1.classList.add('drop'), null, 7.18);
+  tl.call(() => dn1.classList.add('drag-target'), null, 7.18);
   tl.to(ghost, { opacity: 0, duration: 0.2, ease: 'power2.in' }, 7.28);
   tl.call(() => {
-    dn1.classList.remove('sel', 'drop');
+    dn1.classList.remove('sel', 'drag-target');
     dn1.classList.add('done');
     card1.classList.remove('drag');
     card1.classList.add('used');
     pop.classList.add('hidden');
     dn2.classList.add('avail');
-    setHint('Correct — the step <strong>locks</strong>, the arrow draws <strong>green</strong>, and the next icon unlocks. (Wrong drops cut confidence.)');
+    setHint('Demo only — the live mission uses <strong>different filenames and gates</strong>. Here: step <strong>locks</strong>, arrow goes <strong>green</strong>, next icon unlocks. Wrong drops cut confidence in play.');
   }, null, 7.38);
   r4DemoDrawEdge(tl, 'r4-de-1', 7.38);
 
@@ -2042,80 +1721,39 @@ function goToPage(n) {
 }
 
 function startRound4Game() {
-  stopR4ProtocolDemo();
-  const intro = document.getElementById('intro-root');
-  const gp = document.getElementById('gp-root');
-  const fin = () => {
-    intro.style.display = 'none';
-    document.documentElement.classList.add('gp-html-active');
-    document.body.classList.add('gp-gameplay-active');
-    gp.style.display = 'block';
-    document.getElementById('game').style.display = 'flex';
-    runHackThenPlay();
-  };
-  if (typeof gsap !== 'undefined') {
-    gsap.to(intro, { opacity: 0, y: -16, duration: 0.32, ease: 'power2.in', onComplete: fin });
-  } else fin();
-}
-
-/** After tutorial: skip intro pages, then run the hack terminal before OMNI gameplay. */
-function startRound4GameFromTutorial() {
-  stopR4ProtocolDemo();
-  const intro = document.getElementById('intro-root');
-  const gp = document.getElementById('gp-root');
-  const game = document.getElementById('game');
-  const ho = document.getElementById('hack-overlay');
-  if (intro) intro.style.display = 'none';
-  document.documentElement.classList.add('gp-html-active');
-  document.body.classList.add('gp-gameplay-active');
-  if (gp) {
-    gp.style.display = 'block';
-    gp.style.opacity = '1';
-  }
-  if (game) game.style.display = 'flex';
-  if (ho) {
-    ho.style.opacity = '';
-    ho.style.transition = '';
-    ho.classList.remove('active');
-    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7'].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.classList.remove('show');
-    });
-  }
   runHackThenPlay();
 }
 
 function runHackThenPlay() {
-  const ho = document.getElementById('hack-overlay');
-  ho.classList.add('active');
-  const ids = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7'];
-  const delays = [200, 450, 750, 1000, 1300, 1600, 1900];
-  ids.forEach((id, i) => setTimeout(() => {
-    const e = document.getElementById(id);
-    if (e) e.classList.add('show');
-  }, delays[i]));
-  setTimeout(() => {
-    ho.style.transition = 'opacity 0.6s ease';
-    ho.style.opacity = '0';
-    setTimeout(() => {
-      ho.classList.remove('active');
-      ho.style.opacity = '';
-      ho.style.transition = '';
-      beginMission();
-    }, 620);
-  }, 2600);
+  beginMission();
 }
 
-function beginMission() {
+/** Shared GS reset — used before full `beginMission` and during pre-tutorial silent layout prime. */
+function applyMissionBaselineState() {
   GS.picks = {};
   GS.selectedId = null;
   GS.selectedStepId = null;
+  GS.stepPopDismissed = false;
   GS.submitted = false;
   GS.confidence = 100;
   GS.wrongAttempts = 0;
   GS.timerSec = 0;
   if (typeof FC_ANIMATED_EDGES !== 'undefined') FC_ANIMATED_EDGES.clear();
   resetCandidateCache();
+}
+
+/** Builds flowchart + rail UI without timers or broker intro (for guided overlay). */
+function bootMissionQuietLayout() {
+  applyMissionBaselineState();
+  if (GS.timerInt) {
+    clearInterval(GS.timerInt);
+    GS.timerInt = null;
+  }
+  refreshAll();
+}
+
+function beginMission() {
+  applyMissionBaselineState();
   if (GS.timerInt) clearInterval(GS.timerInt);
   GS.timerInt = setInterval(() => {
     GS.timerSec++;
@@ -2131,9 +1769,9 @@ function beginMission() {
   if (body) {
     body.innerHTML = '<div class="bm-sep"><div class="bm-sep-pill">Process map queue · live</div></div>';
   }
-  systemSay('MegaCorp PR · “Unauthorized disclosures are incomplete and misleading…”', 300);
-  brokerSay('Same eight Mission 03 previews. <strong>Click an icon</strong> on the chain — four candidates appear top-right. Correct drop fades that step and <strong>greens the outgoing arrow</strong>. Nova’s confidence starts at 100%.', 'bm-d', 1200);
-  novaSay('Mis-link the spine and analysts will read “random dump” — we need a believable <strong>department-to-department</strong> path.', 2400);
+  systemSay('Helios corp comms · “Merger integration materials reflect ongoing remediation — excerpts lack context…”', 300);
+  brokerSay('Five ARGUS artefacts on the rail — five gates on the spine. <strong>Click a gate</strong> for playbook text; drag the file whose <strong>Expects strip</strong> matches. The confidence meter beside the spine starts at 100%.', 'bm-d', 1200);
+  novaSay('Break the lineage and briefing rooms call it a junk drawer — pin each artefact to the <strong>right war-room desk</strong>.', 2400);
 }
 
 function getFileById(fid) {
@@ -2152,7 +1790,7 @@ function wrongStepExplain(f, wrongStepId) {
 }
 
 function confidenceHitAmount(fileId) {
-  return ['schools', 'health', 'cust_dump', 'risk_full'].includes(fileId) ? 14 : 10;
+  return ['health', 'cust_dump', 'risk_full'].includes(fileId) ? 14 : 10;
 }
 
 function applyWrongPlacement(fileId, wrongStepId) {
@@ -2194,7 +1832,7 @@ function assignToStep(fileId, stepId) {
       node.classList.add('fc-node-bad');
       setTimeout(() => node.classList.remove('fc-node-bad'), 400);
     }
-    novaSay('Complete the <strong>previous steps</strong> first — the onboarding flow must proceed in order.', 0);
+    novaSay('Hold — <strong>earlier gates</strong> are still amber. Charter → forensics → vendor → freezes → atlas, strictly in order.', 0);
     return;
   }
   
@@ -2247,6 +1885,7 @@ function unassignFile(fileId) {
 
 function selectStep(stepId) {
   if (GS.submitted || !getStepById(stepId)) return;
+  GS.stepPopDismissed = false;
   GS.selectedStepId = stepId;
   GS.selectedId = null;
   document.querySelectorAll('#r4-file-list .ds-card').forEach((el) => el.classList.remove('sel'));
@@ -2278,28 +1917,21 @@ function dragStartHandler(e) {
   e.dataTransfer.effectAllowed = 'move';
 }
 
-/** Node positions for the flow chart (x, y percentages of canvas) */
+/** Node positions — 5 linear gates (percent of canvas). */
 const FLOW_NODE_POSITIONS = [
-  { x: 7,  y: 35 },   // 0: offer-review (Legal start)
-  { x: 22, y: 35 },   // 1: identity-verify (IT check)
-  { x: 37, y: 35 },   // 2: background-check (HR compliance)
-  { x: 52, y: 18 },   // 3: health-screen (HR benefits - branch up)
-  { x: 52, y: 52 },   // 4: payroll-setup (HR payroll - branch down)
-  { x: 67, y: 35 },   // 5: data-access (IT merge point)
-  { x: 82, y: 22 },   // 6: dependent-benefits (HR benefits)
-  { x: 82, y: 52 }    // 7: performance-goals (Ops finish)
+  { x: 9, y: 36 },
+  { x: 26, y: 36 },
+  { x: 43, y: 36 },
+  { x: 60, y: 36 },
+  { x: 77, y: 36 }
 ];
 
-/** Edge connections: [fromIdx, toIdx] - shows onboarding flow */
+/** Edge connections: single spine (no branch / merge). */
 const FLOW_EDGES = [
-  [0, 1],   // offer → identity
-  [1, 2],   // identity → background
-  [2, 3],   // background → health (branch up)
-  [2, 4],   // background → payroll (branch down)
-  [3, 5],   // health → data-access (merge)
-  [4, 5],   // payroll → data-access (merge)
-  [5, 6],   // data-access → dependents
-  [5, 7]    // data-access → performance
+  [0, 1],
+  [1, 2],
+  [2, 3],
+  [3, 4]
 ];
 
 function renderFlowNodes() {
@@ -2488,7 +2120,8 @@ function animateEdgeDraw(path, key) {
 
 function updatePhaseBar() {
   const phases = document.querySelectorAll('.fc-phase');
-  const phaseSteps = [[0,1], [2,3,4], [5], [6,7]];
+  // Phase 0 (Offer): step 0 · Phase 1 (Verification): 1–2 · Phase 2 (Provisioning): 3–4
+  const phaseSteps = [[0], [1, 2], [3, 4]];
   phases.forEach((ph, pi) => {
     const steps = phaseSteps[pi] || [];
     const allDone = steps.every(si => STEPS[si] && isStepSatisfied(STEPS[si].id));
@@ -2499,7 +2132,15 @@ function updatePhaseBar() {
 function closeStepPop() {
   const el = document.getElementById('r4-step-pop');
   if (el) el.classList.add('hidden');
+  GS.stepPopDismissed = true;
   /* Keep selected gate + dataset rail after × so drag can continue. */
+}
+
+/** Hide step panel but keep gate + rail (tutorial / scripted UX). */
+function dismissStepPopKeepContext() {
+  const el = document.getElementById('r4-step-pop');
+  if (el) el.classList.add('hidden');
+  GS.stepPopDismissed = true;
 }
 
 function updateStepPop() {
@@ -2518,8 +2159,6 @@ function updateStepPop() {
     el.innerHTML = '';
     return;
   }
-  el.classList.add('has-step');
-  el.classList.remove('hidden');
   const assigned = FILES.find((f) => GS.picks[f.id] === st.id);
   const hint = STEP_DATA_HINT[st.id] || st.inputs;
   let html =
@@ -2544,6 +2183,12 @@ function updateStepPop() {
     html += '<div class="r4-step-pop-ok"><i class="fas fa-check-circle"></i> Artifact attached: ' + assigned.name + '</div>';
   }
   el.innerHTML = html;
+  el.classList.add('has-step');
+  if (GS.stepPopDismissed) {
+    el.classList.add('hidden');
+  } else {
+    el.classList.remove('hidden');
+  }
 }
 
 function refreshAll() {
@@ -2659,7 +2304,665 @@ function bindDragDropOnce() {
     }
   }
 
+}
+
+/** Tutorial runs on every load unless the URL opts out (?notutorial=1). No localStorage — refresh always reopens the tour. */
+function shouldShowM4Tutorial() {
+  try {
+    const sp = new URLSearchParams(location.search);
+    if (sp.has('notutorial')) return false;
+  } catch (_) {}
+  return true;
+}
+
+const M4_TUT_STEPS = [
+  {
+    selector: '#flow-row',
+    pad: 8,
+    phase: 'tour',
+    title: 'Five-gate flow',
+    html:
+      '<p>Tap a <strong>gate icon</strong> on the spine to open expectations for that handoff. Clicking highlights the gate (gold ring) and loads candidates in the rail.</p>'
+  },
+  {
+    selector: '.datasets-panel',
+    pad: 8,
+    phase: 'tour',
+    title: 'Purple = ready to drop (while dragging)',
+    html:
+      '<p>Pick the file whose headers match <strong>Expects</strong>, then <strong>drag</strong> it toward the matching gate on the flow.</p>' +
+      '<p>While your file is over that icon, the gate turns <strong>purple</strong> with a dashed ring — that is the drop zone. <strong>Release only when you see purple.</strong></p>'
+  },
+  {
+    selector: '.flow-canvas-footer',
+    pad: 8,
+    phase: 'tour',
+    title: 'Links & finalize',
+    html:
+      '<p>Track <strong>Linked · 5 / 5</strong> here. When everything’s green, press <strong>FINALIZE PROCESS MAP</strong> to lock the map.</p>'
+  },
+  {
+    selector: null,
+    pad: 0,
+    phase: 'demo',
+    demo: true,
+    title: 'Watch it once',
+    html:
+      '<p>Watch: click gate → read brief → <strong>×</strong> → pick file → drag over the gate until it turns <strong>purple</strong>, then release.</p>' +
+      '<p><strong>Skip demo</strong> jumps ahead; <strong>Start mission</strong> opens Mission 4.</p>'
   }
+];
+
+const M4_TUT_DEMO_LINKS = [
+  { stepId: 'offer-review', fileId: 'memo_847' },
+  { stepId: 'identity-verify', fileId: 'web_logs' }
+];
+
+function openM4Tutorial() {
+  const shell = document.getElementById('m4-tutorial');
+  if (!shell || !M4_TUT_STEPS.length) {
+    beginMission();
+    return;
+  }
+
+  let stepIx = 0;
+  let finishedTutorial = false;
+  /** Tutorial exit always continues on this page via beginMission(). */
+  let demoPlaybackDone = false;
+  let demoStartRaf = null;
+  let ro = null;
+  let demoTl = null;
+  const prefersReducedMotion = typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const strips = ['m4-tut-strip-t', 'm4-tut-strip-b', 'm4-tut-strip-l', 'm4-tut-strip-r'].map(function (id) {
+    return document.getElementById(id);
+  });
+  const hi = document.getElementById('m4-tut-highlight');
+  const full = document.getElementById('m4-tut-full');
+
+  function finalizeM4DemoStep() {
+    window.__M4_TUT_DEMO_SILENT = false;
+    shell.classList.remove('m4-tut-demo-playing');
+    if (full) full.classList.remove('m4-tut-full--demo-reveal');
+    applyMissionBaselineState();
+    refreshAll();
+    const curEl = document.getElementById('m4-tut-demo-cursor');
+    if (curEl) {
+      if (typeof gsap !== 'undefined') gsap.killTweensOf(curEl);
+      curEl.remove();
+    }
+    const ghEl = document.getElementById('m4-tut-demo-drag-ghost');
+    if (ghEl) {
+      if (typeof gsap !== 'undefined') gsap.killTweensOf(ghEl);
+      ghEl.remove();
+    }
+    demoPlaybackDone = true;
+    const nb = document.getElementById('m4-tut-next');
+    if (nb) {
+      nb.disabled = false;
+      nb.textContent = 'Start mission';
+    }
+    reflowTutorial();
+    const bod = document.getElementById('m4-tut-body');
+    if (bod) {
+      bod.innerHTML =
+        '<p><strong>Replay done.</strong> Click gate → read → <strong>×</strong> → drag file until the icon turns <strong>purple</strong>, then drop (two passes).</p>' +
+        '<p>Tap <strong>Start mission</strong> for <strong>Mission 4</strong>. Use <strong>Skip tutorial</strong> anytime to stay on this page and play.</p>';
+    }
+  }
+
+  function skipM4DemoPlayback() {
+    if (demoStartRaf != null) {
+      cancelAnimationFrame(demoStartRaf);
+      demoStartRaf = null;
+    }
+    if (demoTl && typeof demoTl.kill === 'function') {
+      demoTl.kill();
+      demoTl = null;
+    }
+    window.__M4_TUT_DEMO_SILENT = true;
+    shell.classList.remove('m4-tut-demo-playing');
+    if (full) full.classList.remove('m4-tut-full--demo-reveal');
+    applyMissionBaselineState();
+    refreshAll();
+    M4_TUT_DEMO_LINKS.forEach(function (L) {
+      selectStep(L.stepId);
+      dismissStepPopKeepContext();
+      selectFile(L.fileId);
+      assignToStep(L.fileId, L.stepId);
+    });
+    finalizeM4DemoStep();
+  }
+
+  /** Fresh scripted demo (GSAP x/y only): pointer + floating chip live on document.body at max z-index; chip drags locked to pointer offset onto each gate icon (two passes). */
+  function runM4TutorialGsapDemo() {
+    if (finishedTutorial) return;
+    if (demoTl && typeof demoTl.kill === 'function') {
+      demoTl.kill();
+      demoTl = null;
+    }
+    if (prefersReducedMotion || typeof gsap === 'undefined') {
+      skipM4DemoPlayback();
+      return;
+    }
+
+    var Z_CURSOR = '2147483646';
+    var Z_CHIP = '2147483645';
+
+    window.__M4_TUT_DEMO_SILENT = true;
+    shell.classList.add('m4-tut-demo-playing');
+    applyMissionBaselineState();
+    refreshAll();
+    reflowTutorial();
+
+    var curEl = document.getElementById('m4-tut-demo-cursor');
+    if (!curEl) {
+      curEl = document.createElement('div');
+      curEl.id = 'm4-tut-demo-cursor';
+      curEl.className = 'm4-tut-demo-cursor';
+      curEl.innerHTML = '<span class="m4-tut-demo-cursor__ico"><i class="fas fa-mouse-pointer"></i></span>';
+      document.body.appendChild(curEl);
+    } else if (curEl.parentElement !== document.body) {
+      document.body.appendChild(curEl);
+    }
+    curEl.style.display = 'block';
+    curEl.style.zIndex = Z_CURSOR;
+
+    var chipEl = document.getElementById('m4-tut-demo-drag-ghost');
+    if (!chipEl) {
+      chipEl = document.createElement('div');
+      chipEl.id = 'm4-tut-demo-drag-ghost';
+      chipEl.className = 'm4-tut-demo-drag-ghost';
+      document.body.appendChild(chipEl);
+    } else if (chipEl.parentElement !== document.body) {
+      document.body.appendChild(chipEl);
+    }
+
+    gsap.killTweensOf([curEl, chipEl]);
+    chipEl.style.display = 'none';
+    gsap.set(curEl, { x: window.innerWidth * 0.38, y: 96, opacity: 1 });
+    gsap.set(chipEl, { opacity: 0, scale: 0.92, x: -9999, y: -9999 });
+
+    var durGate = 0.72;
+    var durClose = 0.56;
+    var durRail = 0.68;
+    var durLift = 0.22;
+    var durDrag = 0.98;
+    var pauseRead = 0.52;
+
+    demoTl = gsap.timeline({
+      onComplete: function () {
+        demoTl = null;
+        finalizeM4DemoStep();
+      }
+    });
+
+    function xyCenter(el, fx, fy) {
+      if (!el) return { x: window.innerWidth * 0.45, y: window.innerHeight * 0.35 };
+      var r = el.getBoundingClientRect();
+      var ox = typeof fx === 'number' ? fx : 0.52 * r.width;
+      var oy = typeof fy === 'number' ? fy : 0.46 * r.height;
+      return { x: r.left + ox, y: r.top + oy };
+    }
+
+    M4_TUT_DEMO_LINKS.forEach(function (L) {
+      var nodeSel = '#flow-row .fc-node[data-step-id="' + L.stepId + '"]';
+      var cardSel = '#r4-file-list .ds-card[data-file-id="' + L.fileId + '"]';
+
+      var pair = { dx: 28, dy: 18, tx: 0, ty: 0 };
+
+      var gateBox = document.querySelector(nodeSel + ' .fc-node-box') || document.querySelector(nodeSel);
+      var gatePt = xyCenter(gateBox);
+
+      demoTl.to(curEl, { duration: durGate, ease: 'power2.out', x: gatePt.x, y: gatePt.y });
+
+      demoTl.call(function () {
+        selectStep(L.stepId);
+      });
+      demoTl.to({}, { duration: pauseRead });
+
+      demoTl.to(curEl, {
+        duration: durClose,
+        ease: 'power2.out',
+        x: function () {
+          var btn = document.querySelector('#r4-step-pop .r4-step-pop-close');
+          return btn ? btn.getBoundingClientRect().left + 6 : gatePt.x;
+        },
+        y: function () {
+          var btn = document.querySelector('#r4-step-pop .r4-step-pop-close');
+          return btn ? btn.getBoundingClientRect().top + 6 : gatePt.y;
+        }
+      });
+
+      demoTl.call(function () {
+        dismissStepPopKeepContext();
+      });
+      demoTl.to({}, { duration: 0.14 });
+
+      demoTl.to(curEl, {
+        duration: durRail,
+        ease: 'power2.out',
+        x: function () {
+          var card = document.querySelector(cardSel);
+          var pt = xyCenter(card, card ? card.offsetWidth * 0.48 : 80, card ? card.offsetHeight * 0.42 : 20);
+          return pt.x;
+        },
+        y: function () {
+          var card = document.querySelector(cardSel);
+          var pt = xyCenter(card, card ? card.offsetWidth * 0.48 : 80, card ? card.offsetHeight * 0.42 : 20);
+          return pt.y;
+        }
+      });
+
+      demoTl.call(function () {
+        selectFile(L.fileId);
+        var card = document.querySelector(cardSel);
+        var f = getFileById(L.fileId);
+        chipEl.textContent = f ? f.name : 'Dataset';
+        chipEl.style.display = 'block';
+        chipEl.style.zIndex = Z_CHIP;
+        void chipEl.offsetWidth;
+        var cr = card ? card.getBoundingClientRect() : { left: 40, top: 220, width: 140, height: 48 };
+        gsap.set(chipEl, {
+          x: cr.left + 10,
+          y: cr.top + 8,
+          opacity: 1,
+          scale: 1
+        });
+      });
+
+      demoTl.to(curEl, {
+        duration: durLift,
+        ease: 'power2.out',
+        x: function () {
+          var cx = parseFloat(gsap.getProperty(chipEl, 'x'));
+          return (Number.isFinite(cx) ? cx : 80) + 34;
+        },
+        y: function () {
+          var cy = parseFloat(gsap.getProperty(chipEl, 'y'));
+          return (Number.isFinite(cy) ? cy : 220) + 16;
+        }
+      });
+
+      demoTl.call(function () {
+        var gx = parseFloat(gsap.getProperty(chipEl, 'x'));
+        var gy = parseFloat(gsap.getProperty(chipEl, 'y'));
+        var px = parseFloat(gsap.getProperty(curEl, 'x'));
+        var py = parseFloat(gsap.getProperty(curEl, 'y'));
+        if (!Number.isFinite(gx) || !Number.isFinite(gy)) {
+          var cr = document.querySelector(cardSel);
+          cr = cr ? cr.getBoundingClientRect() : { left: 0, top: 0 };
+          gx = cr.left + 10;
+          gy = cr.top + 8;
+        }
+        if (!Number.isFinite(px) || !Number.isFinite(py)) {
+          px = gx + 28;
+          py = gy + 18;
+        }
+        pair.dx = px - gx;
+        pair.dy = py - gy;
+
+        var box = document.querySelector(nodeSel + ' .fc-node-box');
+        var r = box ? box.getBoundingClientRect() : { left: gx + 80, top: gy - 60, width: 82, height: 82 };
+        var cw = chipEl.offsetWidth || 160;
+        var ch = chipEl.offsetHeight || 36;
+        pair.tx = r.left + (r.width - cw) * 0.5;
+        pair.ty = r.top + (r.height - ch) * 0.4;
+      });
+
+      demoTl.call(function () {
+        var dropNode = document.querySelector(nodeSel);
+        if (dropNode) dropNode.classList.add('drag-target');
+      });
+
+      demoTl.to(chipEl, {
+        duration: durDrag,
+        ease: 'power2.inOut',
+        opacity: 1,
+        x: function () {
+          return pair.tx;
+        },
+        y: function () {
+          return pair.ty;
+        }
+      });
+      demoTl.to(
+        curEl,
+        {
+          duration: durDrag,
+          ease: 'power2.inOut',
+          opacity: 1,
+          x: function () {
+            return pair.tx + pair.dx;
+          },
+          y: function () {
+            return pair.ty + pair.dy;
+          }
+        },
+        '<'
+      );
+
+      demoTl.call(function () {
+        var dropNode = document.querySelector(nodeSel);
+        if (dropNode) dropNode.classList.remove('drag-target');
+        assignToStep(L.fileId, L.stepId);
+        chipEl.style.display = 'none';
+        gsap.set(chipEl, { opacity: 0 });
+      });
+
+      demoTl.to({}, { duration: 0.38 });
+    });
+  }
+
+  function finishTutorial() {
+    if (finishedTutorial) return;
+    finishedTutorial = true;
+    if (demoStartRaf != null) {
+      cancelAnimationFrame(demoStartRaf);
+      demoStartRaf = null;
+    }
+    if (demoTl && typeof demoTl.kill === 'function') {
+      demoTl.kill();
+      demoTl = null;
+    }
+    window.__M4_TUT_DEMO_SILENT = false;
+    const demoCur = document.getElementById('m4-tut-demo-cursor');
+    if (demoCur) {
+      if (typeof gsap !== 'undefined') gsap.killTweensOf(demoCur);
+      demoCur.remove();
+    }
+    const demoGh = document.getElementById('m4-tut-demo-drag-ghost');
+    if (demoGh) {
+      if (typeof gsap !== 'undefined') gsap.killTweensOf(demoGh);
+      demoGh.remove();
+    }
+    shell.classList.remove('m4-tut-demo-playing');
+    if (full) full.classList.remove('m4-tut-full--demo-reveal');
+    document.removeEventListener('keydown', escHandler);
+    window.removeEventListener('resize', reflowTutorial);
+    window.removeEventListener('scroll', reflowTutorial, true);
+    if (ro && typeof ro.disconnect === 'function') ro.disconnect();
+    ro = null;
+    shell.classList.remove('active');
+    shell.setAttribute('aria-hidden', 'true');
+    strips.forEach(function (el) {
+      if (!el) return;
+      el.classList.remove('m4-tut-strip--show');
+    });
+    if (full) full.classList.remove('show');
+    if (hi) {
+      hi.classList.remove('show');
+      hi.classList.remove('animate-pulse');
+    }
+    navigateToMission4Gameplay();
+  }
+
+  function navigateToMission4Gameplay() {
+    var target = 'Mission 4.html?play=1';
+    try {
+      sessionStorage.setItem('m4GameplayEnter', '1');
+    } catch (_) {}
+    var gp = document.getElementById('gp-root');
+    var tutShell = document.getElementById('m4-tutorial');
+    if (tutShell) {
+      tutShell.style.display = 'none';
+      tutShell.setAttribute('aria-hidden', 'true');
+    }
+    var reduced = typeof window.matchMedia === 'function' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (typeof gsap === 'undefined' || reduced) {
+      if (gp) gp.style.opacity = '0';
+      document.body.style.opacity = '0';
+      setTimeout(function () {
+        window.location.href = target;
+      }, reduced ? 120 : 220);
+      return;
+    }
+    var fadeTargets = [document.body];
+    if (gp) fadeTargets.push(gp);
+    gsap.to(fadeTargets, {
+      opacity: 0,
+      duration: 0.38,
+      ease: 'power2.in',
+      onComplete: function () {
+        window.location.href = target;
+      }
+    });
+  }
+
+  function escHandler(ev) {
+    if (ev.key === 'Escape') {
+      ev.preventDefault();
+      finishTutorial();
+    }
+  }
+
+  /** Padded spotlight hole clamped inside the viewport while touching target edges (+pad). */
+  function clampHole(domRect, pad, vw, vh) {
+    const xl = Math.max(0, domRect.left - pad);
+    const yt = Math.max(0, domRect.top - pad);
+    const xr = Math.min(vw, domRect.right + pad);
+    const yb = Math.min(vh, domRect.bottom + pad);
+    return {
+      left: xl,
+      top: yt,
+      width: Math.max(32, xr - xl),
+      height: Math.max(32, yb - yt)
+    };
+  }
+
+  function layoutShades(ax) {
+    const topEl = strips[0];
+    const botEl = strips[1];
+    const leftEl = strips[2];
+    const rightEl = strips[3];
+    if (!topEl || !botEl || !leftEl || !rightEl) return;
+
+    topEl.style.top = '0';
+    topEl.style.left = '0';
+    topEl.style.width = '100vw';
+    topEl.style.height = ax.top + 'px';
+
+    leftEl.style.top = ax.top + 'px';
+    leftEl.style.left = '0';
+    leftEl.style.width = ax.left + 'px';
+    leftEl.style.height = ax.height + 'px';
+
+    rightEl.style.top = ax.top + 'px';
+    rightEl.style.left = ax.left + ax.width + 'px';
+    rightEl.style.right = '';
+    rightEl.style.width = Math.max(0, window.innerWidth - ax.left - ax.width) + 'px';
+    rightEl.style.height = ax.height + 'px';
+
+    botEl.style.top = ax.top + ax.height + 'px';
+    botEl.style.left = '0';
+    botEl.style.width = '100vw';
+    botEl.style.bottom = '';
+    botEl.style.height = Math.max(0, window.innerHeight - ax.top - ax.height) + 'px';
+
+    strips.forEach(function (el) {
+      el.classList.add('m4-tut-strip--show');
+    });
+  }
+
+  function tutorialStepSelectors(step) {
+    if (step.selectors && step.selectors.length) return step.selectors;
+    if (step.selector) return [step.selector];
+    return [];
+  }
+
+  function queryTutorialTargets(step) {
+    const sels = tutorialStepSelectors(step);
+    const out = [];
+    for (let i = 0; i < sels.length; i++) {
+      const el = document.querySelector(sels[i]);
+      if (el) out.push(el);
+    }
+    return out;
+  }
+
+  function boundingRectUnion(elements) {
+    if (!elements.length) return null;
+    let minL = Infinity;
+    let minT = Infinity;
+    let maxR = -Infinity;
+    let maxB = -Infinity;
+    elements.forEach(function (el) {
+      const r = el.getBoundingClientRect();
+      minL = Math.min(minL, r.left);
+      minT = Math.min(minT, r.top);
+      maxR = Math.max(maxR, r.right);
+      maxB = Math.max(maxB, r.bottom);
+    });
+    return { left: minL, top: minT, right: maxR, bottom: maxB, width: maxR - minL, height: maxB - minT };
+  }
+
+  function reflowTutorial() {
+    const step = M4_TUT_STEPS[stepIx];
+    const pad = typeof step.pad === 'number' ? step.pad : 8;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    const sels = tutorialStepSelectors(step);
+    const targets = queryTutorialTargets(step);
+
+    if (!sels.length || !targets.length) {
+      strips.forEach(function (el) {
+        if (!el) return;
+        el.classList.remove('m4-tut-strip--show');
+      });
+      if (full) {
+        full.classList.add('show');
+        const stNow = M4_TUT_STEPS[stepIx];
+        if (stNow && stNow.demo && shell.classList.contains('m4-tut-demo-playing')) {
+          full.classList.add('m4-tut-full--demo-reveal');
+        } else {
+          full.classList.remove('m4-tut-full--demo-reveal');
+        }
+      }
+      if (hi) hi.classList.remove('show');
+      return;
+    }
+
+    if (!full || !hi) return;
+
+    full.classList.remove('show');
+    full.classList.remove('m4-tut-full--demo-reveal');
+
+    const scrollEl = targets[0];
+    if (!prefersReducedMotion && scrollEl && scrollEl.scrollIntoView) {
+      try {
+        scrollEl.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
+      } catch (_) {
+        try {
+          scrollEl.scrollIntoView(true);
+        } catch (_) {}
+      }
+    }
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        const uni = boundingRectUnion(targets);
+        if (!uni || !Number.isFinite(uni.left)) return;
+        const ax = clampHole(uni, pad, vw, vh);
+
+        hi.style.display = '';
+        hi.classList.add('show');
+        if (!prefersReducedMotion) hi.classList.add('animate-pulse');
+        else hi.classList.remove('animate-pulse');
+        hi.style.left = ax.left + 'px';
+        hi.style.top = ax.top + 'px';
+        hi.style.width = ax.width + 'px';
+        hi.style.height = ax.height + 'px';
+
+        layoutShades(ax);
+      });
+    });
+  }
+
+  function renderFooter() {
+    const step = M4_TUT_STEPS[stepIx];
+    document.getElementById('m4-tut-counter').textContent =
+      'Step ' + (stepIx + 1) + ' / ' + M4_TUT_STEPS.length;
+    const phaseEl = document.getElementById('m4-tut-phase');
+    if (phaseEl) {
+      if (step.phase === 'demo') phaseEl.textContent = 'DEMO';
+      else if (step.phase === 'tour') phaseEl.textContent = 'NEW IN M04';
+      else phaseEl.textContent = 'TOUR';
+    }
+    document.getElementById('m4-tut-title').textContent = step.title || '';
+    document.getElementById('m4-tut-body').innerHTML = step.html || '';
+    const nextBtn = document.getElementById('m4-tut-next');
+    if (nextBtn) {
+      if (step.phase === 'demo') {
+        nextBtn.textContent = demoPlaybackDone ? 'Start mission' : 'Skip demo';
+      } else {
+        nextBtn.textContent = stepIx >= M4_TUT_STEPS.length - 1 ? 'Start mission' : 'Next';
+      }
+    }
+  }
+
+  function goToTutorialStep() {
+    const step = M4_TUT_STEPS[stepIx];
+    if (stepIx === 0) {
+      GS.selectedStepId = null;
+      GS.stepPopDismissed = false;
+      refreshAll();
+    } else if (stepIx === 1 && !step.demo) {
+      selectStep('offer-review');
+    }
+    if (step && step.demo) {
+      demoPlaybackDone = false;
+      shell.classList.add('m4-tut-demo-playing');
+    }
+    renderFooter();
+    reflowTutorial();
+    const nb = document.getElementById('m4-tut-next');
+    if (nb) nb.disabled = false;
+    if (step && step.demo) {
+      if (demoStartRaf != null) cancelAnimationFrame(demoStartRaf);
+      demoStartRaf = requestAnimationFrame(function () {
+        demoStartRaf = null;
+        runM4TutorialGsapDemo();
+      });
+    }
+  }
+
+  function attachListeners() {
+    document.getElementById('m4-tut-next').onclick = function () {
+      const curStep = M4_TUT_STEPS[stepIx];
+      if (curStep && curStep.demo && !demoPlaybackDone) {
+        skipM4DemoPlayback();
+        return;
+      }
+      stepIx++;
+      if (stepIx >= M4_TUT_STEPS.length) {
+        finishTutorial();
+        return;
+      }
+      goToTutorialStep();
+    };
+    document.getElementById('m4-tut-skip').onclick = function () {
+      finishTutorial();
+    };
+    document.addEventListener('keydown', escHandler);
+    window.addEventListener('resize', reflowTutorial);
+    window.addEventListener('scroll', reflowTutorial, true);
+    const gp = document.getElementById('gp-root');
+    if (gp && typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(function () {
+        reflowTutorial();
+      });
+      ro.observe(gp);
+    }
+  }
+
+  shell.classList.add('active');
+  shell.setAttribute('aria-hidden', 'false');
+  attachListeners();
+  goToTutorialStep();
+}
 
 function countAssigned() {
   return FILES.filter((f) => GS.picks[f.id]).length;
@@ -2720,17 +3023,17 @@ function submitSort() {
   if (correct === FILES.length) {
     const wa = GS.wrongAttempts || 0;
     if (wa === 0) {
-      brokerSay('That packages. We can brief counsel and press with a straight face.', 'bm-ok', 400);
-      novaSay('Every handoff is clean — confidence stayed at 100%.', 1400);
+      brokerSay('Briefing binder holds — regulators get a disciplined chain, not a tar ball.', 'bm-ok', 400);
+      novaSay('Confidence never dipped — attribution story is courtroom-clean.', 1400);
     } else {
-      brokerSay('Final map is sound, but we felt the misses — confidence ended at ' + Math.round(GS.confidence) + '%.', 'bm-ok', 400);
-      novaSay('You recovered the spine; don’t pretend the wrong links didn’t cost us.', 1400);
+      brokerSay('Spine validates, just slower than ideal — Reyes meter finished at ' + Math.round(GS.confidence) + '%.', 'bm-ok', 400);
+      novaSay('You papered over the slips, but the meter remembers every wrong latch.', 1400);
     }
   } else if (correct >= FILES.length - 2) {
-    brokerSay('Close. Note the red highlights — adjust next pass if we re-export.', 'bm-d', 400);
+    brokerSay('Almost there — fix the reds before we PDF this for Annex K.', 'bm-d', 400);
   } else {
-    novaSay('Too many mis-links — that feeds the “messy leak” line.', 'bm-nova', 400);
-    zexSay('Re-walk the flow against the inspector copy.', 1200);
+    novaSay('Lineage shredded — outsiders will treat this dump as folklore.', 400);
+    zexSay('Walk the atlas printout against SOC’s screen — Malik out.', 1200);
   }
 
   setTimeout(() => showDebrief(correct), 2800);
@@ -2774,8 +3077,8 @@ function showDebrief(correct) {
   const tier = correct === FILES.length ? 'CLEAN STRUCTURE' : correct >= solidBar ? 'SOLID' : 'NEEDS REWORK';
   const eyebrow = document.getElementById('deb-eyebrow');
   const title = document.getElementById('deb-title');
-  if (eyebrow) eyebrow.textContent = '// Mission 04 — Map finalized';
-  if (title) title.textContent = 'THE ONBOARDING — ' + tier;
+  if (eyebrow) eyebrow.textContent = '// Operation Helios — Response chain sealed';
+  if (title) title.textContent = 'ARGUS‑7 RESPONSE — ' + tier;
 
   const m = String(Math.floor(GS.timerSec / 60)).padStart(2, '0');
   const s = String(GS.timerSec % 60).padStart(2, '0');
@@ -2786,12 +3089,12 @@ function showDebrief(correct) {
   document.getElementById('mr-metrics').innerHTML =
     '<div class="mr-metric"><div class="mr-metric-val">' + m + ':' + s + '</div><div class="mr-metric-lbl">TIME</div></div>' +
     '<div class="mr-metric"><div class="mr-metric-val">' + correct + '/' + FILES.length + '</div><div class="mr-metric-lbl">HANDOFFS CORRECT</div></div>' +
-    '<div class="mr-metric"><div class="mr-metric-val ' + confCls + '">' + conf + '%</div><div class="mr-metric-lbl">NOVA CONFIDENCE</div></div>' +
+    '<div class="mr-metric"><div class="mr-metric-val ' + confCls + '">' + conf + '%</div><div class="mr-metric-lbl">ANALYST CONFIDENCE</div></div>' +
     '<div class="mr-metric"><div class="mr-metric-val">' + wa + '</div><div class="mr-metric-lbl">WRONG DROPS</div></div>';
 
   const stumb = wa > 0
-    ? (' You took <strong>' + wa + '</strong> wrong ' + (wa === 1 ? 'stab' : 'stabs') + ' — confidence finished at <strong>' + conf + '%</strong>.')
-    : ' Nova confidence stayed at <strong>100%</strong>.';
+    ? (' You took <strong>' + wa + '</strong> wrong ' + (wa === 1 ? 'latch' : 'latches') + ' — confidence finished at <strong>' + conf + '%</strong>.')
+    : ' Analyst confidence stayed at <strong>100%</strong>.';
 
   document.getElementById('mr-detect').innerHTML =
     '<div class="mr-detect-ttl">FLOW SUMMARY</div>' +
@@ -2800,18 +3103,18 @@ function showDebrief(correct) {
     '<div class="mr-detect-row total"><span>Outcome band</span><span>' + tier + '</span></div>';
 
   const rating = correct === FILES.length && wa === 0
-    ? 'SPINE COMPLETE — Every handoff matches the published case-flow.'
+    ? 'CHAIN VERIFIED — Every artefact ladders to Annex K wording.'
     : correct === FILES.length
-      ? 'SPINE COMPLETE — Map holds; review confidence hits before release.'
+      ? 'CHAIN VERIFIED — Narrative survives; annotate confidence dips for counsel.'
       : correct >= solidBar
-        ? 'USABLE — Adjust the red nodes before you brief externally.'
-        : 'REWORK — Too many mis-links for a credible narrative.';
+        ? 'PATCHABLE — Tighten the red nodes before exfil filings.'
+        : 'REBUILD — Attribution reads like conspiracy wall without fixes.';
   document.getElementById('mr-detect').insertAdjacentHTML('beforeend', '<div class="mr-rating">' + rating + '</div>');
 
   document.getElementById('tc-content').innerHTML =
-    '<div class="tc-block"><p>Mission 03 trained <strong>who may receive which data</strong> on the <strong>same eight filenames</strong>. Mission 04 trains <strong>how those artifacts travel between departments</strong> in one disclosure case — so the package cannot be dismissed as a meaningless pile.</p></div>' +
-    '<div class="tc-block"><p>You placed <strong>' + correct + ' of ' + FILES.length + '</strong> feeds on the correct gates.' + stumb + ' That is the difference between “noise” and <strong>narrative that holds up</strong>.</p></div>' +
-    '<div class="tc-block"><p><span class="tc-subhead">Real-world translation</span>Organizations defend leaks as “messy dumps” when <strong>provenance</strong> and <strong>process lineage</strong> are unclear. A defensible disclosure ties each artifact to a <strong>gate and owner</strong> in the regulated flow — mirroring onboarding, AML, procurement, or privacy programs in the real enterprise.</p></div>';
+    '<div class="tc-block"><p>Earlier drills trained <strong>who may touch sensitive rows</strong>. Helios pushes you to show <strong>how ARGUS artefacts move between war-room disciplines</strong> so outside counsel cannot wave the disclosure away as unstructured noise.</p></div>' +
+    '<div class="tc-block"><p>You synced <strong>' + correct + ' of ' + FILES.length + '</strong> artefacts to the gates that actually own them.' + stumb + ' That readability gap is exactly what plaintiffs and regulators feast on.</p></div>' +
+    '<div class="tc-block"><p><span class="tc-subhead">Field note</span>Real breach responses fail when lineage is blurry. Winning posture maps each leaked file to a <strong>named control owner and phase</strong>, the same mechanic enterprises use inside AML, resilience, procurement, or privacy remediation programs.</p></div>';
 
   screen.classList.add('active');
   requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -2824,27 +3127,44 @@ function nextRound() {
   window.location.href = 'Mission 5.html';
 }
 
-bindDragDropOnce();
-
-(function checkPlayParam() {
+function playM4TutorialEnterFromBrief() {
+  var hadFlag = false;
   try {
-    if (!new URLSearchParams(location.search).has('play')) return;
-    var fromTutorial = false;
-    try {
-      fromTutorial = !!sessionStorage.getItem('m4GameplayEnter');
-      if (fromTutorial) sessionStorage.removeItem('m4GameplayEnter');
-    } catch (_) {}
-    if (fromTutorial) {
-      startRound4GameFromTutorial();
-    } else {
-      startRound4Game();
-    }
+    hadFlag = !!sessionStorage.getItem('m4TutorialEnter');
+    if (hadFlag) sessionStorage.removeItem('m4TutorialEnter');
   } catch (_) {}
-})();
+  if (!hadFlag) return;
+  document.documentElement.classList.remove('m4-enter-from-brief');
+  var gp = document.getElementById('gp-root');
+  var tut = document.getElementById('m4-tutorial');
+  if (!gp) return;
+  var reduced = typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (typeof gsap === 'undefined' || reduced) {
+    gp.style.opacity = '1';
+    gp.style.transform = '';
+    if (tut) tut.style.opacity = '1';
+    return;
+  }
+  gsap.fromTo(gp, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.72, ease: 'power2.out' });
+  if (tut) {
+    gsap.fromTo(tut, { opacity: 0 }, { opacity: 1, duration: 0.55, ease: 'power2.out', delay: 0.12 });
+  }
+}
+
+bindDragDropOnce();
+playM4TutorialEnterFromBrief();
+if (shouldShowM4Tutorial()) {
+  bootMissionQuietLayout();
+  openM4Tutorial();
+} else {
+  beginMission();
+}
 
 function bubble(sender, color, cls, text, delay) {
   const body = document.getElementById('broker-body');
   if (!body) return;
+  if (window.__M4_TUT_DEMO_SILENT) return;
   setTimeout(() => {
     const tw = document.createElement('div');
     tw.className = 'bm-typing-wrap';
@@ -2876,18 +3196,17 @@ function bubble(sender, color, cls, text, delay) {
 }
 
 function brokerSay(msg, cls, delayMs) {
-  bubble('VOSS', 'var(--green-matrix)', cls || 'bm-d', msg, delayMs != null ? delayMs : 0);
+  bubble('STRAUSS', 'var(--green-matrix)', cls || 'bm-d', msg, delayMs != null ? delayMs : 0);
 }
 function zexSay(text, delay) {
-  bubble('ZEX', '#a855f7', 'bm-zex', text, delay);
+  bubble('MALIK', '#a855f7', 'bm-zex', text, delay);
 }
 function novaSay(text, delay) {
-  bubble('NOVA', '#38bdf8', 'bm-nova', text, delay);
+  bubble('REYES', '#38bdf8', 'bm-nova', text, delay);
 }
 function systemSay(text, delay) {
   bubble('SYSTEM', '#9ca3af', 'bm-d', text, delay);
 }
 </script>
-<script src="playtest-mission-nav.js" defer></script>
 </body>
 </html>

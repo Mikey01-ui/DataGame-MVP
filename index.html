@@ -194,6 +194,28 @@
     grid-column: 1 / -1;
   }
 
+  .round-grid > li:not(.round-grid__span-full) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .round-tutorial-link {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-stable);
+    text-decoration: none;
+    padding: 0.15rem 0.1rem;
+    align-self: flex-start;
+  }
+
+  .round-tutorial-link:hover {
+    color: var(--orange);
+    text-decoration: underline;
+  }
+
   .round-card {
     position: relative;
     display: block;
@@ -443,6 +465,8 @@
         <p class="round-desc">Route disclosure by audience — public, official, or sealed.</p>
         <div class="round-cta">Launch <span aria-hidden="true">→</span></div>
       </a>
+      <a class="round-tutorial-link" href="Mission 3 Tutorial.html">Routing primer · tour + animated walkthrough</a>
+      <a class="round-tutorial-link" href="Mission 3.html?play=1">Skip brief · Marshall desktop</a>
     </li>
     <li>
       <a class="round-card" href="Mission 4.html" data-round="4">
@@ -454,6 +478,8 @@
         <p class="round-desc">Map datasets to the handoffs in MegaCorp’s disclosure flow.</p>
         <div class="round-cta">Launch <span aria-hidden="true">→</span></div>
       </a>
+      <a class="round-tutorial-link" href="Mission 4 Tutorial.html">Flowchart primer · tour + animated walkthrough</a>
+      <a class="round-tutorial-link" href="Mission 4.html?notutorial=1">OMNI flowchart · skip tour</a>
     </li>
     <li>
       <a class="round-card" href="Mission 5.html" data-round="5">
