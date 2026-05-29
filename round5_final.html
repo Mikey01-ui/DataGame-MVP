@@ -212,30 +212,19 @@ html, body { width:100%; min-height:100%; overflow:auto; font-family:var(--font-
 .p3-crew-name { font-family:var(--font-display); font-size:7px; color:rgba(255,255,255,.55); flex:1; }
 .p3-crew-status { font-family:var(--font-mono); font-size:6px; }
 
-/* ── DETECTION CARD (aligned with M1–M4 protocol) ── */
-.detection-section { flex:0 0 auto; animation:fadeUp 0.6s 0.4s both; margin-top:clamp(.35rem,.9vh,.85rem); }
-.detection-card {
-  background:var(--panel-bg); border:1px solid rgba(211,25,114,.45); border-radius:2px; padding:.55vh 1.3vw 1.35vh;
-  position:relative; overflow:visible; transition:border-color .3s,box-shadow .3s,transform .3s;
-  box-shadow:0 0 0 1px rgba(211,25,114,.45),0 0 36px rgba(211,25,114,.12),0 0 56px rgba(84,0,173,.12),inset 0 1px 0 rgba(211,25,114,.10),inset 0 -1px 0 rgba(211,25,114,.85);
-}
-.detection-card::before { content:''; position:absolute; top:-1px; left:18%; right:18%; height:1px; background:linear-gradient(90deg,transparent,var(--pink),transparent); opacity:.55; pointer-events:none; }
-.detection-card:hover { border-color:rgba(211,25,114,.65); transform:translateY(-1px); }
+/* ── DETECTION CARD ── */
+.detection-section { flex:0 0 auto; animation:fadeUp 0.6s 0.4s both; margin-top:0; }
+.detection-card { background:rgba(40,12,26,0.97); border:1px solid rgba(211,25,114,0.55); border-radius:2px; padding:0.5vh 1.2vw 0.6vh; position:relative; overflow:visible; transition:border-color 0.2s ease,box-shadow 0.2s ease,transform 0.2s ease; display:flex; gap:0.9vw; align-items:flex-start; }
+.detection-card::before { content:''; position:absolute; top:-1px; left:18%; right:18%; height:1px; background:linear-gradient(90deg,transparent,var(--pink),transparent); opacity:0.55; pointer-events:none; }
+.detection-card:hover { border-color:rgba(211,25,114,0.65); box-shadow:0 0 36px rgba(211,25,114,0.12),0 0 56px rgba(84,0,173,0.12); transform:translateY(-1px); }
 .detection-body { flex:1; min-width:0; }
-.detection-title {
-  font-family:var(--font-mono); font-size:0.6rem; color:var(--pink); letter-spacing:0.18em; text-transform:uppercase;
-  margin-bottom:0.7vh; padding-bottom:0.6vh; border-bottom:1px solid rgba(211,25,114,0.28); display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;
-}
+.detection-title { font-family:var(--font-mono); font-size:0.6rem; color:var(--pink); letter-spacing:0.18em; text-transform:uppercase; margin-bottom:0.7vh; padding-bottom:0.6vh; border-bottom:1px solid rgba(211,25,114,0.28); display:flex; align-items:center; gap:0.6rem; }
 .detection-title-tag { display:inline-flex; align-items:center; gap:0.35rem; background:rgba(211,25,114,0.12); border:1px solid rgba(211,25,114,0.3); border-radius:2px; padding:0.1rem 0.5rem; font-size:0.5rem; color:rgba(211,25,114,0.85); letter-spacing:0.15em; }
 .detection-desc { font-family:var(--font-body); font-size:0.82rem; line-height:1.6; color:var(--grey-text); font-weight:300; }
-.detection-desc strong { color:var(--pink); font-weight:600; }
-.detection-desc p { margin-bottom:0.35vh; }
-.detection-desc p:last-child { margin-bottom:0; }
 .detection-pills { display:flex; flex-wrap:wrap; gap:0.7rem; margin-top:1vh; }
 .dpill { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.1em; padding:0.2rem 0.6rem; border-radius:2px; border:1px solid; white-space:nowrap; }
-.dpill-low { color:rgba(0,196,28,.85); border-color:rgba(0,196,28,.3); background:rgba(0,196,28,.07); }
 .dpill-mid { color:var(--orange); border-color:rgba(247,148,33,0.3); background:rgba(247,148,33,0.07); }
-.dpill-high { color:#ff5566; border-color:rgba(255,51,68,.65); background:rgba(255,51,68,.2); }
+.dpill-high { color:var(--pink); border-color:rgba(211,25,114,0.3); background:rgba(211,25,114,0.07); }
 .dpill-hint { color:#f5c518; border-color:rgba(245,197,24,0.45); background:rgba(245,197,24,0.10); }
 .detection-hint-row { margin-top:0.55vh; padding-top:0.5vh; border-top:1px dashed rgba(211,25,114,0.3); display:flex; align-items:flex-start; gap:0.6rem; }
 .detection-hint-row .dh-icon { color:#f5c518; font-size:0.95rem; text-shadow:0 0 10px rgba(245,197,24,0.5); flex-shrink:0; margin-top:0.12rem; line-height:1; }
@@ -262,8 +251,8 @@ html, body { width:100%; min-height:100%; overflow:auto; font-family:var(--font-
 .slide-nav { position:absolute; bottom:20px; left:50%; transform:translateX(-50%); display:flex; gap:12px; align-items:center; }
 .snav-btn { background:transparent; border:1px solid rgba(0,196,28,0.3); color:var(--green-stable); font-family:var(--font-mono); font-size:0.65rem; padding:6px 14px; letter-spacing:1px; cursor:pointer; transition:all .2s; }
 .snav-btn:hover { border-color:var(--green-stable); }
-.skip-intro { position:absolute; bottom:20px; right:40px; background:transparent; border:1px solid rgba(0,196,28,0.2); color:rgba(0,196,28,0.5); font-family:var(--font-mono); font-size:0.6rem; padding:6px 14px; letter-spacing:1px; cursor:pointer; transition:all .2s; }
-.skip-intro:hover { border-color:var(--green-stable); color:var(--green-stable); }
+#skip-intro { position:absolute; bottom:20px; right:40px; background:transparent; border:1px solid rgba(0,196,28,0.2); color:rgba(0,196,28,0.5); font-family:var(--font-mono); font-size:0.6rem; padding:6px 14px; letter-spacing:1px; cursor:pointer; transition:all .2s; }
+#skip-intro:hover { border-color:var(--green-stable); color:var(--green-stable); }
 
 /* ── GAMEPLAY ── */
 #gp-root { position:fixed; inset:0; z-index:100; display:none; }
@@ -314,15 +303,21 @@ html.gp-html-active { overflow:hidden; height:100%; }
 .ev-qual.clean { color:#00FF41; border:1px solid rgba(0,255,65,0.35); background:rgba(0,255,65,0.06); }
 .ev-choices { display:flex; flex-direction:column; gap:5px; }
 .ev-choice-label { font-family:var(--font-mono); font-size:0.6rem; color:var(--purple-light); letter-spacing:0.18em; margin-bottom:5px; font-weight:500; }
-.choice-btns { display:flex; gap:6px; flex-wrap:wrap; }
-.choice-btn { padding:7px 14px; border:1px solid rgba(143,68,232,.28); border-radius:3px; background:rgba(43,32,52,.9); color:rgba(143,68,232,.75); font-family:var(--font-mono); font-size:0.68rem; letter-spacing:0.1em; cursor:pointer; transition:all .15s; white-space:nowrap; font-weight:500; }
-.choice-btn:hover { border-color:var(--purple-light); color:var(--purple-light); background:rgba(143,68,232,.12); box-shadow:0 0 10px rgba(143,68,232,.12); }
-.choice-btn.selected { border-color:var(--purple-light); color:var(--purple-light); background:rgba(143,68,232,.18); box-shadow:0 0 12px rgba(143,68,232,.18); }
-.choice-btn.locked { pointer-events:none; opacity:0.45; }
-.choice-btn.correct { border-color:var(--green-stable); color:var(--green-stable); background:rgba(0,196,28,.08); }
-.choice-btn.wrong { border-color:var(--pink); color:var(--pink); background:rgba(211,25,114,.08); }
-.echo-line { font-family:var(--font-body); font-size:0.72rem; color:var(--orange); margin-top:8px; padding:6px 10px; border-left:2px solid var(--orange); background:rgba(247,148,33,.07); line-height:1.6; border-radius:0 2px 2px 0; display:none; }
+.choice-btns { display:flex; gap:7px; flex-wrap:wrap; }
+.choice-btn { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; min-width:74px; flex:1 1 0; padding:9px 8px; border:1px solid rgba(143,68,232,.3); border-radius:5px; background:rgba(43,32,52,.9); color:rgba(143,68,232,.85); font-family:var(--font-mono); font-size:0.56rem; letter-spacing:0.07em; text-align:center; cursor:pointer; transition:all .15s; font-weight:600; line-height:1.2; }
+.choice-btn .cb-ico { font-size:1.05rem; line-height:1; transition:transform .15s; }
+.choice-btn .cb-lbl { white-space:nowrap; }
+.choice-btn:hover { border-color:var(--purple-light); color:var(--purple-light); background:rgba(143,68,232,.14); box-shadow:0 0 12px rgba(143,68,232,.15); transform:translateY(-1px); }
+.choice-btn:hover .cb-ico { transform:scale(1.12); }
+.choice-btn.selected { border-color:var(--purple-light); color:var(--white); background:rgba(143,68,232,.26); box-shadow:0 0 14px rgba(143,68,232,.28); }
+.choice-btn.selected .cb-ico { color:var(--orange); }
+.choice-btn.locked { pointer-events:none; opacity:0.5; }
+.choice-btn.correct { border-color:var(--green-stable); color:var(--green-stable); background:rgba(0,196,28,.1); }
+.choice-btn.wrong { border-color:var(--pink); color:var(--pink); background:rgba(211,25,114,.1); }
+.echo-line { font-family:var(--font-body); font-size:0.8rem; color:var(--white); margin-top:9px; padding:9px 12px; border-left:3px solid var(--orange); background:rgba(247,148,33,.12); line-height:1.65; border-radius:0 3px 3px 0; display:none; }
 .echo-line.show { display:block; animation:fadeUp .3s ease; }
+.echo-tag { display:inline-block; font-family:var(--font-mono); font-size:0.55rem; font-weight:700; letter-spacing:0.14em; color:var(--void); background:var(--orange); padding:1px 6px; border-radius:2px; margin-right:7px; vertical-align:middle; }
+.echo-tag:not(:first-child) { margin-top:7px; }
 #framing-confirm { margin-top:8px; padding:9px 24px; background:rgba(247,148,33,0.18); border:1px solid var(--orange); color:var(--orange); font-family:var(--font-display); font-size:0.75rem; font-weight:700; letter-spacing:0.14em; border-radius:4px; cursor:pointer; box-shadow:0 0 8px rgba(247,148,33,0.15); transition:background .25s,box-shadow .25s,transform .2s; align-self:flex-start; }
 #framing-confirm:hover:not(:disabled) { background:rgba(247,148,33,0.34); box-shadow:0 0 20px rgba(247,148,33,0.4); transform:translateY(-1px); }
 #framing-confirm:disabled { opacity:.3; cursor:not-allowed; }
@@ -426,6 +421,16 @@ html.gp-html-active { overflow:hidden; height:100%; }
 .tc-pillar-tag { font-family:var(--font-mono); font-size:9.5px; color:var(--amber); letter-spacing:2px; margin-bottom:6px; opacity:.85; }
 .tc-pillar-ttl { font-family:var(--font-display); font-size:13.5px; color:var(--green); font-weight:600; letter-spacing:.3px; margin-bottom:8px; }
 .tc-pillar-txt { font-size:12.5px; line-height:1.65; color:var(--text-b); opacity:.86; }
+.tc-learning { padding-left:18px; }
+.tc-learning-ttl { font-family:var(--font-mono); font-size:10px; letter-spacing:2px; color:var(--amber); margin-bottom:9px; }
+.tc-lrn-row { display:flex; gap:10px; align-items:flex-start; padding:8px 0; border-bottom:1px solid rgba(255,255,255,.06); }
+.tc-lrn-row:last-child { border-bottom:none; }
+.tc-lrn-dot { flex-shrink:0; width:14px; height:14px; border-radius:50%; margin-top:2px; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:700; }
+.tc-lrn-dot.ok { background:rgba(0,255,65,.14); border:1px solid var(--green); color:var(--green); }
+.tc-lrn-dot.no { background:rgba(211,25,114,.14); border:1px solid var(--pink); color:var(--pink); }
+.tc-lrn-body { flex:1; min-width:0; }
+.tc-lrn-who { font-family:var(--font-display); font-size:12px; font-weight:600; color:var(--text-b); }
+.tc-lrn-txt { font-size:12px; line-height:1.55; color:var(--text-b); opacity:.82; margin-top:2px; }
 .db-cta-row { display:flex; justify-content:center; margin-top:18px; flex-shrink:0; opacity:0; transition:opacity .4s; }
 .db-cta-row.show { opacity:1; }
 .db-cta { padding:14px 36px; background:rgba(247,148,33,.32); border:1px solid var(--orange); color:var(--orange); font-family:var(--font-display); font-size:13px; font-weight:700; letter-spacing:1.5px; border-radius:4px; cursor:pointer; box-shadow:0 0 10px rgba(247,148,33,.22); transition:all .25s; }
@@ -489,13 +494,6 @@ html.gp-html-active { overflow:hidden; height:100%; }
 /* ── TOAST ── */
 #toast { position:fixed; top:62px; left:50%; transform:translateX(-50%); background:rgba(143,68,232,.94); color:#fff; font-family:var(--font-mono); font-size:clamp(11px,1.1vw,13px); padding:8px 20px; border-radius:4px; z-index:600; pointer-events:none; opacity:0; transition:opacity .2s; white-space:nowrap; box-shadow:0 0 20px rgba(143,68,232,.25); }
 #toast.show { opacity:1; }
-
-@media (max-width:1020px){ .brief-grid{ grid-template-columns:1fr; } }
-@media (max-width:780px){
-  .mission-params{ grid-template-columns:1fr; }
-  .mp-cell{ border-right:none; border-bottom:1px solid rgba(247,148,33,0.22); }
-  .mp-cell:last-child{ border-bottom:none; }
-}
 
 </style>
 </head>
@@ -573,25 +571,20 @@ html.gp-html-active { overflow:hidden; height:100%; }
 
       <div class="dossier-col">
         <div class="brief-section" style="height:100%">
-          <div class="section-label">// Dossier</div>
+          <div class="section-label">// Crew Dossier</div>
           <div class="dossier-backdrop">
             <div class="dossier-card">
-              <div class="dc-label">Target</div>
-              <div class="dc-name">MegaCorp</div>
-              <div class="dc-role">Global conglomerate · OMNI oversight · executive briefing room</div>
-            </div>
-            <div class="dossier-card">
-              <div class="dc-label">Handler</div>
+              <div class="dc-label">HANDLER</div>
               <div class="dc-name">Voss</div>
               <div class="dc-role">Steps back — watching only</div>
             </div>
             <div class="dossier-card">
-              <div class="dc-label">Comms / framing</div>
+              <div class="dc-label">COMMS / FRAMING</div>
               <div class="dc-name">Echo</div>
               <div class="dc-role">Works with you on framing — already committed</div>
             </div>
             <div class="dossier-card">
-              <div class="dc-label">Crew vote</div>
+              <div class="dc-label">CREW VOTE</div>
               <div class="dc-name">ZEX · ATLAS · NOVA · KADE</div>
               <div class="dc-role">Each challenges you once — 3 of 4 must commit</div>
             </div>
@@ -614,7 +607,7 @@ html.gp-html-active { overflow:hidden; height:100%; }
       <div class="btn-inner"><span>Continue</span><span class="btn-arrow">→</span></div>
     </button>
   </div>
-  <button type="button" class="skip-intro" onclick="startBoot()">SKIP INTRO →</button>
+  <button id="skip-intro" onclick="startBoot()">SKIP INTRO →</button>
 </div>
 
 <!-- ═══ PAGE 2 — MISSION PROTOCOL (GSAP CARDS) ═══ -->
@@ -768,13 +761,12 @@ html.gp-html-active { overflow:hidden; height:100%; }
             <span class="detection-title-tag"><i class="fas fa-exclamation-triangle"></i> ACTIVE THREAT</span>
           </div>
           <div class="detection-desc">
-            <p>Every mistake pushes the meter up. Hit <strong>100%</strong> and MegaCorp closes the connection — the briefing room goes dark and the operation is over.</p>
+            <p>Every mistake raises the meter. Hit 100% and MegaCorp closes the connection — the briefing room goes dark and the operation is over.</p>
           </div>
           <div class="detection-pills">
             <span class="dpill dpill-high">Wrong crew answer · +10%</span>
             <span class="dpill dpill-high">Wrong framing · +8% per card</span>
             <span class="dpill dpill-mid">Wrong visualisation · +5% per card</span>
-            <span class="dpill dpill-low">ECHO confirms · aligned framing &amp; viz</span>
           </div>
           <div class="detection-hint-row">
             <i class="fas fa-lightbulb dh-icon"></i>
@@ -798,7 +790,7 @@ html.gp-html-active { overflow:hidden; height:100%; }
       <div class="btn-inner"><span>Enter the Briefing Room</span><span class="btn-arrow">→</span></div>
     </button>
   </div>
-  <button type="button" class="skip-intro" onclick="startBoot()">SKIP INTRO →</button>
+  <button id="skip-intro" onclick="startBoot()">SKIP INTRO →</button>
 </div>
 
 <!-- ═══ BOOT ═══ -->
@@ -846,15 +838,15 @@ html.gp-html-active { overflow:hidden; height:100%; }
             <div class="ev-choices">
               <div class="ev-choice-label"><span class="gloss" data-gloss="How you position the evidence for the audience. Risk-focused highlights threats and gaps. Opportunity-focused highlights reasons to proceed. Neutral presents facts only — rarely the strongest choice when someone has a specific objection to address." style="color:var(--purple-light);border-bottom-color:rgba(143,68,232,0.5)">FRAMING TYPE ⓘ</span></div>
               <div class="choice-btns" id="frame-btns-1">
-                <button class="choice-btn" onclick="selectFrame(1,'risk',this)">RISK</button>
-                <button class="choice-btn" onclick="selectFrame(1,'opportunity',this)">OPPORTUNITY</button>
-                <button class="choice-btn" onclick="selectFrame(1,'neutral',this)">NEUTRAL</button>
+                <button class="choice-btn" onclick="selectFrame(1,'risk',this)"><span class="cb-ico"><i class="fas fa-triangle-exclamation"></i></span><span class="cb-lbl">RISK</span></button>
+                <button class="choice-btn" onclick="selectFrame(1,'opportunity',this)"><span class="cb-ico"><i class="fas fa-arrow-trend-up"></i></span><span class="cb-lbl">OPPORTUNITY</span></button>
+                <button class="choice-btn" onclick="selectFrame(1,'neutral',this)"><span class="cb-ico"><i class="fas fa-minus"></i></span><span class="cb-lbl">NEUTRAL</span></button>
               </div>
               <div class="ev-choice-label" style="margin-top:5px"><span class="gloss" data-gloss="The format used to show the evidence. Must match the type of data — a node map proves connectivity, a traffic light grid shows decisions, a matrix shows ownership. Wrong format makes the room do extra work." style="color:var(--purple-light);border-bottom-color:rgba(143,68,232,0.5)">VISUALISATION ⓘ</span></div>
               <div class="choice-btns" id="viz-btns-1">
-                <button class="choice-btn" onclick="selectViz(1,'bar',this)">BAR CHART</button>
-                <button class="choice-btn" onclick="selectViz(1,'table',this)">TABLE</button>
-                <button class="choice-btn" onclick="selectViz(1,'node',this)">NODE MAP</button>
+                <button class="choice-btn" onclick="selectViz(1,'bar',this)"><span class="cb-ico"><i class="fas fa-chart-column"></i></span><span class="cb-lbl">BAR CHART</span></button>
+                <button class="choice-btn" onclick="selectViz(1,'table',this)"><span class="cb-ico"><i class="fas fa-table"></i></span><span class="cb-lbl">TABLE</span></button>
+                <button class="choice-btn" onclick="selectViz(1,'node',this)"><span class="cb-ico"><i class="fas fa-circle-nodes"></i></span><span class="cb-lbl">NODE MAP</span></button>
               </div>
               <div class="echo-line" id="echo-1"></div>
             </div>
@@ -868,15 +860,15 @@ html.gp-html-active { overflow:hidden; height:100%; }
             <div class="ev-choices">
               <div class="ev-choice-label"><span class="gloss" data-gloss="How you position the evidence for the audience. Risk-focused highlights threats and gaps. Opportunity-focused highlights reasons to proceed. Neutral presents facts only — rarely the strongest choice when someone has a specific objection to address." style="color:var(--purple-light);border-bottom-color:rgba(143,68,232,0.5)">FRAMING TYPE ⓘ</span></div>
               <div class="choice-btns" id="frame-btns-2">
-                <button class="choice-btn" onclick="selectFrame(2,'risk',this)">RISK</button>
-                <button class="choice-btn" onclick="selectFrame(2,'opportunity',this)">OPPORTUNITY</button>
-                <button class="choice-btn" onclick="selectFrame(2,'neutral',this)">NEUTRAL</button>
+                <button class="choice-btn" onclick="selectFrame(2,'risk',this)"><span class="cb-ico"><i class="fas fa-triangle-exclamation"></i></span><span class="cb-lbl">RISK</span></button>
+                <button class="choice-btn" onclick="selectFrame(2,'opportunity',this)"><span class="cb-ico"><i class="fas fa-arrow-trend-up"></i></span><span class="cb-lbl">OPPORTUNITY</span></button>
+                <button class="choice-btn" onclick="selectFrame(2,'neutral',this)"><span class="cb-ico"><i class="fas fa-minus"></i></span><span class="cb-lbl">NEUTRAL</span></button>
               </div>
               <div class="ev-choice-label" style="margin-top:5px"><span class="gloss" data-gloss="The format used to show the evidence. Must match the type of data — a node map proves connectivity, a traffic light grid shows decisions, a matrix shows ownership. Wrong format makes the room do extra work." style="color:var(--purple-light);border-bottom-color:rgba(143,68,232,0.5)">VISUALISATION ⓘ</span></div>
               <div class="choice-btns" id="viz-btns-2">
-                <button class="choice-btn" onclick="selectViz(2,'lineage',this)">LINEAGE DIAGRAM</button>
-                <button class="choice-btn" onclick="selectViz(2,'matrix',this)">OWNERSHIP MATRIX</button>
-                <button class="choice-btn" onclick="selectViz(2,'pie',this)">PIE CHART</button>
+                <button class="choice-btn" onclick="selectViz(2,'lineage',this)"><span class="cb-ico"><i class="fas fa-diagram-project"></i></span><span class="cb-lbl">LINEAGE</span></button>
+                <button class="choice-btn" onclick="selectViz(2,'matrix',this)"><span class="cb-ico"><i class="fas fa-table-cells"></i></span><span class="cb-lbl">MATRIX</span></button>
+                <button class="choice-btn" onclick="selectViz(2,'pie',this)"><span class="cb-ico"><i class="fas fa-chart-pie"></i></span><span class="cb-lbl">PIE CHART</span></button>
               </div>
               <div class="echo-line" id="echo-2"></div>
             </div>
@@ -890,15 +882,15 @@ html.gp-html-active { overflow:hidden; height:100%; }
             <div class="ev-choices">
               <div class="ev-choice-label"><span class="gloss" data-gloss="How you position the evidence for the audience. Risk-focused highlights threats and gaps. Opportunity-focused highlights reasons to proceed. Neutral presents facts only — rarely the strongest choice when someone has a specific objection to address." style="color:var(--purple-light);border-bottom-color:rgba(143,68,232,0.5)">FRAMING TYPE ⓘ</span></div>
               <div class="choice-btns" id="frame-btns-3">
-                <button class="choice-btn" onclick="selectFrame(3,'risk',this)">RISK</button>
-                <button class="choice-btn" onclick="selectFrame(3,'neutral',this)">NEUTRAL</button>
-                <button class="choice-btn" onclick="selectFrame(3,'opportunity',this)">OPPORTUNITY</button>
+                <button class="choice-btn" onclick="selectFrame(3,'risk',this)"><span class="cb-ico"><i class="fas fa-triangle-exclamation"></i></span><span class="cb-lbl">RISK</span></button>
+                <button class="choice-btn" onclick="selectFrame(3,'neutral',this)"><span class="cb-ico"><i class="fas fa-minus"></i></span><span class="cb-lbl">NEUTRAL</span></button>
+                <button class="choice-btn" onclick="selectFrame(3,'opportunity',this)"><span class="cb-ico"><i class="fas fa-arrow-trend-up"></i></span><span class="cb-lbl">OPPORTUNITY</span></button>
               </div>
               <div class="ev-choice-label" style="margin-top:5px"><span class="gloss" data-gloss="The format used to show the evidence. Must match the type of data — a node map proves connectivity, a traffic light grid shows decisions, a matrix shows ownership. Wrong format makes the room do extra work." style="color:var(--purple-light);border-bottom-color:rgba(143,68,232,0.5)">VISUALISATION ⓘ</span></div>
               <div class="choice-btns" id="viz-btns-3">
-                <button class="choice-btn" onclick="selectViz(3,'heat',this)">RISK HEATMAP</button>
-                <button class="choice-btn" onclick="selectViz(3,'traffic',this)">TRAFFIC LIGHT GRID</button>
-                <button class="choice-btn" onclick="selectViz(3,'pii',this)">PII FIELD LIST</button>
+                <button class="choice-btn" onclick="selectViz(3,'heat',this)"><span class="cb-ico"><i class="fas fa-fire"></i></span><span class="cb-lbl">HEATMAP</span></button>
+                <button class="choice-btn" onclick="selectViz(3,'traffic',this)"><span class="cb-ico"><i class="fas fa-traffic-light"></i></span><span class="cb-lbl">TRAFFIC GRID</span></button>
+                <button class="choice-btn" onclick="selectViz(3,'pii',this)"><span class="cb-ico"><i class="fas fa-list"></i></span><span class="cb-lbl">PII LIST</span></button>
               </div>
               <div class="echo-line" id="echo-3"></div>
             </div>
@@ -912,15 +904,15 @@ html.gp-html-active { overflow:hidden; height:100%; }
             <div class="ev-choices">
               <div class="ev-choice-label"><span class="gloss" data-gloss="How you position the evidence for the audience. Risk-focused highlights threats and gaps. Opportunity-focused highlights reasons to proceed. Neutral presents facts only — rarely the strongest choice when someone has a specific objection to address." style="color:var(--purple-light);border-bottom-color:rgba(143,68,232,0.5)">FRAMING TYPE ⓘ</span></div>
               <div class="choice-btns" id="frame-btns-4">
-                <button class="choice-btn" onclick="selectFrame(4,'neutral',this)">NEUTRAL</button>
-                <button class="choice-btn" onclick="selectFrame(4,'opportunity',this)">OPPORTUNITY</button>
-                <button class="choice-btn" onclick="selectFrame(4,'risk',this)">RISK</button>
+                <button class="choice-btn" onclick="selectFrame(4,'neutral',this)"><span class="cb-ico"><i class="fas fa-minus"></i></span><span class="cb-lbl">NEUTRAL</span></button>
+                <button class="choice-btn" onclick="selectFrame(4,'opportunity',this)"><span class="cb-ico"><i class="fas fa-arrow-trend-up"></i></span><span class="cb-lbl">OPPORTUNITY</span></button>
+                <button class="choice-btn" onclick="selectFrame(4,'risk',this)"><span class="cb-ico"><i class="fas fa-triangle-exclamation"></i></span><span class="cb-lbl">RISK</span></button>
               </div>
               <div class="ev-choice-label" style="margin-top:5px"><span class="gloss" data-gloss="The format used to show the evidence. Must match the type of data — a node map proves connectivity, a traffic light grid shows decisions, a matrix shows ownership. Wrong format makes the room do extra work." style="color:var(--purple-light);border-bottom-color:rgba(143,68,232,0.5)">VISUALISATION ⓘ</span></div>
               <div class="choice-btns" id="viz-btns-4">
-                <button class="choice-btn" onclick="selectViz(4,'gantt',this)">GANTT CHART</button>
-                <button class="choice-btn" onclick="selectViz(4,'flow',this)">PROCESS FLOW</button>
-                <button class="choice-btn" onclick="selectViz(4,'sourcetable',this)">SOURCE TABLE</button>
+                <button class="choice-btn" onclick="selectViz(4,'gantt',this)"><span class="cb-ico"><i class="fas fa-bars-staggered"></i></span><span class="cb-lbl">GANTT</span></button>
+                <button class="choice-btn" onclick="selectViz(4,'flow',this)"><span class="cb-ico"><i class="fas fa-arrow-right-arrow-left"></i></span><span class="cb-lbl">PROCESS FLOW</span></button>
+                <button class="choice-btn" onclick="selectViz(4,'sourcetable',this)"><span class="cb-ico"><i class="fas fa-table"></i></span><span class="cb-lbl">SOURCE TABLE</span></button>
               </div>
               <div class="echo-line" id="echo-4"></div>
             </div>
@@ -1097,13 +1089,18 @@ html.gp-html-active { overflow:hidden; height:100%; }
           </div>
         </div>
 
+        <div class="tc-block tc-learning" id="tc-learning">
+          <div class="tc-learning-ttl">WHAT EACH CHALLENGE ACTUALLY TESTED</div>
+          <div id="tc-learning-rows"></div>
+        </div>
+
       </div>
     </div>
 
   </div>
 
   <div class="db-cta-row" id="cta-row">
-    <button class="db-cta" onclick="alert('Operation OMNI complete. All five missions cleared.')">OPERATION COMPLETE — OMNI EXPOSED ✓</button>
+    <button class="db-cta" onclick="window.location.href='index.html'">OPERATION COMPLETE — RETURN TO HUB →</button>
   </div>
 
 </div>
@@ -1160,48 +1157,48 @@ const ECHO_VIZ = {
 
 const CREW_QUESTIONS = {
   zex:{
-    text:'"You confirmed the infrastructure exists. But existence isn\'t the same as readiness. What does the node map actually tell me about whether these systems are live?"',
+    text:'"You confirmed the four leads — compute, funding, personnel, scope. But what does the node map actually let me conclude, and what does it NOT?"',
     opts:[
-      "The map shows the system exists on paper. We verify the live status in the operation itself.",
-      "All four leads were confirmed, so the infrastructure is confirmed. The map is just a visualisation of that.",
-      "The node map shows active connections between confirmed components — compute, funding flows, and personnel access are linked in real time, not archived."
-    ],
-    ans:2,
-    commit:"ZEX: Fine. I'll write the exploit. But if a single node is cold when we go in, that's on you.",
-    sceptical:"ZEX: You're reading the map like a diagram, not like intel. I'm not convinced it's live."
-  },
-  atlas:{
-    text:'"The ownership matrix looks clean. But I need to know: what happens to a dataset\'s stewardship when it crosses a department boundary in the lineage chain?"',
-    opts:[
-      "Stewardship transfers at the point where a department takes formal accountability for the data — defined by governance policy, not by who created or uses it most.",
-      "The originating department retains ownership regardless of where the data moves — origin defines the owner.",
-      "Ownership transfers automatically to whichever department uses the data most frequently downstream."
+      "That all four components are connected as one system — but not that any of them is currently switched on.",
+      "That the entire system is live and running at this moment, so the exploit can be built against confirmed real-time activity right now.",
+      "That the four leads each exist on their own, while telling us nothing about whether they connect to one another at all."
     ],
     ans:0,
-    commit:"ATLAS: That's the answer. I'll route through the map.",
-    sceptical:"ATLAS: That's one of the most common governance errors there is. Try again."
+    commit:"ZEX: Right — connectivity confirmed, live status unknown. Honest read. I'll write the exploit.",
+    sceptical:"ZEX: You're claiming more than the map shows, or less. A node map proves links, not live status. Look again."
   },
-  nova:{
-    text:'"You cleared the payload. Tell me: when is anonymisation not enough, and a dataset has to be dropped entirely?"',
+  atlas:{
+    text:'"The ownership matrix looks clean. When a dataset crosses a department boundary in the lineage, who governs it?"',
     opts:[
-      "Anonymisation is always sufficient — if the identifying fields are removed, the dataset is safe to use.",
-      "When the data\'s purpose itself causes harm regardless of whether individuals are identifiable — consent, targeting, or collection basis.",
-      "When the dataset contains more than a defined number of PII fields — volume determines the threshold."
-    ],
-    ans:1,
-    commit:"NOVA: That's the right answer. I'm in.",
-    sceptical:"NOVA: Anonymisation isn't a universal solution. You know that from Op 3. One more shot."
-  },
-  kade:{
-    text:'"The flow diagram looks clean. Tell me what a bottleneck in a data pipeline actually means for an operation like this."',
-    opts:[
-      "A bottleneck means a step that takes longer than others — it slows the process but doesn't break it.",
-      "A bottleneck is where data quality degrades because too many sources feed into one step — a data quality problem.",
-      "A bottleneck is a point where multiple data dependencies converge on a single step — if that step fails, every downstream process stalls. That is maximum exposure."
+      "The department that ends up using it most often downstream automatically takes over governance of the dataset from then on.",
+      "Whichever department originally created the data simply keeps full ownership of it wherever it later happens to travel.",
+      "The department with verified, formal accountability under policy — not the creator, not the heaviest user."
     ],
     ans:2,
+    commit:"ATLAS: That's the answer. I'll route through the map.",
+    sceptical:"ATLAS: That's one of the most common governance errors there is. Think about Op 2 again."
+  },
+  nova:{
+    text:'"You cleared the payload. When is anonymisation NOT enough, and a dataset has to be dropped entirely?"',
+    opts:[
+      "When the purpose or basis of collection is itself harmful — consent, targeting, intent — not just whether names show.",
+      "When the dataset happens to contain more identifying fields than a set numerical threshold is judged to allow for safe processing.",
+      "Never, really — anonymisation is always enough once the obvious identifying fields have all been stripped from the records."
+    ],
+    ans:0,
+    commit:"NOVA: That's the right answer. I'm in.",
+    sceptical:"NOVA: Anonymisation isn't a universal fix. You learned that in Op 3. Think it through again."
+  },
+  kade:{
+    text:'"The flow diagram looks clean. What does a bottleneck in a data pipeline actually mean for an operation like this?"',
+    opts:[
+      "A step where several dependencies converge — if it fails, everything downstream stalls.",
+      "A step that simply runs slower than the others, delaying the overall process without ever actually breaking the pipeline itself.",
+      "A point where too many separate sources feed in and the data quality quietly degrades over time."
+    ],
+    ans:0,
     commit:"KADE: Correct. That's the one thing I needed to hear. I'm in.",
-    sceptical:"KADE: You described a timing issue, not a dependency chain. There's a difference. Retry."
+    sceptical:"KADE: That's a timing or quality issue, not a dependency chain. There's a difference. Think again."
   }
 };
 
@@ -1446,9 +1443,10 @@ function showEchoFeedback(cardId){
   const c=GS.frameChoices[cardId]||{};
   const el=document.getElementById('echo-'+cardId);
   let lines=[];
-  if(c.frame){ const fd=ECHO_FRAME[cardId]; lines.push((c.frame===fd.correct?'✓ ':'⚠ ')+fd.msgs[c.frame]); }
-  if(c.viz){ const vd=ECHO_VIZ[cardId]; lines.push((c.viz===vd.correct?'✓ ':'⚠ ')+vd.msgs[c.viz]); }
-  if(lines.length){ el.innerHTML='ECHO: '+lines.join('<br>ECHO: '); el.classList.add('show'); }
+  // Escape-room style: ECHO reacts in character. No ✓/✗ — the wording itself is the hint.
+  if(c.frame){ const fd=ECHO_FRAME[cardId]; lines.push(fd.msgs[c.frame]); }
+  if(c.viz){ const vd=ECHO_VIZ[cardId]; lines.push(vd.msgs[c.viz]); }
+  if(lines.length){ el.innerHTML='<span class="echo-tag">ECHO</span>'+lines.join('<span class="echo-tag">ECHO</span>'); el.classList.add('show'); }
 }
 function checkFramingComplete(){
   let all=true;
@@ -1723,6 +1721,23 @@ function showDebrief(){
     '<div class="mr-detect-row total"><span>Crew commits</span><span class="'+detClass+'">'+GS.commits+' / 4</span></div>'+
     '<div class="mr-rating">'+rating+'</div>';
 
+  // Right panel — per-crew learning recap (revealed only here, after the round)
+  const LEARNING={
+    zex:{who:'ZEX · Data Analysis',txt:'A node map proves things are <strong>connected</strong> — not that they are switched on. Reading connectivity as live status overstates what the evidence shows.'},
+    atlas:{who:'ATLAS · Governance',txt:'When data crosses a department boundary, governance follows <strong>verified, formal accountability</strong> — not the creator and not the heaviest downstream user.'},
+    nova:{who:'NOVA · Ethics',txt:'Anonymisation is not a universal fix. When the <strong>purpose or basis of collection is itself harmful</strong>, a dataset must be dropped, not just stripped of names.'},
+    kade:{who:'KADE · Data Flows',txt:'A bottleneck is a <strong>convergence point</strong> where dependencies stack on one step — if it fails, everything downstream stalls. That is the real exposure, not mere slowness.'}
+  };
+  let lrnRows='';
+  CREW_ORDER.forEach(c=>{
+    const committed=GS.crewState[c].status==='committed';
+    lrnRows+='<div class="tc-lrn-row">'+
+      '<div class="tc-lrn-dot '+(committed?'ok':'no')+'">'+(committed?'✓':'✕')+'</div>'+
+      '<div class="tc-lrn-body"><div class="tc-lrn-who">'+LEARNING[c].who+'</div>'+
+      '<div class="tc-lrn-txt">'+LEARNING[c].txt+'</div></div></div>';
+  });
+  document.getElementById('tc-learning-rows').innerHTML=lrnRows;
+
   // Show debrief
   document.getElementById('debrief-overlay').classList.add('active');
 
@@ -1755,7 +1770,9 @@ function _debriefReveal(){
   setTimeout(()=>document.getElementById('tc-3').classList.add('show'),780);
   const pillars=document.querySelectorAll('.tc-pillar');
   pillars.forEach((p,i)=>setTimeout(()=>p.classList.add('show'),1080+i*130));
-  setTimeout(()=>document.getElementById('cta-row').classList.add('show'),1080+pillars.length*130+350);
+  const afterPillars=1080+pillars.length*130;
+  setTimeout(()=>document.getElementById('tc-learning').classList.add('show'),afterPillars+200);
+  setTimeout(()=>document.getElementById('cta-row').classList.add('show'),afterPillars+600);
 }
 
 /* ═══════════════════════════════════════════
