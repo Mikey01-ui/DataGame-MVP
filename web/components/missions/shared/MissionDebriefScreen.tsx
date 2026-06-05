@@ -35,6 +35,7 @@ export type MissionDebriefConfig = {
   rating: string;
   tradecraft: DebriefBlock[];
   learningRows?: DebriefLearningRow[];
+  learningTitle?: string;
   cta: string;
 };
 
@@ -96,7 +97,7 @@ export function MissionDebriefScreen({ config, onContinue, hubLink = true }: Pro
             ))}
             {config.learningRows && config.learningRows.length > 0 && (
               <div className={`tc-block tc-learning${show(config.tradecraft.length + 1) ? " show" : ""}`}>
-                <div className="tc-learning-ttl">WHAT EACH CHALLENGE ACTUALLY TESTED</div>
+                <div className="tc-learning-ttl">{config.learningTitle ?? "WHAT EACH CHALLENGE ACTUALLY TESTED"}</div>
                 <div id="tc-learning-rows">
                   {config.learningRows.map((row) => (
                     <div key={row.who} className="tc-lrn-row">

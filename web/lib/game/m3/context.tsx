@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useReducer, type ReactNode } from "react";
-import { HACK_LINES, INTRO_CHAT } from "@/lib/game/m3/data";
+import { HACK_LINES, HINT_COOLDOWN_SEC, INTRO_CHAT } from "@/lib/game/m3/data";
 import { createInitialM3State, m3Reducer } from "@/lib/game/m3/reducer";
 import type { M3GameAction, M3GameState } from "@/lib/game/m3/types";
 
@@ -61,7 +61,7 @@ export function M3GameProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!state.hintCooldown) return;
-    const t = setTimeout(() => dispatch({ type: "HINT_COOLDOWN_CLEAR" }), 30000);
+    const t = setTimeout(() => dispatch({ type: "HINT_COOLDOWN_CLEAR" }), HINT_COOLDOWN_SEC * 1000);
     return () => clearTimeout(t);
   }, [state.hintCooldown]);
 

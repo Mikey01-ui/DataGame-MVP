@@ -6,10 +6,16 @@ export const CHANNEL_LABELS: Record<Channel, string> = {
   vault: "NO RELEASE",
 };
 
-export const BUDGET_START = 50000;
-export const HINT_COST = 2500;
-export const WRONG_ROUTE_COST = 750;
-export const SIGNOFF_TRUST_MIN = 45;
+export const HINT_COOLDOWN_SEC = 25;
+/** Nova signs off only if routing detection stays below this ceiling. */
+export const SIGNOFF_DETECTION_MAX = 55;
+
+export const DETECTION = {
+  passivePerSec: 100 / 1500,
+  wrongRoute: 10,
+  catastrophicRoute: 42,
+  hint: 8,
+} as const;
 
 export const HACK_LINES = [
   { text: "OPERATION OMNI — MISSION 03 OF 05", className: "ht-g" },
@@ -44,18 +50,53 @@ export const DEBRIEF = {
   cta: "CONTINUE TO MISSION 4 — THE ONBOARDING →",
 };
 
-export function trustDelta(correct: Channel, choice: Channel): { d: number; catastrophic: boolean } {
-  if (choice === correct) return { d: 0, catastrophic: false };
-  if (correct === "vault" && choice === "public") return { d: -42, catastrophic: true };
-  if (correct === "official" && choice === "public") return { d: -30, catastrophic: false };
-  if (correct === "vault" && choice === "official") return { d: -18, catastrophic: false };
-  if (correct === "public" && choice === "vault") return { d: -12, catastrophic: false };
-  if (correct === "public" && choice === "official") return { d: -10, catastrophic: false };
-  if (correct === "official" && choice === "vault") return { d: -10, catastrophic: false };
-  return { d: -10, catastrophic: false };
+export function routeDetectionPenalty(
+  correct: Channel,
+  choice: Channel,
+): { amount: number; catastrophic: boolean } {
+  if (choice === correct) return { amount: 0, catastrophic: false };
+  if (correct === "vault" && choice === "public") return { amount: DETECTION.catastrophicRoute, catastrophic: true };
+  if (correct === "official" && choice === "public") return { amount: 30, catastrophic: false };
+  if (correct === "vault" && choice === "official") return { amount: 18, catastrophic: false };
+  if (correct === "public" && choice === "vault") return { amount: 12, catastrophic: false };
+  if (correct === "public" && choice === "official") return { amount: 10, catastrophic: false };
+  if (correct === "official" && choice === "vault") return { amount: 10, catastrophic: false };
+  return { amount: DETECTION.wrongRoute, catastrophic: false };
 }
 
 export function wrongExplain(ds: Dataset, choice: Channel): string {
   if (ds.wrongRationale[choice]) return `Not the right channel. ${ds.wrongRationale[choice]}`;
   return "Not the right channel. Re-read identifiers and harm if public, then try again.";
 }
+
+/** Rule-based hint — teaches the channel logic without naming this file's answer. */
+export function hintForDataset(ds: Dataset): string {
+  if (ds.correct === "public") {
+    return "Low identifier risk + OK for open narrative → usually PUBLIC WALL.";
+  }
+  if (ds.correct === "vault") {
+    return "High harm, minors, health, or raw PII → NO RELEASE.";
+  }
+  return "Sensitive but needed for accountable bodies — not the tabloids → OFFICIAL FILING.";
+}
+
+export const M3_CHANNEL_LEARNING: Record<
+  Channel,
+  { who: string; teach: string; example: string }
+> = {
+  public: {
+    who: "PUBLIC WALL",
+    teach: "Low harm, no personal identifiers — evidence the public can absorb without doxxing anyone.",
+    example: "Q4_Performance_Review.pdf — aggregates only, safe for open narrative.",
+  },
+  official: {
+    who: "OFFICIAL FILING",
+    teach: "Sensitive operational material for regulators, counsel, or accountable bodies — not front-page dumps.",
+    example: "Session_Traffic_Log.dat — session fingerprints belong in official process, not the press wall.",
+  },
+  vault: {
+    who: "NO RELEASE",
+    teach: "Minors, health data, raw PII, or severe re-identification risk — vault default, full stop.",
+    example: "Community_Program_Roster.csv — children and guardians never ship through this pipeline.",
+  },
+};

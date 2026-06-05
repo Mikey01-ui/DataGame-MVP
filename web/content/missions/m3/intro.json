@@ -67,7 +67,7 @@
         { "text": "Clean routing · stable", "variant": "low" }
       ],
       "hint": "<strong>Stuck?</strong> Click the lightbulb at the bottom-left of the Mission Channel to pull a channel hint from the crew.",
-      "hintPills": ["Hint requested · −$2,500 budget", "Cooldown · 25s"]
+      "hintPills": ["Hint requested · +8% detection", "Cooldown · 25s"]
     },
     "breachLabel": "Begin Mission",
     "breachReadyLabel": "// Ready to breach?"

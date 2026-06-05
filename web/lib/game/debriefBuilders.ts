@@ -1,11 +1,18 @@
 import { FILES as M4_FILES, STEPS as M4_STEPS } from "@/lib/game/m4/data";
-import { DATASETS as M3_DATASETS } from "@/lib/game/m3/data";
+import {
+  DATASETS as M3_DATASETS,
+  DETECTION,
+  M3_CHANNEL_LEARNING,
+  SIGNOFF_DETECTION_MAX,
+} from "@/lib/game/m3/data";
+import { getDetectionClass } from "@/lib/game/m3/detectionMeter";
+import type { Channel } from "@/lib/game/m3/types";
 import { ECHO_FRAME, ECHO_VIZ, CREW_ORDER } from "@/lib/game/m5/data";
 import type { M2GameState } from "@/lib/game/m2/types";
 import type { M3GameState } from "@/lib/game/m3/types";
 import type { M4GameState } from "@/lib/game/m4/types";
 import type { M5GameState } from "@/lib/game/m5/types";
-import type { MissionDebriefConfig } from "@/components/missions/shared/MissionDebriefScreen";
+import type { DebriefRow, MissionDebriefConfig } from "@/components/missions/shared/MissionDebriefScreen";
 
 function formatTimer(sec: number) {
   return `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
@@ -66,63 +73,218 @@ export function buildM2Debrief(state: M2GameState): MissionDebriefConfig {
   };
 }
 
+function m3AccuracyClass(acc: number) {
+  if (acc === 100) return "det-green";
+  if (acc >= 80) return "det-amber";
+  return "det-red";
+}
+
+function m3BreakdownRows(state: M3GameState, correctN: number, detection: number, detCls: string): DebriefRow[] {
+  const rows: DebriefRow[] = [
+    { label: "Time on mission", value: formatTimer(state.timerSec) },
+    { label: "Correct assignments", value: `${correctN} / 10` },
+    { label: "Wrong route attempts", value: String(state.wrongRoutes) },
+    { label: "Hints used", value: String(state.hintsUsed) },
+  ];
+  if (state.hintsUsed > 0) {
+    rows.push({ label: "Detection from hints", value: `+${state.hintsUsed * DETECTION.hint}%` });
+  }
+  if (state.catastrophic > 0) {
+    rows.push({ label: "Public-wall breaches", value: String(state.catastrophic), valueClass: "det-red" });
+  }
+  rows.push({ label: "Final detection", value: `${detection}%`, valueClass: detCls, total: true });
+  return rows;
+}
+
+const M3_ETHICS_SKILLS: Record<Channel, { who: string; skill: string; realUse: string }> = {
+  public: {
+    who: "AUDIENCE FIT",
+    skill: "Only material safe for open publication — aggregates, technical proof, policy admissions without unjustified PII.",
+    realUse: "Press briefings, public accountability reports, sanitized evidence packs.",
+  },
+  official: {
+    who: "ACCOUNTABLE DISCLOSURE",
+    skill: "Sensitive data for regulators, labour boards, or counsel under proper process — not tabloid dumps.",
+    realUse: "Regulatory filings, sealed counsel briefs, labour-board submissions.",
+  },
+  vault: {
+    who: "HARM PREVENTION",
+    skill: "Health data, minors, raw customer PII — harm outweighs any headline, even when you have access.",
+    realUse: "Default-deny lists, DPO escalation, data that never leaves controlled storage.",
+  },
+};
+
+function m3MissionTeachesBlock() {
+  return (
+    "<span class=\"tc-subhead\">What this mission trains</span> " +
+    "Mission 03 is <strong>data ethics</strong>. Mission 2 established <strong>who owns which data</strong>; this round asks <strong>who may receive it</strong> and <strong>how it should be used</strong> — " +
+    "matching sensitivity to audience through <strong>minimum necessary disclosure</strong>, not dumping everything because the vault is open."
+  );
+}
+
+function m3YourRoundBlock(state: M3GameState, acc: number, outcome: "signed" | "denied" | "compromised") {
+  const placed = Object.keys(state.assigned).length;
+  const parts: string[] = [];
+
+  if (outcome === "compromised") {
+    parts.push(
+      `Detection hit <strong>100%</strong> before sign-off. You placed <strong>${placed}/10</strong> files in <strong>${formatTimer(state.timerSec)}</strong> — ` +
+        "the ethics framework was right, but wrong routes and exposure cost you the mirror.",
+    );
+  } else if (outcome === "denied") {
+    parts.push(
+      `You routed <strong>${acc}%</strong> correctly in <strong>${formatTimer(state.timerSec)}</strong> (${placed}/10 files on the map). ` +
+        "Nova withheld sign-off because the distribution posture wasn't defensible — ethics isn't only about access, it's about <strong>audience entitlement</strong>.",
+    );
+  } else if (acc === 100 && state.wrongRoutes === 0) {
+    parts.push(
+      `In <strong>${formatTimer(state.timerSec)}</strong> you routed all 10 files with no wrong attempts. ` +
+        "You read <strong>identifiers</strong> and <strong>harm if public</strong> before every channel pick — that's data ethics applied under pressure.",
+    );
+  } else {
+    parts.push(
+      `In <strong>${formatTimer(state.timerSec)}</strong> you finished at <strong>${acc}%</strong> accuracy with <strong>${state.wrongRoutes}</strong> wrong attempt(s) along the way. ` +
+        "You showed you can separate what the <strong>public</strong>, <strong>official bodies</strong>, and <strong>vault</strong> each deserve — the judgment Nova signs off on.",
+    );
+  }
+
+  if (state.hintsUsed > 0) {
+    parts.push(
+      `You requested <strong>${state.hintsUsed}</strong> hint(s) (+${state.hintsUsed * DETECTION.hint}% detection) when harm profiles were unclear — in practice that's escalating to a <strong>DPO or privacy counsel</strong> before release.`,
+    );
+  } else if (outcome === "signed") {
+    parts.push("No hints — you worked from the inspector evidence alone.");
+  }
+
+  if (state.catastrophic > 0) {
+    parts.push(
+      `<strong>${state.catastrophic}</strong> file(s) with vault-class sensitivity were sent toward the <strong>public wall</strong> — the core ethics failure this mission trains you to avoid.`,
+    );
+  }
+
+  return `<span class="tc-subhead">What you applied this round</span> ${parts.join(" ")}`;
+}
+
+function m3RealWorldBlock() {
+  return (
+    "<span class=\"tc-subhead\">In the real world</span> " +
+    "You'd use the same judgment building a <strong>regulatory disclosure</strong>, a <strong>FOIA or subject-access response</strong>, a <strong>responsible press package</strong>, or an <strong>internal ethics review</strong>. " +
+    "Data stewards and privacy officers ask: <em>Who is the audience? What is the lawful basis? What harm if this goes wide?</em> — " +
+    "GDPR, HIPAA, and sector rules encode <strong>who may process what</strong>, not just whether a field exists on a drive."
+  );
+}
+
+function m3ExampleBlock() {
+  return (
+    "<span class=\"tc-subhead\">Example</span> " +
+    "A team obtains a <strong>customer database backup</strong>, a <strong>board policy memo</strong>, and <strong>session traffic logs</strong>. " +
+    "Ethics says: publish the memo (public accountability), file the logs with regulators (official process), and <strong>never</strong> release the customer CSV — " +
+    "even though all three prove wrongdoing. <strong>Impact without doxxing.</strong>"
+  );
+}
+
+function m3LearningRows(state: M3GameState) {
+  return (["public", "official", "vault"] as Channel[]).map((ch) => {
+    const meta = M3_ETHICS_SKILLS[ch];
+    const files = M3_DATASETS.filter((d) => d.correct === ch);
+    const routed = files.filter((d) => state.assigned[d.id] === ch).length;
+    const ok = routed === files.length;
+    const example = M3_CHANNEL_LEARNING[ch].example;
+    return {
+      who: meta.who,
+      text: `${meta.skill} <em>In practice: ${meta.realUse}</em> This round: <strong>${routed}/${files.length}</strong> routed correctly. <em>Mission file: ${example}</em>`,
+      ok,
+    };
+  });
+}
+
+function m3Tradecraft(state: M3GameState, acc: number, outcome: "signed" | "denied" | "compromised") {
+  return [
+    { html: m3MissionTeachesBlock() },
+    { html: m3YourRoundBlock(state, acc, outcome) },
+    { html: m3RealWorldBlock() },
+    { html: m3ExampleBlock() },
+  ];
+}
+
+const M3_LEARNING_TITLE = "HOW YOU APPLIED DATA ETHICS";
+
 export function buildM3Debrief(state: M3GameState): MissionDebriefConfig {
   const correctN = M3_DATASETS.filter((d) => state.assigned[d.id] === d.correct).length;
   const acc = Math.round((correctN / 10) * 100);
-  const trust = Math.round(state.novaTrust);
-  const tc = trustClass(trust);
-  const success = correctN === 10 && state.catastrophic === 0 && trust >= 45;
+  const accCls = m3AccuracyClass(acc);
+  const detection = Math.round(state.detection);
+  const detCls = getDetectionClass(detection);
+  const detectionMaxed = detection >= 100 || state.phase === "failed";
+  const success = !detectionMaxed && correctN === 10 && state.catastrophic === 0 && detection <= SIGNOFF_DETECTION_MAX;
+  const breakdownRows = m3BreakdownRows(state, correctN, detection, detCls);
+  const learningRows = m3LearningRows(state);
+
+  if (detectionMaxed) {
+    return {
+      eyebrow: "// Mission 03 — Mirror compromised",
+      title: "DETECTION THRESHOLD EXCEEDED",
+      metrics: [
+        { value: formatTimer(state.timerSec), label: "TIME" },
+        { value: `${acc}%`, label: "ACCURACY", valueClass: accCls },
+        { value: String(state.wrongRoutes), label: "WRONG ROUTES" },
+        { value: "100%", label: "DETECTION", valueClass: "det-red" },
+      ],
+      breakdownTitle: "ROUTING SUMMARY",
+      breakdownRows: breakdownRows.map((r) => (r.label === "Final detection" ? { ...r, value: "100%", valueClass: "det-red" } : r)),
+      rating: "FEED DROPPED — MegaCorp closed the mirror before sign-off.",
+      tradecraft: m3Tradecraft(state, acc, "compromised"),
+      learningRows,
+      learningTitle: M3_LEARNING_TITLE,
+      cta: "RETRY MISSION →",
+    };
+  }
 
   if (!success) {
     return {
       eyebrow: "// Mission 03 — Sign-off denied",
-      title: state.catastrophic > 0 ? "PUBLIC CHANNEL BREACH" : "ROUTING TRUST TOO LOW",
+      title: state.catastrophic > 0 ? "PUBLIC CHANNEL BREACH" : "ROUTING DETECTION TOO HIGH",
       metrics: [
         { value: formatTimer(state.timerSec), label: "TIME" },
-        { value: `${acc}%`, label: "ACCURACY" },
+        { value: `${acc}%`, label: "ACCURACY", valueClass: accCls },
         { value: String(state.hintsUsed), label: "HINTS USED" },
-        { value: `${trust}%`, label: "NOVA TRUST", valueClass: tc },
+        { value: `${detection}%`, label: "DETECTION", valueClass: detCls },
       ],
       breakdownTitle: "ROUTING SUMMARY",
-      breakdownRows: [
-        { label: "Correct assignments", value: `${correctN} / 10` },
-        { label: "Wrong route attempts", value: String(state.wrongRoutes) },
-        { label: "Public-wall breaches", value: String(state.catastrophic) },
-        { label: "Final Nova trust", value: `${trust}%`, valueClass: tc, total: true },
-      ],
+      breakdownRows,
       rating: state.catastrophic > 0 ? "ETHICS BREAK — Vault material surfaced on the wrong audience." : "MAP REJECTED — Distribution posture not defensible.",
-      tradecraft: [
-        { html: state.catastrophic > 0 ? "Material that should stay sealed was routed to the <strong>public</strong> channel." : "Too many misroutes — the distribution map did not reflect a defensible ethics posture." },
-        { html: "<span class=\"tc-subhead\">Real-world translation</span> Privacy and ethics are about <strong>appropriate disclosure</strong> — which audiences may receive which data under which safeguards." },
-      ],
+      tradecraft: m3Tradecraft(state, acc, "denied"),
+      learningRows,
+      learningTitle: M3_LEARNING_TITLE,
       cta: "REVIEW & CONTINUE TO MISSION 4 →",
     };
   }
 
-  const rating = trust >= 85 ? "SIGNED — Distribution map matches minimum necessary disclosure." : trust >= 55 ? "SIGNED — Acceptable, with friction on the trust line." : "SIGNED — Borderline; review misroutes before release.";
+  const rating =
+    detection <= 15
+      ? "SIGNED — Distribution map matches minimum necessary disclosure."
+      : detection <= 35
+        ? "SIGNED — Acceptable, with friction on the detection line."
+        : "SIGNED — Borderline; review misroutes before release.";
 
   return {
     eyebrow: "// Mission 03 — Complete",
     title: "THE HUMAN SHIELD — SIGNED",
     metrics: [
       { value: formatTimer(state.timerSec), label: "TIME" },
-      { value: `${acc}%`, label: "ACCURACY" },
+      { value: `${acc}%`, label: "ACCURACY", valueClass: accCls },
       { value: String(state.hintsUsed), label: "HINTS USED" },
-      { value: `${trust}%`, label: "NOVA TRUST", valueClass: tc },
+      { value: `${detection}%`, label: "DETECTION", valueClass: detCls },
     ],
     breakdownTitle: "ROUTING SUMMARY",
-    breakdownRows: [
-      { label: "Correct assignments", value: "10 / 10" },
-      { label: "Wrong route attempts", value: String(state.wrongRoutes) },
-      { label: "Hints used", value: String(state.hintsUsed) },
-      { label: "Final Nova trust", value: `${trust}%`, valueClass: tc, total: true },
-    ],
+    breakdownRows,
     rating,
     tradecraft: [
-      { html: "You separated <strong>public proof</strong>, <strong>official accountability</strong>, and <strong>material that must not ship</strong>. Nova's sign-off means the crew stands behind <em>how</em> this leaks." },
+      ...m3Tradecraft(state, acc, "signed"),
       { html: "<p class=\"tc-quote\">\"We had the access. We chose the boundaries.\"</p>" },
-      { html: "<span class=\"tc-subhead\">Real-world translation</span> <strong>Minimum necessary</strong> disclosure applies to <strong>audiences</strong>: regulators, press, and the public are not interchangeable." },
     ],
+    learningRows,
+    learningTitle: M3_LEARNING_TITLE,
     cta: "CONTINUE TO MISSION 4 — THE ONBOARDING →",
   };
 }

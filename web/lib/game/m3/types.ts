@@ -21,15 +21,15 @@ export type ChatMessage = {
   ts: string;
 };
 
-export type M3Phase = "hack" | "desktop" | "play" | "signoff" | "debrief";
+export type M3Phase = "hack" | "desktop" | "play" | "signoff" | "debrief" | "failed";
 
 export type M3GameState = {
   phase: M3Phase;
   hackLine: number;
   hackDone: boolean;
-  budget: number;
-  budgetStart: number;
-  novaTrust: number;
+  detection: number;
+  detectionWarned: Record<30 | 60 | 80, boolean>;
+  gameOver: boolean;
   assigned: Partial<Record<string, Channel>>;
   selectedId: string | null;
   timerSec: number;
@@ -56,4 +56,5 @@ export type M3GameAction =
   | { type: "HINT_COOLDOWN_CLEAR" }
   | { type: "REQUEST_SIGNOFF" }
   | { type: "SIGNOFF_DONE" }
+  | { type: "RESET_MISSION" }
   | { type: "ADD_CHAT"; sender: ChatSender; text: string; tone?: ChatTone };

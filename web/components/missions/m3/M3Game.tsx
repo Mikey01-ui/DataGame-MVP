@@ -6,47 +6,11 @@ import { M1HackOverlay } from "@/components/missions/m1/M1HackOverlay";
 import { M3Inspector } from "@/components/missions/m3/M3Inspector";
 import { M3VaultDoor } from "@/components/missions/m3/M3VaultDoor";
 import { MissionDebriefScreen } from "@/components/missions/shared/MissionDebriefScreen";
-import { CHANNEL_LABELS, DATASETS, HACK_LINES } from "@/lib/game/m3/data";
+import { CHANNEL_LABELS, DATASETS, DETECTION, HACK_LINES, SIGNOFF_DETECTION_MAX } from "@/lib/game/m3/data";
 import { buildM3Debrief } from "@/lib/game/debriefBuilders";
+import { M3Header } from "@/components/missions/m3/M3DetectionHeader";
 import { M3GameProvider, useM3Game } from "@/lib/game/m3/context";
-import { getTrustClass } from "@/lib/game/m3/reducer";
 import type { Channel } from "@/lib/game/m3/types";
-
-function M3Header() {
-  const { state } = useM3Game();
-  const trust = Math.round(state.novaTrust);
-  const trustClass = getTrustClass(trust);
-  const timer = `${String(Math.floor(state.timerSec / 60)).padStart(2, "0")}:${String(state.timerSec % 60).padStart(2, "0")}`;
-
-  return (
-    <div id="hdr">
-      <div className="hdr-left">
-        <i className="fas fa-terminal" aria-hidden /> MASTERMIND TERMINAL | OPERATION OMNI
-      </div>
-      <div className="hdr-center">MISSION 03 OF 05 / THE HUMAN SHIELD</div>
-      <div className="hdr-right">
-        {state.phase === "play" || state.phase === "signoff" ? (
-          <span id="nova-trust" className={`nt-display ${trustClass}`}>
-            <span className="nt-icon">
-              <i className="fas fa-user-shield" aria-hidden />
-            </span>
-            <span id="hdr-trust-pct">{trust}%</span>
-            <span className="nt-bar-wrap">
-              <span id="hdr-trust-bar" className={trustClass} style={{ width: `${trust}%` }} />
-            </span>
-            <span className="nt-label">NOVA</span>
-          </span>
-        ) : null}
-        {(state.phase === "play" || state.phase === "signoff") && (
-          <span style={{ color: "rgba(0,196,28,.2)", margin: "0 4px" }}>|</span>
-        )}
-        <span id="timer">{timer}</span>
-        <span className="live-dot" />
-        <span style={{ letterSpacing: 1, fontSize: 10 }}>LIVE</span>
-      </div>
-    </div>
-  );
-}
 
 function M3RoutingPanel() {
   const { state, dispatch } = useM3Game();
@@ -178,7 +142,9 @@ function M3RoutingPanel() {
                   <button type="button" id="hint-btn" disabled={state.hintCooldown || !state.selectedId || !!(state.selectedId && state.assigned[state.selectedId])} onClick={() => dispatch({ type: "REQUEST_HINT" })}>
                     <i className="fas fa-lightbulb" aria-hidden />
                   </button>
-                  <div className="hint-tooltip">Hint · −$2,500</div>
+                  <div className="hint-tooltip">
+                    Hint · +{DETECTION.hint}% detection · {state.hintCooldown ? "cooldown…" : "25s cooldown"}
+                  </div>
                 </div>
                 <input type="text" id="broker-input" placeholder="Operation Channel — listen only" disabled readOnly />
               </div>
@@ -194,7 +160,7 @@ function M3GameInner() {
   const { state, dispatch } = useM3Game();
   const router = useRouter();
   const [desktopReady, setDesktopReady] = useState(false);
-  const trust = Math.round(state.novaTrust);
+  const detection = Math.round(state.detection);
   const routed = Object.keys(state.assigned).length;
 
   useEffect(() => {
@@ -214,10 +180,10 @@ function M3GameInner() {
         missionId: "m3",
         status: "completed",
         checkpoint: "completed",
-        score: Math.max(0, state.budget),
+        score: Math.max(0, 100 - Math.round(state.detection)),
         stateJson: {
           version: 1,
-          novaTrust: trust,
+          detection,
           routed: 10,
           wrongRoutes: state.wrongRoutes,
           catastrophic: state.catastrophic,
@@ -228,9 +194,17 @@ function M3GameInner() {
     });
     router.push("/mission/m4");
     router.refresh();
-  }, [router, state.budget, state.catastrophic, state.hintsUsed, state.timerSec, state.wrongRoutes, trust]);
+  }, [router, detection, state.catastrophic, state.detection, state.hintsUsed, state.timerSec, state.wrongRoutes]);
 
   const debrief = useMemo(() => buildM3Debrief(state), [state]);
+
+  const handleDebriefContinue = useCallback(() => {
+    if (state.detection >= 100 || state.phase === "failed") {
+      dispatch({ type: "RESET_MISSION" });
+      return;
+    }
+    void completeMission();
+  }, [completeMission, dispatch, state.detection, state.phase]);
 
   const isRouting = state.phase === "play" || state.phase === "signoff";
   const showGameChrome = state.hackDone && state.phase !== "debrief";
@@ -294,13 +268,23 @@ function M3GameInner() {
       {state.phase === "signoff" && (
         <div id="signoff-overlay" className="show">
           <pre id="signoff-term">{`NOVA SIGN-OFF PROTOCOL
-TRUST: ${trust}%
+DETECTION: ${detection}%
 ROUTED: ${routed}/10
-${trust >= 45 ? "STATUS: APPROVED" : "STATUS: WITHHELD"}`}</pre>
+${detection <= SIGNOFF_DETECTION_MAX && state.catastrophic === 0 ? "STATUS: APPROVED" : "STATUS: WITHHELD"}`}</pre>
         </div>
       )}
 
-      {state.phase === "debrief" && <MissionDebriefScreen config={debrief} onContinue={completeMission} />}
+      {state.gameOver && (
+        <div id="gameover-overlay" className="active">
+          <div className="go-title">OPERATION COMPROMISED</div>
+          <div className="go-sub">MegaCorp closed the breach. The mirror is dead.</div>
+          <button type="button" className="db-cta" onClick={() => dispatch({ type: "RESET_MISSION" })}>
+            RETRY MISSION
+          </button>
+        </div>
+      )}
+
+      {state.phase === "debrief" && <MissionDebriefScreen config={debrief} onContinue={handleDebriefContinue} />}
     </div>
   );
 }

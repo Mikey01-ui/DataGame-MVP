@@ -1,11 +1,10 @@
 import {
-  BUDGET_START,
   CHANNEL_LABELS,
   DATASETS,
-  HINT_COST,
-  SIGNOFF_TRUST_MIN,
-  WRONG_ROUTE_COST,
-  trustDelta,
+  DETECTION,
+  hintForDataset,
+  SIGNOFF_DETECTION_MAX,
+  routeDetectionPenalty,
   wrongExplain,
 } from "@/lib/game/m3/data";
 import type { Channel, ChatMessage, ChatSender, ChatTone, M3GameAction, M3GameState } from "@/lib/game/m3/types";
@@ -23,14 +22,53 @@ export function pushChat(state: M3GameState, sender: ChatSender, text: string, t
   return [...state.messages, { id: msgId(), sender, text, tone, ts: nowTs() }];
 }
 
+function addDetection(state: M3GameState, amount: number): M3GameState {
+  if (amount <= 0 || state.gameOver) return state;
+  const next = Math.min(100, state.detection + amount);
+  const warned = { ...state.detectionWarned };
+  let messages = state.messages;
+
+  ([30, 60, 80] as const).forEach((t) => {
+    if (next >= t && !warned[t]) {
+      warned[t] = true;
+      const copy =
+        t === 30
+          ? "Marshall's mirror is picking up routing noise. Stay precise."
+          : t === 60
+            ? "Detection climbing — wrong channels are lighting up the queue."
+            : "Critical exposure. One more slip and we lose the feed.";
+      messages = pushChat({ ...state, messages }, "Voss", copy, "bm-err");
+    }
+  });
+
+  if (next >= 100) {
+    return {
+      ...state,
+      detection: 100,
+      detectionWarned: warned,
+      gameOver: true,
+      phase: "failed",
+      stepBanner: "Detection ceiling exceeded — mirror dropped.",
+      messages: pushChat(
+        { ...state, messages },
+        "Voss",
+        "They saw us. MegaCorp closed the breach — feed is dead.",
+        "bm-err",
+      ),
+    };
+  }
+
+  return { ...state, detection: next, detectionWarned: warned, messages };
+}
+
 export function createInitialM3State(): M3GameState {
   return {
     phase: "hack",
     hackLine: 0,
     hackDone: false,
-    budget: BUDGET_START,
-    budgetStart: BUDGET_START,
-    novaTrust: 100,
+    detection: 0,
+    detectionWarned: { 30: false, 60: false, 80: false },
+    gameOver: false,
     assigned: {},
     selectedId: null,
     timerSec: 0,
@@ -45,17 +83,16 @@ export function createInitialM3State(): M3GameState {
   };
 }
 
-export function getTrustClass(trust: number) {
-  if (trust < 50) return "nt-red";
-  if (trust < 75) return "nt-amber";
-  return "nt-green";
-}
+export { getDetectionClass } from "@/lib/game/m3/detectionMeter";
 
 export function m3Reducer(state: M3GameState, action: M3GameAction): M3GameState {
   switch (action.type) {
-    case "TICK":
-      if (state.phase !== "play" && state.phase !== "signoff") return state;
-      return { ...state, timerSec: state.timerSec + 1 };
+    case "TICK": {
+      if (state.phase !== "play" || state.gameOver) return state;
+      let next = { ...state, timerSec: state.timerSec + 1 };
+      next = addDetection(next, DETECTION.passivePerSec);
+      return next;
+    }
     case "HACK_ADVANCE":
       return { ...state, hackLine: state.hackLine + 1 };
     case "HACK_DONE":
@@ -79,7 +116,7 @@ export function m3Reducer(state: M3GameState, action: M3GameAction): M3GameState
       };
     case "SELECT_DATASET": {
       const ds = DATASETS.find((d) => d.id === action.id);
-      if (!ds) return state;
+      if (!ds || state.gameOver) return state;
       const locked = !!state.assigned[action.id];
       return {
         ...state,
@@ -91,10 +128,10 @@ export function m3Reducer(state: M3GameState, action: M3GameAction): M3GameState
     }
     case "ASSIGN_CHANNEL": {
       const id = state.selectedId;
-      if (!id || state.assigned[id] || !state.hackDone) return state;
+      if (!id || state.assigned[id] || !state.hackDone || state.gameOver) return state;
       const ds = DATASETS.find((d) => d.id === id);
       if (!ds) return state;
-      const { d, catastrophic } = trustDelta(ds.correct, action.channel);
+      const { amount, catastrophic } = routeDetectionPenalty(ds.correct, action.channel);
       const isCorrect = action.channel === ds.correct;
       let next: M3GameState = { ...state };
       if (isCorrect) {
@@ -102,38 +139,40 @@ export function m3Reducer(state: M3GameState, action: M3GameAction): M3GameState
         next.messages = pushChat(next, "Voss", `Routed: ${ds.file} → ${CHANNEL_LABELS[action.channel]}.`, "bm-ok");
       } else {
         next.wrongRoutes = state.wrongRoutes + 1;
-        next.budget = Math.max(0, state.budget - WRONG_ROUTE_COST);
         next.messages = pushChat(next, "Voss", `${wrongExplain(ds, action.channel)} Choose a different release channel.`, "bm-err");
       }
-      if (d !== 0) {
-        next.novaTrust = Math.max(0, state.novaTrust + d);
-        if (catastrophic) next.catastrophic = state.catastrophic + 1;
+      if (amount > 0) {
+        next = addDetection(next, amount);
+        if (catastrophic && !next.gameOver) next = { ...next, catastrophic: state.catastrophic + 1 };
       }
-      const n = Object.keys(next.assigned).length;
-      if (n >= 10) {
-        next.stepBanner = "All files routed. Request Nova sign-off.";
+      if (!next.gameOver) {
+        const n = Object.keys(next.assigned).length;
+        if (n >= 10) next.stepBanner = "All files routed. Request Nova sign-off.";
       }
       return next;
     }
     case "REQUEST_HINT": {
+      if (state.gameOver) return state;
       if (state.hintCooldown || !state.selectedId || state.assigned[state.selectedId]) {
         return { ...state, messages: pushChat(state, "Voss", "Select a file you have not routed yet.", "bm-err") };
       }
       const ds = DATASETS.find((d) => d.id === state.selectedId);
       if (!ds) return state;
-      return {
+      let next: M3GameState = {
         ...state,
         hintsUsed: state.hintsUsed + 1,
-        budget: Math.max(0, state.budget - HINT_COST),
         hintCooldown: true,
-        messages: pushChat(state, "Voss", `[HINT] ${ds.note} Correct channel: ${CHANNEL_LABELS[ds.correct]}.`, "bm-h"),
+        messages: pushChat(state, "Voss", `Hint: ${hintForDataset(ds)}`, "bm-d"),
       };
+      return addDetection(next, DETECTION.hint);
     }
     case "HINT_COOLDOWN_CLEAR":
       return { ...state, hintCooldown: false };
     case "REQUEST_SIGNOFF": {
-      if (Object.keys(state.assigned).length < 10 || state.signOffStarted) return state;
-      const trustOk = state.novaTrust >= SIGNOFF_TRUST_MIN;
+      if (Object.keys(state.assigned).length < 10 || state.signOffStarted || state.gameOver || state.detection >= 100) {
+        return state;
+      }
+      const signoffOk = state.detection <= SIGNOFF_DETECTION_MAX && state.catastrophic === 0;
       return {
         ...state,
         signOffStarted: true,
@@ -141,15 +180,17 @@ export function m3Reducer(state: M3GameState, action: M3GameAction): M3GameState
         messages: pushChat(
           state,
           "Nova",
-          trustOk
+          signoffOk
             ? "Distribution map reviewed. I sign off — proceed to Mission 4."
-            : "Trust is too low. Nova withheld sign-off — review your routing choices.",
-          trustOk ? "bm-win" : "bm-err"
+            : "Detection is too high. Nova withheld sign-off — review your routing choices.",
+          signoffOk ? "bm-win" : "bm-err",
         ),
       };
     }
     case "SIGNOFF_DONE":
       return { ...state, phase: "debrief" };
+    case "RESET_MISSION":
+      return createInitialM3State();
     case "ADD_CHAT":
       return { ...state, messages: pushChat(state, action.sender, action.text, action.tone ?? "bm-d") };
     default:

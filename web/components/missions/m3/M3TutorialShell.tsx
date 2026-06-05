@@ -257,7 +257,7 @@ export const M3TutorialShell = forwardRef<M3TutorialShellHandle>(function M3Tuto
                     <button type="button" id="hint-btn" disabled>
                       <i className="fas fa-lightbulb" aria-hidden />
                     </button>
-                    <div className="hint-tooltip">Hint · −$2,500</div>
+                    <div className="hint-tooltip">Hint · +8% detection</div>
                   </div>
                   <input
                     id="broker-input"
