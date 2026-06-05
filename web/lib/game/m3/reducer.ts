@@ -2,11 +2,13 @@ import {
   CHANNEL_LABELS,
   DATASETS,
   DETECTION,
+  HINT_COOLDOWN_SEC,
   hintForDataset,
   SIGNOFF_DETECTION_MAX,
   routeDetectionPenalty,
   wrongExplain,
 } from "@/lib/game/m3/data";
+import { restoreGameState } from "@/lib/game/sessionPersist";
 import type { Channel, ChatMessage, ChatSender, ChatTone, M3GameAction, M3GameState } from "@/lib/game/m3/types";
 
 function nowTs() {
@@ -61,6 +63,22 @@ function addDetection(state: M3GameState, amount: number): M3GameState {
   return { ...state, detection: next, detectionWarned: warned, messages };
 }
 
+export function serializeM3State(state: M3GameState): Record<string, unknown> {
+  return { version: 2, ...state };
+}
+
+export function hydrateM3State(raw: Record<string, unknown> | null | undefined): M3GameState | null {
+  const restored = restoreGameState(raw, 2, createInitialM3State, ["debrief", "failed"]);
+  if (!restored) return null;
+  if (typeof restored.hintCooldownUntil === "number" && restored.hintCooldownUntil <= Date.now()) {
+    return { ...restored, hintCooldown: false, hintCooldownUntil: null };
+  }
+  if (typeof restored.hintCooldownUntil === "number") {
+    return { ...restored, hintCooldown: true };
+  }
+  return restored;
+}
+
 export function createInitialM3State(): M3GameState {
   return {
     phase: "hack",
@@ -76,6 +94,7 @@ export function createInitialM3State(): M3GameState {
     catastrophic: 0,
     hintsUsed: 0,
     hintCooldown: false,
+    hintCooldownUntil: null,
     signOffStarted: false,
     messages: [],
     stepBanner: "Establishing secure connection…",
@@ -162,12 +181,13 @@ export function m3Reducer(state: M3GameState, action: M3GameAction): M3GameState
         ...state,
         hintsUsed: state.hintsUsed + 1,
         hintCooldown: true,
+        hintCooldownUntil: Date.now() + HINT_COOLDOWN_SEC * 1000,
         messages: pushChat(state, "Voss", `Hint: ${hintForDataset(ds)}`, "bm-d"),
       };
       return addDetection(next, DETECTION.hint);
     }
     case "HINT_COOLDOWN_CLEAR":
-      return { ...state, hintCooldown: false };
+      return { ...state, hintCooldown: false, hintCooldownUntil: null };
     case "REQUEST_SIGNOFF": {
       if (Object.keys(state.assigned).length < 10 || state.signOffStarted || state.gameOver || state.detection >= 100) {
         return state;

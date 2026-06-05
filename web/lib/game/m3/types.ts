@@ -37,6 +37,8 @@ export type M3GameState = {
   catastrophic: number;
   hintsUsed: number;
   hintCooldown: boolean;
+  /** Epoch ms when hint cooldown ends (for session restore). */
+  hintCooldownUntil: number | null;
   signOffStarted: boolean;
   messages: ChatMessage[];
   stepBanner: string;

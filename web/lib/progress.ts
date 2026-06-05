@@ -138,6 +138,48 @@ export function findLatestInProgress(progress: ProgressRecord[]): ProgressRecord
   );
 }
 
+/** True when the player has moved past a fresh start and should resume, not restart. */
+export function hasResumableSession(record: ProgressRecord | null | undefined): boolean {
+  if (!record || record.status !== "in_progress") return false;
+  if (record.stateJson) return true;
+  const checkpoint = record.checkpoint;
+  return !!checkpoint && checkpoint !== "start";
+}
+
+/** Hub “continue” target: earliest in-progress mission, else next unlocked mission after last completed. */
+export function findContinueMission(
+  missions: MissionMeta[],
+  progress: ProgressRecord[]
+): { missionId: string; checkpoint: string; status: ProgressStatus } | null {
+  const map = new Map(progress.map((p) => [p.missionId, p]));
+  const sorted = [...missions].sort((a, b) => a.order - b.order);
+
+  for (const mission of sorted) {
+    const record = map.get(mission.id);
+    if (record?.status === "in_progress") {
+      return {
+        missionId: mission.id,
+        checkpoint: record.checkpoint ?? "start",
+        status: "in_progress",
+      };
+    }
+  }
+
+  for (const mission of sorted) {
+    if (mission.requiresMissionId) {
+      const prereq = map.get(mission.requiresMissionId);
+      if (prereq?.status !== "completed") continue;
+    }
+    const record = map.get(mission.id);
+    if (record?.status === "completed") continue;
+    if (!record || record.status === "locked") {
+      return { missionId: mission.id, checkpoint: "start", status: "in_progress" };
+    }
+  }
+
+  return null;
+}
+
 export async function ensureFirstMissionUnlocked(userId: string): Promise<void> {
   const existing = await prisma.userProgress.findFirst({ where: { userId } });
   if (existing) return;

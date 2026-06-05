@@ -240,9 +240,6 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
         <p className="vault-door-hint">
           Rotate the <strong>combination dial</strong> to set each letter from the breach package, then open the vault.
         </p>
-        <button type="button" className="vault-door-back" onClick={onClose} disabled={opening}>
-          Back to desktop
-        </button>
       </div>
       <div className="vault-scene">
         <div

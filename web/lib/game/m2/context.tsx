@@ -9,7 +9,8 @@ import {
   type ReactNode,
 } from "react";
 import { DETECTION, DISPUTES, HACK_LINES, INTRO_CHAT } from "@/lib/game/m2/data";
-import { createInitialM2State, m2Reducer } from "@/lib/game/m2/reducer";
+import { useGameSessionPersist } from "@/lib/game/sessionPersist";
+import { createInitialM2State, hydrateM2State, m2Reducer, serializeM2State } from "@/lib/game/m2/reducer";
 import type { DisputeId, M2GameAction, M2GameState } from "@/lib/game/m2/types";
 
 type M2GameContextValue = {
@@ -19,8 +20,25 @@ type M2GameContextValue = {
 
 const M2GameContext = createContext<M2GameContextValue | null>(null);
 
-export function M2GameProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(m2Reducer, undefined, createInitialM2State);
+function initM2State(saved: Record<string, unknown> | null | undefined) {
+  return hydrateM2State(saved) ?? createInitialM2State();
+}
+
+export function M2GameProvider({
+  children,
+  savedState,
+}: {
+  children: ReactNode;
+  savedState?: Record<string, unknown> | null;
+}) {
+  const [state, dispatch] = useReducer(m2Reducer, savedState, initM2State);
+
+  useGameSessionPersist({
+    missionId: "m2",
+    state,
+    serialize: serializeM2State,
+    enabled: state.phase !== "debrief",
+  });
 
   useEffect(() => {
     if (state.phase !== "hack") return;

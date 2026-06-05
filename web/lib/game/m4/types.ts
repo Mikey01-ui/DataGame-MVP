@@ -20,7 +20,7 @@ export type LeakFile = {
 
 export type ChatMessage = { id: string; sender: string; text: string; tone: ChatTone; ts: string };
 
-export type M4Phase = "hack" | "play" | "debrief";
+export type M4Phase = "hack" | "play" | "debrief" | "failed";
 
 export type M4GameState = {
   phase: M4Phase;
@@ -29,8 +29,13 @@ export type M4GameState = {
   picks: Record<string, string>;
   selectedStepId: string | null;
   selectedFileId: string | null;
-  confidence: number;
+  detection: number;
+  detectionWarned: { 30: boolean; 60: boolean; 80: boolean };
+  gameOver: boolean;
   wrongAttempts: number;
+  hintsUsed: number;
+  hintCooldown: boolean;
+  hintCooldownUntil: number | null;
   submitted: boolean;
   timerSec: number;
   messages: ChatMessage[];
@@ -45,5 +50,9 @@ export type M4GameAction =
   | { type: "ASSIGN_FILE"; fileId: string }
   | { type: "ASSIGN_FILE_TO_STEP"; fileId: string; stepId: string }
   | { type: "UNASSIGN_FILE"; fileId: string }
+  | { type: "REQUEST_HINT" }
+  | { type: "HINT_COOLDOWN_CLEAR" }
   | { type: "SUBMIT" }
+  | { type: "SHOW_DEBRIEF" }
+  | { type: "RESET_MISSION" }
   | { type: "ADD_CHAT"; sender: string; text: string; tone?: ChatTone };

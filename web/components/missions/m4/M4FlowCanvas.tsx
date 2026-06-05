@@ -2,10 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  FILES,
   FLOW_EDGES,
   FLOW_NODE_POSITIONS,
-  STEP_DATA_HINT,
   STEP_FLOW_ICONS,
   STEPS,
   isStepAvailable,
@@ -16,13 +14,11 @@ type Props = {
   picks: Record<string, string>;
   selectedStepId: string | null;
   submitted: boolean;
-  popHidden: boolean;
   onSelectStep: (stepId: string) => void;
-  onClosePop: () => void;
   onDropFile: (fileId: string, stepId: string) => void;
 };
 
-export function M4FlowCanvas({ picks, selectedStepId, submitted, popHidden, onSelectStep, onClosePop, onDropFile }: Props) {
+export function M4FlowCanvas({ picks, selectedStepId, submitted, onSelectStep, onDropFile }: Props) {
   const flowRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 800, h: 400 });
   const [dragTarget, setDragTarget] = useState<string | null>(null);
@@ -39,9 +35,6 @@ export function M4FlowCanvas({ picks, selectedStepId, submitted, popHidden, onSe
     return () => ro.disconnect();
   }, []);
 
-  const selectedStep = STEPS.find((s) => s.id === selectedStepId);
-  const assignedFile = selectedStep ? FILES.find((f) => picks[f.id] === selectedStep.id) : null;
-
   const edgePaths = useMemo(() => {
     return FLOW_EDGES.map(([fromIdx, toIdx]) => {
       const fromPos = FLOW_NODE_POSITIONS[fromIdx];
@@ -52,7 +45,10 @@ export function M4FlowCanvas({ picks, selectedStepId, submitted, popHidden, onSe
       const y2 = (toPos.y / 100) * size.h;
       const fromStep = STEPS[fromIdx];
       const done = fromStep && isStepSatisfied(fromStep.id, picks);
-      const d = Math.abs(y1 - y2) < 10 ? `M${x1},${y1} L${x2},${y2}` : `M${x1},${y1} C${(x1 + x2) / 2},${y1} ${(x1 + x2) / 2},${y2} ${x2},${y2}`;
+      const d =
+        Math.abs(y1 - y2) < 10
+          ? `M${x1},${y1} L${x2},${y2}`
+          : `M${x1},${y1} C${(x1 + x2) / 2},${y1} ${(x1 + x2) / 2},${y2} ${x2},${y2}`;
       return { d, done, key: `${fromIdx}->${toIdx}` };
     });
   }, [picks, size]);
@@ -63,24 +59,37 @@ export function M4FlowCanvas({ picks, selectedStepId, submitted, popHidden, onSe
     });
   }, [edgePaths]);
 
-  const handleDragOver = useCallback((e: React.DragEvent, stepId: string, idx: number) => {
-    e.preventDefault();
-    if (submitted || isStepSatisfied(stepId, picks) || !isStepAvailable(idx, picks)) return;
-    setDragTarget(stepId);
-    e.dataTransfer.dropEffect = "move";
-  }, [picks, submitted]);
+  const handleDragOver = useCallback(
+    (e: React.DragEvent, stepId: string, idx: number) => {
+      e.preventDefault();
+      if (submitted || isStepSatisfied(stepId, picks) || !isStepAvailable(idx, picks)) return;
+      setDragTarget(stepId);
+      e.dataTransfer.dropEffect = "move";
+    },
+    [picks, submitted]
+  );
 
-  const handleDrop = useCallback((e: React.DragEvent, stepId: string) => {
-    e.preventDefault();
-    setDragTarget(null);
-    const fileId = e.dataTransfer.getData("text/r4-file");
-    if (fileId) onDropFile(fileId, stepId);
-  }, [onDropFile]);
+  const handleDrop = useCallback(
+    (e: React.DragEvent, stepId: string) => {
+      e.preventDefault();
+      setDragTarget(null);
+      const fileId = e.dataTransfer.getData("text/r4-file");
+      if (fileId) onDropFile(fileId, stepId);
+    },
+    [onDropFile]
+  );
 
   return (
-    <div className="fc-canvas-wrap">
+    <div id="m4-flow-dist" className="m4-flow-dist">
+      <div className="dist-hdr m4-flow-dist-hdr">
+        <div className="dist-title">OMNI — NEW EMPLOYEE ONBOARDING FLOW</div>
+        <div className="dist-sub">
+          OFFER → INTEGRATION · CLICK AN ICON · DRAG DATA FROM THE RIGHT RAIL · GREEN ARROWS = STEP COMPLETE
+        </div>
+      </div>
+
       <div className="fc-phase-bar">
-        {["Intake", "Compliance", "Provision", "Finish"].map((label, pi) => {
+        {["Offer", "Verification", "Provisioning", "Integration"].map((label, pi) => {
           const phaseSteps = [[0, 1], [2, 3, 4], [5], [6, 7]][pi] ?? [];
           const allDone = phaseSteps.every((si) => STEPS[si] && isStepSatisfied(STEPS[si].id, picks));
           return (
@@ -90,6 +99,7 @@ export function M4FlowCanvas({ picks, selectedStepId, submitted, popHidden, onSe
           );
         })}
       </div>
+
       <div className="fc-canvas">
         <div className="fc-canvas-inner" id="flow-row" ref={flowRef}>
           <svg className="fc-edges" viewBox={`0 0 ${size.w} ${size.h}`} preserveAspectRatio="none">
@@ -120,6 +130,7 @@ export function M4FlowCanvas({ picks, selectedStepId, submitted, popHidden, onSe
             return (
               <div
                 key={step.id}
+                data-step-id={step.id}
                 className={`fc-node${done ? " done" : ""}${sel ? " sel" : ""}${locked ? " locked" : ""}${available && !done ? " available" : ""}${isDrag ? " drag-target" : ""}`}
                 style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
                 onClick={() => !submitted && !locked && !done && onSelectStep(step.id)}
@@ -146,37 +157,6 @@ export function M4FlowCanvas({ picks, selectedStepId, submitted, popHidden, onSe
           })}
         </div>
       </div>
-
-      {selectedStep && !popHidden && !submitted && (
-        <div className="r4-step-pop has-step">
-          <button type="button" className="r4-step-pop-close" onClick={onClosePop} title="Close">
-            <i className="fas fa-times" aria-hidden />
-          </button>
-          <div className="r4-step-pop-h">Step details</div>
-          <div className="r4-step-pop-t">{selectedStep.title}</div>
-          <div className="r4-step-pop-lane">
-            <i className="fas fa-building" aria-hidden /> {selectedStep.lane}
-          </div>
-          <div className="r4-step-pop-purpose">{selectedStep.purpose}</div>
-          <div className="r4-step-pop-section">
-            <span className="r4-step-pop-label">Expects:</span> {STEP_DATA_HINT[selectedStep.id] ?? selectedStep.inputs}
-          </div>
-          <div className="r4-step-pop-section">
-            <span className="r4-step-pop-label">Inputs:</span> {selectedStep.inputs}
-          </div>
-          <div className="r4-step-pop-section">
-            <span className="r4-step-pop-label">Outputs:</span> {selectedStep.outputs}
-          </div>
-          <div className="r4-step-pop-bottleneck">
-            <i className="fas fa-exclamation-triangle" aria-hidden /> {selectedStep.bottleneck}
-          </div>
-          {assignedFile && (
-            <div className="r4-step-pop-ok">
-              <i className="fas fa-check-circle" aria-hidden /> Artifact attached: {assignedFile.name}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }

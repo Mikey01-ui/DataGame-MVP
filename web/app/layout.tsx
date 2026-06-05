@@ -10,6 +10,7 @@ import "./m2-game.css";
 import "./m3-game.css";
 import "./m3-tutorial.css";
 import "./m4-game.css";
+import "./m4-tutorial.css";
 import "./m5-game.css";
 import "@/components/admin/playtest-mission-nav.css";
 

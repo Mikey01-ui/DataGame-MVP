@@ -10,6 +10,7 @@ import { CHANNEL_LABELS, DATASETS, DETECTION, HACK_LINES, SIGNOFF_DETECTION_MAX 
 import { buildM3Debrief } from "@/lib/game/debriefBuilders";
 import { M3Header } from "@/components/missions/m3/M3DetectionHeader";
 import { M3GameProvider, useM3Game } from "@/lib/game/m3/context";
+import { useMissionProgress } from "@/lib/game/useMissionProgress";
 import type { Channel } from "@/lib/game/m3/types";
 
 function M3RoutingPanel() {
@@ -158,6 +159,7 @@ function M3RoutingPanel() {
 
 function M3GameInner() {
   const { state, dispatch } = useM3Game();
+  const { save } = useMissionProgress("m3");
   const router = useRouter();
   const [desktopReady, setDesktopReady] = useState(false);
   const detection = Math.round(state.detection);
@@ -170,6 +172,35 @@ function M3GameInner() {
     }
     setDesktopReady(false);
   }, [state.phase]);
+
+  useEffect(() => {
+    if (state.phase !== "debrief") return;
+    void (async () => {
+      await save({
+        status: "completed",
+        checkpoint: "completed",
+        stateJson: {
+          version: 2,
+          detection: Math.round(state.detection),
+          wrongRoutes: state.wrongRoutes,
+          catastrophic: state.catastrophic,
+          hintsUsed: state.hintsUsed,
+          timerSec: state.timerSec,
+        },
+        score: Math.max(0, 100 - Math.round(state.detection)),
+      });
+      await fetch("/api/progress", {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          missionId: "m4",
+          status: "in_progress",
+          checkpoint: "start",
+        }),
+      });
+    })();
+  }, [save, state.catastrophic, state.detection, state.hintsUsed, state.phase, state.timerSec, state.wrongRoutes]);
 
   const completeMission = useCallback(async () => {
     await fetch("/api/progress", {
@@ -289,9 +320,13 @@ ${detection <= SIGNOFF_DETECTION_MAX && state.catastrophic === 0 ? "STATUS: APPR
   );
 }
 
-export function M3Game() {
+type M3GameProps = {
+  savedState?: Record<string, unknown> | null;
+};
+
+export function M3Game({ savedState }: M3GameProps) {
   return (
-    <M3GameProvider>
+    <M3GameProvider savedState={savedState}>
       <M3GameInner />
     </M3GameProvider>
   );

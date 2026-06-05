@@ -1,11 +1,11 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { AmbientShell } from "@/components/layout/AmbientShell";
 import { StatusBar } from "@/components/layout/StatusBar";
 import { MissionRenderer } from "@/components/missions/MissionRenderer";
 import { VideoBlock } from "@/components/media/VideoBlock";
-import { getHubContent, getMissionIntro, getMissionMedia, getMissionMeta } from "@/lib/content";
+import { getHubContent, getMissionCatalog, getMissionIntro, getMissionMedia, getMissionMeta } from "@/lib/content";
 import { auth } from "@/lib/auth";
-import { getMissionProgress, upsertProgress } from "@/lib/progress";
+import { getMissionProgress, hasResumableSession, upsertProgress } from "@/lib/progress";
 
 type PageProps = {
   params: Promise<{ missionId: string }>;
@@ -29,6 +29,10 @@ export default async function MissionPage({ params, searchParams }: PageProps) {
     getMissionProgress(userId, missionId),
   ]);
 
+  if (!replay && hasResumableSession(existing) && !isResume) {
+    redirect(`/mission/${missionId}?resume=1`);
+  }
+
   if (!replay) {
     if (!existing || existing.status === "locked") {
       await upsertProgress(userId, {
@@ -37,6 +41,8 @@ export default async function MissionPage({ params, searchParams }: PageProps) {
         checkpoint: isResume ? existing?.checkpoint ?? "start" : "start",
         stateJson: isResume ? existing?.stateJson ?? null : null,
       });
+    } else if (isResume && existing.status === "in_progress") {
+      /* Keep saved session — do not wipe stateJson or checkpoint. */
     } else if (
       !isResume &&
       existing.status !== "completed" &&
@@ -51,6 +57,15 @@ export default async function MissionPage({ params, searchParams }: PageProps) {
     }
   }
 
+  if (isResume && existing?.status === "completed") {
+    const catalog = await getMissionCatalog();
+    const sorted = [...catalog].sort((a, b) => a.order - b.order);
+    const idx = sorted.findIndex((m) => m.id === missionId);
+    const next = idx >= 0 ? sorted[idx + 1] : undefined;
+    if (next) redirect(`/mission/${next.id}?resume=1`);
+    redirect("/hub");
+  }
+
   if (meta.renderer === "react") {
     return (
       <MissionRenderer
@@ -60,6 +75,7 @@ export default async function MissionPage({ params, searchParams }: PageProps) {
         missionLabel={meta.label}
         initialCheckpoint={existing?.checkpoint ?? "start"}
         resume={isResume}
+        savedState={isResume && existing?.status === "in_progress" ? existing.stateJson : null}
       />
     );
   }

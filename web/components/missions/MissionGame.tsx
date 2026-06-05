@@ -9,20 +9,21 @@ type MissionGameProps = {
   missionId: string;
   missionLabel: string;
   missionName: string;
+  savedState?: Record<string, unknown> | null;
 };
 
-export function MissionGame({ missionId, missionLabel, missionName }: MissionGameProps) {
+export function MissionGame({ missionId, missionLabel, missionName, savedState }: MissionGameProps) {
   if (missionId === "m1") {
-    return <M1Game />;
+    return <M1Game savedState={savedState} />;
   }
   if (missionId === "m2") {
-    return <M2Game />;
+    return <M2Game savedState={savedState} />;
   }
   if (missionId === "m3") {
-    return <M3Game />;
+    return <M3Game savedState={savedState} />;
   }
   if (missionId === "m4") {
-    return <M4Game />;
+    return <M4Game savedState={savedState} />;
   }
   if (missionId === "m5") {
     return <M5Game />;

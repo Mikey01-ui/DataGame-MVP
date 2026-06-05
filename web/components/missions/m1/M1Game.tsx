@@ -350,9 +350,9 @@ function M1GameInner() {
   );
 }
 
-export function M1Game() {
+export function M1Game({ savedState }: { savedState?: Record<string, unknown> | null }) {
   return (
-    <M1GameProvider>
+    <M1GameProvider savedState={savedState}>
       <M1GameInner />
     </M1GameProvider>
   );

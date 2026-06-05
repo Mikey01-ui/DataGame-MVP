@@ -3,6 +3,7 @@ import {
   LEAD_ORDER,
   LEADS,
 } from "@/lib/game/m1/data";
+import { restoreGameState } from "@/lib/game/sessionPersist";
 import type {
   ChatMessage,
   ChatTone,
@@ -350,6 +351,14 @@ export function getDetectionClass(detection: number) {
   if (detection < 30) return "det-green";
   if (detection < 60) return "det-amber";
   return "det-red";
+}
+
+export function serializeM1State(state: M1GameState): Record<string, unknown> {
+  return { version: 1, ...state };
+}
+
+export function hydrateM1State(raw: Record<string, unknown> | null | undefined): M1GameState | null {
+  return restoreGameState(raw, 1, createInitialM1State, ["debrief", "done"]);
 }
 
 export function getDebriefRating(detection: number) {

@@ -7,7 +7,7 @@ import { prisma } from "@/lib/db";
 import { isAdminRole } from "@/lib/roles";
 import {
   ensureFirstMissionUnlocked,
-  findLatestInProgress,
+  findContinueMission,
   getUserProgress,
   resolveMissionAccess,
 } from "@/lib/progress";
@@ -29,14 +29,14 @@ export default async function HubPage() {
   const progressMap = new Map(progress.map((p) => [p.missionId, p]));
   const accessMap = resolveMissionAccess(missions, progressMap, { isAdmin });
   const access = Object.fromEntries(accessMap.entries());
-  const latest = findLatestInProgress(progress);
-  const continueMission = latest
+  const continueTarget = findContinueMission(missions, progress);
+  const continueMission = continueTarget
     ? {
-        id: latest.missionId,
-        name: missions.find((m) => m.id === latest.missionId)?.name ?? latest.missionId,
-        label: missions.find((m) => m.id === latest.missionId)?.label ?? latest.missionId,
-        checkpoint: latest.checkpoint ?? "start",
-        url: `/mission/${latest.missionId}?resume=1`,
+        id: continueTarget.missionId,
+        name: missions.find((m) => m.id === continueTarget.missionId)?.name ?? continueTarget.missionId,
+        label: missions.find((m) => m.id === continueTarget.missionId)?.label ?? continueTarget.missionId,
+        checkpoint: continueTarget.checkpoint,
+        url: `/mission/${continueTarget.missionId}?resume=1`,
       }
     : null;
 

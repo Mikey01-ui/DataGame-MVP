@@ -12,7 +12,7 @@ import type { M2GameState } from "@/lib/game/m2/types";
 import type { M3GameState } from "@/lib/game/m3/types";
 import type { M4GameState } from "@/lib/game/m4/types";
 import type { M5GameState } from "@/lib/game/m5/types";
-import type { DebriefRow, MissionDebriefConfig } from "@/components/missions/shared/MissionDebriefScreen";
+import type { DebriefLearningRow, DebriefRow, MissionDebriefConfig } from "@/components/missions/shared/MissionDebriefScreen";
 
 function formatTimer(sec: number) {
   return `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
@@ -289,27 +289,127 @@ export function buildM3Debrief(state: M3GameState): MissionDebriefConfig {
   };
 }
 
+function m4GateBreakdownRows(picks: Record<string, string>): DebriefRow[] {
+  return M4_STEPS.map((step, i) => {
+    const entry = Object.entries(picks).find(([, stepId]) => stepId === step.id);
+    const file = entry ? M4_FILES.find((f) => f.id === entry[0]) : null;
+    const matched = file?.id === step.okFile;
+    const lane = step.lane.split("—")[0].trim();
+    const gate = step.title.length > 26 ? `${step.title.slice(0, 24)}…` : step.title;
+    const artifact = file ? (file.name.length > 28 ? `${file.name.slice(0, 26)}…` : file.name) : "—";
+    return {
+      label: `${i + 1} · ${gate} · ${lane}`,
+      value: file ? `${artifact}${matched ? " ✓" : " ✕"}` : "Unlinked",
+      valueClass: matched ? "det-green" : "det-red",
+    };
+  });
+}
+
+function m4LearningRows(
+  state: M4GameState,
+  correct: number,
+  detection: number,
+  detectionMaxed: boolean
+): DebriefLearningRow[] {
+  const wa = state.wrongAttempts;
+  const spineComplete = correct === M4_FILES.length;
+  return [
+    {
+      who: "VOSS · Process lineage",
+      text: spineComplete
+        ? "You mapped <strong>which department action</strong> each leak artifact feeds — Legal offer review, IT identity, HR compliance, and so on — along MegaCorp's published OMNI spine."
+        : `You linked <strong>${correct} of ${M4_FILES.length}</strong> artifacts to the right gates. Process disclosure needs every handoff on the spine, not a partial chain.`,
+      ok: spineComplete,
+    },
+    {
+      who: "ZEX · Data-to-action matching",
+      text:
+        wa === 0
+          ? "You matched <strong>table headers</strong> on each rail card to the gate's <strong>Expects</strong> line — the skill is pairing <strong>data shape</strong> to the <strong>department task</strong> that consumes it."
+          : "Wrong drops usually mean the <strong>headers</strong> fit a different department's job — session logs belong at Identity, not Background; compensation rows belong at Payroll, not Health.",
+      ok: wa === 0,
+    },
+    {
+      who: "NOVA · Handoff audit",
+      text:
+        wa === 0 && detection < 30
+          ? "Every handoff matched <strong>Expects</strong> without a wrong drop — detection stayed low."
+          : detectionMaxed
+            ? "Detection hit <strong>100%</strong> — analysts called the custody story a random dump."
+            : `Wrong drops raised detection to <strong>${detection}%</strong> — the custody narrative must acknowledge the misses before external brief.`,
+      ok: wa === 0 && detection < 30,
+    },
+    {
+      who: "ATLAS · Custody order",
+      text: spineComplete
+        ? "Gates unlock <strong>in sequence</strong> for a reason — offer before identity, background before parallel Health/Payroll lanes. Custody is <strong>when</strong> each team receives data, not just who holds it."
+        : "OMNI is a <strong>regulated sequence</strong> — mis-ordering artifacts breaks the timeline story even if filenames look plausible.",
+      ok: spineComplete,
+    },
+    {
+      who: "KADE · Field timeline",
+      text: spineComplete
+        ? "All eight gates linked — the map beats the \"random dump\" headline. Detection friction is noted, but the <strong>spine holds</strong>."
+        : "Analysts won't wait for a perfect map — but <strong>eight correct gates</strong> is the bar for a credible onboarding disclosure.",
+      ok: spineComplete,
+    },
+  ];
+}
+
 export function buildM4Debrief(state: M4GameState): MissionDebriefConfig {
   const correct = Object.entries(state.picks).filter(([fileId, stepId]) => M4_STEPS.find((s) => s.id === stepId)?.okFile === fileId).length;
-  const conf = Math.round(state.confidence);
+  const detection = Math.round(state.detection);
+  const detCls = getDetectionClass(detection);
   const wa = state.wrongAttempts;
-  const confCls = conf >= 85 ? "det-green" : conf >= 50 ? "det-amber" : "det-red";
+  const detectionMaxed = detection >= 100 || state.phase === "failed";
   const solidBar = Math.max(1, Math.ceil(M4_FILES.length * 0.75));
   const tier = correct === M4_FILES.length ? "CLEAN STRUCTURE" : correct >= solidBar ? "SOLID" : "NEEDS REWORK";
+  const gateRows = m4GateBreakdownRows(state.picks);
+  const learningRows = m4LearningRows(state, correct, detection, detectionMaxed);
+
+  if (detectionMaxed) {
+    return {
+      eyebrow: "// Mission 04 — Audit compromised",
+      title: "DETECTION THRESHOLD EXCEEDED",
+      metrics: [
+        { value: formatTimer(state.timerSec), label: "TIME" },
+        { value: `${correct}/${M4_FILES.length}`, label: "HANDOFFS CORRECT" },
+        { value: String(wa), label: "WRONG DROPS" },
+        { value: "100%", label: "DETECTION", valueClass: "det-red" },
+      ],
+      breakdownTitle: "HANDOFF MAP — ARTIFACT TO GATE",
+      breakdownRows: [
+        ...gateRows,
+        { label: "Wrong drop attempts", value: String(wa) },
+        { label: "Final detection", value: "100%", valueClass: "det-red", total: true },
+      ],
+      rating: "EXPOSED — MegaCorp flagged the handoff audit before you could finalize the map.",
+      tradecraft: [
+        { html: "Mission 03 trained <strong>who may receive which data</strong> (audience). Mission 04 trains <strong>which department action consumes each artifact</strong> along one regulated case-flow." },
+        { html: `Detection maxed at <strong>100%</strong> after <strong>${wa}</strong> wrong ${wa === 1 ? "drop" : "drops"}${state.hintsUsed > 0 ? ` and <strong>${state.hintsUsed}</strong> hint${state.hintsUsed === 1 ? "" : "s"}` : ""}.` },
+        { html: "<span class=\"tc-subhead\">What you were matching</span> Each OMNI gate is a <strong>department task</strong> with specific <strong>inputs</strong> — session logs for IT identity, tax rows for HR payroll, dependent names for benefits. The rail <strong>table headers</strong> are your clue." },
+        { html: "<span class=\"tc-subhead\">Real-world translation</span> Every process step needs <strong>its own data</strong> — IT can't verify a login without session logs; Payroll can't run without tax rows. The file has to land on the <strong>team doing that job</strong>, not just somewhere in the company." },
+      ],
+      learningRows,
+      learningTitle: "WHAT YOU LEARNED — DATA TO PROCESS GATE",
+      cta: "RETRY MISSION →",
+    };
+  }
 
   const rating =
-    correct === M4_FILES.length && wa === 0
+    correct === M4_FILES.length && wa === 0 && detection < 15
       ? "SPINE COMPLETE — Every handoff matches the published case-flow."
       : correct === M4_FILES.length
-        ? "SPINE COMPLETE — Map holds; review confidence hits before release."
+        ? "SPINE COMPLETE — Map holds; review detection hits before release."
         : correct >= solidBar
           ? "USABLE — Adjust the red nodes before you brief externally."
           : "REWORK — Too many mis-links for a credible narrative.";
 
+  const hintNote = state.hintsUsed > 0 ? ` <strong>${state.hintsUsed}</strong> hint${state.hintsUsed === 1 ? "" : "s"} also raised exposure.` : "";
   const stumb =
-    wa > 0
-      ? ` You took <strong>${wa}</strong> wrong ${wa === 1 ? "stab" : "stabs"} — confidence finished at <strong>${conf}%</strong>.`
-      : " Nova confidence stayed at <strong>100%</strong>.";
+    wa > 0 || state.hintsUsed > 0
+      ? ` Detection finished at <strong>${detection}%</strong>${wa > 0 ? ` after <strong>${wa}</strong> wrong ${wa === 1 ? "drop" : "drops"}` : ""}.${hintNote}`
+      : " Handoff detection stayed low — <strong>no wrong drops</strong>.";
 
   return {
     eyebrow: "// Mission 04 — Map finalized",
@@ -317,22 +417,29 @@ export function buildM4Debrief(state: M4GameState): MissionDebriefConfig {
     metrics: [
       { value: formatTimer(state.timerSec), label: "TIME" },
       { value: `${correct}/${M4_FILES.length}`, label: "HANDOFFS CORRECT" },
-      { value: `${conf}%`, label: "NOVA CONFIDENCE", valueClass: confCls },
+      { value: `${detection}%`, label: "DETECTION", valueClass: detCls },
       { value: String(wa), label: "WRONG DROPS" },
+      { value: String(state.hintsUsed), label: "HINTS USED" },
     ],
-    breakdownTitle: "FLOW SUMMARY",
+    breakdownTitle: "HANDOFF MAP — ARTIFACT TO GATE",
     breakdownRows: [
-      { label: "Artifacts placed correctly", value: `${correct} / ${M4_FILES.length}` },
+      ...gateRows,
+      { label: "Handoffs correct", value: `${correct} / ${M4_FILES.length}`, valueClass: correct === M4_FILES.length ? "det-green" : "det-amber" },
       { label: "Wrong drop attempts", value: String(wa) },
+      { label: "Hints used", value: String(state.hintsUsed) },
+      { label: "Final detection", value: `${detection}%`, valueClass: detCls },
       { label: "Outcome band", value: tier, total: true },
     ],
     rating,
     tradecraft: [
-      { html: "Mission 03 trained <strong>who may receive which data</strong>. Mission 04 trains <strong>how artifacts travel between departments</strong> in one disclosure case." },
-      { html: `You placed <strong>${correct} of ${M4_FILES.length}</strong> feeds on the correct gates.${stumb}` },
-      { html: "<span class=\"tc-subhead\">Real-world translation</span> A defensible disclosure ties each artifact to a <strong>gate and owner</strong> in the regulated flow." },
+      { html: "Mission 03 trained <strong>who may receive which data</strong> (audience). Mission 04 trains <strong>which department action consumes each artifact</strong> — Legal reviews the offer, IT verifies identity, HR runs compliance checks, and parallel lanes split Health vs Payroll before Data Access." },
+      { html: `You placed <strong>${correct} of ${M4_FILES.length}</strong> leak files on the gates their <strong>table headers</strong> support.${stumb}` },
+      { html: "<span class=\"tc-subhead\">What you practiced</span> Matching <strong>data shape → process step</strong>. A file isn't \"HR data\" generically — it's background-check rows vs benefits enrollment vs payroll tax fields. Each belongs at a <strong>different gate</strong> on the spine." },
+      { html: "<span class=\"tc-subhead\">Real-world translation</span> In real companies, each step needs <strong>specific data to work</strong> — Security needs logs to trace an account, Benefits needs health rows to enroll someone. You matched <strong>which file fits which job</strong> on the flow, so you know <strong>who has the data for what action</strong>." },
     ],
-    cta: "ENTER THE FINAL BRIEF →",
+    learningRows,
+    learningTitle: "WHAT YOU LEARNED — DATA TO PROCESS GATE",
+    cta: "CONTINUE TO MISSION 05 — THE FINAL BRIEF →",
   };
 }
 

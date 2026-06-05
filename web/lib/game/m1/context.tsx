@@ -9,7 +9,8 @@ import {
   type ReactNode,
 } from "react";
 import { DETECTION, HACK_LINES, INTRO_CHAT, LEADS } from "@/lib/game/m1/data";
-import { createInitialM1State, m1Reducer } from "@/lib/game/m1/reducer";
+import { useGameSessionPersist } from "@/lib/game/sessionPersist";
+import { createInitialM1State, hydrateM1State, m1Reducer, serializeM1State } from "@/lib/game/m1/reducer";
 import type { M1GameAction, M1GameState } from "@/lib/game/m1/types";
 
 type M1GameContextValue = {
@@ -19,8 +20,25 @@ type M1GameContextValue = {
 
 const M1GameContext = createContext<M1GameContextValue | null>(null);
 
-export function M1GameProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(m1Reducer, undefined, createInitialM1State);
+function initM1State(saved: Record<string, unknown> | null | undefined) {
+  return hydrateM1State(saved) ?? createInitialM1State();
+}
+
+export function M1GameProvider({
+  children,
+  savedState,
+}: {
+  children: ReactNode;
+  savedState?: Record<string, unknown> | null;
+}) {
+  const [state, dispatch] = useReducer(m1Reducer, savedState, initM1State);
+
+  useGameSessionPersist({
+    missionId: "m1",
+    state,
+    serialize: serializeM1State,
+    enabled: state.phase !== "debrief" && state.phase !== "done",
+  });
 
   useEffect(() => {
     if (state.phase !== "hack") return;

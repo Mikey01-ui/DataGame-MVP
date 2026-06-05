@@ -2,15 +2,35 @@
 
 import { createContext, useContext, useEffect, useMemo, useReducer, type ReactNode } from "react";
 import { HACK_LINES, HINT_COOLDOWN_SEC, INTRO_CHAT } from "@/lib/game/m3/data";
-import { createInitialM3State, m3Reducer } from "@/lib/game/m3/reducer";
+import { useGameSessionPersist } from "@/lib/game/sessionPersist";
+import { createInitialM3State, hydrateM3State, m3Reducer, serializeM3State } from "@/lib/game/m3/reducer";
 import type { M3GameAction, M3GameState } from "@/lib/game/m3/types";
 
 type M3GameContextValue = { state: M3GameState; dispatch: (action: M3GameAction) => void };
 
 const M3GameContext = createContext<M3GameContextValue | null>(null);
 
-export function M3GameProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(m3Reducer, undefined, createInitialM3State);
+function initM3State(saved: Record<string, unknown> | null | undefined) {
+  return hydrateM3State(saved) ?? createInitialM3State();
+}
+
+export function M3GameProvider({
+  children,
+  savedState,
+}: {
+  children: ReactNode;
+  savedState?: Record<string, unknown> | null;
+}) {
+  const [state, dispatch] = useReducer(m3Reducer, savedState, initM3State);
+
+  const persistEnabled = state.phase !== "debrief" && state.phase !== "failed";
+
+  useGameSessionPersist({
+    missionId: "m3",
+    state,
+    serialize: serializeM3State,
+    enabled: persistEnabled,
+  });
 
   useEffect(() => {
     if (state.phase !== "hack") return;
@@ -60,10 +80,15 @@ export function M3GameProvider({ children }: { children: ReactNode }) {
   }, [state.phase]);
 
   useEffect(() => {
-    if (!state.hintCooldown) return;
-    const t = setTimeout(() => dispatch({ type: "HINT_COOLDOWN_CLEAR" }), HINT_COOLDOWN_SEC * 1000);
+    if (!state.hintCooldown || !state.hintCooldownUntil) return;
+    const rem = state.hintCooldownUntil - Date.now();
+    if (rem <= 0) {
+      dispatch({ type: "HINT_COOLDOWN_CLEAR" });
+      return;
+    }
+    const t = setTimeout(() => dispatch({ type: "HINT_COOLDOWN_CLEAR" }), rem);
     return () => clearTimeout(t);
-  }, [state.hintCooldown]);
+  }, [state.hintCooldown, state.hintCooldownUntil]);
 
   const value = useMemo(() => ({ state, dispatch }), [state]);
   return <M3GameContext.Provider value={value}>{children}</M3GameContext.Provider>;

@@ -10,8 +10,23 @@ export const HACK_LINES = [
 ];
 
 export const INTRO_CHAT = [
-  { delay: 1200, sender: "Voss", text: "Same eight Mission 03 previews. <strong>Click an icon</strong> on the chain — four candidates appear top-right. Correct drop fades that step and <strong>greens the outgoing arrow</strong>. Nova's confidence starts at 100%.", tone: "bm-d" as const },
+  { delay: 800, sender: "System", text: "PR — MegaCorp: \"We take onboarding privacy seriously.\" Analysts have <strong>eight leak artifacts</strong> and one published OMNI flow.", tone: "bm-h" as const },
+  { delay: 2200, sender: "Voss", text: "Same eight Mission 03 previews. <strong>Click an icon</strong> on the chain — four candidates appear top-right. Correct drop <strong>greens the outgoing arrow</strong>.", tone: "bm-d" as const },
+  { delay: 3800, sender: "Nova", text: "Handoff <strong>detection</strong> starts at <strong>0%</strong>. Wrong gate = wrong custody story — exposure climbs and <strong>doesn't heal</strong>. I'll explain each miss.", tone: "bm-d" as const },
 ];
+
+export const SUBMIT_CHAT = {
+  perfect: [
+    { delay: 0, sender: "Voss", text: "That packages the spine. Every artifact sits on the gate MegaCorp's own flow expects.", tone: "bm-ok" as const },
+    { delay: 1400, sender: "Nova", text: "Detection stayed low — <strong>no wrong drops</strong>. This reads as process, not a random dump.", tone: "bm-ok" as const },
+    { delay: 2800, sender: "System", text: "OMNI custody chain validated — building handoff report for debrief…", tone: "bm-h" as const },
+  ],
+  solid: [
+    { delay: 0, sender: "Voss", text: "Map's complete. Spine holds — note where detection climbed before you brief externally.", tone: "bm-d" as const },
+    { delay: 1400, sender: "Nova", text: "Wrong drops raised exposure — but every handoff is now on the right gate. Ship with the audit caveat.", tone: "bm-d" as const },
+    { delay: 2800, sender: "System", text: "Eight-gate map locked — packaging artifact → department report…", tone: "bm-h" as const },
+  ],
+};
 
 export const STEPS: OnboardingStep[] = [
   { id: "offer-review", lane: "Legal & Compliance", deptCls: "dept-legal", title: "Offer Letter Review", bottleneck: "No signed offer → candidate not legally committed", purpose: "Legal reviews the offer terms, NDA, and IP assignment clauses. HR cannot proceed until Legal signs off.", inputs: "Draft offer letter, compensation terms, NDA templates, IP agreements.", outputs: "Approved offer package ready for candidate signature.", okFile: "memo_847" },
@@ -80,6 +95,21 @@ export const FLOW_NODE_POSITIONS = [
 ];
 
 export const DATASET_CANDIDATE_CAP = 4;
+
+export const HINT_COOLDOWN_SEC = 25;
+
+/** Handoff audit exposure — same shape as Mission 3 detection. */
+export const DETECTION = {
+  passivePerSec: 100 / 1500,
+  hint: 8,
+} as const;
+
+export function hintForStep(stepId: string): string {
+  const st = STEPS.find((s) => s.id === stepId);
+  if (!st) return "Click a <strong>gate icon</strong> on the flow first.";
+  const hint = STEP_DATA_HINT[stepId] ?? st.inputs;
+  return `For <strong>${st.title}</strong> — line up <strong>Expects</strong> with the rail <strong>table headers</strong>: ${hint}`;
+}
 
 export const FLOW_EDGES: [number, number][] = [
   [0, 1], [1, 2], [2, 3], [2, 4], [3, 5], [4, 5], [5, 6], [5, 7],
@@ -156,7 +186,7 @@ export function correctStepForFile(fileId: string) {
   return STEPS.find((s) => s.okFile === fileId)?.id ?? null;
 }
 
-export function confidenceHit(fileId: string) {
+export function wrongHandoffDetection(fileId: string) {
   return ["schools", "health", "cust_dump", "risk_full"].includes(fileId) ? 14 : 10;
 }
 

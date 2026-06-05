@@ -7,6 +7,7 @@ import {
   TOKEN_LEADS,
   VERIFY,
 } from "@/lib/game/m2/data";
+import { restoreGameState } from "@/lib/game/sessionPersist";
 import type {
   ChatMessage,
   ChatSender,
@@ -273,4 +274,12 @@ export function m2Reducer(state: M2GameState, action: M2GameAction): M2GameState
     default:
       return state;
   }
+}
+
+export function serializeM2State(state: M2GameState): Record<string, unknown> {
+  return { version: 1, ...state };
+}
+
+export function hydrateM2State(raw: Record<string, unknown> | null | undefined): M2GameState | null {
+  return restoreGameState(raw, 1, createInitialM2State, ["debrief"]);
 }

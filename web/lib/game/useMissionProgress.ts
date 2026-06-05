@@ -6,6 +6,7 @@ import { phaseToCheckpoint, type MissionPhase } from "@/lib/game/types";
 
 type SaveOptions = {
   phase?: MissionPhase;
+  checkpoint?: string | null;
   status?: ProgressStatus;
   stateJson?: Record<string, unknown> | null;
   score?: number | null;
@@ -14,7 +15,12 @@ type SaveOptions = {
 export function useMissionProgress(missionId: string) {
   const save = useCallback(
     async (options: SaveOptions) => {
-      const checkpoint = options.phase ? phaseToCheckpoint(options.phase) : undefined;
+      const checkpoint =
+        options.checkpoint !== undefined
+          ? options.checkpoint
+          : options.phase
+            ? phaseToCheckpoint(options.phase)
+            : undefined;
       await fetch("/api/progress", {
         method: "PATCH",
         credentials: "include",

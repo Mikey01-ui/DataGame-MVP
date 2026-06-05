@@ -1,30 +1,77 @@
 {
   "missionId": "m4",
-  "statusLeft": ["TERMINAL ACTIVE", "MISSION 04"],
+  "statusLeft": ["TERMINAL ACTIVE", "OP-OMNI / v2.4.1"],
   "statusRight": ["ENCRYPTED"],
+  "tutorialStatusRight": ["OP-OMNI / M04 TUTORIAL", "ENCRYPTED"],
   "brief": {
-    "eyebrow": "// Mission 4",
+    "eyebrow": "// Mission 04 — The Onboarding",
     "title": "Pre-Mission Brief",
-    "params": [],
-    "briefParagraphs": [
-      "Ethical disclosure choices under pressure. Migrate copy from reference/legacy-missions/Mission 4.html."
+    "params": [
+      { "label": "// Detection start", "value": "0%" },
+      { "label": "// Handoffs", "value": "8" },
+      { "label": "// Datasets", "value": "8 · staged leak set" },
+      { "label": "// Flow source", "value": "OMNI case-flow" },
+      { "label": "// Outcome", "value": "Map finalized" }
     ],
-    "pullquote": "Choose what to reveal.",
-    "dossier": [],
+    "briefParagraphs": [
+      "<strong>VOSS.</strong> Not org-chart theater for its own sake — this is their <strong>published flow</strong>. Each artifact either <strong>feeds a gate</strong> or it doesn't. Mis-link and we're proving their chaos, not our rigor.",
+      "<strong>NOVA.</strong> Mission 03 was <strong>audience</strong> — who may see the truth. This is <strong>process</strong> — where that truth enters their machine. Handoff <strong>detection</strong> starts at <strong>0%</strong>. Wrong gate, wrong timeline story — exposure climbs and I'll say why.",
+      "<strong>ZEX.</strong> Eight files on the rail, eight icons on the <strong>flow spine</strong> — click each gate, match headers to Expects, drag before the \"random dump\" headline sets."
+    ],
+    "pullquote": "Link the spine. Beat the random-dump headline.",
+    "dossier": [
+      { "label": "TARGET", "name": "MegaCorp", "role": "Global conglomerate · regulated onboarding chain · OMNI case-flow" },
+      { "label": "HANDLER", "name": "Voss", "role": "Analyst · encrypted channel · flow reconstruction lead" },
+      { "label": "OPERATORS", "name": "Kade", "role": "Confidence audit · field timeline · analysts won't wait" }
+    ],
+    "encryptedChannel": "VOSS · CHANNEL",
+    "ghostContinue": true,
+    "useHtml": true,
     "continueLabel": "Continue",
-    "continueDelayMs": 1500
+    "continueDelayMs": 3000
   },
   "protocol": {
-    "eyebrow": "// Mission 4",
+    "eyebrow": "// Mission 04 — The Onboarding",
     "title": "Mission Protocol",
     "sectionLabel": "// How to Operate",
-    "steps": [],
-    "detection": null,
-    "breachLabel": "Begin Mission",
+    "steps": [
+      {
+        "number": "01",
+        "title": "INSPECT THE STEP",
+        "description": "Click any <strong>step icon</strong> on the onboarding flow — its <strong>purpose</strong>, <strong>inputs</strong>, <strong>outputs</strong>, and bottleneck appear on the canvas. Each dataset card lists its <strong>table headers</strong> as a clue."
+      },
+      {
+        "number": "02",
+        "title": "DRAG TO THE OPEN STEP",
+        "description": "Steps unlock <strong>in order</strong> — locked icons show a 🔒, available ones pulse cyan. Drag the right dataset onto the active step; a correct drop draws a <strong>green arrow</strong> to the next stage."
+      },
+      {
+        "number": "03",
+        "title": "DETECTION",
+        "description": "<strong>Wrong drop</strong> — Nova explains, <strong>detection</strong> rises, the meter does not heal. At <strong>100%</strong> the audit trips. <strong>Right drop</strong> locks that step and unlocks the next. Complete all eight to finalize the onboarding map."
+      }
+    ],
+    "atlasNote": "Mission 03 trained <strong>who may see the data</strong>. Mission 04 is <strong>when each department takes custody</strong> along one regulated case.",
+    "detection": {
+      "title": "HANDOFF DETECTION METER",
+      "tag": "AUDIT EXPOSURE",
+      "paragraphs": [
+        "Mission 03 trained <strong>who may see the data</strong>. Mission 04 is <strong>when each department takes custody</strong> along one regulated case — proving the package isn't a random pile.",
+        "Every <strong>wrong drop</strong> raises <strong>detection</strong>; the meter doesn't heal. At <strong>100%</strong> you're exposed. Complete all eight handoffs with the spine intact."
+      ],
+      "pills": [
+        { "text": "Wrong handoff · +detection", "variant": "high" },
+        { "text": "Step pop-up · read Expects & inputs", "variant": "mid" },
+        { "text": "Correct drop · green arrow unlocks next", "variant": "low" }
+      ],
+      "hint": "<strong>Stuck?</strong> Line up each step's <strong>Expects</strong> line with the dataset <strong>table headers</strong> in the rail.",
+      "hintPills": ["Inspect step · four candidates", "Return strip · undo drag"]
+    },
+    "breachLabel": "Open process terminal",
     "breachReadyLabel": "// Ready?"
   },
   "game": {
     "placeholderTitle": "Mission 4 gameplay",
-    "placeholderBody": "Migrate from reference/legacy-missions/Mission 4.html"
+    "placeholderBody": "OMNI onboarding flow map with dataset handoffs."
   }
 }

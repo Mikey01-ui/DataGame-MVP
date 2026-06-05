@@ -452,9 +452,9 @@ function M2GameInner() {
   );
 }
 
-export function M2Game() {
+export function M2Game({ savedState }: { savedState?: Record<string, unknown> | null }) {
   return (
-    <M2GameProvider>
+    <M2GameProvider savedState={savedState}>
       <M2GameInner />
     </M2GameProvider>
   );
