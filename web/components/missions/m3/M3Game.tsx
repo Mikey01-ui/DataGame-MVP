@@ -12,22 +12,20 @@ import { M3GameProvider, useM3Game } from "@/lib/game/m3/context";
 import { getTrustClass } from "@/lib/game/m3/reducer";
 import type { Channel } from "@/lib/game/m3/types";
 
-function M3RoutingPanel() {
-  const { state, dispatch } = useM3Game();
-  const routed = Object.keys(state.assigned).length;
-  const selected = DATASETS.find((d) => d.id === state.selectedId);
+function M3Header() {
+  const { state } = useM3Game();
   const trust = Math.round(state.novaTrust);
   const trustClass = getTrustClass(trust);
   const timer = `${String(Math.floor(state.timerSec / 60)).padStart(2, "0")}:${String(state.timerSec % 60).padStart(2, "0")}`;
 
   return (
-    <>
-      <div id="hdr">
-        <div className="hdr-left">
-          <i className="fas fa-terminal" aria-hidden /> MASTERMIND TERMINAL | OPERATION OMNI
-        </div>
-        <div className="hdr-center">MISSION 03 OF 05 / THE HUMAN SHIELD</div>
-        <div className="hdr-right">
+    <div id="hdr">
+      <div className="hdr-left">
+        <i className="fas fa-terminal" aria-hidden /> MASTERMIND TERMINAL | OPERATION OMNI
+      </div>
+      <div className="hdr-center">MISSION 03 OF 05 / THE HUMAN SHIELD</div>
+      <div className="hdr-right">
+        {state.phase === "play" || state.phase === "signoff" ? (
           <span id="nova-trust" className={`nt-display ${trustClass}`}>
             <span className="nt-icon">
               <i className="fas fa-user-shield" aria-hidden />
@@ -38,17 +36,25 @@ function M3RoutingPanel() {
             </span>
             <span className="nt-label">NOVA</span>
           </span>
+        ) : null}
+        {(state.phase === "play" || state.phase === "signoff") && (
           <span style={{ color: "rgba(0,196,28,.2)", margin: "0 4px" }}>|</span>
-          <span id="budget">💰 ${state.budget.toLocaleString()}</span>
-          <span style={{ color: "rgba(0,196,28,.2)", margin: "0 4px" }}>|</span>
-          <span id="timer">{timer}</span>
-          <span className="live-dot" />
-          <span style={{ letterSpacing: 1, fontSize: 10 }}>LIVE</span>
-        </div>
+        )}
+        <span id="timer">{timer}</span>
+        <span className="live-dot" />
+        <span style={{ letterSpacing: 1, fontSize: 10 }}>LIVE</span>
       </div>
+    </div>
+  );
+}
 
-      <div id="step-banner">{state.stepBanner}</div>
+function M3RoutingPanel() {
+  const { state, dispatch } = useM3Game();
+  const routed = Object.keys(state.assigned).length;
+  const selected = DATASETS.find((d) => d.id === state.selectedId);
 
+  return (
+    <>
       <div id="main-row">
         <div id="desktop-panel">
           <div className="r2-layout">
@@ -56,33 +62,50 @@ function M3RoutingPanel() {
               <div className="r2-r-hdr">STAGED FOR DISCLOSURE</div>
               <div id="r3-file-list">
                 {DATASETS.map((ds) => (
-                  <button
+                  <div
                     key={ds.id}
-                    type="button"
+                    role="button"
+                    tabIndex={0}
+                    data-id={ds.id}
                     className={`r2-file${state.selectedId === ds.id ? " sel" : ""}${state.assigned[ds.id] ? " done" : ""}`}
                     onClick={() => dispatch({ type: "SELECT_DATASET", id: ds.id })}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        dispatch({ type: "SELECT_DATASET", id: ds.id });
+                      }
+                    }}
                   >
                     <span>📄</span>
                     <span>{ds.file}</span>
-                  </button>
+                  </div>
                 ))}
               </div>
             </div>
             <div className="r2-inspector">
               <div className="r2-ins-hdr">{selected ? `INSPECTOR — ${selected.file}` : "INSPECTOR — Select a file"}</div>
-              <div className="r2-ins-body">
+              <div className="r2-ins-body" id="r3-ins-body">
                 {selected ? (
                   <M3Inspector dataset={selected} />
                 ) : (
-                  <span style={{ color: "#5a6a7a" }}>Open a file and read what&apos;s in it — then pick the channel that fits audience and harm.</span>
+                  <span style={{ color: "#5a6a7a" }}>
+                    Open a file and read what&apos;s in it — then pick the channel that fits <strong>audience</strong> and <strong>harm</strong>, not a label.
+                  </span>
                 )}
               </div>
-              {selected && !state.assigned[selected.id] && (
-                <div className="ch-bar">
+              {selected && (
+                <div className="ch-bar" id="ch-bar" style={{ display: "flex" }}>
                   <span>Assign release channel:</span>
                   <div className="ch-row">
                     {(["public", "official", "vault"] as Channel[]).map((ch) => (
-                      <button key={ch} type="button" className={`ch-btn ch-${ch}`} onClick={() => dispatch({ type: "ASSIGN_CHANNEL", channel: ch })}>
+                      <button
+                        key={ch}
+                        type="button"
+                        className={`ch-btn ch-${ch}`}
+                        id={`ch-${ch}`}
+                        disabled={!!state.assigned[selected.id]}
+                        onClick={() => dispatch({ type: "ASSIGN_CHANNEL", channel: ch })}
+                      >
                         <i className={`fas ${ch === "public" ? "fa-bullhorn" : ch === "official" ? "fa-landmark" : "fa-lock"}`} aria-hidden /> {CHANNEL_LABELS[ch]}
                       </button>
                     ))}
@@ -91,6 +114,7 @@ function M3RoutingPanel() {
               )}
             </div>
           </div>
+          <div id="nexus-taskbar">DISTRIBUTION MATRIX · Audience-separated · Pre-release</div>
         </div>
 
         <div id="right">
@@ -124,7 +148,13 @@ function M3RoutingPanel() {
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div className="bk-name">Operation Channel</div>
-                <div className="bk-members">Voss — 🟢 · Zex — 🟢 · Nova — 🟢</div>
+                <div className="bk-members">
+                  <span className="bk-member online">Voss</span>
+                  <span className="bk-sep">·</span>
+                  <span className="bk-member online">Zex</span>
+                  <span className="bk-sep">·</span>
+                  <span className="bk-member online">Nova</span>
+                </div>
               </div>
               <div className="bk-icons">
                 <i className="fas fa-lock" aria-hidden />
@@ -150,7 +180,7 @@ function M3RoutingPanel() {
                   </button>
                   <div className="hint-tooltip">Hint · −$2,500</div>
                 </div>
-                <input type="text" placeholder="Operation Channel — listen only" disabled readOnly />
+                <input type="text" id="broker-input" placeholder="Operation Channel — listen only" disabled readOnly />
               </div>
             </div>
           </div>
@@ -203,73 +233,54 @@ function M3GameInner() {
   const debrief = useMemo(() => buildM3Debrief(state), [state]);
 
   const isRouting = state.phase === "play" || state.phase === "signoff";
+  const showGameChrome = state.hackDone && state.phase !== "debrief";
 
   return (
     <div className={`m3-game${isRouting ? " m3-routing" : " m3-desktop"}${state.vaultOpen ? " vault-open" : ""}`}>
       <div id="m3-game" className={state.hackDone ? "active" : ""}>
-        {state.hackDone && (
+        <div className="m3-ambient" aria-hidden />
+        {showGameChrome && (
           <>
+            <M3Header />
+            <div id="step-banner">{state.stepBanner}</div>
             {state.phase === "desktop" && (
-              <>
-                <div id="step-banner">{state.stepBanner}</div>
-                <div id="main-row">
-                  <div id="desktop-panel">
-                    <div id="wallpaper" className={desktopReady ? "visible" : ""} />
-                    <button
-                      type="button"
-                      className={`di di-interactive di-mission visible${state.vaultOpen ? "" : ""}`}
-                      style={{ top: 22, left: 14 }}
-                      title="Double-click to open"
-                      onDoubleClick={() => dispatch({ type: "OPEN_VAULT" })}
-                    >
-                      <span className="di-icon">
-                        <i className="fas fa-lock" aria-hidden />
-                      </span>
-                      <span className="di-label">Data Vault</span>
+              <div id="main-row">
+                <div id="desktop-panel">
+                  <div id="wallpaper" className={desktopReady ? "visible" : ""} />
+                  <button
+                    type="button"
+                    className="di di-interactive di-mission visible"
+                    id="di-disclosure"
+                    style={{ top: 22, left: 14 }}
+                    title="Double-click to open"
+                    onDoubleClick={() => dispatch({ type: "OPEN_VAULT" })}
+                  >
+                    <span className="di-icon">
+                      <i className="fas fa-lock" aria-hidden />
+                    </span>
+                    <span className="di-label">Data Vault</span>
+                  </button>
+                  {[
+                    { top: 106, icon: "fa-folder-open", label: "Disclosure Queue" },
+                    { top: 190, icon: "fa-folder", label: "HR_Records" },
+                    { top: 274, icon: "fa-chart-bar", label: "Finance" },
+                    { top: 358, emoji: "🗑️", label: "Recycle Bin" },
+                  ].map((item) => (
+                    <div key={item.label} className="di di-locked visible" style={{ top: item.top, left: 14 }}>
+                      <span className="di-icon">{item.emoji ?? <i className={`fas ${item.icon}`} aria-hidden />}</span>
+                      <span className="di-label">{item.label}</span>
+                    </div>
+                  ))}
+                  <div id="xp-taskbar" className={desktopReady ? "visible" : ""}>
+                    <div id="start-btn">⊞ Start</div>
+                    <div className="tb-div" />
+                    <button type="button" className="tb-wb" onDoubleClick={() => dispatch({ type: "OPEN_VAULT" })}>
+                      <i className="fas fa-lock" aria-hidden /> Data Vault
                     </button>
-                    {[
-                      { top: 106, icon: "fa-folder-open", label: "Disclosure Queue" },
-                      { top: 190, icon: "fa-folder", label: "HR_Records" },
-                      { top: 274, icon: "fa-chart-bar", label: "Finance" },
-                      { top: 358, emoji: "🗑️", label: "Recycle Bin" },
-                    ].map((item) => (
-                      <div key={item.label} className="di di-locked visible" style={{ top: item.top, left: 14 }}>
-                        <span className="di-icon">{item.emoji ?? <i className={`fas ${item.icon}`} aria-hidden />}</span>
-                        <span className="di-label">{item.label}</span>
-                      </div>
-                    ))}
-                    <div id="xp-taskbar" className={desktopReady ? "visible" : ""}>
-                      <div id="start-btn">⊞ start</div>
-                      <div className="tb-div" />
-                      <button type="button" className="tb-wb" onDoubleClick={() => dispatch({ type: "OPEN_VAULT" })}>
-                        <i className="fas fa-lock" aria-hidden /> Data Vault
-                      </button>
-                      <div id="tb-clock">{new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
-                    </div>
-                  </div>
-                  <div id="right">
-                    <div id="broker-wrap">
-                      <div className="broker-hdr">
-                        <div className="bk-avatar">
-                          <i className="fas fa-shield-halved" aria-hidden />
-                        </div>
-                        <div style={{ flex: 1 }}>
-                          <div className="bk-name">Operation Channel</div>
-                          <div className="bk-members">Voss — 🟢 · Nova — 🟢</div>
-                        </div>
-                      </div>
-                      <div id="broker-body">
-                        {state.messages.map((m) => (
-                          <div key={m.id} className="bm-group">
-                            <div className="bm-sender">{m.sender.toUpperCase()}</div>
-                            <div className={`bm-bubble ${m.tone}`} dangerouslySetInnerHTML={{ __html: m.text }} />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                    <div id="tb-clock">{new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
                   </div>
                 </div>
-              </>
+              </div>
             )}
             {isRouting && <M3RoutingPanel />}
           </>
@@ -281,7 +292,7 @@ function M3GameInner() {
       {state.phase === "hack" && <M1HackOverlay lines={HACK_LINES} visibleCount={state.hackLine + 1} />}
 
       {state.phase === "signoff" && (
-        <div id="signoff-overlay" className="active">
+        <div id="signoff-overlay" className="show">
           <pre id="signoff-term">{`NOVA SIGN-OFF PROTOCOL
 TRUST: ${trust}%
 ROUTED: ${routed}/10

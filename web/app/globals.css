@@ -463,6 +463,66 @@ a {
   flex-wrap: wrap;
 }
 
+.hub-choice {
+  margin: 1.5rem 0;
+  padding: 1.75rem 1.5rem;
+  border: 1px solid rgba(0, 255, 65, 0.28);
+  background: linear-gradient(145deg, rgba(34, 24, 41, 0.88), rgba(30, 15, 26, 0.92));
+  border-radius: 6px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.hub-choice-mission {
+  margin-bottom: 1.25rem;
+}
+
+.hub-choice-label {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--green-stable);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hub-choice-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 1.85rem);
+  font-weight: 700;
+  margin: 0.35rem 0 0.5rem;
+  color: var(--white);
+}
+
+.hub-choice-checkpoint {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--grey-text);
+}
+
+.hub-choice-checkpoint strong {
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.hub-choice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.hub-choice-btn {
+  min-width: min(100%, 280px);
+  text-align: center;
+  justify-content: center;
+}
+
+.hub-choice-hint {
+  margin: 0.85rem 0 0;
+  font-size: 0.78rem;
+  color: var(--grey-text);
+  line-height: 1.5;
+}
+
 .round-grid {
   list-style: none;
   display: grid;

@@ -1,30 +1,79 @@
 {
   "missionId": "m3",
-  "statusLeft": ["TERMINAL ACTIVE", "MISSION 03"],
+  "statusLeft": ["TERMINAL ACTIVE", "OP-OMNI / v2.4.1"],
   "statusRight": ["ENCRYPTED"],
+  "tutorialStatusRight": ["OP-OMNI / M03 TUTORIAL", "ENCRYPTED"],
   "brief": {
-    "eyebrow": "// Mission 3",
+    "eyebrow": "// Mission 03 — The Human Shield",
     "title": "Pre-Mission Brief",
-    "params": [],
-    "briefParagraphs": [
-      "Patterns in the data reveal what isolated files cannot. Migrate copy from reference/legacy-missions/Mission 3.html."
+    "params": [
+      { "label": "// Nova trust", "value": "100%" },
+      { "label": "// Files staged", "value": "10" },
+      { "label": "// Channels", "value": "3" },
+      { "label": "// Queue owner", "value": "Marshall" },
+      { "label": "// Outcome", "value": "Nova sign-off" }
     ],
-    "pullquote": "Connect the pattern.",
-    "dossier": [],
+    "briefParagraphs": [
+      "<strong>NOVA.</strong> I'm not here to slow the op down. I'm here because <strong>the world is not our only stakeholder.</strong>",
+      "If we ship raw employee lists to the press to watch MegaCorp bleed, we become the next headline — the activists who doxxed civilians. <strong>I will not sign a release package that confuses \"impact\" with \"exposure.\"</strong>",
+      "We are not OMNI. We choose who we hurt.",
+      "<strong>VOSS.</strong> Marshall staged ten files for disclosure. <strong>Same data — different audiences need different channels.</strong> Public Proof Wall for what is safe to show the world. Official filing for what regulators or counsel need under seal. And some material never leaves the vault.",
+      "Route each file. Nova signs when the <strong>distribution map</strong> matches our ethics — not when we've shown everything we stole."
+    ],
+    "pullquote": "Audience first. Harm second. Headlines last.",
+    "dossier": [
+      { "label": "TARGET", "name": "MegaCorp", "role": "Global conglomerate · staged disclosure package · channel politics" },
+      { "label": "HANDLER", "name": "Voss", "role": "Analyst · encrypted channel · mirror stability" },
+      { "label": "ETHICS LOCK", "name": "Nova", "role": "Distribution veto · minimum necessary disclosure · trust meter live" }
+    ],
+    "encryptedChannel": "NOVA · VOSS — ENCRYPTED CHANNEL",
+    "ghostContinue": true,
+    "useHtml": true,
     "continueLabel": "Continue",
-    "continueDelayMs": 1500
+    "continueDelayMs": 3000
   },
   "protocol": {
-    "eyebrow": "// Mission 3",
+    "eyebrow": "// Mission 03 — The Human Shield",
     "title": "Mission Protocol",
-    "sectionLabel": "// How to Operate",
-    "steps": [],
-    "detection": null,
+    "sectionLabel": "// How to Breach",
+    "steps": [
+      {
+        "number": "01",
+        "title": "PUBLIC WALL",
+        "description": "Press-facing Proof Wall — only material that is <strong>already safe for open publication</strong> (aggregates, technical diagrams, policy admissions without unjustified PII)."
+      },
+      {
+        "number": "02",
+        "title": "OFFICIAL FILING",
+        "description": "Sensitive but <strong>accountable</strong> — for regulators, labour boards, or counsel under proper process. Not a dump for the front page."
+      },
+      {
+        "number": "03",
+        "title": "NO RELEASE",
+        "description": "Stays in the vault. Health data, minors, raw customer PII — <strong>harm outweighs any headline</strong>, even if OMNI touched it."
+      }
+    ],
+    "atlasNote": "Privacy and ethics are partly about <strong>minimum necessary disclosure</strong> — and <strong>who is entitled to see what</strong>.",
+    "detection": {
+      "title": "THE NOVA TRUST METER",
+      "tag": "ETHICS LOCK",
+      "paragraphs": [
+        "Nova's trust starts <strong>high</strong>. Every sloppy route — treating the Public Wall like a dump, or leaking vault-only material — erodes it. If trust collapses, <strong>she will not sign off</strong> and the disclosure plan stalls.",
+        "The meter runs from <em>100% (ALIGNED)</em> down toward <em>0% (RECKLESS)</em>. If it bottoms out, assume the operation channel goes cold. Move clean: <strong>audience first, harm second, headlines last.</strong>"
+      ],
+      "pills": [
+        { "text": "Wrong channel / exposure · trust drops", "variant": "high" },
+        { "text": "Mis-routed sensitive file · spike", "variant": "mid" },
+        { "text": "Clean routing · stable", "variant": "low" }
+      ],
+      "hint": "<strong>Stuck?</strong> Click the lightbulb at the bottom-left of the Mission Channel to pull a channel hint from the crew.",
+      "hintPills": ["Hint requested · −$2,500 budget", "Cooldown · 25s"]
+    },
     "breachLabel": "Begin Mission",
-    "breachReadyLabel": "// Ready?"
+    "breachReadyLabel": "// Ready to breach?"
   },
   "game": {
     "placeholderTitle": "Mission 3 gameplay",
-    "placeholderBody": "Migrate from reference/legacy-missions/Mission 3.html"
+    "placeholderBody": "Routing panel inside Marshall desktop vault."
   }
 }
