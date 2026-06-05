@@ -34,6 +34,8 @@ export default async function HubPage() {
     ? {
         id: latest.missionId,
         name: missions.find((m) => m.id === latest.missionId)?.name ?? latest.missionId,
+        label: missions.find((m) => m.id === latest.missionId)?.label ?? latest.missionId,
+        checkpoint: latest.checkpoint ?? "start",
         url: `/mission/${latest.missionId}?resume=1`,
       }
     : null;

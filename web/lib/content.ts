@@ -44,6 +44,10 @@ const hubSchema = z.object({
   subtitle: z.string(),
   continueLabel: z.string(),
   continueSuffix: z.string(),
+  restartLabel: z.string(),
+  restartHint: z.string(),
+  checkpointLabel: z.string(),
+  rosterLabel: z.string(),
   playLabel: z.string(),
   replayLabel: z.string(),
   lockedLabel: z.string(),
@@ -68,6 +72,7 @@ const missionIntroSchema = z.object({
   missionId: z.string(),
   statusLeft: z.array(z.string()),
   statusRight: z.array(z.string()),
+  tutorialStatusRight: z.array(z.string()).optional(),
   brief: z.object({
     eyebrow: z.string(),
     title: z.string(),
@@ -75,6 +80,9 @@ const missionIntroSchema = z.object({
     briefParagraphs: z.array(z.string()),
     pullquote: z.string(),
     dossier: z.array(z.object({ label: z.string(), name: z.string(), role: z.string() })),
+    encryptedChannel: z.string().optional(),
+    ghostContinue: z.boolean().optional(),
+    useHtml: z.boolean().optional(),
     continueLabel: z.string(),
     continueDelayMs: z.number(),
   }),
@@ -89,13 +97,19 @@ const missionIntroSchema = z.object({
         description: z.string(),
       })
     ),
+    atlasNote: z.string().optional(),
     detection: z
       .object({
         title: z.string(),
         tag: z.string(),
-        description: z.string(),
-        pills: z.array(z.string()),
+        description: z.string().optional(),
+        paragraphs: z.array(z.string()).optional(),
+        pills: z.union([
+          z.array(z.string()),
+          z.array(z.object({ text: z.string(), variant: z.enum(["low", "mid", "high", "hint"]) })),
+        ]),
         hint: z.string(),
+        hintPills: z.array(z.string()).optional(),
       })
       .nullable(),
     breachLabel: z.string(),

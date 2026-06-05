@@ -12,11 +12,11 @@ export const WRONG_ROUTE_COST = 750;
 export const SIGNOFF_TRUST_MIN = 45;
 
 export const HACK_LINES = [
-  { text: "OPERATION OMNI — ROUND 03 OF 05", className: "ht-g" },
+  { text: "OPERATION OMNI — MISSION 03 OF 05", className: "ht-g" },
   { text: "BREACH VECTOR — MARSHALL.DESKTOP", className: "ht-g" },
   { text: "Session: RDP_MIRROR_ACTIVE", className: "ht-a" },
-  { text: "Vault: UNLOCKED · Queue: ENCRYPTED", className: "ht-o" },
-  { text: "⚠  Route each file by audience + harm profile", className: "ht-o" },
+  { text: "Vault: LOCKED · 4-LETTER COMBO REQUIRED", className: "ht-o" },
+  { text: "Queue: ENCRYPTED · 10 FILES STAGED", className: "ht-a" },
   { text: "Bypass: COMPLETE", className: "ht-g" },
 ];
 

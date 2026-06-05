@@ -1,5 +1,4 @@
 import type { MissionIntro } from "@/lib/content";
-import { PlaytestMissionNav } from "@/components/admin/PlaytestMissionNav";
 import { MissionExperience } from "@/components/missions/MissionExperience";
 
 type MissionRendererProps = {
@@ -12,10 +11,5 @@ type MissionRendererProps = {
 };
 
 export function MissionRenderer(props: MissionRendererProps) {
-  return (
-    <>
-      <MissionExperience {...props} />
-      <PlaytestMissionNav missionId={props.missionId} />
-    </>
-  );
+  return <MissionExperience {...props} />;
 }

@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { signOut } from "next-auth/react";
 import type { HubContent, MissionMeta } from "@/lib/content";
+
 type SerializedProgress = {
   missionId: string;
   status: string;
@@ -12,13 +15,28 @@ type SerializedProgress = {
   updatedAt: string;
 };
 
+type ContinueMission = {
+  id: string;
+  name: string;
+  label: string;
+  checkpoint: string;
+  url: string;
+};
+
 type HubClientProps = {
   content: HubContent;
   missions: MissionMeta[];
   progress: SerializedProgress[];
   access: Record<string, { playable: boolean; continueUrl?: string; label: string }>;
-  continueMission: { id: string; name: string; url: string } | null;
+  continueMission: ContinueMission | null;
 };
+
+function resumeUrl(mission: ContinueMission): string {
+  if (mission.id === "m1" && (mission.checkpoint === "start" || mission.checkpoint === "intro")) {
+    return "/intro";
+  }
+  return mission.url;
+}
 
 export function HubClient({
   content,
@@ -27,7 +45,34 @@ export function HubClient({
   access,
   continueMission,
 }: HubClientProps) {
+  const router = useRouter();
+  const [restarting, setRestarting] = useState(false);
   const progressMap = new Map(progress.map((p) => [p.missionId, p]));
+
+  async function handleRestart() {
+    if (!continueMission || restarting) return;
+    setRestarting(true);
+    try {
+      await fetch("/api/progress", {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          missionId: continueMission.id,
+          status: "in_progress",
+          checkpoint: "start",
+          stateJson: null,
+          score: null,
+        }),
+      });
+      const dest =
+        continueMission.id === "m1" ? "/intro" : `/mission/${continueMission.id}`;
+      router.push(dest);
+      router.refresh();
+    } finally {
+      setRestarting(false);
+    }
+  }
 
   return (
     <main className="hub">
@@ -50,61 +95,71 @@ export function HubClient({
         />
       </header>
 
-      {continueMission && (
-        <div className="continue-banner">
-          <div>
-            <strong style={{ color: "var(--orange)" }}>{content.continueLabel}</strong>
-            <span style={{ color: "var(--grey-text)", marginLeft: "0.5rem" }}>
-              {continueMission.name} {content.continueSuffix}
-            </span>
+      {continueMission ? (
+        <section className="hub-choice" aria-label="Resume or restart">
+          <div className="hub-choice-mission">
+            <span className="hub-choice-label">{continueMission.label}</span>
+            <h2 className="hub-choice-title">{continueMission.name}</h2>
+            <p className="hub-choice-checkpoint">
+              {content.checkpointLabel}: <strong>{continueMission.checkpoint}</strong>
+            </p>
           </div>
-          <Link href={continueMission.url} className="btn-primary" style={{ width: "auto" }}>
-            {content.continueLabel} →
-          </Link>
-        </div>
+
+          <div className="hub-choice-actions">
+            <Link href={resumeUrl(continueMission)} className="btn-primary hub-choice-btn">
+              {content.continueLabel} →
+            </Link>
+            <button
+              type="button"
+              className="btn-secondary hub-choice-btn"
+              onClick={handleRestart}
+              disabled={restarting}
+            >
+              {restarting ? "Resetting…" : `${content.restartLabel} →`}
+            </button>
+          </div>
+          <p className="hub-choice-hint">{content.restartHint}</p>
+        </section>
+      ) : (
+        <ul className="round-grid">
+          {missions.map((mission) => {
+            const state = access[mission.id] ?? { playable: false, label: "locked" };
+            const record = progressMap.get(mission.id);
+            const href =
+              state.continueUrl ?? `/mission/${mission.id}${record?.status === "completed" ? "?replay=1" : ""}`;
+            const cta =
+              state.label === "continue"
+                ? content.continueLabel
+                : state.label === "replay"
+                  ? content.replayLabel
+                  : state.label === "locked"
+                    ? content.lockedLabel
+                    : content.playLabel;
+
+            return (
+              <li key={mission.id}>
+                <Link
+                  href={state.playable ? href : "#"}
+                  className={`round-card${state.playable ? "" : " round-card--locked"}`}
+                  aria-disabled={!state.playable}
+                >
+                  <div className="round-meta">
+                    <span>{mission.label}</span>
+                    <span className="round-badge">{cta}</span>
+                  </div>
+                  <h2 className="round-name">{mission.name}</h2>
+                  <p className="round-desc">
+                    {state.playable ? mission.description : content.lockedHint}
+                  </p>
+                  <div className="round-cta">
+                    {cta} <span aria-hidden="true">→</span>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
       )}
-
-      <ul className="round-grid">
-        {missions.map((mission) => {
-          const state = access[mission.id] ?? { playable: false, label: "locked" };
-          const record = progressMap.get(mission.id);
-          const href =
-            state.continueUrl ?? `/mission/${mission.id}${record?.status === "completed" ? "?replay=1" : ""}`;
-          const cta =
-            state.label === "continue"
-              ? content.continueLabel
-              : state.label === "replay"
-                ? content.replayLabel
-                : state.label === "locked"
-                  ? content.lockedLabel
-                  : content.playLabel;
-
-          return (
-            <li key={mission.id}>
-              <Link
-                href={state.playable ? href : "#"}
-                className={`round-card${state.playable ? "" : " round-card--locked"}`}
-                aria-disabled={!state.playable}
-              >
-                <div className="round-meta">
-                  <span>{mission.label}</span>
-                  <span className="round-badge">{cta}</span>
-                </div>
-                <h2 className="round-name">{mission.name}</h2>
-                <p className="round-desc">
-                  {state.playable ? mission.description : content.lockedHint}
-                  {record?.checkpoint && state.label === "continue" && (
-                    <> · checkpoint: <strong>{record.checkpoint}</strong></>
-                  )}
-                </p>
-                <div className="round-cta">
-                  {cta} <span aria-hidden="true">→</span>
-                </div>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
 
       <p className="hub-footer">{content.footer}</p>
     </main>
