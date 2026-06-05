@@ -1794,6 +1794,7 @@ function addDetection(n){
    MISSION CHANNEL
 ═══════════════════════════════════════════ */
 function channelMsg(sender,text,cls){
+  if(window.__M5_TUT_DEMO_SILENT) return;
   const body=document.getElementById('voss-body');
   const showSender=(sender!==GS.lastSender); GS.lastSender=sender;
   const colors={Voss:'#8f44e8',Echo:'#f79421',Zex:'#f79421',Atlas:'#00c41c',Nova:'#d31972',Kade:'#8f44e8'};
@@ -1813,9 +1814,46 @@ function channelMsg(sender,text,cls){
   },650);
 }
 
-
+(function () {
+  try {
+    if (!new URLSearchParams(location.search).has('play')) return;
+  } catch (_) {
+    return;
+  }
+  function skipIntroAndPlay() {
+    document.querySelectorAll('.page').forEach(function (p) {
+      p.style.display = 'none';
+    });
+    const sb = document.querySelector('.status-bar');
+    if (sb) sb.style.display = 'none';
+    document.querySelectorAll('.ambient-glow,.scanlines,.bg-grid,.corner').forEach(function (e) {
+      e.style.display = 'none';
+    });
+    const ho = document.getElementById('hack-overlay');
+    if (ho) ho.classList.remove('active');
+    if (typeof initGame === 'function') initGame();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', skipIntroAndPlay);
+  } else {
+    skipIntroAndPlay();
+  }
+})();
 
 </script>
 <script src="playtest-mission-nav.js" defer></script>
+<script>
+(function () {
+  try {
+    var sp = new URLSearchParams(location.search);
+    if (sp.has("omniBridge")) {
+      var s = document.createElement("script");
+      s.src = "/omni-progress-bridge.js";
+      s.defer = true;
+      document.body.appendChild(s);
+    }
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>

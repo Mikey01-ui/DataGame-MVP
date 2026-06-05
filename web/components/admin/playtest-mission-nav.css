@@ -1,0 +1,47 @@
+.playtest-mnav {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 480;
+}
+.playtest-mnav a {
+  pointer-events: auto;
+}
+.playtest-mnav__btn {
+  position: fixed;
+  top: 50%;
+  margin-top: -22px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  border: 2px solid rgba(247, 148, 33, 0.58);
+  background: rgba(30, 15, 26, 0.93);
+  color: #f79421;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.42), 0 0 28px rgba(247, 148, 33, 0.07);
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.playtest-mnav__btn:focus-visible {
+  outline: 2px solid var(--purple-light, #8f44e8);
+  outline-offset: 2px;
+}
+.playtest-mnav__btn:hover {
+  border-color: rgba(247, 148, 33, 0.98);
+  background: rgba(247, 148, 33, 0.14);
+  color: #ffa234;
+  box-shadow: 0 6px 26px rgba(247, 148, 33, 0.28);
+  transform: scale(1.06);
+}
+.playtest-mnav__btn--prev {
+  left: clamp(10px, 2vw, 20px);
+}
+.playtest-mnav__btn--next {
+  right: clamp(10px, 2vw, 20px);
+}

@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  passwordHash String
+  role         String         @default("player")
+  createdAt    DateTime       @default(now())
+  progress     UserProgress[]
+}
+
+model UserProgress {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  missionId  String
+  status     String
+  checkpoint String?
+  stateJson  Json?
+  score      Int?
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, missionId])
+  @@index([userId, status])
+}

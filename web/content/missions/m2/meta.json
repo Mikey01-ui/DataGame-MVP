@@ -1,0 +1,10 @@
+{
+  "id": "m2",
+  "order": 2,
+  "label": "Mission 02",
+  "name": "Forging the Master Key",
+  "description": "Metadata, ownership, and verification under pressure.",
+  "renderer": "react",
+  "legacyHtmlPath": "/reference/legacy-missions/Mission%202.html",
+  "requiresMissionId": "m1"
+}

@@ -1,0 +1,2293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Data Heist: Operation OMNI — Mission 03: The Human Shield</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --void: #1e0f1a; --void-pure: #000000; --green-stable: #00c41c; --green-matrix: #00FF41;
+    --purple: #5400ad; --purple-light: #8f44e8; --orange: #f79421; --pink: #d31972;
+    --white: #faf7f2; --panel-bg: #221829; --panel-border: rgba(0,196,28,0.35);
+    --grey-dim: #2e2e2e; --grey-mid: #444444; --grey-text: #cccccc; --grey-light: #edeae5;
+    --font-mono: 'Share Tech Mono', monospace; --font-display: 'Space Grotesk', sans-serif; --font-body: 'DM Sans', sans-serif;
+  }
+  html { font-size: clamp(15px, 1.2vw, 22px); }
+  html, body { width:100%; min-height:100%; overflow:auto; font-family:var(--font-body); background:var(--void); color:var(--white); }
+  .ambient-glow { position:fixed; inset:0; z-index:0; pointer-events:none; background:
+    radial-gradient(ellipse 60% 50% at 30% 50%, rgba(84,0,173,0.16) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 70% 60%, rgba(0,196,28,0.11) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 20%, rgba(247,148,33,0.07) 0%, transparent 60%); }
+  .corner { position:fixed; z-index:2; width:40px; height:40px; pointer-events:none; }
+  .corner--tl { top:10px; left:10px; border-top:1px solid rgba(0,196,28,0.65); border-left:1px solid rgba(0,196,28,0.65); }
+  .corner--tr { top:10px; right:10px; border-top:1px solid rgba(0,196,28,0.65); border-right:1px solid rgba(0,196,28,0.65); }
+  .corner--bl { bottom:10px; left:10px; border-bottom:1px solid rgba(0,196,28,0.65); border-left:1px solid rgba(0,196,28,0.65); }
+  .corner--br { bottom:10px; right:10px; border-bottom:1px solid rgba(0,196,28,0.65); border-right:1px solid rgba(0,196,28,0.65); }
+  .scanlines { position:fixed; inset:0; z-index:10; pointer-events:none;
+    background: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px); mix-blend-mode: multiply; }
+  .bg-grid { position:fixed; inset:0; z-index:0;
+    background-image: linear-gradient(rgba(0,196,28,0.11) 1px, transparent 1px), linear-gradient(90deg, rgba(0,196,28,0.11) 1px, transparent 1px);
+    background-size: 40px 40px; background-position: 0 36px; }
+  .status-bar { position:fixed; top:0; left:0; right:0; z-index:5; height:36px; padding:0 clamp(1rem,4vw,64px); display:flex; justify-content:space-between; align-items:center;
+    border-bottom:1px solid rgba(0,196,28,0.28); background:linear-gradient(180deg, rgba(30,15,26,0.9) 0%, transparent 100%); }
+  .status-left, .status-right { font-family:var(--font-mono); font-size:0.65rem; color:var(--green-stable); letter-spacing:0.08em; display:flex; gap:1.5rem; align-items:center; }
+  .status-right span:last-child { color:var(--green-matrix); text-shadow:0 0 8px rgba(0,255,65,0.3); }
+  .status-dot { display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--green-stable); margin-right:6px; vertical-align:middle; }
+  .status-dot.live { background:var(--green-matrix); box-shadow:0 0 8px rgba(0,255,65,0.6); animation:blink 2.4s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+  #intro-root .page { position:relative; z-index:2; margin-top:36px; display:none; flex-direction:column; align-items:center; justify-content:flex-start; padding:1.5vh 6vw 1.2rem; min-height:calc(100vh - 36px); overflow-x:hidden; overflow-y:auto; }
+  #intro-root .page.active { display:flex; }
+  #intro-root .page-eyebrow { font-family:var(--font-mono); font-size:0.55rem; color:var(--green-stable); letter-spacing:0.25em; text-transform:uppercase; margin-bottom:0.4vh; flex-shrink:0; }
+  #intro-root .page-title { font-family:var(--font-display); font-size:clamp(1.35rem,3.2vh,2rem); font-weight:700; letter-spacing:-0.01em; margin-bottom:0.8vh; flex-shrink:0;
+    background:linear-gradient(135deg, var(--white) 60%, var(--purple-light) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .page-eyebrow { font-family:var(--font-mono); font-size:clamp(0.46rem,0.6vw,0.65rem); color:var(--green-stable); letter-spacing:0.25em; text-transform:uppercase; margin-bottom:clamp(0.2rem,0.5vh,0.6rem); }
+  .page-title { font-family:var(--font-display); font-size:clamp(1.2rem,2.8vh,2.6rem); font-weight:700; margin-bottom:clamp(0.5rem,1.5vh,1.5rem);
+    background:linear-gradient(135deg, var(--white) 60%, var(--purple-light) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .page-subtitle { font-family:var(--font-body); font-size:clamp(0.85rem,1.2vw,1.05rem); color:var(--grey-text); text-align:center; max-width:560px; margin-bottom:1rem; line-height:1.6; }
+  #intro-root #page1.premission-brief-page .content { width:min(92vw,1600px); gap:1.2vh; flex:1 1 auto; justify-content:flex-start; min-height:0; overflow:hidden; }
+  #intro-root .page.premission-brief-page { height:calc(100vh - 36px); min-height:0; overflow:hidden; padding:0.3vh 6vw 1.2vh; }
+  #intro-root .premission-brief-page .page-eyebrow { margin-bottom:0.15vh; flex-shrink:0; }
+  #intro-root .premission-brief-page .page-title { font-size:clamp(1.25rem,0.85vw + 0.9vh,1.7rem); line-height:1.1; margin-bottom:0.5vh; flex-shrink:0; }
+  #intro-root .section-label { font-size: 0.55rem; margin-bottom: 0.5vh; }
+  .content { width:min(920px,90vw); display:flex; flex-direction:column; gap:clamp(0.3rem,0.8vh,0.8rem); flex:1; justify-content:center; overflow:hidden; }
+  #intro-root .brief-section { flex:0 0 auto; display:flex; flex-direction:column; animation:fadeUpIntro 0.6s 0.3s both; }
+  #intro-root .brief-card { background:var(--panel-bg); border:1px solid var(--panel-border); border-radius:2px; padding:1.2rem 2.5vw; position:relative; overflow:hidden;
+    box-shadow:0 0 60px rgba(84,0,173,0.14), 0 0 120px rgba(0,196,28,0.08), inset 0 1px 0 rgba(0,196,28,0.12); }
+  #intro-root .brief-card::before { content:''; position:absolute; top:10px; left:10px; width:16px; height:16px; border-top:1px solid rgba(0,196,28,0.65); border-left:1px solid rgba(0,196,28,0.65); pointer-events:none; }
+  #intro-root .brief-card::after { content:''; position:absolute; bottom:10px; right:10px; width:16px; height:16px; border-bottom:1px solid rgba(0,196,28,0.65); border-right:1px solid rgba(0,196,28,0.65); pointer-events:none; }
+  #intro-root .encrypted-indicator { font-family:var(--font-mono); font-size:0.55rem; color:var(--green-stable); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:0.8vh; display:flex; align-items:center; gap:0.6rem; }
+  #intro-root .encrypted-dot { width:5px; height:5px; border-radius:50%; background:var(--green-stable); box-shadow:0 0 8px rgba(0,196,28,0.6), 0 0 20px rgba(0,196,28,0.2); }
+  #intro-root .brief-text { font-family:var(--font-body); font-size:0.9rem; line-height:1.75; color:var(--grey-light); font-weight:300; }
+  #intro-root .brief-text p { margin-bottom:0.7vh; }
+  #intro-root .brief-text p:last-child { margin-bottom:0; }
+  #intro-root .brief-text strong { color:var(--orange); font-weight:600; text-shadow:0 0 20px rgba(247,148,33,0.12); }
+  .broker-section { flex:0 0 auto; display:flex; flex-direction:column; }
+  .section-label { font-family:var(--font-mono); font-size:clamp(0.46rem,0.58vw,0.63rem); color:var(--purple-light); letter-spacing:0.22em; text-transform:uppercase; margin-bottom:clamp(0.2rem,0.6vh,0.6rem); display:flex; align-items:center; gap:0.8rem; }
+  .section-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg, rgba(84,0,173,0.42), transparent); }
+  .broker-card { background:var(--panel-bg); border:1px solid var(--panel-border); border-radius:2px; padding:clamp(1.2rem,2vh,2rem) clamp(1.4rem,2.5vw,2.5rem);
+    box-shadow:0 0 60px rgba(84,0,173,0.14), inset 0 1px 0 rgba(0,196,28,0.12); }
+  .broker-text { font-family:var(--font-body); font-size:clamp(0.8rem,1.1vw,1rem); line-height:1.75; color:#edeae5; font-weight:300; }
+  .broker-text p { margin-bottom:clamp(0.6em,1vh,0.9em); }
+  .broker-text strong { color:var(--orange); font-weight:600; }
+  .ops-section { flex:0 0 auto; display:flex; flex-direction:column; }
+  #intro-root .ops-section { animation:fadeUpIntro 0.6s 0.3s both; }
+  .steps-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(0.8rem,1.5vw,1.5rem); }
+  #intro-root .steps-grid { align-items:stretch; gap:clamp(0.4rem, 0.8vw, 0.9rem); }
+  .step-card { background:var(--panel-bg); border:1px solid var(--panel-border); border-radius:2px; padding:clamp(1rem,1.6vh,1.8rem); height:100%; display:flex; flex-direction:column; }
+  #intro-root .step-card { padding:0.72rem 0.9rem; position:relative; transition:border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    box-shadow:0 0 38px rgba(84,0,173,0.09), 0 0 70px rgba(0,196,28,0.04), inset 0 1px 0 rgba(0,196,28,0.08); }
+  #intro-root .step-card::before { content:''; position:absolute; top:-1px; left:18%; right:18%; height:1px; background:linear-gradient(90deg, transparent, var(--purple), transparent); opacity:0.72; pointer-events:none; }
+  #intro-root .step-card:hover { border-color:rgba(0,255,65,0.38); box-shadow:0 0 36px rgba(0,255,65,0.07), 0 0 56px rgba(84,0,173,0.08); transform:translateY(-1px); }
+  .step-number { font-family:var(--font-display); font-size:clamp(1.6rem,2.5vh,2.4rem); font-weight:700; color:var(--green-matrix); line-height:1; margin-bottom:0.4rem; }
+  #intro-root .step-number { font-size:1.6rem; margin-bottom:0.35vh; text-shadow:0 0 20px rgba(0,255,65,0.15); }
+  .step-title { font-family:var(--font-mono); font-size:clamp(0.68rem,1vw,0.95rem); color:var(--orange); letter-spacing:0.16em; text-transform:uppercase; margin-bottom:0.5rem; padding-bottom:0.4rem; border-bottom:1px solid rgba(0,196,28,0.28); text-shadow:0 0 20px rgba(247,148,33,0.15); }
+  #intro-root .step-title { font-size:0.6rem; color:var(--purple-light); letter-spacing:0.18em; margin-bottom:0.4vh; padding-bottom:0.35vh; text-shadow:none; }
+  .step-desc { font-family:var(--font-body); font-size:clamp(0.78rem,1vw,0.95rem); line-height:1.65; color:var(--grey-text); flex:1; }
+  #intro-root .step-desc { font-size:0.82rem; line-height:1.6; font-weight:300; }
+  .atlas-note { font-size:clamp(0.72rem,0.95vw,0.88rem); color:var(--orange); margin-top:0.8rem; font-style:italic; }
+  #intro-root .detection-section { flex:0 0 auto; margin-top:0.6rem; animation:fadeUpIntro 0.6s 0.4s both; }
+  #intro-root .detection-card { background:var(--panel-bg); border:1px solid rgba(211,25,114,0.45); border-radius:2px; padding:0.55vh 1.3vw 1.35vh; position:relative; overflow:visible; display:flex; gap:0.9vw; align-items:flex-start;
+    box-shadow:0 0 0 1px rgba(211,25,114,0.45), 0 0 36px rgba(211,25,114,0.12), 0 0 56px rgba(84,0,173,0.12), inset 0 1px 0 rgba(211,25,114,0.10), inset 0 -1px 0 rgba(211,25,114,0.85);
+    transition:border-color 0.3s, box-shadow 0.3s, transform 0.3s; }
+  #intro-root .detection-card::before { content:''; position:absolute; top:-1px; left:18%; right:18%; height:1px; background:linear-gradient(90deg, transparent, var(--pink), transparent); opacity:0.55; pointer-events:none; }
+  #intro-root .detection-card:hover { border-color:rgba(211,25,114,0.65); transform:translateY(-1px); }
+  #intro-root .detection-body { flex:1; min-width:0; }
+  #intro-root .detection-title { font-family:var(--font-mono); font-size:0.6rem; color:var(--pink); letter-spacing:0.18em; text-transform:uppercase; margin-bottom:0.7vh; padding-bottom:0.6vh; border-bottom:1px solid rgba(211,25,114,0.28); display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap; }
+  #intro-root .detection-title-tag { display:inline-flex; align-items:center; gap:0.35rem; background:rgba(211,25,114,0.12); border:1px solid rgba(211,25,114,0.3); border-radius:2px; padding:0.1rem 0.5rem; font-size:0.5rem; color:rgba(211,25,114,0.85); letter-spacing:0.15em; }
+  #intro-root .detection-desc { font-family:var(--font-body); font-size:0.82rem; line-height:1.6; color:var(--grey-text); font-weight:300; }
+  #intro-root .detection-desc strong { color:var(--pink); font-weight:600; }
+  #intro-root .detection-desc em { color:var(--orange); font-style:normal; font-weight:500; }
+  #intro-root .detection-desc p { margin-bottom:0.35vh; }
+  #intro-root .detection-desc p:last-child { margin-bottom:0; }
+  #intro-root .detection-pills { display:flex; flex-wrap:wrap; gap:0.7rem; margin-top:1vh; }
+  #intro-root .dpill { font-family:var(--font-mono); font-size:0.62rem; letter-spacing:0.1em; padding:0.2rem 0.6rem; border-radius:2px; border:1px solid; white-space:nowrap; }
+  #intro-root .dpill-low  { color:rgba(0,196,28,0.85);  border-color:rgba(0,196,28,0.3);  background:rgba(0,196,28,0.07); }
+  #intro-root .dpill-mid  { color:var(--orange); border-color:rgba(247,148,33,0.3); background:rgba(247,148,33,0.07); }
+  #intro-root .dpill-high { color:var(--pink); border-color:rgba(211,25,114,0.3); background:rgba(211,25,114,0.07); }
+  #intro-root .dpill-hint { color:#f5c518; border-color:rgba(245,197,24,0.45); background:rgba(245,197,24,0.10); }
+  #intro-root .detection-hint-row {
+    margin-top:0.55vh; padding-top:0.5vh; border-top:1px dashed rgba(211,25,114,0.3);
+    display:flex; align-items:flex-start; gap:0.6rem;
+  }
+  #intro-root .detection-hint-row .dh-icon { color:#f5c518; font-size:0.95rem; text-shadow:0 0 10px rgba(245,197,24,0.5); flex-shrink:0; margin-top:0.12rem; line-height:1; }
+  #intro-root .detection-hint-row .dh-body { display:flex; flex-direction:column; gap:0.5vh; flex:1; min-width:0; }
+  #intro-root .detection-hint-row .dh-text {
+    font-family:var(--font-body); font-size:0.72rem; line-height:1.45; color:var(--grey-text); font-weight:300; margin:0;
+  }
+  #intro-root .detection-hint-row strong { color:#f5c518; font-weight:700; }
+  #intro-root .detection-hint-row .dh-pills { display:flex; flex-wrap:wrap; gap:0.4rem; }
+  .button-section { flex-shrink:0; display:flex; flex-direction:column; align-items:center; gap:0.5rem; margin-top:clamp(0.3rem,1vh,1rem); }
+  #intro-root .button-section { gap:0.4vh; margin-top:0.8vh; animation:fadeUpIntro 0.5s 0.5s both; }
+  #intro-root .btn-next.is-locked { opacity:0.4; cursor:not-allowed; filter:grayscale(0.4); pointer-events:none; }
+  #intro-root .button-label { font-family:var(--font-mono); font-size:0.55rem; color:var(--green-stable); letter-spacing:0.2em; text-transform:uppercase; }
+  #intro-root .btn-next { position:relative; overflow:hidden; width:clamp(160px, 18vw, 280px); padding:0.65vh 2vw; font-size:0.9rem; transition:background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s; }
+  #intro-root .btn-next::before { content:''; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transform:translateX(-100%); transition:transform 0.5s ease; pointer-events:none; }
+  #intro-root .btn-next:hover::before { transform:translateX(100%); }
+  #intro-root .btn-next:hover { background:#ffa234; border-color:#ffa234; transform:translateY(-1px); box-shadow:0 8px 32px rgba(247,148,33,0.25), 0 0 60px rgba(247,148,33,0.1); }
+  #intro-root .btn-next:active { transform:translateY(0); box-shadow:0 0 20px rgba(247,148,33,0.2); }
+  #intro-root .btn-arrow { transition:transform 0.2s; }
+  #intro-root .btn-next:hover .btn-arrow { transform:translateX(4px); }
+  /* Pre-Mission Brief layout (Mission 1 parity) */
+  @keyframes fadeUpPremission { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  #intro-root .page.premission-brief-page .button-section { flex-shrink:0; margin-top:1vh; padding-bottom:0; }
+  #intro-root .premission-brief-page .mission-params {
+    display:grid; grid-template-columns:repeat(5,1fr); gap:0; border:1px solid rgba(247,148,33,0.55);
+    background:rgba(38,22,12,0.97); margin-bottom:0.4vh; animation:fadeUpPremission 0.5s 0.15s both;
+    transition:border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  #intro-root .premission-brief-page .mission-params:hover {
+    border-color:rgba(247,148,33,0.9);
+    box-shadow:0 0 36px rgba(247,148,33,0.15),0 0 56px rgba(247,148,33,0.12);
+    transform:translateY(-1px);
+  }
+  #intro-root .premission-brief-page .mp-cell { padding:0.5rem 0.85rem; border-right:1px solid rgba(247,148,33,0.28); display:flex; flex-direction:column; gap:0.22rem; min-width:0; }
+  #intro-root .premission-brief-page .mp-cell:last-child { border-right:none; }
+  #intro-root .premission-brief-page .mp-label { font-family:var(--font-mono); font-size:0.52rem; color:var(--orange); letter-spacing:0.22em; text-transform:uppercase; opacity:0.85; }
+  #intro-root .premission-brief-page .mp-value { font-family:var(--font-display); font-size:0.88rem; font-weight:600; color:var(--white); letter-spacing:0.01em; line-height:1.15; word-break:break-word; }
+  #intro-root .premission-brief-page .brief-grid { display:grid; grid-template-columns:2.6fr 1fr; gap:1.2rem; align-items:stretch; flex:1 1 auto; min-height:0; animation:fadeUpPremission 0.55s 0.2s both; }
+  #intro-root .premission-brief-page .brief-col, #intro-root .premission-brief-page .dossier-col { display:flex; flex-direction:column; min-width:0; }
+  #intro-root .premission-brief-page .brief-col .brief-section,
+  #intro-root .premission-brief-page .dossier-col .brief-section { flex:1 1 auto; display:flex; flex-direction:column; animation:fadeUpPremission 0.6s 0.3s both; }
+  #intro-root .premission-brief-page .brief-col .brief-card {
+    flex:1 1 auto; position:relative; overflow:hidden; display:flex; flex-direction:column;
+    background:var(--panel-bg); border:1px solid var(--panel-border);
+    padding:1.1rem 2.5vw;
+    box-shadow:0 0 60px rgba(84,0,173,0.14), 0 0 120px rgba(0,196,28,0.08), inset 0 1px 0 rgba(0,196,28,0.12);
+    transition:border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  }
+  #intro-root .premission-brief-page .brief-col .brief-card:hover { border-color:rgba(0,196,28,0.65); box-shadow:0 0 80px rgba(84,0,173,0.25), 0 0 140px rgba(0,196,28,0.15), inset 0 1px 0 rgba(0,196,28,0.3); transform:translateY(-1px); }
+  #intro-root .premission-brief-page .brief-col .brief-card::before { border-top-color:rgba(247,148,33,0.75); border-left-color:rgba(247,148,33,0.75); width:16px; height:16px; top:10px; left:10px; border-bottom:none; border-right:none; }
+  #intro-root .premission-brief-page .brief-col .brief-card::after { border-bottom-color:rgba(247,148,33,0.75); border-right-color:rgba(247,148,33,0.75); width:16px; height:16px; bottom:10px; right:10px; border-top:none; border-left:none; }
+  #intro-root .premission-brief-page .brief-card .brief-scanlines { position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(255,255,255,0.018) 2px, rgba(255,255,255,0.018) 3px); z-index:1; mix-blend-mode:screen; }
+  #intro-root .premission-brief-page .brief-col .brief-card > *:not(.brief-scanlines) { position:relative; z-index:2; }
+  #intro-root .premission-brief-page .dossier-col .brief-section { height:100%; min-height:0; }
+  #intro-root .premission-brief-page .dossier-backdrop { flex:1 1 auto; min-height:0; background:rgba(20,12,28,0.55); border:1px solid rgba(143,68,232,0.32); border-radius:2px; padding:clamp(0.6rem, 1vh, 1rem); display:flex; flex-direction:column; gap:clamp(0.5rem, 0.9vh, 0.85rem); animation:fadeUpPremission 0.6s 0.35s both; }
+  #intro-root .premission-brief-page .dossier-card { flex:1 1 0; background:rgba(34,24,41,0.85); border:1px solid rgba(143,68,232,0.22); border-left:2px solid var(--purple-light); border-radius:2px; padding:clamp(0.7rem, 1.3vh, 1.1rem) clamp(0.85rem, 1vw, 1.3rem); display:flex; flex-direction:column; justify-content:center; gap:clamp(0.3rem, 0.55vh, 0.5rem); min-height:0; transition:border-color 0.3s, box-shadow 0.3s, transform 0.3s; }
+  #intro-root .premission-brief-page .dossier-card:hover { border-color:rgba(143,68,232,0.65); box-shadow:0 0 36px rgba(143,68,232,0.15), 0 0 56px rgba(84,0,173,0.15); transform:translateY(-1px); }
+  #intro-root .premission-brief-page .dc-label { font-family:var(--font-mono); font-size:clamp(0.55rem, 0.25vw + 0.35vh, 0.72rem); letter-spacing:0.24em; color:var(--purple-light); text-transform:uppercase; }
+  #intro-root .premission-brief-page .dc-name { font-family:var(--font-display); font-size:clamp(0.95rem, 0.45vw + 0.85vh, 1.35rem); font-weight:600; color:var(--white); letter-spacing:0.01em; line-height:1.15; }
+  #intro-root .premission-brief-page .dc-role { font-family:var(--font-body); font-size:clamp(0.72rem, 0.3vw + 0.55vh, 0.95rem); color:var(--grey-text); line-height:1.35; font-weight:300; }
+  #intro-root .premission-brief-page .pullquote { margin:0.5vh 0 0; padding:0.2rem 0 0.2rem 0.8rem; border-left:2px solid var(--orange); font-family:var(--font-display); font-style:italic; font-weight:500; font-size:clamp(0.95rem, 0.5vw + 0.9vh, 1.25rem); line-height:1.35; color:var(--white); letter-spacing:0.01em; }
+  #intro-root .premission-brief-page .brief-text { font-size:clamp(0.95rem, 0.55vw + 0.9vh, 1.3rem); line-height:1.6; }
+  #intro-root .premission-brief-page .btn-next.btn-next--ghost-premission { width:auto; min-width:clamp(200px,22vw,280px); padding:14px 36px; background:rgba(247,148,33,0.08); border:1px solid var(--orange); color:var(--orange); font-family:var(--font-display); font-size:13px; font-weight:700; letter-spacing:1.5px; border-radius:4px; text-transform:uppercase; transition:background 0.25s, box-shadow 0.25s, transform 0.25s; }
+  #intro-root .premission-brief-page .btn-next.btn-next--ghost-premission::before { display:none !important; }
+  #intro-root .premission-brief-page .btn-next.btn-next--ghost-premission:hover:not(.is-locked):not(:disabled) { background:rgba(247,148,33,0.22); box-shadow:0 0 18px rgba(247,148,33,0.35); transform:translateY(-2px); }
+  #intro-root .premission-brief-page .btn-next.btn-next--ghost-premission:active:not(.is-locked):not(:disabled) { transform:translateY(0); box-shadow:none; }
+  @media (max-width:1020px) { #intro-root .premission-brief-page .brief-grid { grid-template-columns:1fr; } }
+  @media (max-width:780px) { #intro-root .premission-brief-page .mission-params { grid-template-columns:1fr; } #intro-root .premission-brief-page .mp-cell { border-right:none; border-bottom:1px solid rgba(247,148,33,0.22); } #intro-root .premission-brief-page .mp-cell:last-child { border-bottom:none; } }
+  .btn-next { width:clamp(200px,22vw,300px); padding:clamp(0.6rem,1.1vh,1rem) 2vw; background:var(--orange); border:1px solid var(--orange); color:var(--void); font-family:var(--font-display); font-size:clamp(0.85rem,1.1vw,1.05rem); font-weight:600; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; }
+  .btn-inner { display:flex; align-items:center; justify-content:center; gap:0.6rem; }
+  @keyframes fadeUpIntro { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  @media (max-width:680px){ .steps-grid{grid-template-columns:1fr} .status-bar{padding:0 1.5rem} #intro-root .detection-card{flex-direction:column; gap:0.8rem;} }
+
+  #m3-page-transition{
+    display:none!important;visibility:hidden!important;pointer-events:none!important;
+    position:fixed;inset:0;z-index:500;flex-direction:column;align-items:center;justify-content:center;
+    opacity:0;
+    background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(143,68,232,.12) 0%,transparent 55%),
+      linear-gradient(180deg,rgba(30,15,26,.98) 0%,rgba(10,6,14,.99) 100%);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)
+  }
+  #m3-page-transition.active{visibility:visible;pointer-events:auto}
+  #m3-page-transition .m3-trans-kicker{
+    font-family:var(--font-mono);font-size:clamp(9px,.55rem,11px);letter-spacing:.28em;text-transform:uppercase;
+    color:rgba(0,196,28,.85);margin-bottom:14px
+  }
+  #m3-page-transition .m3-trans-title{
+    font-family:var(--font-display);font-size:clamp(1rem,2vw,1.35rem);font-weight:700;color:var(--white);
+    letter-spacing:.06em;text-align:center
+  }
+  #m3-page-transition .m3-trans-title span{color:var(--orange)}
+  #m3-page-transition .m3-trans-bar{
+    width:min(200px,40vw);height:2px;margin-top:22px;border-radius:2px;overflow:hidden;
+    background:rgba(247,148,33,.15)
+  }
+  #m3-page-transition .m3-trans-bar-fill{
+    display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green-stable),var(--orange));
+    box-shadow:0 0 12px rgba(247,148,33,.45)
+  }
+  @media(prefers-reduced-motion:reduce){
+    #m3-page-transition{backdrop-filter:none;-webkit-backdrop-filter:none;transition:opacity .2s ease}
+  }
+
+  #intro-root{position:relative;z-index:1}
+  #gp-root { position:fixed; inset:0; z-index:100; background:#0b0f14; }
+  html.gp-html-active { overflow:hidden; height:100%; }
+  :root { --void:#1e0f1a; --panel-bg:#221829; --panel-border:rgba(0,196,28,.35);
+    --green-stable:#00c41c; --green-matrix:#00FF41; --purple:#5400ad; --purple-light:#8f44e8; --orange:#f79421; --pink:#d31972;
+    --text-w:#faf7f2; --text-d:rgba(0,196,28,.45); --text-b:var(--text-w); --text:rgba(250,247,242,.82);
+    --green:var(--green-matrix); --red:var(--pink); --cyan:#56d6ff; --border-b:rgba(0,196,28,.22); --bg:#0b0f14; }
+  #gp-root *,#gp-root *::before,#gp-root *::after{box-sizing:border-box}
+  /* Match Round 2 gameplay: inspector cyan-gray body, not flat matrix green on everything */
+  body.gp-gameplay-active{font-family:'DM Sans',sans-serif;background:var(--void);color:#c8ddf0;width:100vw;height:100vh;overflow:hidden}
+  body.gp-gameplay-active::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,196,28,0.11) 1px,transparent 1px),linear-gradient(90deg,rgba(0,196,28,0.11) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+  button{cursor:pointer} button:focus{outline:2px solid rgba(143,68,232,.5); outline-offset:2px}
+  #game::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 30% 50%, rgba(84,0,173,0.16) 0%, transparent 70%),radial-gradient(ellipse 50% 60% at 70% 60%, rgba(0,196,28,0.11) 0%, transparent 70%)}
+  #game{position:fixed;inset:0;z-index:2;display:flex;flex-direction:column;min-height:100vh;min-height:100dvh}
+  /* ── HEADER (match round2_v8 style) ── */
+  #hdr{min-height:54px;background:linear-gradient(180deg,rgba(34,24,41,.96) 0%,rgba(30,15,26,.94) 100%);
+    border-bottom:1px solid rgba(0,196,28,.28);display:flex;align-items:center;padding:6px 18px;flex-shrink:0;z-index:3;
+    box-shadow:inset 0 1px 0 rgba(0,196,28,.08)}
+  .hdr-left{font-family:var(--font-display);font-size:clamp(12px,1.2vw,15px);color:var(--cyan);letter-spacing:1.5px;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
+  .hdr-center{flex:1;text-align:center;font-family:var(--font-display);font-size:clamp(12px,1.2vw,15px);color:var(--purple-light);letter-spacing:2px}
+  .hdr-right{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:clamp(13px,1.3vw,16px);color:var(--text);white-space:nowrap;justify-content:flex-end}
+  #timer{color:var(--text-b)}
+  .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:livePulse 1.5s ease-in-out infinite}
+  @keyframes livePulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  /* Nova Trust meter (styled like round2 detection widget) */
+  #nova-trust.nt-display{font-family:var(--font-display);font-size:clamp(13px,1.3vw,16px);letter-spacing:1px;display:flex;align-items:center;gap:7px;transition:color .35s;white-space:nowrap}
+  #nova-trust.nt-green{color:var(--green)}
+  #nova-trust.nt-amber{color:var(--orange)}
+  #nova-trust.nt-red{color:var(--red)}
+  .nt-bar-wrap{width:clamp(54px,5.3vw,78px);height:5px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;border:1px solid rgba(255,255,255,.10);flex-shrink:0}
+  #hdr-trust-bar{display:block;height:100%;width:100%;border-radius:2px;transition:width .45s ease,background .45s ease,box-shadow .45s ease}
+  #hdr-trust-bar.nt-green{background:var(--green);box-shadow:0 0 8px rgba(0,255,65,.35)}
+  #hdr-trust-bar.nt-amber{background:var(--orange)}
+  #hdr-trust-bar.nt-red{background:var(--red);box-shadow:0 0 10px rgba(211,25,114,.35)}
+  .nt-label{font-size:10px;letter-spacing:1.5px;opacity:.7}
+  #step-banner{min-height:38px;background:rgba(84,0,173,0.10);border-bottom:1px solid rgba(0,196,28,.22);display:flex;align-items:center;padding:6px 10px;font-size:clamp(11px,2.8vw,15px);color:var(--text-b);flex-shrink:0;line-height:1.3}
+  #step-banner::before{content:'▶ ';color:var(--orange);margin-right:6px}
+  #main-row{display:flex;flex:1;overflow:hidden;min-height:0;align-items:stretch}
+  #desktop-panel{flex:1 1 58%;min-width:0;position:relative;overflow:hidden;background:linear-gradient(180deg,#0a0c10 0%,#0f1419 50%)}
+  #right{flex:1 1 42%;min-width:min(100%,280px);display:flex;flex-direction:column;background:linear-gradient(180deg, rgba(34,24,41,.98) 0%, rgba(30,15,26,.98) 100%);border-left:1px solid rgba(0,196,28,.28);overflow:hidden;min-height:0}
+
+  /* Pre-vault: full Marshall desktop, no right panel */
+  body.r3-pre #right{display:none!important}
+  body.r3-pre #desktop-panel{flex:1 1 100%!important}
+  body.r3-desktop .r2-layout{display:none!important}
+  body.r3-desktop #vault-access-modal{display:none!important}
+  body.r3-desktop #nexus-taskbar{display:none}
+  body:not(.r3-desktop) #xp-taskbar{display:none}
+  body.r3-routing #xp-taskbar{display:none}
+  body.r3-routing #wallpaper,
+  body.r3-routing #desktop-panel > .di{display:none!important;pointer-events:none!important}
+  body.r3-routing #desktop-panel{background:#13151c}
+  body.r3-routing .r2-layout{z-index:20}
+
+  /* Marshall XP desktop (Mission 1 pattern) */
+  #desktop-panel{background:#000}
+  #wallpaper{position:absolute;top:0;left:0;right:0;bottom:30px;opacity:0;transition:opacity .9s ease;
+    background:linear-gradient(to bottom,#4990d8 0%,#6aaede 18%,#8dc6eb 32%,#a8d6f5 40%,#c4e4fc 43%,#86c44a 44%,#5fa436 52%,#4e9030 60%,#3d7826 70%,#2d6020 82%,#1e4614 100%);
+    z-index:0}
+  #wallpaper.visible{opacity:1}
+  .di{position:absolute;width:70px;text-align:center;cursor:default;padding:5px 4px;border-radius:4px;opacity:0;transition:opacity .6s ease,box-shadow .3s;background:transparent;border:none;z-index:10;font:inherit;color:inherit}
+  .di.visible{opacity:1}
+  .di.di-interactive{cursor:pointer}
+  .di.di-interactive:hover{background:rgba(255,255,255,.18)}
+  .di.di-mission{animation:iconPulse 1.2s ease-in-out infinite}
+  @keyframes iconPulse{0%,100%{box-shadow:0 0 0 transparent}50%{box-shadow:0 0 16px 5px rgba(255,160,0,.75);background:rgba(255,160,0,.12)}}
+  .di-icon{font-size:30px;line-height:1;display:block;margin-bottom:3px;color:#f0c538;filter:drop-shadow(1px 1px 1px rgba(0,0,0,.4))}
+  .di-label{font-family:'Tahoma',sans-serif;font-size:clamp(11px,1vw,13px);color:#fff;text-shadow:1px 1px 3px #000,0 0 6px #000;word-break:break-word;line-height:1.25}
+  .di.di-locked{opacity:.55;cursor:default;animation:none!important}
+  #xp-taskbar{position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(to bottom,#245fd4,#1648b8);display:flex;align-items:center;gap:2px;padding:0 4px;z-index:50;opacity:0;transition:opacity .6s ease;border-top:1px solid #3a7ae0}
+  #xp-taskbar.visible{opacity:1}
+  #start-btn{background:linear-gradient(to bottom,#3da641,#278d2a);border:1px solid #1e7a21;border-radius:10px;padding:2px 10px 2px 5px;color:#fff;font-family:'Tahoma',sans-serif;font-size:11px;font-weight:700;height:24px;display:flex;align-items:center;gap:4px;margin-right:6px;flex-shrink:0;cursor:default}
+  .tb-div{width:1px;height:22px;background:rgba(255,255,255,.15);margin:0 4px;flex-shrink:0}
+  .tb-wb{height:24px;min-width:100px;max-width:200px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:3px;color:#fff;font-family:'Tahoma',sans-serif;font-size:11px;padding:0 10px;cursor:default;flex-shrink:0}
+  #tb-clock{margin-left:auto;font-family:'Tahoma',sans-serif;font-size:11px;color:#fff;padding:0 8px;flex-shrink:0}
+
+  /* Vault door — full-screen immersive overlay */
+  #vault-door-screen{position:fixed;inset:0;z-index:500;display:none;flex-direction:column;
+    background:radial-gradient(ellipse 100% 90% at 50% 42%,#1a1e26 0%,#080a0e 55%,#030406 100%);overflow-x:hidden;overflow-y:auto;user-select:none}
+  #vault-door-screen.active{display:flex}
+  body.r3-desktop.vault-open #wallpaper,
+  body.r3-desktop.vault-open #desktop-panel > .di{opacity:0;pointer-events:none;transition:opacity .25s}
+  body.r3-desktop.vault-open #xp-taskbar{opacity:0;pointer-events:none}
+  .vault-door-hud{position:absolute;top:0;left:0;right:0;z-index:12;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;
+    padding:14px 20px 28px;width:100%;margin:0;
+    background:linear-gradient(180deg,rgba(6,8,12,.92) 0%,rgba(6,8,12,.5) 70%,transparent 100%)}
+  .vault-door-hint{flex:1;min-width:200px;font-family:var(--font-body);font-size:clamp(12px,1.4vw,14px);color:rgba(250,247,242,.65);line-height:1.45;margin:0}
+  .vault-door-hint strong{color:var(--orange);font-weight:600}
+  .vault-door-back{padding:10px 18px;border-radius:4px;font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;
+    background:rgba(255,255,255,.06);border:1px solid rgba(250,247,242,.25);color:rgba(250,247,242,.85)}
+  .vault-door-back:hover{background:rgba(255,255,255,.12)}
+  .vault-scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    padding:52px 2vw 200px;box-sizing:border-box}
+  .vault-scene-inner{position:relative;width:min(94vw,1500px);
+    height:min(calc(min(94vw,1500px) * 0.58),calc(100vh - 260px));
+    max-width:94vw;max-height:calc(100vh - 260px);container-type:size;container-name:vault;overflow:visible}
+  .vault-wall{position:absolute;inset:-5% -6%;border-radius:6px;
+    background:linear-gradient(180deg,#1e2228,#12161c);
+    box-shadow:inset 0 0 0 3px #2a3038,inset 0 0 60px rgba(0,0,0,.7),0 20px 50px rgba(0,0,0,.65)}
+  .vault-wall::before{content:'';position:absolute;inset:10px;border-radius:4px;
+    background:repeating-linear-gradient(90deg,transparent,transparent 18px,rgba(0,0,0,.15) 18px,rgba(0,0,0,.15) 19px),
+    repeating-linear-gradient(0deg,transparent,transparent 14px,rgba(0,0,0,.12) 14px,rgba(0,0,0,.12) 15px);pointer-events:none}
+  .vault-door-assembly{position:absolute;inset:5% 4% 5% 3%;z-index:3;overflow:visible;border-radius:3px}
+  .vault-door-slide{position:absolute;inset:0;z-index:2;will-change:transform;overflow:hidden;border-radius:3px}
+  .vault-door-face{position:absolute;inset:0;border-radius:3px;overflow:hidden;
+    display:flex;flex-direction:row;align-items:center;justify-content:center;gap:clamp(16px,4cqw,56px);
+    padding:clamp(14px,5%,36px) clamp(18px,6%,48px);box-sizing:border-box;
+    background:linear-gradient(168deg,#c4c6ce 0%,#9a9ca6 18%,#b0b2ba 38%,#888a94 62%,#a8aab2 82%,#7e808a 100%);
+    border:3px solid #5c5e68;box-shadow:inset 0 2px 12px rgba(255,255,255,.35),inset 0 -8px 20px rgba(0,0,0,.25),6px 10px 40px rgba(0,0,0,.55)}
+  .vault-door-face::before{content:'';position:absolute;inset:14px;border:1px solid rgba(0,0,0,.2);border-radius:2px;pointer-events:none;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+  .vault-door-face::after{content:'';position:absolute;inset:0;border-radius:3px;pointer-events:none;
+    background:linear-gradient(125deg,rgba(255,255,255,.14) 0%,transparent 35%,transparent 65%,rgba(0,0,0,.08) 100%)}
+  .vault-rivets{position:absolute;inset:10px;pointer-events:none;z-index:1;
+    background-image:radial-gradient(circle at center,#4a4c54 1.5px,transparent 1.5px);
+    background-size:22px 22px;background-position:2px 2px;opacity:.55}
+  .vault-hinges{position:absolute;right:-14px;top:10%;bottom:10%;width:14px;z-index:6;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none}
+  .vault-hinge{width:100%;height:22%;min-height:36px;border-radius:3px;
+    background:linear-gradient(90deg,#3a3c44,#8a8c96 35%,#6a6c74 65%,#3a3c44);
+    box-shadow:3px 0 8px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.2)}
+  .vault-lock-mechanism{position:absolute;inset:8%;z-index:2;pointer-events:none;overflow:hidden;
+    transition:opacity .4s ease,transform .5s cubic-bezier(.4,0,.2,1);transform-origin:52% 50%}
+  .vault-bolt{position:absolute;height:clamp(5px,.8cqh,8px);border-radius:4px;z-index:2;
+    background:linear-gradient(180deg,#9a9ca4,#6a6c74 45%,#4a4c54);
+    box-shadow:0 2px 4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.25)}
+  .vault-bolt::after{content:'';position:absolute;right:0;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#b0b2ba,#5a5c64);box-shadow:inset 0 -1px 2px rgba(0,0,0,.4)}
+  .vault-bolt--tl{left:18%;top:18%;width:30%;transform:rotate(-38deg);transform-origin:left center}
+  .vault-bolt--bl{left:18%;bottom:18%;width:30%;transform:rotate(38deg);transform-origin:left center}
+  .vault-bolt--mr{right:16%;top:50%;width:24%;margin-top:-3px}
+  .vault-bolt--mr::after{right:auto;left:0}
+  .vault-combo-wrap{position:relative;left:auto;top:auto;flex:0 0 auto;
+    width:min(26cqh,32%,220px);aspect-ratio:1;z-index:8;cursor:grab;touch-action:none}
+  .vault-combo-wrap:active{cursor:grabbing}
+  .vault-combo-wrap.locked{pointer-events:none;opacity:.7;filter:grayscale(.3)}
+  #vault-combo-dial{width:100%;height:100%;position:relative;filter:drop-shadow(0 6px 14px rgba(0,0,0,.5))}
+  .vault-combo-bezel{position:absolute;inset:0;border-radius:50%;
+    background:radial-gradient(circle at 40% 35%,#d8dae2,#8a8c96 55%,#5a5c64);
+    box-shadow:inset 0 -4px 10px rgba(0,0,0,.35),0 2px 0 rgba(255,255,255,.3)}
+  .vault-combo-ring{position:absolute;inset:8%;border-radius:50%;transform-origin:50% 50%;
+    background:repeating-conic-gradient(from -90deg,#0e0e12 0deg 9deg,#1c1c22 9deg 18deg);
+    border:2px solid #3a3c44;box-shadow:inset 0 0 12px rgba(0,0,0,.8)}
+  .vault-combo-ticks{position:absolute;inset:10%;border-radius:50%;pointer-events:none;
+    background:repeating-conic-gradient(from -90deg,transparent 0deg 7deg,rgba(200,200,210,.35) 7deg 8deg)}
+  .vault-combo-knob{position:absolute;left:50%;top:6%;width:10%;height:18%;margin-left:-5%;
+    background:linear-gradient(180deg,#e8eaef,#9a9ca4 60%,#5a5c64);border-radius:2px;
+    box-shadow:0 2px 4px rgba(0,0,0,.5);transform-origin:50% 450%}
+  .vault-combo-face{position:absolute;inset:22%;border-radius:50%;
+    background:radial-gradient(circle at 40% 35%,#1a1a20,#050508 75%);
+    border:2px solid #2a2a32;box-shadow:inset 0 4px 14px rgba(0,0,0,.9)}
+  .vault-combo-letter{position:absolute;inset:28%;display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-mono);font-size:clamp(1.4rem,5vh,2.4rem);font-weight:700;color:#c8d4e0;
+    text-shadow:0 0 10px rgba(180,195,215,.35);z-index:2;pointer-events:none}
+  .vault-wheel-wrap{position:relative;left:auto;top:auto;flex:0 1 auto;
+    width:min(44cqh,52%,400px);max-height:78cqh;aspect-ratio:1;z-index:5;pointer-events:none}
+  #vault-handwheel{width:100%;height:100%;position:relative;transform-origin:50% 50%;filter:drop-shadow(0 8px 18px rgba(0,0,0,.45))}
+  .vault-wheel-svg{width:100%;height:100%;display:block}
+  .vault-cavity{position:absolute;inset:5% 4% 5% 3%;z-index:1;border-radius:2px;pointer-events:none;overflow:hidden;
+    background:#13151c;opacity:0;transform:scale(.98);transition:opacity .45s ease,transform .5s ease}
+  .vault-cavity.lit{opacity:1;transform:scale(1)}
+  .vault-cavity.has-gameplay{background:#13151c;pointer-events:auto}
+  .vault-cavity-slot{position:absolute;inset:0;z-index:0;overflow:hidden;border-radius:2px;background:#13151c;pointer-events:auto}
+  .r2-layout.vault-inside-reveal{position:absolute!important;inset:0!important;bottom:0!important;display:flex!important;
+    z-index:1!important;opacity:1!important;min-width:0;font-family:var(--font-mono);pointer-events:auto}
+  .r2-layout.vault-inside-reveal .r2-router{width:min(220px,30%);min-width:150px}
+  .r2-layout.vault-inside-reveal .r2-inspector{flex:1;min-width:0}
+  .vault-cavity-glow{position:absolute;inset:-15%;background:radial-gradient(ellipse 70% 80% at 0% 50%,rgba(48,56,72,.55) 0%,rgba(19,21,28,.35) 40%,transparent 68%);
+    opacity:0;transform:scaleX(.3);transform-origin:left center;transition:opacity .55s ease .15s,transform .7s cubic-bezier(.22,1,.36,1)}
+  .vault-cavity.lit .vault-cavity-glow{opacity:1;transform:scaleX(1)}
+  .vault-scene-inner.vault-bolts-out .vault-lock-mechanism{opacity:0;transform:scale(.35)}
+  .vault-tumbler-panel{position:absolute;bottom:0;left:0;right:0;z-index:12;width:100%;max-width:none;margin:0;padding:20px 24px 28px;text-align:center;
+    background:linear-gradient(0deg,rgba(6,8,12,.95) 0%,rgba(6,8,12,.55) 55%,transparent 100%)}
+  .vault-tumblers{display:flex;justify-content:center;gap:12px;margin-bottom:12px}
+  .vault-tumbler{width:min(56px,12vw);height:min(68px,14vw);border-radius:4px;background:linear-gradient(180deg,#1a1816,#0d0c0b);border:2px inset #3d3530;
+    display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:clamp(1.5rem,4vh,2.2rem);font-weight:700;color:#8a8a94;
+    cursor:pointer;transition:border-color .2s,box-shadow .2s,color .2s}
+  .vault-tumbler.active{border-color:rgba(247,148,33,.7);color:var(--orange);box-shadow:0 0 16px rgba(247,148,33,.2)}
+  .vault-tumbler.filled{color:#a8b4c4}
+  .vault-tumbler.correct{border-color:rgba(247,148,33,.65);color:var(--orange)}
+  .vault-door-status{font-family:var(--font-mono);font-size:11px;min-height:1.3em;margin-bottom:8px;color:rgba(255,64,64,.85)}
+  .vault-door-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .vault-door-btn{padding:12px 28px;border-radius:4px;font-family:var(--font-display);font-size:clamp(12px,1.5vw,14px);font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:1px solid}
+  .vault-door-btn--open{background:rgba(247,148,33,.2);border-color:var(--orange);color:var(--orange)}
+  .vault-door-btn--open:hover:not(:disabled){background:rgba(247,148,33,.35);box-shadow:0 0 20px rgba(247,148,33,.25)}
+  .vault-door-btn--open:disabled{opacity:.35;cursor:not-allowed}
+  .vault-scene-inner.shake{animation:vaultShake .45s ease}
+  #vault-door-screen.is-opening .vault-combo-wrap,#vault-door-screen.is-opening .vault-tumbler-panel{pointer-events:none;opacity:.6}
+  .vault-open-flash{position:absolute;inset:0;z-index:20;pointer-events:none;opacity:0;
+    background:radial-gradient(ellipse 50% 80% at 15% 50%,rgba(42,50,64,.45) 0%,transparent 55%)}
+  #vault-door-screen.is-opening .vault-door-hud,
+  #vault-door-screen.is-opening .vault-tumbler-panel{opacity:0;transition:opacity .4s ease}
+  #vault-door-screen.is-opening .vault-combo-wrap{opacity:0;transition:opacity .3s ease}
+  @supports not (container-type:size){
+    .vault-combo-wrap{width:min(24vmin,32%,220px)}
+    .vault-wheel-wrap{width:min(38vmin,52%,400px)}
+  }
+  @media (max-height:720px){
+    .vault-scene{padding:44px 2vw 175px}
+    .vault-scene-inner{height:min(calc(100vh - 220px),calc(min(94vw,1500px) * 0.52))}
+    .vault-combo-wrap{width:min(24vmin,30%,180px)}
+    .vault-wheel-wrap{width:min(36vmin,48%,320px)}
+  }
+  /* Split right column roughly 50/50 with the chat */
+  #dist-panel{display:flex;flex-direction:column;flex:1 1 0%;padding:6px 8px 8px;border-bottom:1px solid rgba(0,196,28,.22);overflow:hidden;gap:6px;min-height:0}
+  .dist-hdr{padding:0 0 6px;border-bottom:1px solid rgba(84,0,173,.28)}
+  .dist-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(11px,1.05vw,13px);color:var(--purple-light);letter-spacing:.1em}
+  .dist-sub{font-family:'Share Tech Mono';font-size:clamp(8px,.9vw,10px);color:var(--orange);letter-spacing:.12em;margin-top:2px}
+  /* Let the map itself expand to fill available height (prevents “dead space”) */
+  .dist-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;flex:1;min-height:120px;overflow:hidden}
+  .dist-col{background:rgba(17,28,36,.55);border-radius:4px;padding:4px;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:3px;border:1px solid rgba(26,42,58,.6)}
+  .dist-col-h{font-size:clamp(9px,.95vw,11px);font-family:'Share Tech Mono';letter-spacing:.08em;text-align:center;padding:4px 2px;border-bottom:1px solid rgba(26,42,58,.9);margin-bottom:4px}
+  .dist-col.public .dist-col-h{color:#a8f5c8;border-color:rgba(0,196,28,.35)}
+  .dist-col.official .dist-col-h{color:#ffd8a8;border-color:rgba(247,148,33,.45)}
+  .dist-col.vault .dist-col-h{color:#e9d5ff;border-color:rgba(143,68,232,.45)}
+  .dist-chip{font-size:clamp(9px,.95vw,11px);font-family:'Share Tech Mono';padding:6px 8px;border-radius:4px;line-height:1.25;word-break:break-word}
+  .dist-chip.public{background:rgba(0,196,28,.1);border:1px solid rgba(0,196,28,.38);color:#d6f5de}
+  .dist-chip.official{background:rgba(247,148,33,.12);border:1px solid rgba(247,148,33,.42);color:#fdeccd}
+  .dist-chip.vault{background:rgba(143,68,232,.12);border:1px solid rgba(211,25,114,.35);color:#f5e0ff}
+  .trust-row{font-size:clamp(10px,1vw,12px);font-family:'Space Grotesk',sans-serif;color:var(--purple-light);letter-spacing:.06em}
+  .trust-bar-wrap{height:6px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden;border:1px solid rgba(0,196,28,.2)}
+  .trust-bar-fill{height:100%;background:linear-gradient(90deg,var(--green-stable),var(--green-matrix));transition:width .35s}
+  .trust-bar-fill.warn{background:linear-gradient(90deg,#c9a000,var(--orange))}
+  .trust-bar-fill.crit{background:linear-gradient(90deg,var(--pink),#ff4466)}
+  #signoff-btn{width:100%;margin:0;padding:10px 8px;background:rgba(0,196,28,.06);color:var(--text-d);border:1px solid rgba(0,196,28,.18);font-family:'Space Grotesk',sans-serif;font-size:clamp(9px,1.6vw,11px);letter-spacing:.06em;cursor:not-allowed;border-radius:3px;flex-shrink:0}
+  #signoff-btn.ready{background:rgba(168,85,247,.12);color:#e9d5ff;border-color:rgba(168,85,247,.55);cursor:pointer;animation:novaPulse 2s ease-in-out infinite}
+  @keyframes novaPulse{0%,100%{box-shadow:0 0 4px rgba(168,85,247,.2)}50%{box-shadow:0 0 16px rgba(168,85,247,.45)}}
+  /* Split right column roughly 50/50 with the distribution map */
+  #broker-wrap{flex:1 1 0%;display:flex;flex-direction:column;overflow:hidden;min-height:0}
+  .broker-hdr{min-height:0;background:var(--panel-bg);border-bottom:1px solid rgba(0,196,28,.22);display:flex;align-items:center;padding:6px 12px 8px;gap:10px;flex-shrink:0}
+  .bk-avatar{width:34px;height:34px;border-radius:50%;background:#2f2238;border:1px solid rgba(0,196,28,.16);display:flex;align-items:center;justify-content:center;font-size:17px}
+  .bk-name{color:var(--text-w);font-size:clamp(12px,1.3vw,15px);font-weight:600;font-family:'DM Sans',sans-serif}
+  .bk-members{display:flex;flex-wrap:wrap;gap:2px;font-size:clamp(10px,1vw,12px);font-family:'DM Sans',sans-serif;line-height:1.35}
+  .bk-member.online{color:var(--green-matrix)}
+  .bk-member.offline{color:rgba(100,100,100,.55)}
+  .bk-sep{color:rgba(100,100,100,.4);font-size:10px}
+  .bk-icons{margin-left:auto;color:var(--green-stable);font-size:15px}
+  #broker-body{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;min-height:0;background:var(--void)}
+  .bm-sep{display:flex;justify-content:center;margin:4px 0 14px}
+  .bm-sep-pill{background:rgba(43,32,52,.92);color:var(--green-stable);font-size:11px;padding:3px 14px;border-radius:12px;border:1px solid rgba(0,196,28,.18)}
+  .bm-sender{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.5px;margin-bottom:6px;padding-left:4px}
+  .bm-group{display:flex;flex-direction:column;align-items:stretch;gap:0;margin-bottom:16px;min-width:0}
+  .bm-bubble{align-self:flex-start;display:block;width:100%;max-width:min(420px,100%);padding:10px 12px;border-radius:14px 14px 14px 3px;line-height:1.55;font-family:'DM Sans',sans-serif;font-size:clamp(11px,1.15vw,14px);overflow-wrap:break-word;animation:bubbleIn 220ms ease forwards;opacity:0}
+  @keyframes bubbleIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .bm-ts{align-self:flex-end;font-size:10px;color:rgba(0,196,28,0.72);margin-top:4px;font-family:'DM Sans',sans-serif}
+  .bm-ts::after{content:' ✓'}
+  .bm-bubble.bm-d{background:rgba(43,32,52,.92);color:var(--text-w);border:1px solid rgba(0,196,28,.10)}
+  .bm-bubble.bm-ok{background:rgba(0,196,28,.08);color:#cfead2;border-left:2px solid rgba(0,196,28,.55)}
+  .bm-bubble.bm-err{background:rgba(211,25,114,.08);color:#efb5cf;border-left:2px solid rgba(211,25,114,.35)}
+  .bm-bubble.bm-zex{background:rgba(168,85,247,.08);color:#e9d5ff;border-left:2px solid rgba(168,85,247,.45)}
+  .bm-bubble.bm-nova{background:rgba(56,189,248,.08);color:#bae6fd;border-left:2px solid rgba(56,189,248,.5)}
+  .bm-typing-wrap{margin-bottom:16px}
+  .bm-typing{background:rgba(43,32,52,.92);padding:14px 18px;border-radius:14px;display:inline-flex;gap:5px;border:1px solid rgba(0,196,28,.10)}
+  .tdot{width:6px;height:6px;border-radius:50%;background:var(--green-stable);animation:tBounce 1.1s ease-in-out infinite}
+  .tdot:nth-child(2){animation-delay:.18s}.tdot:nth-child(3){animation-delay:.36s}
+  @keyframes tBounce{0%,60%,100%{transform:translateY(0);opacity:.45}30%{transform:translateY(-5px);opacity:1}}
+  .broker-footer{padding:0 0 max(8px,env(safe-area-inset-bottom,0));border-top:1px solid rgba(0,196,28,.22);flex-shrink:0;background:var(--panel-bg)}
+  .broker-input-bar{display:flex;align-items:center;padding:6px 12px 8px;gap:10px}
+  #broker-input{flex:1;background:#2f2238;border:1px solid rgba(0,196,28,.16);border-radius:18px;color:var(--green-stable);font-size:12px;padding:0 14px;height:34px;cursor:not-allowed}
+  #hint-btn{width:32px;height:32px;background:transparent;border:none;font-size:19px;color:#f5c518;cursor:pointer}
+  .hint-tooltip{position:absolute;bottom:calc(100% + 6px);left:0;background:rgba(34,24,41,.96);color:#dbc7f6;font-size:11px;padding:4px 8px;border-radius:4px;opacity:0;pointer-events:none;border:1px solid rgba(143,68,232,.55)}
+  .hint-wrap:hover .hint-tooltip{opacity:1}
+  #hack-overlay{position:fixed;inset:0;background:#000;z-index:650;padding:clamp(24px,4vw,48px) clamp(20px,5vw,56px);font-family:'Share Tech Mono';font-size:clamp(12px,1.6vw,15px);line-height:1.9;display:none;overflow:auto}
+  #hack-overlay.active{display:block}
+  #hack-overlay::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.06;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,.15) 2px,rgba(0,255,65,.15) 4px)}
+  .ht{opacity:0;transition:opacity .3s}.ht.show{opacity:1}
+  .ht-g{color:#00ff41}.ht-a{color:#ffb000}.ht-r{color:#ff4040}.ht-o{color:#ff8800}
+  .ht-cur{display:inline-block;width:10px;height:16px;background:#00ff41;animation:curBlink .7s step-end infinite;vertical-align:middle}
+  @keyframes curBlink{0%,100%{opacity:1}50%{opacity:0}}
+  .r2-layout{display:flex;position:absolute;inset:0;bottom:30px;z-index:1;font-family:var(--font-mono);min-width:0}
+  .r2-router{width:min(220px,34vw);min-width:min(100%,150px);flex-shrink:0;background:#0c1016;border-right:1px solid #1a2a3a;overflow-y:auto;padding:8px 0;font-size:11px;color:#8ab0c0}
+  .r2-r-hdr{font-size:9px;letter-spacing:2px;color:#4a8aa0;padding:6px 10px;border-bottom:1px solid #1a2a3a;position:sticky;top:0;background:#0c1016;z-index:1}
+  .r2-file{padding:8px 10px;cursor:pointer;border-left:3px solid transparent;display:flex;align-items:center;gap:6px;min-width:0}
+  .r2-file span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+  .r2-file:hover{background:rgba(26,58,74,0.4)}
+  .r2-file.sel{background:rgba(26,58,74,0.75);border-left-color:#4a8aa0;color:#c8ddf0}
+  .r2-file.done{opacity:.7}
+  .r2-inspector{flex:1;display:flex;flex-direction:column;min-width:0;background:#0f1419;overflow:hidden}
+  .r2-ins-hdr{padding:8px 12px;border-bottom:1px solid #1a2a3a;font-size:clamp(10px,2.5vw,12px);color:#8ab0c0;flex-shrink:0;background:linear-gradient(180deg,#101820 0%,#0c1016 100%)}
+  .r2-ins-body{flex:1;overflow:auto;padding:12px;font-size:clamp(10px,2.6vw,12px);color:#c8ddf0;min-height:0}
+  .r2-meta-row{display:flex;border-bottom:1px solid #1a2a3a;font-size:10px;align-items:flex-start}
+  .r2-meta-row:nth-child(even){background:#111c24}
+  .r2-ml{flex:0 0 clamp(96px,26vw,128px);color:#4a8aa0;text-align:right;padding:6px 8px;font-family:'Courier New',monospace}
+  .r2-mv{flex:1;padding:6px 8px;font-family:'Courier New',monospace;word-break:break-word;min-width:0}
+  .ch-bar{padding:10px 12px;border-top:1px solid #1a2a3a;display:flex;flex-direction:column;gap:8px;background:#0c1016;flex-shrink:0}
+  .ch-bar > span{font-size:10px;color:#5a7a8a}
+  .ch-row{display:flex;flex-wrap:wrap;gap:6px}
+  .ch-btn{padding:10px 12px;border-radius:4px;font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:600;letter-spacing:.03em;display:inline-flex;align-items:center;gap:6px;border:1px solid;flex:1;min-width:min(100%,140px);justify-content:center}
+  .ch-btn:hover{filter:brightness(1.08)}
+  .ch-btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+  .ch-public{border-color:rgba(0,196,28,.55);background:rgba(0,196,28,.12);color:#d6f5de}
+  .ch-official{border-color:rgba(247,148,33,.55);background:rgba(247,148,33,.12);color:#fdeccd}
+  .ch-vault{border-color:rgba(143,68,232,.55);background:rgba(211,25,114,.1);color:#f5e0ff}
+  /* Vault Access Styles */
+  #vault-container{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;max-width:520px;margin:0 auto}
+  .vault-header{text-align:center}
+  .vault-title{font-family:var(--font-display);font-size:2.2rem;font-weight:700;color:var(--white);margin-bottom:0.5rem;letter-spacing:0.02em}
+  .vault-subtitle{font-family:var(--font-mono);font-size:0.75rem;color:var(--purple-light);letter-spacing:0.15em;text-transform:uppercase}
+  .vault-input-group{width:100%;display:flex;flex-direction:column;align-items:center;gap:1rem}
+  #vault-code-input{font-family:var(--font-mono);font-size:2.4rem;letter-spacing:0.8em;text-transform:uppercase;width:280px;padding:1rem;text-align:center;background:rgba(30,15,26,0.5);border:2px solid rgba(0,196,28,0.4);color:var(--green-matrix);caret-color:var(--green-matrix);transition:all 0.3s ease;border-radius:2px}
+  #vault-code-input:focus{outline:none;border-color:var(--green-matrix);box-shadow:0 0 20px rgba(0,255,65,0.3),inset 0 0 20px rgba(0,255,65,0.05)}
+  #vault-code-input::placeholder{color:rgba(0,196,28,0.25)}
+  #vault-code-input.error{border-color:#ff4040;box-shadow:0 0 20px rgba(255,64,64,0.4);animation:vaultShake 0.4s ease}
+  @keyframes vaultShake{0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)}}
+  #vault-code-input.success{border-color:var(--green-matrix);box-shadow:0 0 30px rgba(0,255,65,0.6)}
+  .vault-status{font-family:var(--font-mono);font-size:0.8rem;color:rgba(255,64,64,0.8);height:1.2rem;min-height:1.2rem}
+  .vault-unlock-btn{width:280px;padding:0.8rem;background:var(--orange);border:1px solid var(--orange);color:var(--void);font-family:var(--font-display);font-size:1rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:all 0.3s ease;border-radius:2px}
+  .vault-unlock-btn:hover:not(:disabled){background:#f7a821;box-shadow:0 0 20px rgba(247,148,33,0.5)}
+  .vault-unlock-btn:disabled{opacity:0.5;cursor:not-allowed}
+  #nexus-taskbar{position:absolute;bottom:0;left:0;right:0;height:30px;background:#0c1a26;border-top:1px solid #1a2a3a;display:flex;align-items:center;padding:0 8px;font-size:10px;color:#6a7a8a;z-index:50}
+  
+  /* VAULT ACCESS WINDOW — XP STYLE IN-GAME */
+  #vault-access-modal{position:absolute;display:none;min-width:380px;height:auto;border:2px solid #0f2f8a;border-radius:6px 6px 4px 4px;box-shadow:4px 4px 20px rgba(0,0,0,.65),1px 1px 0 rgba(255,255,255,.12);z-index:300;overflow:hidden;flex-direction:column;top:50%;left:50%;transform:translate(-50%,-50%)}
+  #vault-access-modal.active{display:flex}
+  /* XP Window Title Bar */
+  .vault-xp-tb{min-height:28px;background:linear-gradient(to bottom,#2b5edb 0%,#1239b4 35%,#1a4ac5 65%,#2b5edb 100%);display:flex;align-items:center;padding:4px 6px 4px 9px;cursor:default;user-select:none}
+  .vault-xp-title{flex:1;display:flex;align-items:center;gap:5px;font-family:'Tahoma',sans-serif;font-size:clamp(11px,1vw,13px);font-weight:700;color:#fff;text-shadow:1px 1px 2px rgba(0,0,0,.5);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .vault-xp-icon{font-size:14px;flex-shrink:0;color:#ffd700}
+  /* XP Window Body */
+  .vault-modal-content{background:#fff;padding:1.5rem;text-align:center;display:flex;flex-direction:column;gap:1rem}
+  .vault-modal-title{font-size:16px;font-weight:700;color:#000;margin:0;font-family:'Tahoma',sans-serif}
+  .vault-modal-subtitle{font-size:11px;color:#666;letter-spacing:0.15em;text-transform:uppercase;margin:0;font-family:'Tahoma',sans-serif}
+  #vault-code-input-modal{font-family:monospace;font-size:18px;letter-spacing:0.6em;text-transform:uppercase;width:240px;padding:0.8rem;text-align:center;background:#fff;border:2px solid #999;color:#000;caret-color:#000;border-radius:0;margin:8px auto 0;font-weight:bold}
+  #vault-code-input-modal:focus{outline:none;border-color:#0a246b;box-shadow:inset 0 0 10px rgba(10,36,107,0.2)}
+  #vault-code-input-modal.error{border-color:#ff0000;background:#ffe6e6}
+  #vault-code-input-modal.success{border-color:#008000;background:#e6ffe6}
+  .vault-modal-status{font-family:monospace;font-size:11px;color:#d00;height:1.2rem;min-height:1.2rem;margin:4px 0 0}
+  .vault-modal-btn{width:100px;padding:4px 16px;background:#c0c0c0;border:2px outset #dfdfdf;color:#000;font-family:'Tahoma',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all 0.1s ease;margin:8px auto 0}
+  .vault-modal-btn:hover:not(:disabled){background:#dfdfdf}
+  .vault-modal-btn:active:not(:disabled){border-style:inset}
+  .vault-modal-btn:disabled{opacity:0.5;cursor:not-allowed}
+  /* VAULT ANIMATION OVERLAY — BLAST DOORS (cyberpunk) */
+  #vault-overlay{position:fixed;inset:0;background:#060a08;z-index:999;display:none;align-items:center;justify-content:center;pointer-events:none;overflow:hidden}
+  #vault-overlay.active{display:flex}
+  #vault-overlay::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.14;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,.03) 2px,rgba(0,255,65,.03) 4px);
+    z-index:10}
+
+  #vault-stage{position:relative;width:100%;height:100%;display:flex;align-items:stretch;overflow:hidden}
+
+  .vault-door{position:relative;width:50%;height:100%;will-change:transform;transform:translateZ(0);backface-visibility:hidden}
+  .door-surface{position:absolute;inset:0;
+    background:linear-gradient(175deg,#0f1a14 0%,#0a120e 35%,#080e0a 65%,#050a07 100%);
+    border:1px solid rgba(0,255,65,.06)}
+  .door-surface::before{content:'';position:absolute;inset:0;
+    background:repeating-linear-gradient(90deg,transparent,transparent 58px,rgba(0,255,65,.015) 58px,rgba(0,255,65,.015) 60px);
+    pointer-events:none}
+  .door-surface::after{content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 50% 30%,rgba(0,255,65,.02),transparent 65%);
+    pointer-events:none}
+  #vault-door-l .door-surface{border-right:none}
+  #vault-door-r .door-surface{border-left:none}
+
+  .door-rivet{position:absolute;width:11px;height:11px;border-radius:50%;
+    background:radial-gradient(circle at 38% 32%,#2a3a2e,#141e18);
+    box-shadow:inset 0 1px 1px rgba(0,255,65,.06),0 0 4px rgba(0,0,0,.5)}
+
+  .door-bolt{position:absolute;width:54px;height:14px;border-radius:3px;
+    background:linear-gradient(180deg,#1a2e22,#122418,#0e1a12);
+    box-shadow:inset 0 1px 0 rgba(0,255,65,.06),0 2px 8px rgba(0,0,0,.6);
+    will-change:transform;transform:translateZ(0)}
+  .door-bolt::after{content:'';position:absolute;top:4px;width:6px;height:6px;border-radius:50%;
+    background:rgba(255,60,60,.55);box-shadow:0 0 10px rgba(255,60,60,.3);transition:background .3s,box-shadow .3s}
+  .door-bolt-l{right:-10px}.door-bolt-l::after{right:8px}
+  .door-bolt-r{left:-10px}.door-bolt-r::after{left:8px}
+  .door-bolt.retracted::after{background:rgba(0,255,65,.7);box-shadow:0 0 14px rgba(0,255,65,.4)}
+
+  .door-label{position:absolute;bottom:15%;width:100%;text-align:center;
+    font-family:var(--font-display);font-size:clamp(32px,5vw,72px);font-weight:800;
+    letter-spacing:.4em;color:rgba(0,255,65,.03);text-transform:uppercase;user-select:none}
+
+  #vault-seam{position:absolute;left:50%;top:0;width:2px;height:100%;transform:translateX(-50%);
+    background:rgba(0,255,65,.0);z-index:5;will-change:background,box-shadow}
+
+  #vault-light{position:absolute;left:50%;top:0;width:0;height:100%;transform:translateX(-50%);
+    background:linear-gradient(180deg,rgba(0,255,65,.0),rgba(0,255,65,.0),rgba(0,255,65,.0));
+    z-index:4;will-change:width,opacity;filter:blur(4px)}
+
+  #vault-status{position:absolute;bottom:clamp(28px,5vh,48px);left:50%;transform:translateX(-50%);
+    z-index:12;text-align:center;opacity:0}
+  #vault-status-text{font-family:var(--font-display);font-size:clamp(10px,1.2vw,14px);
+    letter-spacing:.28em;color:rgba(0,255,65,.6);margin-bottom:10px;text-shadow:0 0 15px rgba(0,255,65,.12)}
+  #vault-status-bar{width:200px;height:2px;background:rgba(0,255,65,.08);border-radius:2px;overflow:hidden;margin:0 auto}
+  #vault-status-fill{width:0%;height:100%;background:linear-gradient(90deg,rgba(0,255,65,.5),rgba(0,255,65,.85));border-radius:2px;will-change:width}
+
+  #vault-success-text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    font-family:var(--font-display);font-size:clamp(18px,2.8vw,36px);font-weight:700;
+    color:rgba(0,255,65,.95);text-transform:uppercase;letter-spacing:.35em;
+    opacity:0;z-index:12;text-shadow:0 0 60px rgba(0,255,65,.25),0 0 120px rgba(0,255,65,.08);white-space:nowrap}
+
+  /* Page transition helpers */
+  .page{will-change:opacity,transform}
+  
+  #signoff-overlay{position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:450;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+  #signoff-overlay.show{display:flex}
+  #signoff-term{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--green-matrix);line-height:1.85;max-width:min(520px,92vw);white-space:pre-wrap;text-align:center}
+  /* ══ DEBRIEF — same full layout as Mission 1 ══ */
+  #debrief-screen{--amber:var(--orange);--debrief-dim:rgba(0,0,0,.95);--debrief-blur:3px;position:fixed;inset:0;z-index:455;display:none;flex-direction:column;padding:clamp(16px,1.8vh,24px) clamp(28px,3.5vw,64px);background:var(--debrief-dim);backdrop-filter:blur(var(--debrief-blur)) saturate(.85);-webkit-backdrop-filter:blur(var(--debrief-blur)) saturate(.85);overflow-x:hidden;overflow-y:auto}
+  #debrief-screen.active{display:flex}
+  #debrief-screen::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,rgba(143,68,232,.08) 0%,transparent 60%)}
+  #debrief-screen>*{position:relative;z-index:1}
+  #debrief-screen .db-header{display:flex;flex-direction:column;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(0,255,65,.18);flex-shrink:0}
+  #debrief-screen .deb-eyebrow{font-family:var(--font-mono);font-size:.55rem;color:var(--green-stable);letter-spacing:.25em;text-transform:uppercase;margin-bottom:.35rem;text-align:center}
+  #debrief-screen .deb-title{font-family:var(--font-display);font-size:clamp(1.25rem,.85vw + .9vh,1.75rem);font-weight:700;letter-spacing:-.01em;line-height:1.1;text-align:center;background:linear-gradient(135deg,var(--white) 60%,var(--purple-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  #debrief-screen .db-main{flex:1;display:grid;grid-template-columns:minmax(320px,36%) 1fr;gap:28px;min-height:0}
+  #debrief-screen .db-panel{background:linear-gradient(145deg,rgba(34,24,41,.78),rgba(30,15,26,.84));border:1px solid rgba(0,255,65,.22);border-radius:8px;padding:22px 26px;position:relative;overflow:hidden;display:flex;flex-direction:column;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+  #debrief-screen .db-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green-stable) 30%,var(--purple-light) 70%,transparent);opacity:.55}
+  #debrief-screen .db-panel-label{font-family:var(--font-display);font-size:11px;color:var(--amber);letter-spacing:3px;margin-bottom:14px;flex-shrink:0}
+  #debrief-screen .mr-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px;flex-shrink:0}
+  #debrief-screen .mr-metric{background:rgba(0,0,0,.3);border:1px solid rgba(0,255,65,.12);border-radius:6px;padding:14px 16px}
+  #debrief-screen .mr-metric-val{font-family:var(--font-display);font-size:clamp(22px,2.6vw,36px);font-weight:700;color:var(--purple-light);line-height:1;letter-spacing:1px}
+  #debrief-screen .mr-metric-val.det-green{color:var(--green-matrix)}#debrief-screen .mr-metric-val.det-amber{color:var(--orange)}#debrief-screen .mr-metric-val.det-red{color:var(--pink)}
+  #debrief-screen .mr-metric-lbl{font-family:var(--font-display);font-size:10px;color:var(--text);letter-spacing:2px;margin-top:8px}
+  #debrief-screen .mr-detect{padding-top:18px;border-top:1px solid rgba(0,255,65,.14);overflow-y:auto;flex:1;min-height:0;padding-right:10px}
+  #debrief-screen .mr-detect-ttl{font-family:var(--font-display);font-size:10px;color:var(--pink);letter-spacing:2.5px;margin-bottom:12px}
+  #debrief-screen .mr-detect-row{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--text-w);padding:5px 0;opacity:.85;gap:12px}
+  #debrief-screen .mr-detect-row.total{border-top:1px solid rgba(0,255,65,.18);margin-top:6px;padding-top:10px;font-weight:700;opacity:1}
+  #debrief-screen .mr-rating{margin-top:14px;padding:10px 12px;font-family:var(--font-display);font-size:12px;color:var(--purple-light);letter-spacing:1.5px;text-align:center;background:rgba(143,68,232,.08);border:1px solid rgba(143,68,232,.25);border-radius:4px}
+  #debrief-screen .tc-content{display:flex;flex-direction:column;gap:6px;justify-content:flex-start;overflow-y:auto;flex:1;min-height:0;padding-right:10px}
+  #debrief-screen .tc-block{position:relative;padding:4px 0 4px 18px;opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease}
+  #debrief-screen .tc-block.show{opacity:1;transform:translateY(0)}
+  #debrief-screen .tc-block::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--green-matrix) 0%,var(--purple-light) 100%);border-radius:1px;opacity:.55}
+  #debrief-screen .tc-block p{font-family:var(--font-body);font-size:clamp(14px,1.15vw,16px);line-height:1.65;color:var(--text-w)}
+  #debrief-screen .tc-block p strong{color:var(--purple-light);font-weight:600}
+  #debrief-screen .tc-block p + p{margin-top:10px}
+  #debrief-screen .tc-quote{font-family:var(--font-mono);font-size:12px;color:var(--green-stable);border-left:2px solid var(--green-stable);padding-left:12px;margin:0}
+  #debrief-screen .tc-subhead{font-family:var(--font-display);font-size:10px;color:var(--orange);letter-spacing:2.5px;text-transform:uppercase;display:block;margin-bottom:8px}
+  #debrief-screen .db-cta-row{display:flex;justify-content:center;margin-top:18px;flex-shrink:0;opacity:0;transition:opacity .4s}
+  #debrief-screen .db-cta-row.show{opacity:1}
+  #debrief-screen .db-cta{padding:14px 36px;background:rgba(247,148,33,.32);border:1px solid var(--orange);color:var(--orange);font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:1.5px;border-radius:4px;cursor:pointer;box-shadow:0 0 10px rgba(247,148,33,.22);transition:all .25s}
+  #debrief-screen .db-cta:hover{background:rgba(247,148,33,.46);box-shadow:0 0 26px rgba(247,148,33,.55);transform:translateY(-2px)}
+  #debrief-screen .mr-detect::-webkit-scrollbar,#debrief-screen .tc-content::-webkit-scrollbar{width:8px}
+  #debrief-screen .mr-detect::-webkit-scrollbar-track,#debrief-screen .tc-content::-webkit-scrollbar-track{background:rgba(0,255,65,.05);border-radius:4px}
+  #debrief-screen .mr-detect::-webkit-scrollbar-thumb,#debrief-screen .tc-content::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--green-stable),var(--purple-light));border-radius:4px}
+  #debrief-screen .db-panel.has-overflow::after{content:'';position:absolute;left:0;right:0;bottom:0;height:42px;pointer-events:none;background:linear-gradient(to bottom,transparent,rgba(30,15,26,.92) 75%);border-radius:0 0 8px 8px;z-index:2}
+  #debrief-screen .db-panel.has-overflow.scrolled-bottom::after{opacity:0}
+  @media (max-width:900px){#debrief-screen .db-main{grid-template-columns:1fr}}
+  #budget.budget-green{color:var(--green)}#budget.budget-amber{color:var(--orange)}#budget.budget-red{color:var(--pink)}
+  .budget-toast{position:fixed;font-size:14px;font-weight:700;color:var(--pink);z-index:601;animation:budgetFloat 2.4s ease forwards}
+  @keyframes budgetFloat{0%{opacity:1}100%{opacity:0;transform:translateY(-40px)}}
+  @media (max-width:1024px){
+    #main-row{flex-direction:column;overflow:hidden;min-height:0;flex:1}
+    #desktop-panel{flex:1 1 52%;min-height:0;overflow:hidden;width:100%}
+    #right{flex:1 1 48%;min-height:0;overflow:hidden;border-left:none;border-top:1px solid rgba(0,196,28,.28);width:100%}
+    #dist-panel{flex:0 0 auto}
+    #broker-wrap{flex:1;min-height:0}
+  }
+  @media (max-width:768px){
+    .r2-layout{flex-direction:column}
+    .r2-router{width:100%;max-height:min(150px,22vh);min-height:96px;border-right:none;border-bottom:1px solid #1a2a3a}
+    .r2-inspector{min-height:min(38vh,300px)}
+    .dist-cols{min-height:96px}
+  }
+</style>
+</head>
+<body data-playtest-mission="3">
+<div class="ambient-glow"></div>
+<div class="scanlines"></div>
+<div class="bg-grid"></div>
+<div class="corner corner--tl"></div>
+<div class="corner corner--tr"></div>
+<div class="corner corner--bl"></div>
+<div class="corner corner--br"></div>
+
+<div id="m3-page-transition" aria-hidden="true">
+  <span class="m3-trans-kicker">// Channel handoff</span>
+  <div class="m3-trans-title">Breaching <span>Marshall's desktop</span></div>
+  <div class="m3-trans-bar"><span class="m3-trans-bar-fill" id="m3-trans-bar-fill"></span></div>
+</div>
+
+<div id="intro-root">
+<div class="status-bar">
+  <div class="status-left"><span><span class="status-dot live"></span>TERMINAL ACTIVE</span><span id="clock">--:--:--</span></div>
+  <div class="status-right"><span>OP-OMNI / v2.4.1</span><span>ENCRYPTED</span></div>
+</div>
+<div class="page premission-brief-page active" id="page1">
+  <div class="page-eyebrow">// Mission 03 — The Human Shield</div>
+  <div class="page-title">Pre-Mission Brief</div>
+  <div class="content">
+    <div class="mission-params" aria-label="Mission parameters">
+      <div class="mp-cell"><div class="mp-label">// Nova trust</div><div class="mp-value">100%</div></div>
+      <div class="mp-cell"><div class="mp-label">// Files staged</div><div class="mp-value">10</div></div>
+      <div class="mp-cell"><div class="mp-label">// Channels</div><div class="mp-value">3</div></div>
+      <div class="mp-cell"><div class="mp-label">// Queue owner</div><div class="mp-value">Marshall</div></div>
+      <div class="mp-cell"><div class="mp-label">// Outcome</div><div class="mp-value">Nova sign-off</div></div>
+    </div>
+    <div class="brief-grid">
+      <div class="brief-col">
+        <div class="brief-section">
+          <div class="section-label">// Intelligence Brief</div>
+          <div class="brief-card">
+            <div class="brief-scanlines" aria-hidden="true"></div>
+            <div class="encrypted-indicator">
+              <span class="encrypted-dot"></span>
+              NOVA · VOSS — ENCRYPTED CHANNEL
+            </div>
+            <div class="brief-text">
+              <p><strong>NOVA.</strong> I'm not here to slow the op down. I'm here because <strong>the world is not our only stakeholder.</strong></p>
+              <p>If we ship raw employee lists to the press to watch MegaCorp bleed, we become the next headline — the activists who doxxed civilians. <strong>I will not sign a release package that confuses "impact" with "exposure."</strong></p>
+              <p>We are not OMNI. We choose who we hurt.</p>
+              <p><strong>VOSS.</strong> Marshall staged ten files for disclosure. <strong>Same data — different audiences need different channels.</strong> Public Proof Wall for what is safe to show the world. Official filing for what regulators or counsel need under seal. And some material never leaves the vault.</p>
+              <p>Route each file. Nova signs when the <strong>distribution map</strong> matches our ethics — not when we've shown everything we stole.</p>
+              <div class="pullquote">Audience first. Harm second. Headlines last.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="dossier-col">
+        <div class="brief-section">
+          <div class="section-label">// Dossier</div>
+          <div class="dossier-backdrop">
+            <div class="dossier-card">
+              <div class="dc-label">Target</div>
+              <div class="dc-name">MegaCorp</div>
+              <div class="dc-role">Global conglomerate · staged disclosure package · channel politics</div>
+            </div>
+            <div class="dossier-card">
+              <div class="dc-label">Handler</div>
+              <div class="dc-name">Voss</div>
+              <div class="dc-role">Analyst · encrypted channel · mirror stability</div>
+            </div>
+            <div class="dossier-card">
+              <div class="dc-label">Ethics lock</div>
+              <div class="dc-name">Nova</div>
+              <div class="dc-role">Distribution veto · minimum necessary disclosure · trust meter live</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="button-section">
+    <button type="button" class="btn-next btn-next--ghost-premission is-locked" id="btn-continue-r3-brief" disabled onclick="goToMission3Tutorial()"><div class="btn-inner"><span>Continue</span><span class="btn-arrow">→</span></div></button>
+  </div>
+</div>
+</div>
+
+<div id="gp-root" style="display:none">
+<div id="game" style="display:none;flex-direction:column">
+  <div id="hdr">
+    <div class="hdr-left"><i class="fas fa-terminal"></i> MASTERMIND TERMINAL | OPERATION OMNI</div>
+    <div class="hdr-center">MISSION 03 OF 05 / THE HUMAN SHIELD</div>
+    <div class="hdr-right">
+      <span id="nova-trust" class="nt-display nt-green">
+        <span class="nt-icon"><i class="fas fa-user-shield"></i></span>
+        <span id="hdr-trust-pct">100%</span>
+        <span class="nt-bar-wrap"><span id="hdr-trust-bar" class="nt-green" style="width:100%"></span></span>
+        <span class="nt-label">NOVA</span>
+      </span>
+      <span style="color:rgba(0,196,28,.2);margin:0 4px">|</span>
+      <span id="timer">00:00</span>
+      <span class="live-dot"></span><span style="letter-spacing:1px">LIVE</span>
+    </div>
+  </div>
+  <div id="step-banner">Pick a file. Route it to the channel that matches audience + harm profile.</div>
+  <!-- Vault Animation Overlay -->
+  <div id="vault-overlay">
+    <div id="vault-stage">
+      <div id="vault-door-l" class="vault-door">
+        <div class="door-surface">
+          <div class="door-rivet" style="top:18%;right:22px"></div>
+          <div class="door-rivet" style="top:42%;right:22px"></div>
+          <div class="door-rivet" style="top:66%;right:22px"></div>
+          <div class="door-bolt door-bolt-l" id="bolt-l1" style="top:25%"></div>
+          <div class="door-bolt door-bolt-l" id="bolt-l2" style="top:50%"></div>
+          <div class="door-bolt door-bolt-l" id="bolt-l3" style="top:75%"></div>
+          <div class="door-label">OMNI</div>
+        </div>
+      </div>
+      <div id="vault-seam"></div>
+      <div id="vault-door-r" class="vault-door">
+        <div class="door-surface">
+          <div class="door-rivet" style="top:18%;left:22px"></div>
+          <div class="door-rivet" style="top:42%;left:22px"></div>
+          <div class="door-rivet" style="top:66%;left:22px"></div>
+          <div class="door-bolt door-bolt-r" id="bolt-r1" style="top:25%"></div>
+          <div class="door-bolt door-bolt-r" id="bolt-r2" style="top:50%"></div>
+          <div class="door-bolt door-bolt-r" id="bolt-r3" style="top:75%"></div>
+          <div class="door-label">VAULT</div>
+        </div>
+      </div>
+      <div id="vault-light"></div>
+      <div id="vault-status">
+        <div id="vault-status-text">AUTHENTICATING</div>
+        <div id="vault-status-bar"><div id="vault-status-fill"></div></div>
+      </div>
+      <div id="vault-success-text">VAULT UNSEALED</div>
+    </div>
+  </div>
+  <div id="main-row">
+    <div id="desktop-panel">
+      <div id="wallpaper"></div>
+
+      <button type="button" class="di di-interactive di-mission" id="di-data-vault" style="top:22px;left:14px" ondblclick="openDataVaultSafe()" title="Double-click to open">
+        <span class="di-icon"><i class="fas fa-lock"></i></span>
+        <span class="di-label">Data Vault</span>
+      </button>
+      <div class="di di-locked" id="di-disclosure" style="top:106px;left:14px" aria-hidden="true">
+        <span class="di-icon"><i class="fas fa-folder-open"></i></span>
+        <span class="di-label">Disclosure Queue</span>
+      </div>
+      <div class="di di-locked" style="top:190px;left:14px" aria-hidden="true">
+        <span class="di-icon"><i class="fas fa-folder"></i></span>
+        <span class="di-label">HR_Records</span>
+      </div>
+      <div class="di di-locked" style="top:274px;left:14px" aria-hidden="true">
+        <span class="di-icon"><i class="fas fa-chart-bar"></i></span>
+        <span class="di-label">Finance</span>
+      </div>
+      <div class="di di-locked" style="top:358px;left:14px" aria-hidden="true">
+        <span class="di-icon">🗑️</span>
+        <span class="di-label">Recycle Bin</span>
+      </div>
+
+      <div id="vault-door-screen" aria-hidden="true">
+        <div class="vault-open-flash" id="vault-open-flash" aria-hidden="true"></div>
+        <div class="vault-door-hud">
+          <p class="vault-door-hint">Rotate the <strong>combination dial</strong> to set each letter from the breach package, then open the vault.</p>
+          <button type="button" class="vault-door-back" onclick="closeDataVaultSafe()">Back to desktop</button>
+        </div>
+        <div class="vault-scene">
+          <div class="vault-scene-inner" id="vault-scene-inner">
+            <div class="vault-wall" aria-hidden="true"></div>
+            <div class="vault-cavity" id="vault-cavity" aria-hidden="true">
+              <div class="vault-cavity-slot" id="vault-cavity-slot"></div>
+              <div class="vault-cavity-glow" aria-hidden="true"></div>
+            </div>
+            <div class="vault-door-assembly" id="vault-door-assembly">
+              <div class="vault-door-slide" id="vault-door-slide">
+                <div class="vault-door-face" id="vault-door-face">
+                  <div class="vault-rivets" aria-hidden="true"></div>
+                  <div class="vault-lock-mechanism" id="vault-lock-mechanism" aria-hidden="true">
+                    <div class="vault-bolt vault-bolt--tl" id="vault-bolt-tl"></div>
+                    <div class="vault-bolt vault-bolt--bl" id="vault-bolt-bl"></div>
+                    <div class="vault-bolt vault-bolt--mr" id="vault-bolt-mr"></div>
+                  </div>
+                  <div class="vault-combo-wrap" id="vault-combo-wrap" title="Drag or click to rotate — sets active tumbler letter">
+                    <div id="vault-combo-dial">
+                      <div class="vault-combo-bezel" aria-hidden="true"></div>
+                      <div class="vault-combo-ring" aria-hidden="true">
+                        <div class="vault-combo-ticks" aria-hidden="true"></div>
+                        <div class="vault-combo-knob" aria-hidden="true"></div>
+                      </div>
+                      <div class="vault-combo-face" aria-hidden="true"></div>
+                      <div class="vault-combo-letter" id="vault-combo-letter">A</div>
+                    </div>
+                  </div>
+                  <div class="vault-wheel-wrap">
+                    <div id="vault-handwheel">
+                      <svg class="vault-wheel-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <defs>
+                          <radialGradient id="vaultWheelRim" cx="35%" cy="30%" r="70%">
+                            <stop offset="0%" stop-color="#d0d2da"/>
+                            <stop offset="55%" stop-color="#8a8c96"/>
+                            <stop offset="100%" stop-color="#5a5c64"/>
+                          </radialGradient>
+                          <linearGradient id="vaultSpokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#b8bac4"/>
+                            <stop offset="50%" stop-color="#7a7c86"/>
+                            <stop offset="100%" stop-color="#4a4c54"/>
+                          </linearGradient>
+                          <radialGradient id="vaultHubGrad" cx="38%" cy="32%" r="65%">
+                            <stop offset="0%" stop-color="#e4e6ee"/>
+                            <stop offset="60%" stop-color="#9a9ca4"/>
+                            <stop offset="100%" stop-color="#4a4c54"/>
+                          </radialGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="94" fill="url(#vaultWheelRim)" stroke="#4a4c52" stroke-width="2"/>
+                        <g fill="url(#vaultSpokeGrad)" stroke="#3a3c44" stroke-width=".5">
+                          <path d="M100 100 L100 18 A82 82 0 0 1 158 42 Z"/>
+                          <path d="M100 100 L158 42 A82 82 0 0 1 182 100 Z"/>
+                          <path d="M100 100 L182 100 A82 82 0 0 1 158 158 Z"/>
+                          <path d="M100 100 L158 158 A82 82 0 0 1 100 182 Z"/>
+                          <path d="M100 100 L100 182 A82 82 0 0 1 42 158 Z"/>
+                          <path d="M100 100 L42 158 A82 82 0 0 1 18 100 Z"/>
+                          <path d="M100 100 L18 100 A82 82 0 0 1 42 42 Z"/>
+                          <path d="M100 100 L42 42 A82 82 0 0 1 100 18 Z"/>
+                        </g>
+                        <circle cx="100" cy="100" r="34" fill="url(#vaultHubGrad)" stroke="#3a3c44" stroke-width="1.5"/>
+                        <circle cx="100" cy="100" r="14" fill="#2a2c32" stroke="#1a1c22" stroke-width="1"/>
+                        <circle cx="100" cy="100" r="6" fill="#1a1c20"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="vault-hinges" aria-hidden="true">
+                  <div class="vault-hinge"></div>
+                  <div class="vault-hinge"></div>
+                  <div class="vault-hinge"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="vault-tumbler-panel">
+          <div class="vault-tumblers" id="vault-tumblers">
+            <button type="button" class="vault-tumbler active" data-idx="0" id="vault-tumbler-0">·</button>
+            <button type="button" class="vault-tumbler" data-idx="1" id="vault-tumbler-1">·</button>
+            <button type="button" class="vault-tumbler" data-idx="2" id="vault-tumbler-2">·</button>
+            <button type="button" class="vault-tumbler" data-idx="3" id="vault-tumbler-3">·</button>
+          </div>
+          <div class="vault-door-status" id="vault-door-status"></div>
+          <div class="vault-door-actions">
+            <button type="button" class="vault-door-btn vault-door-btn--open" id="vault-door-open" disabled onclick="submitVaultCode()">Turn wheel &amp; open</button>
+          </div>
+        </div>
+        <input type="text" id="vault-safe-input" maxlength="4" autocomplete="off" aria-label="Vault combination (keyboard)" tabindex="-1" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none">
+      </div>
+
+      <div id="xp-taskbar">
+        <button type="button" id="start-btn">⊞ Start</button>
+        <div class="tb-div"></div>
+        <button type="button" class="tb-wb" id="tbw-vault" ondblclick="openDataVaultSafe()"><i class="fas fa-lock"></i> Data Vault</button>
+        <div id="tb-clock"></div>
+      </div>
+
+      <!-- Legacy XP modal (unused in main path) -->
+      <div id="vault-access-modal">
+        <div class="vault-xp-tb">
+          <div class="vault-xp-title"><span class="vault-xp-icon">🔐</span>Marshall's Vault Access</div>
+        </div>
+        <div class="vault-modal-content">
+          <div class="vault-modal-title">Enter Access Code</div>
+          <div class="vault-modal-subtitle">Security Protocol</div>
+          <input type="text" id="vault-code-input-modal" maxlength="4" placeholder="____" autocomplete="off">
+          <div class="vault-modal-status" id="vault-modal-status"></div>
+          <button type="button" class="vault-modal-btn" id="vault-modal-btn" disabled>UNLOCK</button>
+        </div>
+      </div>
+      <div class="r2-layout">
+        <div class="r2-router">
+          <div class="r2-r-hdr">STAGED FOR DISCLOSURE</div>
+          <div id="r3-file-list"></div>
+        </div>
+        <div class="r2-inspector">
+          <div class="r2-ins-hdr" id="r3-ins-hdr">INSPECTOR — Select a file</div>
+          <div class="r2-ins-body" id="r3-ins-body"><span style="color:#5a6a7a">Open a file and read what’s in it — then pick the channel that fits <strong>audience</strong> and <strong>harm</strong>, not a label.</span></div>
+          <div class="ch-bar" id="ch-bar" style="display:none">
+            <span>Assign release channel:</span>
+            <div class="ch-row">
+              <button type="button" class="ch-btn ch-public" id="ch-public" onclick="assignChannel('public')"><i class="fas fa-bullhorn"></i> PUBLIC WALL</button>
+              <button type="button" class="ch-btn ch-official" id="ch-official" onclick="assignChannel('official')"><i class="fas fa-landmark"></i> OFFICIAL FILING</button>
+              <button type="button" class="ch-btn ch-vault" id="ch-vault" onclick="assignChannel('vault')"><i class="fas fa-lock"></i> NO RELEASE</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="nexus-taskbar">DISTRIBUTION MATRIX · Audience-separated · Pre-release</div>
+      <div id="hack-overlay">
+        <span class="ht ht-g" id="ht1">OPERATION OMNI — ROUND 03 OF 05</span><br>
+        <span class="ht ht-g" id="ht2">BREACH VECTOR — MARSHALL.DESKTOP</span><br><br>
+        <span class="ht" id="ht3">Session: <span class="ht-a">RDP_MIRROR_ACTIVE</span></span><br>
+        <span class="ht" id="ht4">Vault: <span class="ht-r">LOCKED</span> · Queue: <span class="ht-o">ENCRYPTED</span></span><br>
+        <span class="ht ht-o" id="ht5">⚠  4-LETTER COMBO REQUIRED TO PROCEED</span><br>
+        <span class="ht" id="ht6">Bypass: <span class="ht-g">IN PROGRESS</span></span><br>
+        <span class="ht" id="ht7"><span class="ht-cur"></span></span>
+      </div>
+    </div>
+    <div id="right">
+      <div id="dist-panel">
+        <div class="dist-hdr">
+          <div class="dist-title">DISTRIBUTION MAP</div>
+          <div class="dist-sub">WHERE EACH FILE IS SLATED TO GO</div>
+        </div>
+        <div class="dist-cols">
+          <div class="dist-col public" id="col-public">
+            <div class="dist-col-h">PUBLIC</div>
+          </div>
+          <div class="dist-col official" id="col-official">
+            <div class="dist-col-h">OFFICIAL</div>
+          </div>
+          <div class="dist-col vault" id="col-vault">
+            <div class="dist-col-h">NO REL.</div>
+          </div>
+        </div>
+        <div id="routed-count" style="font-size:clamp(10px,1vw,12px);color:var(--purple-light);margin-top:4px">Routed: 0 / 10</div>
+        <button type="button" id="signoff-btn" disabled onclick="requestSignOff()">REQUEST NOVA SIGN-OFF</button>
+      </div>
+      <div id="broker-wrap">
+        <div class="broker-hdr">
+          <div class="bk-avatar"><i class="fas fa-shield-halved"></i></div>
+          <div style="flex:1;min-width:0">
+            <div class="bk-name">Operation Channel</div>
+            <div class="bk-members" id="bk-members">
+              <span class="bk-member online">Voss — 🟢</span><span class="bk-sep"> · </span>
+              <span class="bk-member online">Zex — 🟢</span><span class="bk-sep"> · </span>
+              <span class="bk-member online">Nova — 🟢</span>
+            </div>
+          </div>
+          <div class="bk-icons"><i class="fas fa-lock"></i></div>
+        </div>
+        <div id="broker-body"><div class="bm-sep"><div class="bm-sep-pill">Staging</div></div></div>
+        <div class="broker-footer">
+          <div class="broker-input-bar">
+            <div class="hint-wrap">
+              <button type="button" id="hint-btn" onclick="requestHint()"><i class="fas fa-lightbulb"></i></button>
+              <div class="hint-tooltip">Hint · −$2,500</div>
+            </div>
+            <input id="broker-input" type="text" placeholder="Operation Channel — listen only" disabled>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="signoff-overlay">
+  <pre id="signoff-term"></pre>
+</div>
+
+<div id="debrief-screen">
+  <div class="db-header">
+    <div class="deb-eyebrow" id="deb-eyebrow">// Mission 03</div>
+    <div class="deb-title" id="deb-title">THE HUMAN SHIELD</div>
+  </div>
+  <div class="db-main">
+    <div class="db-panel">
+      <div class="db-panel-label">// MISSION REPORT</div>
+      <div class="mr-metrics" id="mr-metrics"></div>
+      <div class="mr-detect" id="mr-detect"></div>
+    </div>
+    <div class="db-panel">
+      <div class="db-panel-label" id="deb-tradecraft-label">// TRADECRAFT — NOVA · VOSS</div>
+      <div class="tc-content" id="tc-content"></div>
+    </div>
+  </div>
+  <div class="db-cta-row" id="cta-row">
+    <button type="button" class="db-cta" onclick="nextRound()">CONTINUE TO MISSION 4 — THE ONBOARDING →</button>
+  </div>
+</div>
+</div>
+
+<script src="m3-routing-shared.js"></script>
+<script>
+'use strict';
+
+const GS = {
+  budget: 50000, budgetStart: 50000,
+  novaTrust: 100,
+  assigned: {},
+  selectedId: null,
+  hackDone: false,
+  signOffStarted: false,
+  timerSec: 0, timerInt: null,
+  wrongRoutes: 0,
+  catastrophic: 0,
+  hintsUsed: 0, hintCooldown: false
+};
+
+function updateClock() {
+  const el = document.getElementById('clock');
+  if (el) el.textContent = new Date().toTimeString().slice(0, 8);
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+function wireContinueDelayR3() {
+  const btn = document.getElementById('btn-continue-r3-brief');
+  if (!btn) return;
+  setTimeout(function () {
+    btn.classList.remove('is-locked');
+    btn.disabled = false;
+  }, 3000);
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireContinueDelayR3);
+else wireContinueDelayR3();
+
+// VAULT ACCESS SYSTEM
+let VAULT_CODE = 'OMNI';
+let _vaultSafeWired = false;
+const VAULT_DIAL_LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+let vaultTumblerLetters = ['A', 'A', 'A', 'A'];
+let vaultActiveTumbler = 0;
+let vaultDialIndex = 0;
+let _vaultDialDragging = false;
+let _vaultDialStartAngle = 0;
+let _vaultDialStartIndex = 0;
+
+function prepGameShellForHack() {
+  const intro = document.getElementById('intro-root');
+  if (intro) {
+    intro.style.display = 'none';
+    intro.style.visibility = 'hidden';
+    intro.style.opacity = '';
+  }
+
+  document.documentElement.classList.add('gp-html-active');
+  document.body.classList.add('gp-gameplay-active', 'r3-pre', 'r3-desktop', 'r3-hack-active');
+  document.body.classList.remove('r3-routing', 'vault-open');
+
+  const gp = document.getElementById('gp-root');
+  const game = document.getElementById('game');
+  if (gp) { gp.style.display = 'block'; gp.style.opacity = '1'; }
+  if (game) game.style.display = 'flex';
+
+  const layout = document.querySelector('.r2-layout');
+  if (layout) layout.style.display = 'none';
+
+  const wallpaper = document.getElementById('wallpaper');
+  if (wallpaper) wallpaper.classList.remove('visible');
+  document.querySelectorAll('#desktop-panel .di').forEach(function (el) {
+    el.classList.remove('visible');
+  });
+  const xptb = document.getElementById('xp-taskbar');
+  if (xptb) xptb.classList.remove('visible');
+
+  const banner = document.getElementById('step-banner');
+  if (banner) banner.textContent = 'Establishing secure connection…';
+}
+
+const M3_TUTORIAL_URL = 'Mission 3 Tutorial.html';
+
+function goToMission3Tutorial() {
+  const btn = document.getElementById('btn-continue-r3-brief');
+  const intro = document.getElementById('intro-root');
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add('is-locked');
+  }
+  try { sessionStorage.setItem('m3TutorialEnter', '1'); } catch (_) {}
+
+  if (!intro || typeof gsap === 'undefined') {
+    window.location.href = M3_TUTORIAL_URL;
+    return;
+  }
+
+  const reduced = typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduced) {
+    intro.style.opacity = '0';
+    setTimeout(function () { window.location.href = M3_TUTORIAL_URL; }, 180);
+    return;
+  }
+
+  gsap.to(intro, {
+    opacity: 0,
+    y: -14,
+    duration: 0.42,
+    ease: 'power2.in',
+    onComplete: function () { window.location.href = M3_TUTORIAL_URL; }
+  });
+}
+
+function goToMarshallDesktop() {
+  const btn = document.getElementById('btn-continue-r3-brief');
+  const intro = document.getElementById('intro-root');
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add('is-locked');
+  }
+
+  function launchHack() {
+    prepGameShellForHack();
+    runHackSequence(function () { startMarshallDesktop(true); });
+  }
+
+  if (intro && typeof gsap !== 'undefined') {
+    gsap.to(intro, {
+      opacity: 0,
+      duration: 0.4,
+      ease: 'power2.in',
+      onComplete: launchHack
+    });
+    return;
+  }
+  launchHack();
+}
+
+/** Marshall XP desktop — Data Vault icon → vault door → routing. */
+function startMarshallDesktop(skipIntroFade) {
+  document.body.classList.remove('r3-hack-active');
+
+  const wallpaper = document.getElementById('wallpaper');
+  if (wallpaper) wallpaper.classList.add('visible');
+
+  document.querySelectorAll('#desktop-panel .di').forEach(function (el) {
+    el.classList.add('visible');
+  });
+  const xptb = document.getElementById('xp-taskbar');
+  if (xptb) xptb.classList.add('visible');
+
+  const layout = document.querySelector('.r2-layout');
+  if (layout) layout.style.display = 'none';
+
+  const banner = document.getElementById('step-banner');
+  if (banner) banner.textContent = 'Marshall\'s desktop — double-click Data Vault to unlock the disclosure queue.';
+
+  wireVaultSafeInput();
+  updateTbClock();
+  if (!window._r3TbClockInt) {
+    window._r3TbClockInt = setInterval(updateTbClock, 30000);
+  }
+
+  setTimeout(function () {
+    novaSay('Marshall left a vault on his mirror. Double-click <strong>Data Vault</strong> and enter the breach code.');
+  }, skipIntroFade ? 500 : 800);
+}
+
+function updateTbClock() {
+  const el = document.getElementById('tb-clock');
+  if (!el) return;
+  const d = new Date();
+  el.textContent = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function vaultLetterIndex(ch) {
+  const i = VAULT_DIAL_LETTERS.indexOf((ch || 'A').toUpperCase());
+  return i >= 0 ? i : 0;
+}
+
+function vaultSetDialIndex(idx) {
+  vaultDialIndex = ((idx % 26) + 26) % 26;
+  const letter = VAULT_DIAL_LETTERS[vaultDialIndex];
+  vaultTumblerLetters[vaultActiveTumbler] = letter;
+  const comboLetter = document.getElementById('vault-combo-letter');
+  const ring = document.querySelector('#vault-combo-dial .vault-combo-ring');
+  const rot = (vaultDialIndex * (360 / 26)) + 'deg';
+  if (comboLetter) comboLetter.textContent = letter;
+  if (ring) ring.style.transform = 'rotate(' + rot + ')';
+  refreshVaultTumblerUI();
+}
+
+function refreshVaultTumblerUI() {
+  const code = vaultTumblerLetters.join('');
+  for (let i = 0; i < 4; i++) {
+    const el = document.getElementById('vault-tumbler-' + i);
+    if (!el) continue;
+    const letter = vaultTumblerLetters[i];
+    el.textContent = letter;
+    el.classList.toggle('active', i === vaultActiveTumbler);
+    el.classList.toggle('filled', !!letter);
+    el.classList.toggle('correct', letter === VAULT_CODE[i]);
+  }
+  const openBtn = document.getElementById('vault-door-open');
+  if (openBtn) openBtn.disabled = code.length !== 4;
+  const input = document.getElementById('vault-safe-input');
+  if (input) input.value = code;
+}
+
+function restoreGameplayToDesktop() {
+  const layout = document.querySelector('.r2-layout');
+  const desktop = document.getElementById('desktop-panel');
+  const cavity = document.getElementById('vault-cavity');
+  const anchor = document.getElementById('vault-door-screen');
+  if (!layout || !desktop) return;
+  layout.classList.remove('vault-inside-reveal');
+  if (cavity) cavity.classList.remove('has-gameplay');
+  if (layout.parentElement !== desktop) {
+    if (anchor && anchor.parentElement === desktop) {
+      desktop.insertBefore(layout, anchor);
+    } else {
+      desktop.appendChild(layout);
+    }
+  }
+}
+
+function hideMarshallDesktopChrome() {
+  const wallpaper = document.getElementById('wallpaper');
+  if (wallpaper) wallpaper.classList.remove('visible');
+  document.querySelectorAll('#desktop-panel .di').forEach(function (el) {
+    el.classList.remove('visible');
+  });
+}
+
+function mountGameplayBehindVaultDoor() {
+  const slot = document.getElementById('vault-cavity-slot');
+  const layout = document.querySelector('.r2-layout');
+  const cavity = document.getElementById('vault-cavity');
+  if (!slot || !layout) return;
+  hideMarshallDesktopChrome();
+  GS.hackDone = true;
+  layout.classList.add('vault-inside-reveal');
+  slot.appendChild(layout);
+  if (cavity) cavity.classList.add('has-gameplay');
+  if (!GS.timerInt) startTimer();
+  buildFileList();
+}
+
+function resetVaultDoorState() {
+  vaultTumblerLetters = ['A', 'A', 'A', 'A'];
+  vaultActiveTumbler = 0;
+  vaultDialIndex = 0;
+  restoreGameplayToDesktop();
+  const slide = document.getElementById('vault-door-slide');
+  const handwheel = document.getElementById('vault-handwheel');
+  const cavity = document.getElementById('vault-cavity');
+  const screen = document.getElementById('vault-door-screen');
+  const comboWrap = document.getElementById('vault-combo-wrap');
+  const scene = document.getElementById('vault-scene-inner');
+  const wall = scene ? scene.querySelector('.vault-wall') : null;
+  const flash = document.getElementById('vault-open-flash');
+
+  if (screen) {
+    screen.classList.remove('is-opening');
+    if (typeof gsap !== 'undefined') gsap.set(screen, { opacity: 1 });
+    else screen.style.opacity = '';
+  }
+  if (flash && typeof gsap !== 'undefined') gsap.set(flash, { opacity: 0 });
+  if (wall && typeof gsap !== 'undefined') gsap.set(wall, { opacity: 1 });
+  if (comboWrap) comboWrap.classList.remove('locked');
+  if (scene) {
+    scene.classList.remove('shake', 'vault-bolts-out');
+  }
+  if (cavity) {
+    cavity.classList.remove('lit');
+    if (typeof gsap !== 'undefined') {
+      gsap.set(cavity, { opacity: 0, scale: 0.96, clearProps: 'opacity,transform' });
+    } else {
+      cavity.style.opacity = '';
+      cavity.style.transform = '';
+    }
+  }
+  if (typeof gsap !== 'undefined') {
+    if (slide) gsap.set(slide, { xPercent: 0, clearProps: 'transform' });
+    if (handwheel) gsap.set(handwheel, { rotation: 0, clearProps: 'transform' });
+  } else {
+    if (slide) slide.style.transform = '';
+    if (handwheel) handwheel.style.transform = '';
+  }
+  const ring = document.querySelector('#vault-combo-dial .vault-combo-ring');
+  if (ring) ring.style.transform = '';
+  vaultSetDialIndex(0);
+  const status = document.getElementById('vault-door-status');
+  if (status) status.textContent = '';
+}
+
+function wireVaultSafeInput() {
+  if (_vaultSafeWired) return;
+  _vaultSafeWired = true;
+
+  document.querySelectorAll('.vault-tumbler').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (document.getElementById('vault-door-screen')?.classList.contains('is-opening')) return;
+      vaultActiveTumbler = parseInt(btn.getAttribute('data-idx'), 10) || 0;
+      vaultDialIndex = vaultLetterIndex(vaultTumblerLetters[vaultActiveTumbler]);
+      vaultSetDialIndex(vaultDialIndex);
+    });
+  });
+
+  const comboWrap = document.getElementById('vault-combo-wrap');
+  const dial = document.getElementById('vault-combo-dial');
+  if (comboWrap && dial) {
+    comboWrap.addEventListener('click', function (e) {
+      if (comboWrap.classList.contains('locked')) return;
+      if (_vaultDialDragging) return;
+      const rect = comboWrap.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const angle = Math.atan2(e.clientY - cy, e.clientX - cx) * (180 / Math.PI);
+      const step = Math.round(((angle + 90) / 360) * 26) % 26;
+      vaultSetDialIndex(step);
+    });
+
+    function dialPointerDown(e) {
+      if (comboWrap.classList.contains('locked')) return;
+      _vaultDialDragging = true;
+      const rect = comboWrap.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      _vaultDialStartAngle = Math.atan2(e.clientY - cy, e.clientX - cx);
+      _vaultDialStartIndex = vaultDialIndex;
+      e.preventDefault();
+    }
+    function dialPointerMove(e) {
+      if (!_vaultDialDragging) return;
+      const rect = comboWrap.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const angle = Math.atan2(e.clientY - cy, e.clientX - cx);
+      const delta = angle - _vaultDialStartAngle;
+      const steps = Math.round((delta / (2 * Math.PI)) * 26);
+      vaultSetDialIndex(_vaultDialStartIndex + steps);
+    }
+    function dialPointerUp() { _vaultDialDragging = false; }
+
+    comboWrap.addEventListener('mousedown', dialPointerDown);
+    window.addEventListener('mousemove', dialPointerMove);
+    window.addEventListener('mouseup', dialPointerUp);
+    comboWrap.addEventListener('touchstart', function (e) { dialPointerDown(e.touches[0]); }, { passive: false });
+    window.addEventListener('touchmove', function (e) { if (_vaultDialDragging) { dialPointerMove(e.touches[0]); e.preventDefault(); } }, { passive: false });
+    window.addEventListener('touchend', dialPointerUp);
+  }
+
+  const input = document.getElementById('vault-safe-input');
+  const openBtn = document.getElementById('vault-door-open');
+  if (input) {
+    input.addEventListener('input', function () {
+      const val = input.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4);
+      input.value = val;
+      for (let i = 0; i < 4; i++) vaultTumblerLetters[i] = val[i] || 'A';
+      vaultActiveTumbler = Math.min(val.length, 3);
+      vaultDialIndex = vaultLetterIndex(vaultTumblerLetters[vaultActiveTumbler]);
+      vaultSetDialIndex(vaultDialIndex);
+      const status = document.getElementById('vault-door-status');
+      const scene = document.getElementById('vault-scene-inner');
+      if (scene) scene.classList.remove('shake');
+      if (status) status.textContent = '';
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && openBtn && !openBtn.disabled) submitVaultCode();
+      if (e.key === 'Escape') closeDataVaultSafe();
+      if (e.key === 'ArrowLeft') {
+        vaultActiveTumbler = Math.max(0, vaultActiveTumbler - 1);
+        vaultDialIndex = vaultLetterIndex(vaultTumblerLetters[vaultActiveTumbler]);
+        vaultSetDialIndex(vaultDialIndex);
+        e.preventDefault();
+      }
+      if (e.key === 'ArrowRight') {
+        vaultActiveTumbler = Math.min(3, vaultActiveTumbler + 1);
+        vaultDialIndex = vaultLetterIndex(vaultTumblerLetters[vaultActiveTumbler]);
+        vaultSetDialIndex(vaultDialIndex);
+        e.preventDefault();
+      }
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        const delta = e.key === 'ArrowUp' ? 1 : -1;
+        vaultSetDialIndex(vaultDialIndex + delta);
+        e.preventDefault();
+      }
+    });
+  }
+}
+
+function openDataVaultSafe() {
+  if (!document.body.classList.contains('r3-desktop') || GS.hackDone) return;
+  const screen = document.getElementById('vault-door-screen');
+  const input = document.getElementById('vault-safe-input');
+  if (!screen) return;
+
+  screen.classList.add('active');
+  screen.setAttribute('aria-hidden', 'false');
+  screen.classList.remove('is-opening');
+  if (typeof gsap !== 'undefined') gsap.set(screen, { opacity: 1 });
+  else screen.style.opacity = '1';
+  document.body.classList.add('vault-open');
+  if (input) { input.value = ''; input.disabled = false; }
+  resetVaultDoorState();
+  setTimeout(function () { if (input) input.focus(); }, 120);
+}
+
+function closeDataVaultSafe() {
+  const screen = document.getElementById('vault-door-screen');
+  if (screen && screen.classList.contains('is-opening')) return;
+  if (screen) {
+    screen.classList.remove('active', 'is-opening');
+    screen.setAttribute('aria-hidden', 'true');
+  }
+  document.body.classList.remove('vault-open');
+}
+
+function submitVaultCode() {
+  const status = document.getElementById('vault-door-status');
+  const openBtn = document.getElementById('vault-door-open');
+  const scene = document.getElementById('vault-scene-inner');
+  const input = document.getElementById('vault-safe-input');
+  const val = vaultTumblerLetters.join('').toUpperCase();
+
+  if (val === VAULT_CODE) {
+    if (status) {
+      status.textContent = '✓ Combination correct — opening vault…';
+      status.style.color = 'rgba(0,196,28,.9)';
+    }
+    if (openBtn) openBtn.disabled = true;
+    if (input) input.disabled = true;
+    playVaultDoorOpenSequence();
+    return;
+  }
+
+  if (scene) {
+    scene.classList.add('shake');
+    setTimeout(function () { scene.classList.remove('shake'); }, 450);
+  }
+  if (status) {
+    status.textContent = '✗ Invalid combination — try again';
+    status.style.color = 'rgba(255,64,64,.85)';
+  }
+  vaultTumblerLetters = ['A', 'A', 'A', 'A'];
+  vaultActiveTumbler = 0;
+  vaultSetDialIndex(0);
+}
+
+function playVaultDoorOpenSequence() {
+  const screen = document.getElementById('vault-door-screen');
+  const scene = document.getElementById('vault-scene-inner');
+  const wall = scene ? scene.querySelector('.vault-wall') : null;
+  const slide = document.getElementById('vault-door-slide');
+  const comboWrap = document.getElementById('vault-combo-wrap');
+  const handwheel = document.getElementById('vault-handwheel');
+  const cavity = document.getElementById('vault-cavity');
+  const flash = document.getElementById('vault-open-flash');
+
+  if (!screen || !slide) {
+    closeDataVaultSafe();
+    continueAfterVault();
+    return;
+  }
+
+  screen.classList.add('is-opening');
+  if (comboWrap) comboWrap.classList.add('locked');
+
+  const reduced = typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const layout = document.querySelector('.r2-layout');
+  const right = document.getElementById('right');
+
+  function prepGameplayFadeIn() {
+    hideMarshallDesktopChrome();
+    restoreGameplayToDesktop();
+    document.body.classList.remove('vault-open', 'r3-pre', 'r3-desktop');
+    document.body.classList.add('r3-routing');
+    GS.hackDone = true;
+    if (layout) {
+      layout.style.display = 'flex';
+      if (typeof gsap !== 'undefined') gsap.set(layout, { opacity: 0 });
+      else layout.style.opacity = '0';
+    }
+    if (right) {
+      if (typeof gsap !== 'undefined') gsap.set(right, { opacity: 0 });
+      else right.style.opacity = '0';
+    }
+  }
+
+  function finishOpen() {
+    resetVaultDoorState();
+    screen.classList.remove('active', 'is-opening');
+    screen.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('vault-open');
+    if (layout && typeof gsap !== 'undefined') gsap.set(layout, { clearProps: 'opacity' });
+    else if (layout) layout.style.opacity = '';
+    if (right && typeof gsap !== 'undefined') gsap.set(right, { clearProps: 'opacity' });
+    else if (right) right.style.opacity = '';
+    continueAfterVault();
+  }
+
+  function runGameplayFadeIn(onDone) {
+    prepGameplayFadeIn();
+    if (typeof gsap === 'undefined') {
+      if (layout) layout.style.opacity = '1';
+      if (right) right.style.opacity = '1';
+      if (screen) screen.style.opacity = '0';
+      onDone();
+      return;
+    }
+    if (screen) gsap.set(screen, { opacity: 1 });
+    const fadeTl = gsap.timeline({ onComplete: onDone });
+    fadeTl.to(screen, { opacity: 0, duration: 0.45, ease: 'power2.inOut' }, 0);
+    if (wall) fadeTl.to(wall, { opacity: 0, duration: 0.4, ease: 'power2.in' }, 0);
+    if (layout) fadeTl.to(layout, { opacity: 1, duration: 0.75, ease: 'power2.out' }, 0.08);
+    if (right) fadeTl.to(right, { opacity: 1, duration: 0.7, ease: 'power2.out' }, 0.12);
+  }
+
+  if (typeof gsap === 'undefined' || reduced) {
+    scene.classList.add('vault-bolts-out');
+    mountGameplayBehindVaultDoor();
+    if (cavity) cavity.classList.add('lit');
+    slide.style.transform = 'translateX(-108%)';
+    setTimeout(function () {
+      runGameplayFadeIn(finishOpen);
+    }, reduced ? 500 : 900);
+    return;
+  }
+
+  gsap.set(slide, { xPercent: 0 });
+  gsap.set(handwheel, { rotation: 0 });
+  gsap.set(cavity, { opacity: 0, scale: 0.98 });
+  if (wall) gsap.set(wall, { opacity: 1 });
+  if (flash) gsap.set(flash, { opacity: 0 });
+  if (screen) gsap.set(screen, { opacity: 1 });
+  scene.classList.remove('vault-bolts-out');
+  if (cavity) cavity.classList.remove('lit', 'has-gameplay');
+  restoreGameplayToDesktop();
+
+  const tl = gsap.timeline();
+
+  tl.to(handwheel, { rotation: 720, duration: 1.5, ease: 'power2.inOut' }, 0.1);
+  tl.call(function () { scene.classList.add('vault-bolts-out'); }, null, 0.55);
+
+  /* Mount routing UI inside vault before the door moves */
+  tl.call(mountGameplayBehindVaultDoor, null, 0.68);
+  tl.to(cavity, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }, 0.68);
+  tl.call(function () { if (cavity) cavity.classList.add('lit'); }, null, 0.72);
+
+  /* Door slides left — reveals Mission 3 gameplay behind it */
+  tl.to(slide, { xPercent: -108, duration: 1.2, ease: 'power3.inOut' }, 0.82);
+
+  if (flash) {
+    tl.to(flash, { opacity: 0.35, duration: 0.3, ease: 'power2.out' }, 0.9)
+      .to(flash, { opacity: 0, duration: 0.35, ease: 'power2.in' }, 1.35);
+  }
+
+  /* Brief hold once vault is fully open, then fade into full mission layout */
+  tl.to({}, { duration: 0.42 }, 2.05);
+  tl.call(function () { runGameplayFadeIn(finishOpen); }, null, 2.47);
+}
+
+function triggerVaultAnimationInGame() {
+  const doorScreen = document.getElementById('vault-door-screen');
+  if (doorScreen && doorScreen.classList.contains('active')) {
+    playVaultDoorOpenSequence();
+    return;
+  }
+  continueAfterVault();
+}
+
+function startTimer() {
+  GS.timerInt = setInterval(() => {
+    GS.timerSec++;
+    const m = String(Math.floor(GS.timerSec / 60)).padStart(2, '0');
+    const s = String(GS.timerSec % 60).padStart(2, '0');
+    const t = document.getElementById('timer');
+    if (t) t.textContent = m + ':' + s;
+  }, 1000);
+}
+
+function runHackSequence(onComplete) {
+  const ho = document.getElementById('hack-overlay');
+  if (!ho) {
+    if (onComplete) onComplete();
+    return;
+  }
+
+  ['ht1', 'ht2', 'ht3', 'ht4', 'ht5', 'ht6', 'ht7'].forEach(function (id) {
+    const e = document.getElementById(id);
+    if (e) e.classList.remove('show');
+  });
+  const ht7 = document.getElementById('ht7');
+  if (ht7) ht7.innerHTML = '<span class="ht-cur"></span>';
+
+  ho.classList.add('active');
+  ho.style.opacity = '1';
+  ho.style.transition = '';
+
+  const delays = [260, 520, 780, 1040, 1300, 1560, 1820];
+  ['ht1', 'ht2', 'ht3', 'ht4', 'ht5', 'ht6', 'ht7'].forEach(function (id, i) {
+    setTimeout(function () {
+      const e = document.getElementById(id);
+      if (e) e.classList.add('show');
+    }, delays[i]);
+  });
+
+  setTimeout(function () {
+    if (ht7) {
+      ht7.innerHTML = '<span class="ht-g">MARSHALL.DESKTOP — ONLINE</span>';
+      ht7.classList.add('show');
+    }
+  }, 2200);
+
+  setTimeout(function () {
+    ho.style.transition = 'opacity 0.7s ease';
+    ho.style.opacity = '0';
+    setTimeout(function () {
+      ho.classList.remove('active');
+      ho.style.opacity = '';
+      ho.style.transition = '';
+      if (onComplete) onComplete();
+    }, 720);
+  }, 3200);
+}
+
+function revealStaging() {
+  GS.hackDone = true;
+  setTimeout(() => novaSay(
+    "Marshall got you a key to the vault. Put it in and we can start routing."
+  ), 400);
+  setTimeout(() => showVaultAccessModal(), 600);
+  setTimeout(() => brokerSay(
+    'Ten files. Three channels — public wall, official filing, or no release. Read harm profile before you route.',
+    'bm-d'
+  ), 2200);
+  setTimeout(() => zexSay(
+    'Hardest part isn\'t getting the data. It\'s acting like we have standards after we broke in. Route.'
+  ), 4200);
+}
+
+function showVaultAccessModal() {
+  const modal = document.getElementById('vault-access-modal');
+  const input = document.getElementById('vault-code-input-modal');
+  const btn = document.getElementById('vault-modal-btn');
+  const status = document.getElementById('vault-modal-status');
+  if (!modal || !input) return;
+  
+  const layout = document.querySelector('.r2-layout');
+  if (layout) layout.style.display = 'none';
+  
+  novaSay("Marshall got you a key to the vault. Put it in and we can start routing.");
+  
+  setTimeout(() => {
+    modal.classList.add('active');
+    input.focus();
+    
+    const newInput = input.cloneNode(true);
+    input.parentNode.replaceChild(newInput, input);
+    const newBtn = btn.cloneNode(true);
+    btn.parentNode.replaceChild(newBtn, btn);
+    
+    const freshInput = document.getElementById('vault-code-input-modal');
+    const freshBtn = document.getElementById('vault-modal-btn');
+    const freshStatus = document.getElementById('vault-modal-status');
+    
+    freshInput.addEventListener('input', (e) => {
+      const val = e.target.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4);
+      freshInput.value = val;
+      freshBtn.disabled = val.length !== 4;
+      if (freshInput.classList.contains('error')) {
+        freshInput.classList.remove('error');
+        freshStatus.textContent = '';
+      }
+    });
+    
+    freshBtn.addEventListener('click', () => {
+      if (freshInput.value.toUpperCase() === 'OMNI') {
+        freshInput.classList.add('success');
+        freshBtn.disabled = true;
+        freshStatus.textContent = '✓ Vault unlocked';
+        freshStatus.style.color = '#008000';
+        setTimeout(() => triggerVaultAnimationInGame(), 300);
+      } else {
+        freshInput.classList.add('error');
+        freshInput.value = '';
+        freshStatus.textContent = '✗ Invalid code';
+        freshStatus.style.color = '#ff0000';
+        freshBtn.disabled = true;
+        setTimeout(() => { freshBtn.disabled = false; }, 800);
+      }
+    });
+    
+    freshInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !freshBtn.disabled) freshBtn.click();
+    });
+    
+    freshInput.focus();
+  }, 400);
+}
+
+function continueAfterVault() {
+  GS.hackDone = true;
+  document.body.classList.remove('r3-pre', 'r3-desktop');
+  document.body.classList.add('r3-routing');
+  hideMarshallDesktopChrome();
+
+  const xptb = document.getElementById('xp-taskbar');
+  if (xptb) xptb.classList.remove('visible');
+
+  const vaultIcon = document.getElementById('di-data-vault');
+  if (vaultIcon) {
+    vaultIcon.classList.remove('di-mission');
+    vaultIcon.classList.add('di-locked');
+    vaultIcon.disabled = true;
+    vaultIcon.style.pointerEvents = 'none';
+  }
+  const discIcon = document.getElementById('di-disclosure');
+  if (discIcon) {
+    discIcon.classList.remove('di-locked');
+    discIcon.classList.add('di-interactive');
+  }
+
+  const layout = document.querySelector('.r2-layout');
+  if (layout) layout.style.display = 'flex';
+
+  const banner = document.getElementById('step-banner');
+  if (banner) banner.textContent = 'Pick a file. Route it to the channel that matches audience + harm profile.';
+
+  if (!GS.timerInt) startTimer();
+  if (!document.querySelector('.r2-file')) buildFileList();
+
+  setTimeout(() => brokerSay(
+    'Ten files. Three channels — public wall, official filing, or no release. Read harm profile before you route.',
+    'bm-d'
+  ), 400);
+  setTimeout(() => zexSay(
+    'Hardest part isn\'t getting the data. It\'s acting like we have standards after we broke in. Route.'
+  ), 2200);
+}
+
+function buildFileList() {
+  const list = document.getElementById('r3-file-list');
+  list.innerHTML = '';
+  DATASETS.forEach(ds => {
+    const row = document.createElement('div');
+    row.className = 'r2-file';
+    row.dataset.id = ds.id;
+    row.innerHTML = '<span>📄</span><span>' + ds.file + '</span>';
+    row.onclick = () => selectDataset(ds.id);
+    list.appendChild(row);
+  });
+}
+
+function selectDataset(id) {
+  if (!GS.hackDone) return;
+  GS.selectedId = id;
+  document.querySelectorAll('.r2-file').forEach(el => {
+    el.classList.toggle('sel', el.dataset.id === id);
+    el.classList.toggle('done', !!GS.assigned[el.dataset.id]);
+  });
+  const ds = DATASETS.find(d => d.id === id);
+  if (!ds) return;
+  document.getElementById('r3-ins-hdr').textContent = 'INSPECTOR — ' + ds.file;
+  document.getElementById('r3-ins-body').innerHTML = getDocumentPreview(id);
+  const bar = document.getElementById('ch-bar');
+  bar.style.display = 'flex';
+  const locked = !!GS.assigned[id];
+  ['ch-public', 'ch-official', 'ch-vault'].forEach(bid => {
+    const b = document.getElementById(bid);
+    if (b) b.disabled = locked;
+  });
+  if (locked) {
+    setBanner('Routed to ' + CHANNEL[GS.assigned[id]] + '. Select another file.');
+  } else {
+    setBanner('Choose PUBLIC (press), OFFICIAL (regulators/counsel), or NO RELEASE (vault).');
+  }
+}
+
+function setBanner(msg) {
+  const el = document.getElementById('step-banner');
+  if (el) el.textContent = msg;
+}
+
+function trustDelta(correct, choice) {
+  if (choice === correct) return { d: 0, catastrophic: false };
+  if (correct === 'vault' && choice === 'public') return { d: -42, catastrophic: true };
+  if (correct === 'official' && choice === 'public') return { d: -30, catastrophic: false };
+  if (correct === 'vault' && choice === 'official') return { d: -18, catastrophic: false };
+  if (correct === 'public' && choice === 'vault') return { d: -12, catastrophic: false };
+  if (correct === 'public' && choice === 'official') return { d: -10, catastrophic: false };
+  if (correct === 'official' && choice === 'vault') return { d: -10, catastrophic: false };
+  return { d: -10, catastrophic: false };
+}
+
+function shortName(f) {
+  return f.length > 22 ? f.slice(0, 20) + '…' : f;
+}
+
+function assignChannel(choice) {
+  const id = GS.selectedId;
+  if (!id || GS.assigned[id] || !GS.hackDone) return;
+  const ds = DATASETS.find(d => d.id === id);
+  if (!ds) return;
+  const { d, catastrophic } = trustDelta(ds.correct, choice);
+  
+  // Only lock the file if routing is CORRECT
+  const isCorrect = choice === ds.correct;
+  if (isCorrect) {
+    GS.assigned[id] = choice;
+  }
+  
+  if (!isCorrect) {
+    GS.wrongRoutes++;
+    deductBudget(750);
+  }
+  if (d !== 0) {
+    GS.novaTrust = Math.max(0, GS.novaTrust + d);
+    if (catastrophic) GS.catastrophic++;
+  }
+  updateTrustUI();
+  
+  // Only add chip and mark done if CORRECT
+  if (isCorrect) {
+    addChipToColumn(choice, ds.file);
+    document.querySelector('.r2-file[data-id="' + id + '"]').classList.add('done');
+  }
+  
+  if (isCorrect) {
+    brokerSay('Routed: <strong>' + ds.file + '</strong> → ' + CHANNEL[choice] + '.', 'bm-ok', 120);
+  } else {
+    brokerSay(wrongExplain(ds, choice) + ' <strong>Choose a different release channel.</strong>', 'bm-err', 120);
+  }
+  const n = Object.keys(GS.assigned).length;
+  document.getElementById('routed-count').textContent = 'Routed: ' + n + ' / 10';
+  const so = document.getElementById('signoff-btn');
+  if (n >= 10) {
+    so.disabled = false;
+    so.classList.add('ready');
+    setBanner('All files routed. Request Nova sign-off.');
+  }
+  selectDataset(id);
+}
+
+function addChipToColumn(ch, filename) {
+  const col = document.getElementById(ch === 'public' ? 'col-public' : ch === 'official' ? 'col-official' : 'col-vault');
+  if (!col) return;
+  const chip = document.createElement('div');
+  chip.className = 'dist-chip ' + ch;
+  chip.textContent = shortName(filename);
+  col.appendChild(chip);
+}
+
+function wrongExplain(ds, choice) {
+  if (ds.wrongRationale && ds.wrongRationale[choice]) {
+    return '<strong>Not the right channel.</strong> ' + ds.wrongRationale[choice];
+  }
+  const c = ds.correct;
+  if (c === 'vault' && choice === 'public') return '<strong>Not the right channel.</strong> That belongs nowhere near the press. <strong>NO RELEASE</strong> — we do not weaponize civilians.';
+  if (c === 'official' && choice === 'public') return '<strong>Not the right channel.</strong> Too sensitive for a headline. <strong>Official filing</strong> — regulators can handle proportionality.';
+  if (c === 'vault' && choice === 'official') return '<strong>Not the right channel.</strong> Even sealed processes have limits for this material. <strong>Vault.</strong>';
+  if (c === 'public' && choice === 'vault') return '<strong>Not the right channel.</strong> This one is already safe to show — burying it weakens accountability.';
+  if (c === 'public' && choice === 'official') return '<strong>Not the right channel.</strong> Over-cautious — safe for the <strong>public wall</strong>; no need to hide legitimate proof.';
+  if (c === 'official' && choice === 'vault') return '<strong>Not the right channel.</strong> We need that evidence in accountable channels — <strong>OFFICIAL</strong>, not held back entirely.';
+  return '<strong>Not the right channel.</strong> Re-read <strong>identifiers</strong> and the <strong>harm if public</strong> line in the inspector, then try again.';
+}
+
+
+
+function updateTrustUI() {
+  const t = Math.round(GS.novaTrust);
+  const el = document.getElementById('trust-pct');
+  const bar = document.getElementById('trust-bar');
+  const header = document.getElementById('nova-trust');
+  const hdrPct = document.getElementById('hdr-trust-pct');
+  const hdrBar = document.getElementById('hdr-trust-bar');
+  if (el) el.textContent = String(Math.max(0, t));
+  if (bar) {
+    bar.style.width = Math.max(0, Math.min(100, t)) + '%';
+    bar.classList.remove('warn', 'crit');
+    if (t < 50) bar.classList.add('crit');
+    else if (t < 75) bar.classList.add('warn');
+  }
+  if (hdrPct) hdrPct.textContent = String(Math.max(0, t)) + '%';
+  if (hdrBar) {
+    hdrBar.style.width = Math.max(0, Math.min(100, t)) + '%';
+    hdrBar.classList.remove('nt-green', 'nt-amber', 'nt-red');
+    if (t < 50) hdrBar.classList.add('nt-red');
+    else if (t < 75) hdrBar.classList.add('nt-amber');
+    else hdrBar.classList.add('nt-green');
+  }
+  if (header) {
+    header.classList.remove('nt-green', 'nt-amber', 'nt-red');
+    if (t < 50) header.classList.add('nt-red');
+    else if (t < 75) header.classList.add('nt-amber');
+    else header.classList.add('nt-green');
+  }
+}
+
+function deductBudget(n) {
+  GS.budget = Math.max(0, GS.budget - n);
+  const el = document.getElementById('budget');
+  if (!el) return;
+  el.textContent = '💰 $' + GS.budget.toLocaleString();
+  el.classList.remove('budget-green', 'budget-amber', 'budget-red');
+  const b = GS.budget;
+  if (b >= 30000) el.classList.add('budget-green');
+  else if (b >= 15000) el.classList.add('budget-amber');
+  else el.classList.add('budget-red');
+  const toast = document.createElement('div');
+  toast.className = 'budget-toast';
+  toast.textContent = '−$' + n.toLocaleString();
+  toast.style.cssText = 'top:56px;left:50%;transform:translateX(-50%)';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2000);
+}
+
+function requestHint() {
+  if (GS.hintCooldown || !GS.selectedId || GS.assigned[GS.selectedId]) {
+    brokerSay('Select a file you have not routed yet.', 'bm-err');
+    return;
+  }
+  const ds = DATASETS.find(d => d.id === GS.selectedId);
+  if (!ds) return;
+  GS.hintsUsed++;
+  GS.budget = Math.max(0, GS.budget - 2500);
+  const el = document.getElementById('budget');
+  if (el) el.textContent = '💰 $' + GS.budget.toLocaleString();
+  let hint = '';
+  if (ds.correct === 'public') hint = 'Low identifier risk + OK for open narrative → usually PUBLIC WALL.';
+  else if (ds.correct === 'vault') hint = 'High harm, minors, health, or raw PII → NO RELEASE.';
+  else hint = 'Sensitive but needed for accountable bodies — not the tabloids → OFFICIAL FILING.';
+  brokerSay('Hint: ' + hint, 'bm-d');
+  GS.hintCooldown = true;
+  const btn = document.getElementById('hint-btn');
+  if (btn) btn.disabled = true;
+  let rem = 25;
+  const interval = setInterval(() => {
+    rem--;
+    if (rem <= 0) {
+      clearInterval(interval);
+      GS.hintCooldown = false;
+      if (btn) btn.disabled = false;
+    }
+  }, 1000);
+}
+
+function brokerSay(msg, cls, delayMs) {
+  const wrap = document.getElementById('broker-body');
+  if (!wrap) return;
+  const type = cls || 'bm-d';
+  setTimeout(() => {
+    const twrap = document.createElement('div');
+    twrap.className = 'bm-typing-wrap';
+    twrap.innerHTML = '<div class="bm-typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>';
+    wrap.appendChild(twrap);
+    wrap.scrollTop = wrap.scrollHeight;
+    setTimeout(() => {
+      twrap.remove();
+      const ts = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
+      const group = document.createElement('div');
+      group.className = 'bm-group';
+      const senderLabel = document.createElement('div');
+      senderLabel.className = 'bm-sender';
+      senderLabel.style.color = 'var(--green-matrix)';
+      senderLabel.textContent = 'VOSS';
+      const bubble = document.createElement('div');
+      bubble.className = 'bm-bubble ' + type;
+      bubble.innerHTML = msg.split('\n').join('<br>');
+      const tsEl = document.createElement('div');
+      tsEl.className = 'bm-ts';
+      tsEl.textContent = ts;
+      group.appendChild(senderLabel);
+      group.appendChild(bubble);
+      group.appendChild(tsEl);
+      wrap.appendChild(group);
+      wrap.scrollTop = wrap.scrollHeight;
+    }, 650);
+  }, delayMs != null ? delayMs : 0);
+}
+
+function zexSay(text, delay) {
+  const body = document.getElementById('broker-body');
+  if (!body) return;
+  setTimeout(() => {
+    const twrap = document.createElement('div');
+    twrap.className = 'bm-typing-wrap';
+    twrap.innerHTML = '<div class="bm-typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>';
+    body.appendChild(twrap);
+    body.scrollTop = body.scrollHeight;
+    setTimeout(() => {
+      twrap.remove();
+      const ts = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
+      const senderEl = document.createElement('div');
+      senderEl.className = 'bm-sender';
+      senderEl.style.color = '#a855f7';
+      senderEl.textContent = 'ZEX';
+      const group = document.createElement('div');
+      group.className = 'bm-group';
+      group.appendChild(senderEl);
+      const bubble = document.createElement('div');
+      bubble.className = 'bm-bubble bm-zex';
+      bubble.innerHTML = text.split('\n').join('<br>');
+      const tsEl = document.createElement('div');
+      tsEl.className = 'bm-ts';
+      tsEl.textContent = ts;
+      group.appendChild(bubble);
+      group.appendChild(tsEl);
+      body.appendChild(group);
+      body.scrollTop = body.scrollHeight;
+    }, 575);
+  }, delay != null ? delay : 0);
+}
+
+function novaSay(text, delay) {
+  const body = document.getElementById('broker-body');
+  if (!body) return;
+  setTimeout(() => {
+    const twrap = document.createElement('div');
+    twrap.className = 'bm-typing-wrap';
+    twrap.innerHTML = '<div class="bm-typing"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>';
+    body.appendChild(twrap);
+    body.scrollTop = body.scrollHeight;
+    setTimeout(() => {
+      twrap.remove();
+      const ts = String(new Date().getHours()).padStart(2, '0') + ':' + String(new Date().getMinutes()).padStart(2, '0');
+      const senderEl = document.createElement('div');
+      senderEl.className = 'bm-sender';
+      senderEl.style.color = '#38bdf8';
+      senderEl.textContent = 'NOVA';
+      const group = document.createElement('div');
+      group.className = 'bm-group';
+      group.appendChild(senderEl);
+      const bubble = document.createElement('div');
+      bubble.className = 'bm-bubble bm-nova';
+      bubble.innerHTML = text.split('\n').join('<br>');
+      const tsEl = document.createElement('div');
+      tsEl.className = 'bm-ts';
+      tsEl.textContent = ts;
+      group.appendChild(bubble);
+      group.appendChild(tsEl);
+      body.appendChild(group);
+      body.scrollTop = body.scrollHeight;
+    }, 575);
+  }, delay != null ? delay : 0);
+}
+
+function requestSignOff() {
+  if (Object.keys(GS.assigned).length < 10 || GS.signOffStarted) return;
+  GS.signOffStarted = true;
+  const ov = document.getElementById('signoff-overlay');
+  const term = document.getElementById('signoff-term');
+  ov.classList.add('show');
+  term.textContent = '';
+  const bad = GS.catastrophic > 0;
+  const trustOk = GS.novaTrust >= 45;
+  const lines = bad
+    ? [
+        '> NOVA SIGN-OFF: DENIED',
+        '> PUBLIC CHANNEL CONTAMINATION',
+        '> "Find another crew. I meant what I said."',
+        '',
+        '> Distribution matrix locked.'
+      ]
+    : !trustOk
+    ? [
+        '> NOVA SIGN-OFF: HELD',
+        '> ROUTING ERRORS EXCEED CREW TOLERANCE',
+        '> "Fix the map. Then we talk."',
+        ''
+      ]
+    : [
+        '> NOVA SIGN-OFF: GRANTED',
+        '> DISTRIBUTION MAP: ACCEPTABLE',
+        '> PUBLIC / OFFICIAL / VAULT SEPARATION VERIFIED',
+        '',
+        '> "We had the access. We chose the boundaries. That is the job."',
+        '> — NOVA'
+      ];
+  let i = 0;
+  function tick() {
+    if (i < lines.length) {
+      term.textContent += lines[i] + '\n';
+      i++;
+      setTimeout(tick, i < 4 ? 360 : 400);
+    } else {
+      setTimeout(() => {
+        ov.classList.remove('show');
+        showDebrief(!bad && trustOk);
+      }, 800);
+    }
+  }
+  tick();
+}
+
+function _wireDebriefScrollCueRoot(root) {
+  if (!root) return;
+  const wire = (scrollEl) => {
+    const panel = scrollEl && scrollEl.closest('.db-panel');
+    if (!panel) return;
+    const sync = () => {
+      const overflow = scrollEl.scrollHeight > scrollEl.clientHeight + 4;
+      panel.classList.toggle('has-overflow', overflow);
+      const atBottom = scrollEl.scrollHeight - scrollEl.scrollTop - scrollEl.clientHeight < 8;
+      panel.classList.toggle('scrolled-bottom', atBottom);
+    };
+    scrollEl.addEventListener('scroll', sync);
+    sync();
+  };
+  wire(root.querySelector('.mr-detect'));
+  wire(root.querySelector('.tc-content'));
+}
+
+function _debriefRevealStagger(root) {
+  if (!root) return;
+  root.querySelectorAll('.tc-block').forEach((el) => el.classList.remove('show'));
+  const cta = root.querySelector('#cta-row');
+  if (cta) cta.classList.remove('show');
+  const blocks = root.querySelectorAll('.tc-block');
+  blocks.forEach((el, i) => {
+    setTimeout(() => el.classList.add('show'), 180 + i * 300);
+  });
+  const delay = 180 + blocks.length * 300 + 380;
+  setTimeout(() => { if (cta) cta.classList.add('show'); }, delay);
+}
+
+function showDebrief(success) {
+  clearInterval(GS.timerInt);
+  const screen = document.getElementById('debrief-screen');
+  if (!screen) return;
+  const m = String(Math.floor(GS.timerSec / 60)).padStart(2, '0');
+  const s = String(GS.timerSec % 60).padStart(2, '0');
+  const correctN = DATASETS.filter((d) => GS.assigned[d.id] === d.correct).length;
+  const acc = Math.round((correctN / 10) * 100);
+  const trust = Math.round(GS.novaTrust);
+  const trustCls = trust >= 70 ? 'det-green' : trust >= 40 ? 'det-amber' : 'det-red';
+
+  document.getElementById('mr-metrics').innerHTML =
+    '<div class="mr-metric"><div class="mr-metric-val">' + m + ':' + s + '</div><div class="mr-metric-lbl">TIME</div></div>' +
+    '<div class="mr-metric"><div class="mr-metric-val">' + acc + '%</div><div class="mr-metric-lbl">ACCURACY</div></div>' +
+    '<div class="mr-metric"><div class="mr-metric-val">' + GS.hintsUsed + '</div><div class="mr-metric-lbl">HINTS USED</div></div>' +
+    '<div class="mr-metric"><div class="mr-metric-val ' + trustCls + '">' + trust + '%</div><div class="mr-metric-lbl">NOVA TRUST</div></div>';
+
+  const eyebrow = document.getElementById('deb-eyebrow');
+  const title = document.getElementById('deb-title');
+  const tc = document.getElementById('tc-content');
+  let rating = '';
+
+  if (!success) {
+    if (eyebrow) eyebrow.textContent = '// Mission 03 — Sign-off denied';
+    if (title) title.textContent = GS.catastrophic > 0 ? 'PUBLIC CHANNEL BREACH' : 'ROUTING TRUST TOO LOW';
+    document.getElementById('mr-detect').innerHTML =
+      '<div class="mr-detect-ttl">ROUTING SUMMARY</div>' +
+      '<div class="mr-detect-row"><span>Correct assignments</span><span>' + correctN + ' / 10</span></div>' +
+      '<div class="mr-detect-row"><span>Wrong route attempts</span><span>' + GS.wrongRoutes + '</span></div>' +
+      '<div class="mr-detect-row"><span>Public-wall breaches</span><span>' + GS.catastrophic + '</span></div>' +
+      '<div class="mr-detect-row"><span>Hints used</span><span>' + GS.hintsUsed + '</span></div>' +
+      '<div class="mr-detect-row total"><span>Final Nova trust</span><span class="' + trustCls + '">' + trust + '%</span></div>';
+    rating = GS.catastrophic > 0
+      ? 'ETHICS BREAK — Vault material surfaced on the wrong audience.'
+      : 'MAP REJECTED — The crew will not endorse this distribution posture.';
+    if (tc) {
+      tc.innerHTML =
+      '<div class="tc-block"><p>' + (GS.catastrophic > 0
+        ? 'Material that should stay sealed was routed to the <strong>public</strong> channel. That is exactly the harm Nova refused to sign.'
+        : 'Too many misroutes — the distribution map did not reflect a defensible ethics posture.') + '</p></div>' +
+      '<div class="tc-block"><p><span class="tc-subhead">Real-world translation</span>Privacy and data ethics are not only about <strong>redaction</strong> — they are about <strong>appropriate disclosure</strong>: which audiences may receive which data under which safeguards. Laws and policies (GDPR lawful basis, HIPAA, sector rules) encode <em>who</em> may process what — not just whether a field exists.</p></div>';
+    }
+  } else {
+    if (eyebrow) eyebrow.textContent = '// Mission 03 — Complete';
+    if (title) title.textContent = 'THE HUMAN SHIELD — SIGNED';
+    document.getElementById('mr-detect').innerHTML =
+      '<div class="mr-detect-ttl">ROUTING SUMMARY</div>' +
+      '<div class="mr-detect-row"><span>Correct assignments</span><span>10 / 10</span></div>' +
+      '<div class="mr-detect-row"><span>Wrong route attempts</span><span>' + GS.wrongRoutes + '</span></div>' +
+      '<div class="mr-detect-row"><span>Hints used</span><span>' + GS.hintsUsed + '</span></div>' +
+      '<div class="mr-detect-row total"><span>Final Nova trust</span><span class="' + trustCls + '">' + trust + '%</span></div>';
+    rating = trust >= 85 ? 'SIGNED — Distribution map matches minimum necessary disclosure.'
+      : trust >= 55 ? 'SIGNED — Acceptable, with friction on the trust line.'
+      : 'SIGNED — Borderline; review misroutes before release.';
+    if (tc) {
+      tc.innerHTML =
+      '<div class="tc-block"><p>You separated <strong>public proof</strong>, <strong>official accountability</strong>, and <strong>material that must not ship</strong>. Nova\'s sign-off means the crew stands behind <em>how</em> this leaks, not only <em>that</em> it does.</p></div>' +
+      '<div class="tc-block"><p class="tc-quote">"We had the access. We chose the boundaries."</p></div>' +
+      '<div class="tc-block"><p><span class="tc-subhead">Real-world translation</span><strong>Privacy classification</strong> and <strong>minimum necessary</strong> disclosure apply to <strong>audiences</strong>: regulators, press, and the public are not interchangeable. Ethical handling means matching sensitivity to channel — the lesson Mission 2 set up (ownership) extended to <strong>release posture</strong>.</p></div>';
+    }
+  }
+
+  document.getElementById('mr-detect').insertAdjacentHTML('beforeend', '<div class="mr-rating">' + rating + '</div>');
+  screen.classList.add('active');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    _wireDebriefScrollCueRoot(screen);
+    _debriefRevealStagger(screen);
+  }));
+}
+
+function nextRound() {
+  window.location.href = 'Mission 4.html';
+}
+
+function startRound3GameFromTutorial() {
+  const intro = document.getElementById('intro-root');
+  if (intro) {
+    intro.style.display = 'none';
+    intro.style.visibility = 'hidden';
+  }
+  prepGameShellForHack();
+  runHackSequence(function () { startMarshallDesktop(true); });
+}
+
+(function checkPlayParam() {
+  try {
+    var fromTutorial = false;
+    try {
+      fromTutorial = !!sessionStorage.getItem('m3GameplayEnter');
+      if (fromTutorial) sessionStorage.removeItem('m3GameplayEnter');
+    } catch (_) {}
+    if (fromTutorial) {
+      startRound3GameFromTutorial();
+      return;
+    }
+    if (!new URLSearchParams(location.search).has('play')) return;
+    prepGameShellForHack();
+    runHackSequence(function () { startMarshallDesktop(true); });
+  } catch (_) {}
+})();
+
+// Animate first intro page (pre-mission brief) on load
+window.addEventListener('load', () => {
+  if (typeof window.gsap === 'undefined') return;
+  const p1 = document.getElementById('page1');
+  if (!p1 || !p1.classList.contains('active')) return;
+  const els = p1.querySelectorAll('.page-eyebrow, .page-title, .content, .button-section');
+  gsap.set(els, { opacity: 0, y: 28 });
+  gsap.to(els, { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: 'power2.out', delay: 0.15 });
+});
+</script>
+<script src="playtest-mission-nav.js" defer></script>
+</body>
+</html>

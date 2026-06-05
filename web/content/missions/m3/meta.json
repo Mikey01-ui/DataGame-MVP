@@ -1,0 +1,10 @@
+{
+  "id": "m3",
+  "order": 3,
+  "label": "Mission 03",
+  "name": "The Human Shield",
+  "description": "Route disclosure by audience — public, official, or sealed.",
+  "renderer": "react",
+  "legacyHtmlPath": "/reference/legacy-missions/Mission%203.html",
+  "requiresMissionId": "m2"
+}

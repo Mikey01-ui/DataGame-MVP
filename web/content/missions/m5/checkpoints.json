@@ -1,0 +1,13 @@
+{
+  "missionId": "m5",
+  "checkpoints": [
+    "framing",
+    "briefing",
+    "crew_zex",
+    "crew_atlas",
+    "crew_nova",
+    "crew_kade",
+    "vote",
+    "completed"
+  ]
+}

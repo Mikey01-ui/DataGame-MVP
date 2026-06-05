@@ -1,0 +1,10 @@
+{
+  "id": "m1",
+  "order": 1,
+  "label": "Mission 01",
+  "name": "Identifying the Footprint",
+  "description": "Intro, brief, and desktop gameplay — start of the OMNI arc.",
+  "renderer": "react",
+  "legacyHtmlPath": "/reference/legacy-missions/Mission%201.html",
+  "requiresMissionId": null
+}

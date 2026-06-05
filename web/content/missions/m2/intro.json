@@ -1,0 +1,31 @@
+{
+  "missionId": "m2",
+  "statusLeft": ["TERMINAL ACTIVE", "MISSION 02"],
+  "statusRight": ["ENCRYPTED"],
+  "brief": {
+    "eyebrow": "// Mission 2 — Forging the Master Key",
+    "title": "Pre-Mission Brief",
+    "params": [],
+    "briefParagraphs": [
+      "Metadata is the master key. Ownership trails, timestamps, and lineage tell you what MegaCorp tried to bury.",
+      "Port the full brief from reference/legacy-missions/Mission 2.html into this JSON as you migrate."
+    ],
+    "pullquote": "Trace the key. Break the lock.",
+    "dossier": [],
+    "continueLabel": "Continue",
+    "continueDelayMs": 1500
+  },
+  "protocol": {
+    "eyebrow": "// Mission 2 — Forging the Master Key",
+    "title": "Mission Protocol",
+    "sectionLabel": "// How to Operate",
+    "steps": [],
+    "detection": null,
+    "breachLabel": "Begin Mission",
+    "breachReadyLabel": "// Ready?"
+  },
+  "game": {
+    "placeholderTitle": "Mission 2 gameplay",
+    "placeholderBody": "Migrate from reference/legacy-missions/Mission 2.html"
+  }
+}

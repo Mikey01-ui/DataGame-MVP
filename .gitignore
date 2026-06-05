@@ -1,0 +1,13 @@
+.DS_Store
+*.pem
+.env
+.env.*
+
+# Next.js app
+web/node_modules/
+web/.next/
+web/out/
+web/build/
+web/.vercel/
+web/*.tsbuildinfo
+web/app/generated/prisma/

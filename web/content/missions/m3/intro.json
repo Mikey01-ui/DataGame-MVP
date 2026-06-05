@@ -1,0 +1,30 @@
+{
+  "missionId": "m3",
+  "statusLeft": ["TERMINAL ACTIVE", "MISSION 03"],
+  "statusRight": ["ENCRYPTED"],
+  "brief": {
+    "eyebrow": "// Mission 3",
+    "title": "Pre-Mission Brief",
+    "params": [],
+    "briefParagraphs": [
+      "Patterns in the data reveal what isolated files cannot. Migrate copy from reference/legacy-missions/Mission 3.html."
+    ],
+    "pullquote": "Connect the pattern.",
+    "dossier": [],
+    "continueLabel": "Continue",
+    "continueDelayMs": 1500
+  },
+  "protocol": {
+    "eyebrow": "// Mission 3",
+    "title": "Mission Protocol",
+    "sectionLabel": "// How to Operate",
+    "steps": [],
+    "detection": null,
+    "breachLabel": "Begin Mission",
+    "breachReadyLabel": "// Ready?"
+  },
+  "game": {
+    "placeholderTitle": "Mission 3 gameplay",
+    "placeholderBody": "Migrate from reference/legacy-missions/Mission 3.html"
+  }
+}

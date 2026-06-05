@@ -1,0 +1,13 @@
+{
+  "missionId": "m5",
+  "intro": {
+    "type": "video",
+    "src": "/media/m5/intro.mp4",
+    "poster": "/media/m5/intro-poster.jpg",
+    "captions": "/media/m5/intro.vtt"
+  },
+  "echoCue": {
+    "type": "audio",
+    "src": "/media/m5/echo-chime.mp3"
+  }
+}

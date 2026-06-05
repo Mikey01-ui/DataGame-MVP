@@ -1,0 +1,30 @@
+{
+  "missionId": "m4",
+  "statusLeft": ["TERMINAL ACTIVE", "MISSION 04"],
+  "statusRight": ["ENCRYPTED"],
+  "brief": {
+    "eyebrow": "// Mission 4",
+    "title": "Pre-Mission Brief",
+    "params": [],
+    "briefParagraphs": [
+      "Ethical disclosure choices under pressure. Migrate copy from reference/legacy-missions/Mission 4.html."
+    ],
+    "pullquote": "Choose what to reveal.",
+    "dossier": [],
+    "continueLabel": "Continue",
+    "continueDelayMs": 1500
+  },
+  "protocol": {
+    "eyebrow": "// Mission 4",
+    "title": "Mission Protocol",
+    "sectionLabel": "// How to Operate",
+    "steps": [],
+    "detection": null,
+    "breachLabel": "Begin Mission",
+    "breachReadyLabel": "// Ready?"
+  },
+  "game": {
+    "placeholderTitle": "Mission 4 gameplay",
+    "placeholderBody": "Migrate from reference/legacy-missions/Mission 4.html"
+  }
+}

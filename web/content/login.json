@@ -1,0 +1,36 @@
+{
+  "statusLeft": ["TERMINAL ACTIVE", "OP-OMNI / v2.4.1"],
+  "statusRight": ["ENCRYPTED"],
+  "opLabel": "Operation OMNI",
+  "title": "The Data Heist",
+  "intro": "You are <strong>The Mastermind</strong>. Your target is MegaCorp and their illegal Project OMNI. Authenticate to access the encrypted mastermind terminal and begin the operation.",
+  "emailLabel": "Operative ID — Email",
+  "emailPlaceholder": "operative@domain.com",
+  "emailHelper": "// Your mission results will be linked to this ID.",
+  "emailError": "Invalid format — re-enter operative ID.",
+  "passwordLabel": "Access code",
+  "passwordPlaceholder": "••••••••",
+  "passwordError": "Password must be at least 8 characters.",
+  "submitLogin": "Initiate Operation",
+  "submitRegister": "Create operative profile",
+  "aboutButton": "// About the Game",
+  "switchToRegister": "New operative? Register",
+  "switchToLogin": "Already registered? Sign in",
+  "about": {
+    "eyebrow": "// About the Game",
+    "title": "Operation OMNI",
+    "paragraphs": [
+      "Operation OMNI is a narrative driven digital escape room set in 2003, where you step into the role of the Mastermind, a specialist strategist brought in to expose Project OMNI, an illegal AI system hidden inside the world's most powerful technology conglomerate, MegaCorp.",
+      "Using a fragile mirrored feed from a compromised executive desktop, you must investigate files, trace hidden connections, and build a case before MegaCorp's security systems detect the breach.",
+      "Across five sequential operations, you will apply core data skills: identifying trustworthy evidence, inspecting metadata and lineage, interpreting patterns, making ethical disclosure choices, and connecting findings to operational strategy.",
+      "Designed for students in Information Technology, Data Science, Business Analytics, and Data Engineering, Operation OMNI transforms data literacy into a high-stakes interactive experience."
+    ],
+    "close": "Close"
+  },
+  "register": {
+    "title": "Register operative",
+    "confirmLabel": "Confirm access code",
+    "confirmError": "Passwords do not match.",
+    "successRedirect": "Profile created — signing you in…"
+  }
+}

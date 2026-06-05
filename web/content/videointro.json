@@ -1,0 +1,37 @@
+{
+  "statusLeft": ["TERMINAL ACTIVE", "OP-OMNI / v2.4.1"],
+  "statusRight": ["ENCRYPTED"],
+  "eyebrow": "// Mission Briefing — Operative Orientation",
+  "title": "Data Heist: Operation OMNI",
+  "video": {
+    "filename": "// BRIEFING_TRANSMISSION.mp4",
+    "aspectLabel": "16:9 — HD",
+    "placeholderText": "// video briefing — coming soon",
+    "src": null,
+    "poster": null
+  },
+  "readIntroButton": "// Read Introduction",
+  "startLabel": "// Ready to proceed?",
+  "startButton": "Start Mission 1",
+  "modal": {
+    "eyebrow": "// Operative Brief — Classified",
+    "title": "Operation OMNI",
+    "paragraphs": [
+      "MegaCorp is the most powerful technology company on the planet. It sits at the centre of defence systems, global infrastructure, and consumer data on a massive scale. Untouchable on paper. Untouchable by design.",
+      "But buried inside its systems is something that was never meant to exist: Project OMNI.",
+      "OMNI is an illegal distributed AI program operating decades ahead of its time. It harvests personal data without consent, shapes markets, influences systems, and hides behind corporate deniability. No one outside MegaCorp is supposed to know it exists.",
+      "Two years ago, one employee noticed patterns that did not belong. Server loads with no scheduled process. Budget lines with no department owner. Projects with no name. He raised the alarm. MegaCorp erased him for it.",
+      "His name is Voss.",
+      "Now, after years of trying to get back in, Voss has found a way through: a delayed mirror of one executive desktop. Fragile. Read-only. One automated sweep away from disappearing forever.",
+      "He can see the system, but seeing it is not enough.",
+      "You are the Mastermind, the strategist brought in to read the evidence, connect the signals, and turn fragments of intelligence into an operational plan.",
+      "You have a crew of four specialists, but none of them will commit to a mission as dangerous as exposing MegaCorp without proof. Each phase of the operation is your chance to convince one of them that the plan is solid, until all four are ready to move.",
+      "If your reasoning is weak, it will not survive scrutiny. If your decisions are careless, the plan collapses. Every mistake increases the chance of detection by MegaCorp.",
+      "To succeed, you must prove OMNI exists, trace the hidden architecture behind it, protect innocent lives from the fallout, and build a plan strong enough to hold under pressure.",
+      "You have one window in. One chance to make the case. One chance to build the plan before the signal dies.",
+      "Welcome to Operation OMNI."
+    ],
+    "footer": "// Results logged for post-op debrief",
+    "close": "Close Brief"
+  }
+}

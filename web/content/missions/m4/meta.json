@@ -1,0 +1,10 @@
+{
+  "id": "m4",
+  "order": 4,
+  "label": "Mission 04",
+  "name": "The Onboarding",
+  "description": "Map datasets to the handoffs in MegaCorp's disclosure flow.",
+  "renderer": "react",
+  "legacyHtmlPath": "/reference/legacy-missions/Mission%204.html",
+  "requiresMissionId": "m3"
+}

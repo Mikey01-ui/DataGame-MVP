@@ -1,0 +1,70 @@
+{
+  "missionId": "m1",
+  "statusLeft": ["TERMINAL ACTIVE", "OP-OMNI / v2.4.1"],
+  "statusRight": ["ENCRYPTED"],
+  "brief": {
+    "eyebrow": "// Mission 1 — Identifying the Footprint",
+    "title": "Pre-Mission Brief",
+    "params": [
+      { "label": "// Window", "value": "20:00" },
+      { "label": "// Detection Ceiling", "value": "100%" },
+      { "label": "// Leads to Confirm", "value": "4" },
+      { "label": "// Carry Forward Artifact", "value": "FOOTPRINT DOSSIER" },
+      { "label": "// Outcome", "value": "ZEX COMMITS" }
+    ],
+    "briefParagraphs": [
+      "I got you a window. Not a breach, not control. Just fragile temporary access to one executive desktop, and every second is borrowed time.",
+      "Your job: prove that Project OMNI exists. The evidence is buried across departments, scattered in forms that were never meant to connect. Find those fragments and turn them into a pattern MegaCorp can no longer hide.",
+      "Everything you confirm goes onto the Evidence Board. By the end of this round, the picture has to stand on its own. Not suspicion. Not instinct. Proof.",
+      "Zex is watching. She won't commit to a mission built on guesswork. If OMNI has no confirmed footprint, she walks. What you assemble becomes the Footprint Dossier: compute, funding, personnel, payload, bound into one indictment, signed by Zex. That is the artifact that carries forward.",
+      "Work clean. The mirror is read-only, unstable, one wrong stretch from detection."
+    ],
+    "pullquote": "Find the footprint. Build the case.",
+    "dossier": [
+      { "label": "TARGET", "name": "MegaCorp", "role": "Global conglomerate · the institution burying OMNI" },
+      { "label": "OBJECTIVE", "name": "Confirm Footprint", "role": "Four traces, one indictment" },
+      { "label": "PROSPECT", "name": "Zex", "role": "Infiltration · conditional on proof" }
+    ],
+    "continueLabel": "Continue",
+    "continueDelayMs": 3000
+  },
+  "protocol": {
+    "eyebrow": "// Mission 1 — Identifying the Footprint",
+    "title": "Mission Protocol",
+    "sectionLabel": "// How to Breach",
+    "steps": [
+      {
+        "number": "01",
+        "title": "FOLLOW THE BOARD",
+        "description": "Progress through four locked leads in order: COMPUTE, FUNDING, PERSONNEL, PAYLOAD. Complete each lead to unlock the next."
+      },
+      {
+        "number": "02",
+        "title": "INVESTIGATE THE DESKTOP",
+        "description": "Browse the files linked to the active lead and find the anomaly hiding in the data. When you spot it, click directly on it."
+      },
+      {
+        "number": "03",
+        "title": "VERIFY THE INTEL",
+        "description": "Answer the verification question using what you've found. A correct answer locks the lead and advances the operation."
+      }
+    ],
+    "detection": {
+      "title": "THE DETECTION METER",
+      "tag": "ACTIVE THREAT",
+      "description": "Every mistake pushes the meter up. Hit 100% and MegaCorp closes the connection.",
+      "pills": [
+        "Wrong file interaction · +6%",
+        "Failed verification · +10%",
+        "Wrong data click · +8%"
+      ],
+      "hint": "Stuck? Click the lightbulb at the bottom-left of the Mission Channel to pull a targeted hint from Voss."
+    },
+    "breachLabel": "Breach the Desktop",
+    "breachReadyLabel": "// Ready to breach?"
+  },
+  "game": {
+    "placeholderTitle": "Desktop gameplay",
+    "placeholderBody": "React migration in progress. Reference: reference/legacy-missions/Mission 1.html — evidence board, XP desktop, verification flow."
+  }
+}

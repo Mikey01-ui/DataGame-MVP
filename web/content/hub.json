@@ -1,0 +1,15 @@
+{
+  "statusLeft": ["PLAYTEST HUB", "LIVE"],
+  "statusRight": ["OP-OMNI", "SECURE"],
+  "eyebrow": "// Mastermind terminal",
+  "title": "The Data Heist: Operation OMNI",
+  "subtitle": "Missions <strong>1–5</strong> unlock in order. Resume where you left off or replay any completed operation.",
+  "continueLabel": "Continue operation",
+  "continueSuffix": "— pick up your last checkpoint",
+  "playLabel": "Launch",
+  "replayLabel": "Replay",
+  "lockedLabel": "Locked",
+  "lockedHint": "Complete the prior mission first",
+  "signOut": "Sign out",
+  "footer": "Operation OMNI · secure progress sync"
+}
