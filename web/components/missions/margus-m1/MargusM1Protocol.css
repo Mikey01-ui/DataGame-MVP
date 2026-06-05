@@ -1,0 +1,454 @@
+/* ══════════════════════════════════════════════════════════════════════
+   MARGUS M1 PROTOCOL STYLES
+   ══════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Share+Tech+Mono&display=swap');
+
+:root {
+  --void:         #1e0f1a;
+  --purple:       #5400ad;
+  --purple-light: #8f44e8;
+  --orange:       #f79421;
+  --orange-light: #ffa234;
+  --green-stable: #00c41c;
+  --green-matrix: #00FF41;
+  --white:        #faf7f2;
+  --grey-text:    #cccccc;
+  --panel-bg:     #221829;
+  --panel-border: rgba(0,196,28,0.35);
+
+  --font-mono:    'Share Tech Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+
+.margus-m1-protocol {
+  width: 100%;
+  min-height: 100vh;
+  overflow: auto;
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--white);
+  position: relative;
+}
+
+/* === AMBIENT GLOW === */
+.margus-m1-protocol .ambient-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 30% 50%, rgba(84,0,173,0.16) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 70% 60%, rgba(143,68,232,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 20%, rgba(247,148,33,0.07) 0%, transparent 60%);
+}
+
+/* === SCANLINE OVERLAY === */
+.margus-m1-protocol .scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.05) 2px,
+    rgba(0,0,0,0.05) 4px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* === GRID BACKGROUND === */
+.margus-m1-protocol .bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(143,68,232,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143,68,232,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: 0 36px;
+}
+
+/* === CORNER MARKS === */
+.margus-m1-protocol .corner {
+  position: fixed;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+}
+.margus-m1-protocol .corner--tl { top: 10px; left: 10px; border-top: 1px solid rgba(143,68,232,0.5); border-left: 1px solid rgba(143,68,232,0.5); }
+.margus-m1-protocol .corner--tr { top: 10px; right: 10px; border-top: 1px solid rgba(143,68,232,0.5); border-right: 1px solid rgba(143,68,232,0.5); }
+.margus-m1-protocol .corner--bl { bottom: 10px; left: 10px; border-bottom: 1px solid rgba(143,68,232,0.5); border-left: 1px solid rgba(143,68,232,0.5); }
+.margus-m1-protocol .corner--br { bottom: 10px; right: 10px; border-bottom: 1px solid rgba(143,68,232,0.5); border-right: 1px solid rgba(143,68,232,0.5); }
+
+/* === STATUS BAR === */
+.margus-m1-protocol .status-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  height: 36px;
+  padding: 0 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(30,15,26,0.9) 0%, transparent 100%);
+}
+
+.margus-m1-protocol .status-left,
+.margus-m1-protocol .status-right {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--green-stable);
+  letter-spacing: 0.08em;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.margus-m1-protocol .status-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green-stable);
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.margus-m1-protocol .status-dot.live {
+  background: var(--green-matrix);
+  box-shadow: 0 0 8px rgba(0,255,65,0.6), 0 0 20px rgba(0,255,65,0.2);
+  animation: blink 2.4s ease-in-out infinite;
+}
+
+.margus-m1-protocol .status-right span:last-child {
+  color: var(--green-matrix);
+  text-shadow: 0 0 8px rgba(0,255,65,0.3);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+/* === MAIN PAGE === */
+.margus-m1-protocol .page {
+  position: relative;
+  z-index: 2;
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.3vh 6vw 1.2vh;
+  min-height: calc(100vh - 36px);
+  overflow: auto;
+}
+
+/* === HEADER === */
+.margus-m1-protocol .page-eyebrow {
+  font-family: var(--font-mono);
+  font-size: clamp(0.55rem, 0.3vw, 0.65rem);
+  color: rgba(178,148,214,0.88);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  margin-bottom: 0.15vh;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  animation: fadeUp 0.5s 0.1s both;
+}
+
+.margus-m1-protocol .page-eyebrow::before,
+.margus-m1-protocol .page-eyebrow::after {
+  content: '';
+  width: 26px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(143,68,232,0.55), transparent);
+}
+
+.margus-m1-protocol .page-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 0.95vw + 1vh, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-bottom: 0.5vh;
+  flex-shrink: 0;
+  animation: fadeUp 0.5s 0.2s both;
+  background: linear-gradient(135deg, var(--white) 60%, var(--purple-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* === CONTENT === */
+.margus-m1-protocol .content {
+  width: min(94vw, 1700px);
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  flex: 1;
+  justify-content: flex-start;
+  overflow: auto;
+}
+
+/* === OPS SECTION === */
+.margus-m1-protocol .ops-section {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9vh;
+  animation: fadeUp 0.6s 0.3s both;
+}
+
+.margus-m1-protocol .section-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: var(--purple-light);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.5vh;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.margus-m1-protocol .section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(84,0,173,0.42), transparent);
+}
+
+/* === STEPS GRID === */
+.margus-m1-protocol .steps-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+  gap: clamp(5rem, 7.5vw, 8.5rem);
+  padding: clamp(0.7rem, 1.2vw, 1.1rem);
+  background: rgba(20, 12, 28, 0.97);
+  border: 1px solid rgba(143,68,232,0.32);
+  border-radius: 3px;
+}
+
+/* === STEP CARD === */
+.margus-m1-protocol .step-card {
+  background: rgba(34,24,41,1);
+  border: 1px solid rgba(143,68,232,0.22);
+  border-left: 2px solid var(--purple-light);
+  border-radius: 2px;
+  padding: 1.2rem;
+  overflow: visible;
+  position: relative;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  box-shadow:
+    0 0 38px rgba(84,0,173,0.09),
+    0 0 70px rgba(0,196,28,0.04),
+    inset 0 1px 0 rgba(0,196,28,0.08);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.margus-m1-protocol .step-card.active {
+  border-width: 2px;
+  border-color: var(--orange);
+  box-shadow:
+    0 0 38px rgba(84,0,173,0.09),
+    0 0 70px rgba(0,196,28,0.04),
+    inset 0 1px 0 rgba(0,196,28,0.08),
+    0 0 32px rgba(247,148,33,0.28),
+    inset 0 0 16px rgba(247,148,33,0.12);
+  opacity: 1;
+  pointer-events: auto;
+  transition: border-color 0.25s, box-shadow 0.25s, opacity 0.3s;
+}
+
+.margus-m1-protocol .step-card:hover:not(.active) {
+  border-color: rgba(143,68,232,0.65);
+  box-shadow:
+    0 0 36px rgba(143,68,232,0.15),
+    0 0 56px rgba(84,0,173,0.15);
+  transform: translateY(-1px);
+}
+
+.margus-m1-protocol .step-card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 18%;
+  right: 18%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--purple), transparent);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+/* === NAVIGATION ARROWS === */
+.margus-m1-protocol .nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--orange);
+  opacity: 1;
+  transition: opacity 0.25s, color 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  pointer-events: all;
+  z-index: 15;
+  border: 2px solid var(--orange);
+  border-radius: 50%;
+  background: rgba(30,18,38,0.95);
+  box-shadow: 0 0 14px rgba(247,148,33,0.28), inset 0 0 8px rgba(247,148,33,0.12);
+}
+
+.margus-m1-protocol .nav-arrow:hover {
+  color: var(--orange-light);
+  border-color: var(--orange-light);
+  border-width: 3px;
+  background: rgba(24,14,32,0.98);
+  box-shadow:
+    0 0 22px rgba(247,148,33,0.55),
+    0 0 38px rgba(247,148,33,0.28),
+    inset 0 0 10px rgba(247,148,33,0.18);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.margus-m1-protocol .nav-arrow.nav-left {
+  left: -44px;
+}
+
+.margus-m1-protocol .nav-arrow.nav-right {
+  right: -44px;
+}
+
+/* === CARD BODY === */
+.margus-m1-protocol .card-body {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.margus-m1-protocol .step-number {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--green-matrix);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35vh;
+  text-shadow: 0 0 20px rgba(0,255,65,0.15);
+}
+
+.margus-m1-protocol .step-title {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--purple-light);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.4vh;
+  padding-bottom: 0.35vh;
+  border-bottom: 1px solid rgba(0,196,28,0.28);
+}
+
+.margus-m1-protocol .step-desc {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--grey-text);
+  font-weight: 300;
+  flex: 1;
+}
+
+/* === BUTTON SECTION === */
+.margus-m1-protocol .button-section {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9vh;
+  margin-top: 1vh;
+  animation: fadeUp 0.5s 0.5s both;
+}
+
+.margus-m1-protocol .btn-next {
+  width: auto;
+  padding: clamp(12px, 1.4vh, 18px) clamp(34px, 4vw, 58px);
+  background: rgba(247,148,33,0.32);
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  font-family: var(--font-display);
+  font-size: clamp(14px, 0.55vw + 0.6vh, 18px);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 0 10px rgba(247,148,33,0.22);
+  transition: background 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
+.margus-m1-protocol .btn-next:hover {
+  background: rgba(247,148,33,0.46);
+  box-shadow: 0 0 26px rgba(247,148,33,0.55);
+  transform: translateY(-2px);
+  border-color: var(--orange);
+}
+
+.margus-m1-protocol .btn-next:active {
+  transform: translateY(0);
+  box-shadow: 0 0 20px rgba(247,148,33,0.2);
+}
+
+.margus-m1-protocol .btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.margus-m1-protocol .btn-arrow {
+  font-size: 1em;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 680px) {
+  .margus-m1-protocol .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  .margus-m1-protocol .content {
+    width: 92vw;
+  }
+  .margus-m1-protocol .status-bar {
+    padding: 0 1.5rem;
+  }
+}
