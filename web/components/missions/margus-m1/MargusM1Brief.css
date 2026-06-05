@@ -1,0 +1,613 @@
+/* ══════════════════════════════════════════════════════════════════════
+   MARGUS M1 BRIEF STYLES - Mission 01: Identifying the Footprint
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Import system fonts */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Share+Tech+Mono&display=swap');
+
+:root {
+  /* LAYER 1 · RAW PALETTE */
+  --void:         #1e0f1a;
+  --void-pure:    #000000;
+  --purple:       #5400ad;
+  --purple-light: #8f44e8;
+  --orange:       #f79421;
+  --orange-light: #ffa234;
+  --green-stable: #00c41c;
+  --green-matrix: #00FF41;
+  --pink:         #d31972;
+  --voss-teal:    #1ec9b0;
+  --zex-magenta:  #e94fce;
+  --white:        #faf7f2;
+  --grey-text:    #cccccc;
+  --grey-light:   #edeae5;
+  --grey-mid:     #444444;
+  --grey-dim:     #2e2e2e;
+  --panel-bg:     #221829;
+  --panel-border: rgba(0,196,28,0.35);
+  --brand-deep:   #30004A;
+  --warn-gold:    #F5BD2E;
+  --danger-red:   #E23B3B;
+  --grey-mute:    #8a8a8a;
+
+  /* LAYER 2 · SEMANTIC ROLES */
+  --brand:       var(--purple);
+  --brand-light: var(--purple-light);
+  --cta:         var(--orange);
+  --cta-hover:   var(--orange-light);
+  --ok:          var(--green-stable);
+  --ok-flash:    var(--green-matrix);
+  --warn:        var(--warn-gold);
+  --danger:      var(--danger-red);
+  --anomaly:     var(--pink);
+  --speak-voss:  var(--voss-teal);
+  --speak-zex:   var(--zex-magenta);
+  --text:        var(--white);
+  --text-dim:    var(--grey-text);
+  --text-mute:   var(--grey-mute);
+
+  /* TYPE */
+  --font-mono:    'Share Tech Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+}
+
+.margus-m1-brief {
+  width: 100%;
+  min-height: 100vh;
+  overflow: auto;
+  font-family: var(--font-body);
+  background: var(--void);
+  color: var(--white);
+  position: relative;
+}
+
+/* === AMBIENT GLOW === */
+.margus-m1-brief .ambient-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 30% 50%, rgba(84,0,173,0.16) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 70% 60%, rgba(143,68,232,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 20%, rgba(247,148,33,0.07) 0%, transparent 60%);
+}
+
+/* === SCANLINE OVERLAY === */
+.margus-m1-brief .scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.05) 2px,
+    rgba(0,0,0,0.05) 4px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* === GRID BACKGROUND === */
+.margus-m1-brief .bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(143,68,232,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(143,68,232,0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: 0 36px;
+}
+
+/* === CORNER MARKS === */
+.margus-m1-brief .corner {
+  position: fixed;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+}
+.margus-m1-brief .corner--tl { top: 10px; left: 10px; border-top: 1px solid rgba(143,68,232,0.5); border-left: 1px solid rgba(143,68,232,0.5); }
+.margus-m1-brief .corner--tr { top: 10px; right: 10px; border-top: 1px solid rgba(143,68,232,0.5); border-right: 1px solid rgba(143,68,232,0.5); }
+.margus-m1-brief .corner--bl { bottom: 10px; left: 10px; border-bottom: 1px solid rgba(143,68,232,0.5); border-left: 1px solid rgba(143,68,232,0.5); }
+.margus-m1-brief .corner--br { bottom: 10px; right: 10px; border-bottom: 1px solid rgba(143,68,232,0.5); border-right: 1px solid rgba(143,68,232,0.5); }
+
+/* === STATUS BAR === */
+.margus-m1-brief .status-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  height: 36px;
+  padding: 0 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(30,15,26,0.9) 0%, transparent 100%);
+}
+
+.margus-m1-brief .status-left,
+.margus-m1-brief .status-right {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--green-stable);
+  letter-spacing: 0.08em;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.margus-m1-brief .status-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green-stable);
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.margus-m1-brief .status-dot.live {
+  background: var(--green-matrix);
+  box-shadow: 0 0 8px rgba(0,255,65,0.6), 0 0 20px rgba(0,255,65,0.2);
+  animation: blink 2.4s ease-in-out infinite;
+}
+
+.margus-m1-brief .status-right span:last-child {
+  color: var(--green-matrix);
+  text-shadow: 0 0 8px rgba(0,255,65,0.3);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+/* === MAIN PAGE === */
+.margus-m1-brief .page {
+  position: relative;
+  z-index: 2;
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.3vh 6vw 1.2vh;
+  min-height: calc(100vh - 36px);
+  overflow: auto;
+}
+
+/* === HEADER === */
+.margus-m1-brief .page-eyebrow {
+  font-family: var(--font-mono);
+  font-size: clamp(0.55rem, 0.3vw, 0.65rem);
+  color: rgba(178,148,214,0.88);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  margin-bottom: 0.15vh;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  animation: fadeUp 0.5s 0.1s both;
+}
+
+.margus-m1-brief .page-eyebrow::before,
+.margus-m1-brief .page-eyebrow::after {
+  content: '';
+  width: 26px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(143,68,232,0.55), transparent);
+}
+
+.margus-m1-brief .page-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 0.95vw + 1vh, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-bottom: 0.5vh;
+  flex-shrink: 0;
+  animation: fadeUp 0.5s 0.2s both;
+  background: linear-gradient(135deg, var(--white) 60%, var(--purple-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* === CONTENT CONTAINER === */
+.margus-m1-brief .content {
+  width: min(92vw, 1600px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2vh;
+  flex: 1;
+  justify-content: flex-start;
+  overflow: auto;
+}
+
+/* === MISSION PARAMETERS STRIP === */
+.margus-m1-brief .mission-params {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  border: 1px solid rgba(247,148,33,0.55);
+  background: rgba(38, 22, 12, 0.97);
+  margin-bottom: 0.4vh;
+  animation: fadeUp 0.5s 0.25s both;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.margus-m1-brief .mission-params:hover {
+  border-color: rgba(247,148,33,0.9);
+  box-shadow:
+    0 0 36px rgba(247,148,33,0.15),
+    0 0 56px rgba(247,148,33,0.12);
+  transform: translateY(-1px);
+}
+
+.margus-m1-brief .mp-cell {
+  padding: 0.5rem 0.85rem;
+  border-right: 1px solid rgba(247,148,33,0.28);
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  min-width: 0;
+}
+
+.margus-m1-brief .mp-cell:last-child { border-right: none; }
+
+.margus-m1-brief .mp-label {
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  color: var(--orange);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.margus-m1-brief .mp-value {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+}
+
+/* === BRIEF GRID === */
+.margus-m1-brief .brief-grid {
+  display: grid;
+  grid-template-columns: 2.6fr 1fr;
+  gap: 1.2rem;
+  align-items: stretch;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.margus-m1-brief .brief-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.margus-m1-brief .dossier-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.margus-m1-brief .brief-section {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  animation: fadeUp 0.6s 0.3s both;
+}
+
+.margus-m1-brief .section-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: var(--purple-light);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 0.5vh;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.margus-m1-brief .section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(84,0,173,0.42), transparent);
+}
+
+/* === BRIEF CARD === */
+.margus-m1-brief .brief-card {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 2px;
+  padding: 1.1rem 2.5vw;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 0 60px rgba(84,0,173,0.14),
+    0 0 120px rgba(0,196,28,0.08),
+    inset 0 1px 0 rgba(0,196,28,0.12);
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  flex: 1 1 auto;
+}
+
+.margus-m1-brief .brief-card:hover {
+  border-color: rgba(143,68,232,0.5);
+  box-shadow:
+    0 0 80px rgba(84,0,173,0.25),
+    0 0 140px rgba(0,196,28,0.15),
+    inset 0 1px 0 rgba(0,196,28,0.3);
+  transform: translateY(-1px);
+}
+
+.margus-m1-brief .brief-card::before {
+  content: '';
+  position: absolute;
+  top: 10px; left: 10px;
+  width: 16px; height: 16px;
+  border-top: 1px solid rgba(247,148,33,0.75);
+  border-left: 1px solid rgba(247,148,33,0.75);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.margus-m1-brief .brief-card::after {
+  content: '';
+  position: absolute;
+  bottom: 10px; right: 10px;
+  width: 16px; height: 16px;
+  border-bottom: 1px solid rgba(247,148,33,0.75);
+  border-right: 1px solid rgba(247,148,33,0.75);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.margus-m1-brief .brief-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(255,255,255,0.018) 2px,
+    rgba(255,255,255,0.018) 3px
+  );
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+
+.margus-m1-brief .brief-card > *:not(.brief-scanlines) {
+  position: relative;
+  z-index: 2;
+}
+
+/* === ENCRYPTED INDICATOR === */
+.margus-m1-brief .encrypted-indicator {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: var(--green-stable);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 0.8vh;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.margus-m1-brief .encrypted-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green-stable);
+  box-shadow: 0 0 8px rgba(0,196,28,0.6), 0 0 20px rgba(0,196,28,0.2);
+}
+
+/* === BRIEF TEXT === */
+.margus-m1-brief .brief-text {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 0.62vw + 1vh, 1.45rem);
+  line-height: 1.6;
+  color: var(--grey-light);
+  font-weight: 300;
+  max-width: none;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(0.4vh, 0.8vh, 1.4vh);
+}
+
+.margus-m1-brief .brief-text p {
+  margin-bottom: 0;
+}
+
+.margus-m1-brief .brief-text strong {
+  color: var(--orange);
+  font-weight: 600;
+  text-shadow: 0 0 20px rgba(247,148,33,0.12);
+}
+
+/* === PULL-QUOTE === */
+.margus-m1-brief .pullquote {
+  margin: 0.5vh 0 0;
+  padding: 0.2rem 0 0.2rem 0.8rem;
+  border-left: 2px solid var(--orange);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(0.95rem, 0.55vw + 0.95vh, 1.4rem);
+  line-height: 1.35;
+  color: var(--white);
+  letter-spacing: 0.01em;
+}
+
+/* === GLOSSARY CHIPS === */
+.margus-m1-brief .gloss {
+  cursor: help;
+  color: var(--orange);
+  border-bottom: 1px dashed rgba(247,148,33,0.55);
+  position: relative;
+  font-weight: 500;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.margus-m1-brief .gloss:hover {
+  color: var(--orange-light);
+  border-bottom-color: rgba(247,148,33,0.9);
+}
+
+/* === DOSSIER SECTION === */
+.margus-m1-brief .dossier-backdrop {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: rgba(20,12,28,0.55);
+  border: 1px solid rgba(143,68,232,0.32);
+  border-radius: 2px;
+  padding: clamp(0.6rem, 1vh, 1rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 0.9vh, 0.85rem);
+  animation: fadeUp 0.6s 0.4s both;
+}
+
+.margus-m1-brief .dossier-card {
+  flex: 1 1 0;
+  background: rgba(34,24,41,0.85);
+  border: 1px solid rgba(143,68,232,0.22);
+  border-left: 2px solid var(--purple-light);
+  border-radius: 2px;
+  padding: clamp(0.7rem, 1.3vh, 1.1rem) clamp(0.85rem, 1vw, 1.3rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.3rem, 0.55vh, 0.5rem);
+  min-height: 0;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.margus-m1-brief .dossier-card:hover {
+  border-color: rgba(143,68,232,0.65);
+  box-shadow:
+    0 0 36px rgba(143,68,232,0.15),
+    0 0 56px rgba(84,0,173,0.15);
+  transform: translateY(-1px);
+}
+
+.margus-m1-brief .dc-label {
+  font-family: var(--font-mono);
+  font-size: clamp(0.55rem, 0.25vw + 0.35vh, 0.72rem);
+  letter-spacing: 0.24em;
+  color: var(--purple-light);
+  text-transform: uppercase;
+}
+
+.margus-m1-brief .dc-name {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 0.5vw + 0.9vh, 1.55rem);
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+}
+
+.margus-m1-brief .dc-role {
+  font-family: var(--font-body);
+  font-size: clamp(0.78rem, 0.32vw + 0.6vh, 1.1rem);
+  color: var(--grey-text);
+  line-height: 1.35;
+  font-weight: 300;
+}
+
+/* === BUTTON SECTION === */
+.margus-m1-brief .button-section {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9vh;
+  margin-top: 1vh;
+  animation: fadeUp 0.5s 0.5s both;
+}
+
+.margus-m1-brief .btn-next {
+  width: auto;
+  padding: clamp(12px, 1.4vh, 18px) clamp(34px, 4vw, 58px);
+  background: rgba(247,148,33,0.32);
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  font-family: var(--font-display);
+  font-size: clamp(14px, 0.55vw + 0.6vh, 18px);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 0 10px rgba(247,148,33,0.22);
+  transition: background 0.25s, box-shadow 0.25s, transform 0.25s, opacity 0.8s ease, filter 0.8s ease;
+}
+
+.margus-m1-brief .btn-next:hover:not(:disabled) {
+  background: rgba(247,148,33,0.46);
+  box-shadow: 0 0 26px rgba(247,148,33,0.55);
+  transform: translateY(-2px);
+  border-color: var(--orange);
+}
+
+.margus-m1-brief .btn-next:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 0 20px rgba(247,148,33,0.2);
+}
+
+.margus-m1-brief .btn-next.is-locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+  pointer-events: none;
+}
+
+.margus-m1-brief .btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.margus-m1-brief .btn-arrow {
+  font-size: 1em;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 680px) {
+  .margus-m1-brief .brief-grid {
+    grid-template-columns: 1fr;
+  }
+  .margus-m1-brief .content {
+    width: 92vw;
+  }
+  .margus-m1-brief .status-bar {
+    padding: 0 1.5rem;
+  }
+}
