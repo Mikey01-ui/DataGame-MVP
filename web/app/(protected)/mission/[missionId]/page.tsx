@@ -70,6 +70,7 @@ export default async function MissionPage({ params, searchParams }: PageProps) {
     return (
       <MissionRenderer
         intro={intro}
+        media={media}
         missionId={missionId}
         missionName={meta.name}
         missionLabel={meta.label}

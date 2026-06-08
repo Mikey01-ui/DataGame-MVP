@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AudioToggle } from "@/components/audio/AudioToggle";
 import { useM3Game } from "@/lib/game/m3/context";
 import {
   DETECTION_INFO,
@@ -82,6 +83,8 @@ export function M3Header() {
             </span>
           ) : null}
           {showMeter && <span style={{ color: "rgba(0,196,28,.2)", margin: "0 4px" }}>|</span>}
+          <AudioToggle compact />
+          <span style={{ color: "rgba(0,196,28,.2)", margin: "0 4px" }}>|</span>
           <span id="timer">{timer}</span>
           <span className="live-dot" />
           <span style={{ letterSpacing: 1, fontSize: 10 }}>LIVE</span>

@@ -2,6 +2,7 @@
 
 import gsap from "gsap";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useOptionalGameAudio } from "@/lib/audio/GameAudioProvider";
 
 const VAULT_CODE = "OMNI";
 const DIAL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -52,6 +53,7 @@ function VaultHandwheelSvg({ idPrefix }: { idPrefix: string }) {
 }
 
 export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
+  const audio = useOptionalGameAudio();
   const wheelId = useId().replace(/:/g, "");
   const sceneRef = useRef<HTMLDivElement>(null);
   const slideRef = useRef<HTMLDivElement>(null);
@@ -138,6 +140,7 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
     };
 
     if (reduced) {
+      audio?.playSfx("vaultOpen");
       scene?.classList.add("vault-bolts-out");
       cavity?.classList.add("lit");
       slide.style.transform = "translateX(-108%)";
@@ -156,11 +159,16 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
     if (handwheel) {
       tl.to(handwheel, { rotation: 720, duration: 1.5, ease: "power2.inOut" }, 0.1);
     }
-    tl.call(() => scene?.classList.add("vault-bolts-out"), undefined, 0.55);
+    tl.call(() => {
+      scene?.classList.add("vault-bolts-out");
+      audio?.playSfx("vaultBolt");
+    }, undefined, 0.55);
     tl.to(cavity, { opacity: 1, scale: 1, duration: 0.45, ease: "power2.out" }, 0.68);
     tl.call(() => cavity?.classList.add("lit"), undefined, 0.72);
     tl.to(slide, { xPercent: -108, duration: 1.2, ease: "power3.inOut" }, 0.82);
+    tl.call(() => audio?.playSfx("vaultOpen"), undefined, 0.82);
     if (flash) {
+      tl.call(() => audio?.playSfx("vaultReveal"), undefined, 0.9);
       tl.to(flash, { opacity: 0.35, duration: 0.3, ease: "power2.out" }, 0.9).to(
         flash,
         { opacity: 0, duration: 0.35, ease: "power2.in" },
@@ -168,7 +176,7 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
       );
     }
     tl.to({}, { duration: 0.42 }, 2.05);
-  }, [onUnlocked, reset]);
+  }, [audio, onUnlocked, reset]);
 
   const submit = () => {
     const code = tumblers.join("");
@@ -182,6 +190,7 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
     }
 
     setShaking(true);
+    audio?.playSfx("vaultWrong");
     window.setTimeout(() => setShaking(false), 450);
     setStatus("✗ Invalid combination — try again");
     setStatusOk(false);

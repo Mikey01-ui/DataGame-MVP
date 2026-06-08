@@ -56,9 +56,12 @@ body.m3-tutorial-active #hdr {
   border-bottom: 1px solid rgba(0, 196, 28, 0.28);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 6px 18px;
   flex-shrink: 0;
-  z-index: 3;
+  z-index: 30;
+  overflow: visible;
+  position: relative;
   box-shadow: inset 0 1px 0 rgba(0, 196, 28, 0.08);
 }
 
@@ -68,18 +71,27 @@ body.m3-tutorial-active .hdr-left {
   color: #56d6ff;
   letter-spacing: 1.5px;
   white-space: nowrap;
+  flex: 0 1 auto;
   min-width: 0;
+  max-width: 38%;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 body.m3-tutorial-active .hdr-center {
-  flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
   font-family: var(--font-display);
   font-size: clamp(12px, 1.2vw, 15px);
   color: var(--purple-light);
   letter-spacing: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  max-width: min(56vw, 560px);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 body.m3-tutorial-active .hdr-right {
@@ -91,9 +103,13 @@ body.m3-tutorial-active .hdr-right {
   color: rgba(250, 247, 242, 0.82);
   white-space: nowrap;
   justify-content: flex-end;
+  flex: 0 1 auto;
+  margin-left: auto;
 }
 
 body.m3-tutorial-active #step-banner {
+  position: relative;
+  z-index: 5;
   min-height: 38px;
   background: rgba(84, 0, 173, 0.1);
   border-bottom: 1px solid rgba(0, 196, 28, 0.22);
@@ -444,6 +460,11 @@ body.m3-tutorial-active #gp-root .live-dot {
   pointer-events: none;
 }
 
+#m3-tut-full.m3-tut-full--post-demo.show {
+  background: #0b0f14;
+  pointer-events: auto;
+}
+
 #m3-tut-demo-cursor {
   display: none;
 }
@@ -670,6 +691,63 @@ body.m3-tutorial-active .ch-btn.clicked {
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
+}
+
+#m3-tut-footer.m3-tut-footer--spotlight {
+  border-color: rgba(247, 148, 33, 0.85);
+  box-shadow:
+    0 0 0 2px rgba(247, 148, 33, 0.45),
+    0 0 0 6px rgba(247, 148, 33, 0.12),
+    0 20px 64px rgba(0, 0, 0, 0.75),
+    0 0 72px rgba(247, 148, 33, 0.28);
+  animation: m3TutFooterGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes m3TutFooterGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 2px rgba(247, 148, 33, 0.45),
+      0 0 0 6px rgba(247, 148, 33, 0.1),
+      0 20px 64px rgba(0, 0, 0, 0.75),
+      0 0 56px rgba(247, 148, 33, 0.22);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(247, 148, 33, 0.65),
+      0 0 0 10px rgba(247, 148, 33, 0.16),
+      0 24px 72px rgba(0, 0, 0, 0.8),
+      0 0 96px rgba(247, 148, 33, 0.42);
+  }
+}
+
+#m3-tut-footer.m3-tut-footer--spotlight .m3-tut-actions {
+  justify-content: center;
+}
+
+#m3-tut-next.m3-tut-next--cta {
+  min-width: 180px;
+  padding: 12px 28px;
+  font-size: 13px;
+  background: rgba(247, 148, 33, 0.32);
+  animation: m3TutCtaPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes m3TutCtaPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 1px rgba(247, 148, 33, 0.2), 0 4px 20px rgba(247, 148, 33, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 2px rgba(247, 148, 33, 0.55), 0 0 32px rgba(247, 148, 33, 0.45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #m3-tut-footer.m3-tut-footer--spotlight,
+  #m3-tut-next.m3-tut-next--cta {
+    animation: none;
+  }
 }
 
 #m3-tut-next:disabled,

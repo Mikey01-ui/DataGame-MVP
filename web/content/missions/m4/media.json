@@ -1,0 +1,14 @@
+{
+  "missionId": "m4",
+  "ambient": {
+    "type": "audio",
+    "src": "/media/m4/ambient-process.mp3",
+    "volume": 0.2
+  },
+  "sfx": {
+    "correct": "/media/m4/sfx-correct.mp3",
+    "wrong": "/media/m4/sfx-wrong.mp3",
+    "detectionWarn": "/media/m4/sfx-detection-warn.mp3",
+    "gameOver": "/media/m4/sfx-game-over.mp3"
+  }
+}

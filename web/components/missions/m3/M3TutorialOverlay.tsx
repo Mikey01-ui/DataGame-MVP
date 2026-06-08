@@ -96,11 +96,13 @@ export function M3TutorialOverlay({ shellRoot, getDemoApi, onStepChange, onCompl
   const getDemoApiRef = useRef(getDemoApi);
   const onStepChangeRef = useRef(onStepChange);
   const stepIxRef = useRef(stepIx);
+  const demoDoneRef = useRef(demoDone);
 
   getDemoApiRef.current = getDemoApi;
 
   onStepChangeRef.current = onStepChange;
   stepIxRef.current = stepIx;
+  demoDoneRef.current = demoDone;
 
   const step = M3_TUTORIAL_STEPS[stepIx];
   const isDemo = !!step?.demo;
@@ -110,13 +112,29 @@ export function M3TutorialOverlay({ shellRoot, getDemoApi, onStepChange, onCompl
     const full = fullDimRef.current;
     const hi = highlightRef.current;
     if (dim) dim.style.display = "none";
-    if (full) full.classList.remove("show");
+    if (full) full.classList.remove("show", "m3-tut-full--post-demo");
     if (hi) {
       hi.classList.remove("show");
       hi.style.display = "none";
     }
     spotlightRef.current = null;
   }, []);
+
+  const showPostDemoGate = useCallback(() => {
+    hideShades();
+    const full = fullDimRef.current;
+    const hi = highlightRef.current;
+    if (full) {
+      full.classList.add("show", "m3-tut-full--post-demo");
+      full.classList.remove("m3-tut-full--demo-reveal");
+    }
+    if (hi) {
+      hi.classList.remove("show");
+      hi.style.display = "none";
+    }
+    setFooterPos(null);
+    getDemoApiRef.current?.()?.applyBaseline();
+  }, [hideShades]);
 
   const layoutShades = useCallback((ax: SpotlightRect) => {
     const dim = dimRef.current;
@@ -141,6 +159,20 @@ export function M3TutorialOverlay({ shellRoot, getDemoApi, onStepChange, onCompl
       const currentStep = M3_TUTORIAL_STEPS[stepIxRef.current];
       if (!currentStep || currentStep.demo) {
         hideShades();
+        const full = fullDimRef.current;
+        if (full && currentStep?.demo) {
+          if (demoDoneRef.current) {
+            showPostDemoGate();
+          } else {
+            full.classList.add("show");
+            full.classList.remove("m3-tut-full--post-demo");
+            if (tutorialRef.current?.classList.contains("m3-tut-demo-playing")) {
+              full.classList.add("m3-tut-full--demo-reveal");
+            } else {
+              full.classList.remove("m3-tut-full--demo-reveal");
+            }
+          }
+        }
         return;
       }
 
@@ -187,22 +219,28 @@ export function M3TutorialOverlay({ shellRoot, getDemoApi, onStepChange, onCompl
       spotlightRef.current = hole;
       layoutShades(hole);
     },
-    [hideShades, layoutShades, shellRoot]
+    [hideShades, layoutShades, shellRoot, showPostDemoGate]
   );
 
-  const stopDemoPlayback = useCallback(() => {
+  const stopDemoPlayback = useCallback((options?: { keepOverlay?: boolean }) => {
     stopDemoRef.current?.();
     stopDemoRef.current = null;
     const full = fullDimRef.current;
     const tutorialEl = tutorialRef.current;
     tutorialEl?.classList.remove("m3-tut-demo-playing");
-    full?.classList.remove("show", "m3-tut-full--demo-reveal");
+    document.body.classList.remove("m3-tut-demo-playing");
+    if (!full) return;
+    full.classList.remove("m3-tut-full--demo-reveal");
+    if (!options?.keepOverlay) {
+      full.classList.remove("show", "m3-tut-full--post-demo");
+    }
   }, []);
 
   const finalizeDemoStep = useCallback(() => {
-    stopDemoPlayback();
+    stopDemoPlayback({ keepOverlay: true });
     setDemoDone(true);
-  }, [stopDemoPlayback]);
+    requestAnimationFrame(() => showPostDemoGate());
+  }, [showPostDemoGate, stopDemoPlayback]);
 
   const scheduleReflow = useCallback(
     (options?: { scroll?: boolean }) => {
@@ -260,6 +298,7 @@ export function M3TutorialOverlay({ shellRoot, getDemoApi, onStepChange, onCompl
         full.classList.add("show", "m3-tut-full--demo-reveal");
       }
       tutorialEl?.classList.add("m3-tut-demo-playing");
+      document.body.classList.add("m3-tut-demo-playing");
 
       void runM3TutorialDemo(shellRoot, api, {
         onComplete: () => {
@@ -283,15 +322,21 @@ export function M3TutorialOverlay({ shellRoot, getDemoApi, onStepChange, onCompl
   }, [finalizeDemoStep, hideShades, shellRoot, stepIx, stopDemoPlayback]);
 
   const finish = useCallback(() => {
-    document.body.classList.remove("m3-tutorial-active", "r3-routing");
+    document.body.classList.remove("m3-tutorial-active", "r3-routing", "m3-tut-demo-playing");
     onComplete();
   }, [onComplete]);
 
   const skipDemo = useCallback(() => {
-    stopDemoPlayback();
+    stopDemoPlayback({ keepOverlay: true });
     setDemoDone(true);
-    getDemoApiRef.current?.()?.applyBaseline();
-  }, [stopDemoPlayback]);
+    requestAnimationFrame(() => showPostDemoGate());
+  }, [showPostDemoGate, stopDemoPlayback]);
+
+  useEffect(() => {
+    if (demoDone && isDemo) {
+      showPostDemoGate();
+    }
+  }, [demoDone, isDemo, showPostDemoGate]);
 
   const handleNext = useCallback(() => {
     if (isDemo && !demoDone) {
@@ -345,6 +390,11 @@ export function M3TutorialOverlay({ shellRoot, getDemoApi, onStepChange, onCompl
 
   const nextLabel = isDemo && !demoDone ? "Skip demo" : stepIx >= M3_TUTORIAL_STEPS.length - 1 ? "Start mission" : "Next";
 
+  const bodyHtml =
+    isDemo && demoDone
+      ? "<p><strong>Replay done.</strong> Select a file, read the inspector, then pick <strong>Public</strong>, <strong>Official</strong>, or <strong>No release</strong>.</p><p>Tap <strong>Start mission</strong> for <strong>Mission 3</strong> gameplay.</p>"
+      : (step?.html ?? "");
+
   return (
     <div
       ref={tutorialRef}
@@ -361,7 +411,7 @@ export function M3TutorialOverlay({ shellRoot, getDemoApi, onStepChange, onCompl
       <div
         id="m3-tut-footer"
         ref={footerRef}
-        className={`${footerPos ? "m3-tut-footer--placed" : ""}${dragging ? " m3-tut-footer--dragging" : ""}`}
+        className={`${footerPos ? "m3-tut-footer--placed" : ""}${dragging ? " m3-tut-footer--dragging" : ""}${isDemo && demoDone ? " m3-tut-footer--spotlight" : ""}`}
         style={
           footerPos
             ? { left: footerPos.left, top: footerPos.top, bottom: "auto", transform: "none" }
@@ -393,20 +443,19 @@ export function M3TutorialOverlay({ shellRoot, getDemoApi, onStepChange, onCompl
           </div>
         </div>
         <div className="m3-tut-inner">
-          <div
-            id="m3-tut-body"
-            dangerouslySetInnerHTML={{
-              __html:
-                isDemo && demoDone
-                  ? "<p><strong>Replay done.</strong> In the real round you route <strong>ten files</strong> and earn Nova's sign-off.</p><p>Tap <strong>Start mission</strong> for Mission 3 gameplay.</p>"
-                  : (step?.html ?? ""),
-            }}
-          />
+          <div id="m3-tut-body" dangerouslySetInnerHTML={{ __html: bodyHtml }} />
           <div className="m3-tut-actions">
-            <button type="button" id="m3-tut-skip" onClick={finish}>
-              Skip tutorial
-            </button>
-            <button type="button" id="m3-tut-next" onClick={handleNext}>
+            {!demoDone && (
+              <button type="button" id="m3-tut-skip" onClick={finish}>
+                Skip tutorial
+              </button>
+            )}
+            <button
+              type="button"
+              id="m3-tut-next"
+              className={isDemo && demoDone ? "m3-tut-next--cta" : undefined}
+              onClick={handleNext}
+            >
               {nextLabel}
             </button>
           </div>

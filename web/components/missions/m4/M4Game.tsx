@@ -10,6 +10,7 @@ import { MissionDebriefScreen } from "@/components/missions/shared/MissionDebrie
 import { M4DetectionHeader } from "@/components/missions/m4/M4DetectionHeader";
 import { DETECTION, FILES, HACK_LINES, HINT_COOLDOWN_SEC, STEPS, getDatasetCandidatesForStep, isStepSatisfied } from "@/lib/game/m4/data";
 import { buildM4Debrief } from "@/lib/game/debriefBuilders";
+import { useM4MissionAudio } from "@/lib/audio/useM4MissionAudio";
 import { M4GameProvider, useM4Game } from "@/lib/game/m4/context";
 
 const FINALIZE_STAGES = [
@@ -20,6 +21,7 @@ const FINALIZE_STAGES = [
 
 function M4GameInner() {
   const { state, dispatch } = useM4Game();
+  useM4MissionAudio(state);
   const router = useRouter();
   const brokerRef = useRef<HTMLDivElement>(null);
   const [popHidden, setPopHidden] = useState(false);

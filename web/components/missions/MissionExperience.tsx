@@ -1,7 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import type { MissionIntro } from "@/lib/content";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import type { MissionIntro, MissionMedia } from "@/lib/content";
+import { GameAudioProvider } from "@/lib/audio/GameAudioProvider";
+import { toMissionAudioConfig } from "@/lib/audio/missionMedia";
 import { checkpointToPhase, phaseToCheckpoint, type MissionPhase } from "@/lib/game/types";
 import { useMissionProgress } from "@/lib/game/useMissionProgress";
 import { MissionChrome } from "@/components/missions/MissionChrome";
@@ -14,6 +16,7 @@ import { PlaytestMissionNav } from "@/components/admin/PlaytestMissionNav";
 
 type MissionExperienceProps = {
   intro: MissionIntro;
+  media: MissionMedia | null;
   missionId: string;
   missionName: string;
   missionLabel: string;
@@ -35,7 +38,7 @@ function shouldShowTutorial() {
   }
 }
 
-export function MissionExperience({
+function MissionExperienceInner({
   intro,
   missionId,
   missionName,
@@ -140,7 +143,7 @@ export function MissionExperience({
   }
 
   return (
-    <MissionChrome statusLeft={intro.statusLeft} statusRight={intro.statusRight} clock={clock}>
+    <MissionChrome statusLeft={intro.statusLeft} statusRight={intro.statusRight} clock={clock} showAudio>
       {phase === "brief" && <BriefPhase brief={intro.brief} onContinue={goToProtocol} />}
       {phase === "protocol" && (
         <ProtocolPhase
@@ -151,5 +154,20 @@ export function MissionExperience({
         />
       )}
     </MissionChrome>
+  );
+}
+
+export function MissionExperience(props: MissionExperienceProps) {
+  const audioConfig = useMemo(() => toMissionAudioConfig(props.media), [props.media]);
+  const hasAudio = props.missionId === "m3" || props.missionId === "m4";
+
+  if (!hasAudio || !audioConfig) {
+    return <MissionExperienceInner {...props} />;
+  }
+
+  return (
+    <GameAudioProvider config={audioConfig}>
+      <MissionExperienceInner {...props} />
+    </GameAudioProvider>
   );
 }

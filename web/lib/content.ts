@@ -152,10 +152,18 @@ const videoIntroSchema = z.object({
   }),
 });
 
+const ambientSchema = z.object({
+  type: z.literal("audio"),
+  src: z.string(),
+  volume: z.number().min(0).max(1).optional(),
+});
+
 const missionMediaSchema = z.object({
   missionId: z.string(),
   intro: mediaAssetSchema.optional(),
   echoCue: mediaAssetSchema.optional(),
+  ambient: ambientSchema.optional(),
+  sfx: z.record(z.string(), z.string()).optional(),
 });
 
 async function readJson<T>(filePath: string, schema: z.ZodType<T>): Promise<T> {

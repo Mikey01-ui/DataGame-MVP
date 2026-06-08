@@ -9,6 +9,7 @@ import { MissionDebriefScreen } from "@/components/missions/shared/MissionDebrie
 import { CHANNEL_LABELS, DATASETS, DETECTION, HACK_LINES, SIGNOFF_DETECTION_MAX } from "@/lib/game/m3/data";
 import { buildM3Debrief } from "@/lib/game/debriefBuilders";
 import { M3Header } from "@/components/missions/m3/M3DetectionHeader";
+import { useM3MissionAudio } from "@/lib/audio/useM3MissionAudio";
 import { M3GameProvider, useM3Game } from "@/lib/game/m3/context";
 import { useMissionProgress } from "@/lib/game/useMissionProgress";
 import type { Channel } from "@/lib/game/m3/types";
@@ -162,6 +163,7 @@ function M3GameInner() {
   const { save } = useMissionProgress("m3");
   const router = useRouter();
   const [desktopReady, setDesktopReady] = useState(false);
+  useM3MissionAudio(state);
   const detection = Math.round(state.detection);
   const routed = Object.keys(state.assigned).length;
 

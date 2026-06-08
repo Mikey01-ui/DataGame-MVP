@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AudioToggle } from "@/components/audio/AudioToggle";
 import { useM4Game } from "@/lib/game/m4/context";
 import {
   M4_DETECTION_INFO,
@@ -75,6 +76,7 @@ export function M4DetectionHeader() {
               <div className="dip-cause">{info.cause}</div>
             </div>
           </span>
+          <AudioToggle compact />
           <span style={{ color: "rgba(0,196,28,.2)", margin: "0 4px" }}>|</span>
           <span id="timer">{timer}</span>
           <span className="live-dot" />

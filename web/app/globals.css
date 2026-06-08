@@ -613,3 +613,51 @@ a {
 .media-slot {
   margin-bottom: 0.75rem;
 }
+
+.mission-audio-slot {
+  position: fixed;
+  top: 44px;
+  right: clamp(1rem, 4vw, 64px);
+  z-index: 6;
+}
+
+.audio-ctrl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.audio-ctrl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid rgba(0, 196, 28, 0.35);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.45);
+  color: rgba(0, 196, 28, 0.85);
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.audio-ctrl-btn:hover {
+  border-color: rgba(0, 196, 28, 0.65);
+  color: var(--green-stable);
+}
+
+.audio-ctrl-slider {
+  width: 72px;
+  height: 4px;
+  accent-color: var(--green-stable);
+  cursor: pointer;
+}
+
+.audio-ctrl--compact .audio-ctrl-btn {
+  width: 22px;
+  height: 22px;
+  font-size: 10px;
+  border-color: rgba(0, 196, 28, 0.25);
+  background: transparent;
+}
