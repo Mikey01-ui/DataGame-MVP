@@ -6,6 +6,7 @@ import { useOptionalGameAudio } from "@/lib/audio/GameAudioProvider";
 
 const VAULT_CODE = "OMNI";
 const DIAL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const VAULT_OPEN_SFX_KEYS = ["vaultOpen"] as const;
 const defaultTumblers = (): string[] => ["A", "A", "A", "A"];
 
 type Props = {
@@ -65,6 +66,7 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
   const draggingRef = useRef(false);
   const dragStartAngleRef = useRef(0);
   const dragStartIndexRef = useRef(0);
+  const lastDialIndexRef = useRef(0);
 
   const [tumblers, setTumblers] = useState(defaultTumblers);
   const [activeTumbler, setActiveTumbler] = useState(0);
@@ -78,6 +80,10 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
     (idx: number) => {
       if (opening) return;
       const normalized = ((idx % 26) + 26) % 26;
+      if (normalized !== lastDialIndexRef.current) {
+        lastDialIndexRef.current = normalized;
+        audio?.playSfx("vaultClick", 0.55);
+      }
       const letter = DIAL_LETTERS[normalized];
       setDialIndex(normalized);
       setTumblers((prev) => {
@@ -86,7 +92,7 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
         return next;
       });
     },
-    [activeTumbler, opening],
+    [activeTumbler, audio, opening],
   );
 
   const reset = useCallback(() => {
@@ -97,6 +103,7 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
     setStatusOk(null);
     setOpening(false);
     setShaking(false);
+    lastDialIndexRef.current = 0;
     if (slideRef.current) gsap.set(slideRef.current, { xPercent: 0, clearProps: "transform" });
     if (handwheelRef.current) gsap.set(handwheelRef.current, { rotation: 0, clearProps: "transform" });
     if (cavityRef.current) {
@@ -112,7 +119,8 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
       const t = window.setTimeout(() => inputRef.current?.focus(), 120);
       return () => window.clearTimeout(t);
     }
-  }, [open, reset]);
+    audio?.stopSfxKeys([...VAULT_OPEN_SFX_KEYS]);
+  }, [audio, open, reset]);
 
   const playOpenSequence = useCallback(() => {
     const scene = sceneRef.current;
@@ -134,7 +142,12 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    const stopVaultOpenSfx = () => {
+      audio?.stopSfxKeys([...VAULT_OPEN_SFX_KEYS]);
+    };
+
     const finish = () => {
+      stopVaultOpenSfx();
       reset();
       onUnlocked();
     };
@@ -159,16 +172,12 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
     if (handwheel) {
       tl.to(handwheel, { rotation: 720, duration: 1.5, ease: "power2.inOut" }, 0.1);
     }
-    tl.call(() => {
-      scene?.classList.add("vault-bolts-out");
-      audio?.playSfx("vaultBolt");
-    }, undefined, 0.55);
+    tl.call(() => scene?.classList.add("vault-bolts-out"), undefined, 0.55);
     tl.to(cavity, { opacity: 1, scale: 1, duration: 0.45, ease: "power2.out" }, 0.68);
     tl.call(() => cavity?.classList.add("lit"), undefined, 0.72);
     tl.to(slide, { xPercent: -108, duration: 1.2, ease: "power3.inOut" }, 0.82);
     tl.call(() => audio?.playSfx("vaultOpen"), undefined, 0.82);
     if (flash) {
-      tl.call(() => audio?.playSfx("vaultReveal"), undefined, 0.9);
       tl.to(flash, { opacity: 0.35, duration: 0.3, ease: "power2.out" }, 0.9).to(
         flash,
         { opacity: 0, duration: 0.35, ease: "power2.in" },
@@ -197,6 +206,7 @@ export function M3VaultDoor({ open, onClose, onUnlocked }: Props) {
     setTumblers(defaultTumblers());
     setActiveTumbler(0);
     setDialIndex(0);
+    lastDialIndexRef.current = 0;
   };
 
   const pickDialFromPointer = useCallback(

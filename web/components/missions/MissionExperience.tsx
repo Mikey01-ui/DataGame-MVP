@@ -9,6 +9,9 @@ import { useMissionProgress } from "@/lib/game/useMissionProgress";
 import { MissionChrome } from "@/components/missions/MissionChrome";
 import { BriefPhase } from "@/components/missions/phases/BriefPhase";
 import { ProtocolPhase } from "@/components/missions/phases/ProtocolPhase";
+import { M1MargusMission } from "@/components/missions/m1/M1MargusMission";
+import { MargusM1Brief } from "@/components/missions/margus-m1/MargusM1Brief";
+import { MargusM1Protocol } from "@/components/missions/margus-m1/MargusM1Protocol";
 import { MissionGame } from "@/components/missions/MissionGame";
 import { M3TutorialPhase } from "@/components/missions/m3/M3TutorialPhase";
 import { M4TutorialPhase } from "@/components/missions/m4/M4TutorialPhase";
@@ -47,6 +50,7 @@ function MissionExperienceInner({
   resume,
   savedState,
 }: MissionExperienceProps) {
+  const isM1 = missionId === "m1";
   const isM3 = missionId === "m3";
   const isM4 = missionId === "m4";
   const hasTutorial = isM3 || isM4;
@@ -121,6 +125,9 @@ function MissionExperienceInner({
   }, [intro.missionId, phase]);
 
   if (phase === "game") {
+    if (isM1) {
+      return <M1MargusMission />;
+    }
     return (
       <>
         <MissionGame
@@ -140,6 +147,15 @@ function MissionExperienceInner({
 
   if (phase === "tutorial" && isM4) {
     return <M4TutorialPhase enterFromBrief={fromBrief} onComplete={goToGame} />;
+  }
+
+  if (isM1) {
+    if (phase === "brief") {
+      return <MargusM1Brief onContinue={goToProtocol} />;
+    }
+    if (phase === "protocol") {
+      return <MargusM1Protocol onContinue={goToGame} />;
+    }
   }
 
   return (

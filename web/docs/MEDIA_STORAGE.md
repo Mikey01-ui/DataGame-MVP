@@ -22,11 +22,17 @@ public/media/m5/echo-chime.mp3
 
 Reference them in `content/missions/mN/media.json` — never hard-code URLs in React components.
 
-### M3 & M4 placeholder SFX (v1)
+### M3 & M4 SFX (Pixabay)
 
-Current M3/M4 clips are **procedurally generated placeholders** (ffmpeg sine/noise tones, &lt;100 KB each). They are safe to ship for playtests and classroom demos. Replace with composed or licensed assets before public release.
+M3/M4 clips are **royalty-free downloads from [Pixabay](https://pixabay.com/sound-effects/)** under the [Pixabay Content License](https://pixabay.com/service/license/). Source URLs and CDN links are recorded in `public/media/pixabay-sources.json`.
 
-Regenerate with:
+Re-download or refresh assets:
+
+```bash
+node web/scripts/download-pixabay-audio.mjs
+```
+
+Fallback placeholders (ffmpeg tones) if Pixabay is unreachable:
 
 ```bash
 bash web/scripts/generate-placeholder-audio.sh

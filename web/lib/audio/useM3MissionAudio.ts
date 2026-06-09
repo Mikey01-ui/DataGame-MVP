@@ -5,7 +5,7 @@ import { SIGNOFF_DETECTION_MAX } from "@/lib/game/m3/data";
 import type { M3GameState } from "@/lib/game/m3/types";
 import { useOptionalGameAudio } from "@/lib/audio/GameAudioProvider";
 
-const AMBIENT_PHASES = new Set<M3GameState["phase"]>(["desktop", "play", "signoff"]);
+const AMBIENT_PHASES = new Set<M3GameState["phase"]>(["hack", "desktop", "play", "signoff"]);
 
 export function useM3MissionAudio(state: M3GameState) {
   const audio = useOptionalGameAudio();
@@ -19,14 +19,13 @@ export function useM3MissionAudio(state: M3GameState) {
 
   useEffect(() => {
     if (!audio) return;
-    const shouldAmbient =
-      state.hackDone && AMBIENT_PHASES.has(state.phase) && !state.gameOver && audio.unlocked && !audio.muted;
+    const shouldAmbient = AMBIENT_PHASES.has(state.phase) && audio.unlocked && !audio.muted;
     if (shouldAmbient) audio.startAmbient();
     else audio.stopAmbient();
-  }, [audio, state.hackDone, state.phase, state.gameOver, audio?.unlocked, audio?.muted]);
+  }, [audio, state.phase, audio?.unlocked, audio?.muted]);
 
   useEffect(() => {
-    if (!audio?.unlocked) return;
+    if (!audio) return;
 
     const p = prev.current;
     const assignedCount = Object.keys(state.assigned).length;
@@ -44,6 +43,10 @@ export function useM3MissionAudio(state: M3GameState) {
     if (p.phase !== "signoff" && state.phase === "signoff") {
       const ok = state.detection <= SIGNOFF_DETECTION_MAX && state.catastrophic === 0;
       audio.playSfx(ok ? "signoffOk" : "signoffDeny");
+    }
+
+    if (p.phase !== "debrief" && state.phase === "debrief" && state.detection < 100) {
+      audio.playSfx("missionPass", 0.9);
     }
 
     ([30, 60, 80] as const).forEach((tier) => {

@@ -1,0 +1,135 @@
+{
+  "license": "https://pixabay.com/service/license/",
+  "downloadedAt": "2026-06-08T08:41:04.542Z",
+  "sources": [
+    {
+      "file": "public/media/m3/sfx-correct.mp3",
+      "label": "M3 correct",
+      "search": "ui success chime",
+      "page": "https://pixabay.com/sound-effects/technology-ui-success-chime-513565/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2026/04/09/audio_aea4fb169a.mp3",
+      "bytes": 44303
+    },
+    {
+      "file": "public/media/m3/sfx-wrong.mp3",
+      "label": "M3/M4 wrong routing buzzer",
+      "source": "manual",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-wrong-47985/",
+      "note": "Installed from freesound_community-wrong-47985.mp3",
+      "bytes": 61440
+    },
+    {
+      "file": "public/media/m3/sfx-detection-warn.mp3",
+      "label": "M3 detection warn",
+      "search": "notification warning beep",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-system-notification-199277/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2024/03/31/audio_00c75a25d1.mp3",
+      "bytes": 49319
+    },
+    {
+      "file": "public/media/m3/sfx-game-over.mp3",
+      "label": "M3 game over",
+      "search": "game over arcade",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-game-over-arcade-6435/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2021/08/04/audio_382b1ec1f7.mp3",
+      "bytes": 27840
+    },
+    {
+      "file": "public/media/m3/sfx-signoff-ok.mp3",
+      "label": "M3 signoff ok",
+      "search": "success chime short",
+      "page": "https://pixabay.com/sound-effects/technology-ding-sfx-472366/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2026/01/24/audio_f7ed9fb119.mp3",
+      "bytes": 54528
+    },
+    {
+      "file": "public/media/m3/sfx-signoff-deny.mp3",
+      "label": "M3 signoff deny",
+      "search": "denied buzzer",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-wrong-47985/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2022/03/10/audio_8b0fae46ef.mp3",
+      "bytes": 61440
+    },
+    {
+      "file": "public/media/m3/sfx-vault-wrong.mp3",
+      "label": "M3 vault wrong",
+      "search": "lock wrong metal",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-key-lock-sound-247454/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2024/10/04/audio_108031ce49.mp3",
+      "bytes": 154368
+    },
+    {
+      "file": "public/media/m3/sfx-vault-bolt.mp3",
+      "label": "M3 vault bolt",
+      "search": "bolt latch metal",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-foley-gate-latch-opening-and-closing-sound-effect-254262/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2024/10/23/audio_bfafdcc69c.mp3",
+      "bytes": 481536
+    },
+    {
+      "file": "public/media/m3/sfx-vault-open.mp3",
+      "label": "M3 vault open",
+      "source": "manual",
+      "page": "https://pixabay.com/sound-effects/safe-open-close-443345/",
+      "note": "Installed from u_ys7j2hx6e9-safe-open-close-443345.mp3",
+      "bytes": 53760
+    },
+    {
+      "file": "public/media/m3/sfx-vault-reveal.mp3",
+      "label": "M3 vault reveal",
+      "search": "cinematic hit short",
+      "page": "https://pixabay.com/sound-effects/musical-impact-strike-cinematic-hit-stinger-466320/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2026/01/15/audio_77dee52c54.mp3",
+      "bytes": 956160
+    },
+    {
+      "file": "public/media/m3/ambient-terminal.mp3",
+      "label": "M3 ambient",
+      "search": "server room ambient",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-electrical-server-room-29233/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2022/03/09/audio_ee84d530c6.mp3",
+      "bytes": 641280
+    },
+    {
+      "file": "public/media/m4/sfx-correct.mp3",
+      "label": "M4 correct",
+      "search": "ui click success",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-pop-and-wow-355976/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2025/06/06/audio_4b02e77f74.mp3",
+      "bytes": 67709
+    },
+    {
+      "file": "public/media/m4/sfx-wrong.mp3",
+      "label": "M4 wrong",
+      "search": "wrong answer buzzer",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-buzzer-or-wrong-answer-20582/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2022/02/11/audio_7f0bf4cdc0.mp3",
+      "bytes": 56832
+    },
+    {
+      "file": "public/media/m4/sfx-detection-warn.mp3",
+      "label": "M4 detection warn",
+      "search": "alert beep ui",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-ui-warning-alert-beep-534607/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2026/05/15/audio_798578d441.mp3",
+      "bytes": 63529
+    },
+    {
+      "file": "public/media/m4/sfx-game-over.mp3",
+      "label": "M4 game over",
+      "search": "game over fail",
+      "page": "https://pixabay.com/sound-effects/film-special-effects-game-over-kid-voice-clip-352738/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2025/06/01/audio_2160b193f5.mp3",
+      "bytes": 48384
+    },
+    {
+      "file": "public/media/m4/ambient-process.mp3",
+      "label": "M4 ambient",
+      "search": "office ambient hum",
+      "page": "https://pixabay.com/sound-effects/technology-computer-hum-440742/",
+      "audioUrl": "https://cdn.pixabay.com/audio/2025/11/21/audio_d0389b0c11.mp3",
+      "bytes": 1064448
+    }
+  ],
+  "failed": []
+}

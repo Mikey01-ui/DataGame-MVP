@@ -23,7 +23,7 @@ export function useM4MissionAudio(state: M4GameState) {
   }, [audio, state.hackDone, state.phase, state.gameOver, audio?.unlocked, audio?.muted]);
 
   useEffect(() => {
-    if (!audio?.unlocked) return;
+    if (!audio) return;
 
     const p = prev.current;
     const picksCount = Object.keys(state.picks).length;
@@ -37,6 +37,10 @@ export function useM4MissionAudio(state: M4GameState) {
 
     if (!p.gameOver && state.gameOver) {
       audio.playSfx("gameOver");
+    }
+
+    if (p.phase !== "debrief" && state.phase === "debrief" && !state.gameOver && state.detection < 100) {
+      audio.playSfx("missionPass", 0.9);
     }
 
     ([30, 60, 80] as const).forEach((tier) => {

@@ -10,10 +10,15 @@ export function AudioToggle({ compact = false }: { compact?: boolean }) {
     <div className={`audio-ctrl${compact ? " audio-ctrl--compact" : ""}`}>
       <button
         type="button"
-        className="audio-ctrl-btn"
-        onClick={audio.toggleMuted}
+        className={`audio-ctrl-btn${audio.muted ? " audio-ctrl-btn--muted" : ""}`}
+        onClick={() => {
+          audio.unlock();
+          if (audio.muted) audio.setMuted(false);
+          else audio.setMuted(true);
+        }}
         aria-label={audio.muted ? "Unmute mission audio" : "Mute mission audio"}
         aria-pressed={audio.muted}
+        title={audio.unlocked ? undefined : "Click to enable sound"}
       >
         <i className={`fas ${audio.muted ? "fa-volume-xmark" : "fa-volume-high"}`} aria-hidden />
       </button>

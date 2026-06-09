@@ -3,13 +3,19 @@ type PoolEntry = {
   busy: boolean;
 };
 
+const SILENT_WAV =
+  "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==";
+
 export class AudioEngine {
   private pools = new Map<string, PoolEntry[]>();
   private ambientEl: HTMLAudioElement | null = null;
   private ambientSrc: string | null = null;
+  private ambientOnEnded: (() => void) | null = null;
+  private audioCtx: AudioContext | null = null;
   private unlocked = false;
   private muted = false;
   private masterVolume = 0.85;
+  private preloadUrls = new Set<string>();
 
   setMuted(muted: boolean) {
     this.muted = muted;
@@ -27,14 +33,37 @@ export class AudioEngine {
     return this.unlocked;
   }
 
-  async unlock(): Promise<boolean> {
+  preload(urls: string[]) {
+    if (typeof window === "undefined") return;
+    for (const src of urls) {
+      if (!src || this.preloadUrls.has(src)) continue;
+      this.preloadUrls.add(src);
+      const el = new Audio(src);
+      el.preload = "auto";
+      el.load();
+    }
+  }
+
+  /** Call synchronously inside a user-gesture handler (pointerdown / click). */
+  unlock(): boolean {
     if (this.unlocked) return true;
     if (typeof window === "undefined") return false;
+
     try {
-      const probe = new Audio();
-      probe.volume = 0;
-      await probe.play();
-      probe.pause();
+      const Ctor =
+        window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (Ctor) {
+        if (!this.audioCtx) this.audioCtx = new Ctor();
+        if (this.audioCtx.state === "suspended") void this.audioCtx.resume();
+      }
+    } catch {
+      /* element fallback below */
+    }
+
+    try {
+      const probe = new Audio(SILENT_WAV);
+      probe.volume = 0.001;
+      void probe.play().then(() => probe.pause()).catch(() => undefined);
       this.unlocked = true;
       return true;
     } catch {
@@ -43,6 +72,13 @@ export class AudioEngine {
   }
 
   private ambientBaseVolume: number | null = null;
+
+  private detachAmbientEnded() {
+    if (this.ambientEl && this.ambientOnEnded) {
+      this.ambientEl.removeEventListener("ended", this.ambientOnEnded);
+    }
+    this.ambientOnEnded = null;
+  }
 
   play(src: string, volume = 1) {
     if (this.muted || !src || typeof window === "undefined") return;
@@ -61,6 +97,11 @@ export class AudioEngine {
     }
     const el = poolEntry.el;
 
+    if (el.src !== new URL(src, window.location.origin).href) {
+      el.src = src;
+      el.load();
+    }
+
     poolEntry.busy = true;
     el.volume = Math.max(0, Math.min(1, volume * this.masterVolume));
     el.currentTime = 0;
@@ -73,9 +114,16 @@ export class AudioEngine {
     el.addEventListener("ended", done);
     el.addEventListener("error", done);
 
-    void el.play().catch(() => {
-      done();
-    });
+    const start = () => {
+      void el.play().catch(() => done());
+    };
+
+    if (el.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      start();
+    } else {
+      el.addEventListener("canplay", start, { once: true });
+      el.addEventListener("error", done, { once: true });
+    }
   }
 
   startAmbient(src: string, baseVolume = 0.25) {
@@ -97,16 +145,43 @@ export class AudioEngine {
     this.ambientBaseVolume = baseVolume;
     this.ambientEl.volume = baseVolume * this.masterVolume;
     this.ambientEl.muted = this.muted;
-    void this.ambientEl.play().catch(() => undefined);
+
+    const onEnded = () => {
+      if (!this.ambientEl) return;
+      this.ambientEl.load();
+      void this.ambientEl.play().catch(() => undefined);
+    };
+    this.ambientOnEnded = onEnded;
+    this.ambientEl.addEventListener("ended", onEnded);
+
+    const start = () => {
+      void this.ambientEl?.play().catch(() => undefined);
+    };
+    this.ambientEl.addEventListener("canplay", start, { once: true });
+    this.ambientEl.load();
+    if (this.ambientEl.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) start();
   }
 
   stopAmbient() {
     if (!this.ambientEl) return;
+    this.detachAmbientEnded();
     this.ambientEl.pause();
     this.ambientEl.src = "";
     this.ambientEl = null;
     this.ambientSrc = null;
     this.ambientBaseVolume = null;
+  }
+
+  stopSources(srcs: string[]) {
+    for (const src of srcs) {
+      const pool = this.pools.get(src);
+      if (!pool) continue;
+      for (const entry of pool) {
+        entry.el.pause();
+        entry.el.currentTime = 0;
+        entry.busy = false;
+      }
+    }
   }
 }
 

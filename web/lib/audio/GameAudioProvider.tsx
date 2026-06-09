@@ -21,8 +21,9 @@ type GameAudioContextValue = {
   setMuted: (muted: boolean) => void;
   setVolume: (volume: number) => void;
   toggleMuted: () => void;
-  unlock: () => Promise<void>;
+  unlock: () => boolean;
   playSfx: (key: string, volume?: number) => void;
+  stopSfxKeys: (keys: string[]) => void;
   startAmbient: () => void;
   stopAmbient: () => void;
   config: MissionAudioConfig | null;
@@ -51,7 +52,13 @@ export function GameAudioProvider({
     audioEngine.setMuted(m);
     audioEngine.setMasterVolume(v);
     setUnlocked(audioEngine.isUnlocked());
-  }, []);
+
+    const urls = [
+      ...(config?.ambient?.src ? [config.ambient.src] : []),
+      ...Object.values(config?.sfx ?? {}).filter((s): s is string => Boolean(s)),
+    ];
+    audioEngine.preload(urls);
+  }, [config]);
 
   const setMuted = useCallback((next: boolean) => {
     setMutedState(next);
@@ -77,15 +84,23 @@ export function GameAudioProvider({
     });
   }, []);
 
-  const unlock = useCallback(async () => {
-    const ok = await audioEngine.unlock();
+  const unlock = useCallback(() => {
+    const ok = audioEngine.unlock();
     if (ok) setUnlocked(true);
+    return ok;
   }, []);
 
   const playSfx = useCallback((key: string, sfxVolume = 1) => {
     const src = configRef.current?.sfx?.[key];
     if (!src) return;
     audioEngine.play(src, sfxVolume);
+  }, []);
+
+  const stopSfxKeys = useCallback((keys: string[]) => {
+    const sfx = configRef.current?.sfx;
+    if (!sfx) return;
+    const srcs = keys.map((k) => sfx[k]).filter((s): s is string => Boolean(s));
+    audioEngine.stopSources(srcs);
   }, []);
 
   const startAmbient = useCallback(() => {
@@ -100,10 +115,14 @@ export function GameAudioProvider({
 
   useEffect(() => {
     const onGesture = () => {
-      void unlock();
+      unlock();
     };
-    window.addEventListener("pointerdown", onGesture, { once: true });
-    return () => window.removeEventListener("pointerdown", onGesture);
+    window.addEventListener("pointerdown", onGesture, { capture: true });
+    window.addEventListener("keydown", onGesture, { capture: true });
+    return () => {
+      window.removeEventListener("pointerdown", onGesture, { capture: true });
+      window.removeEventListener("keydown", onGesture, { capture: true });
+    };
   }, [unlock]);
 
   useEffect(() => {
@@ -120,11 +139,12 @@ export function GameAudioProvider({
       toggleMuted,
       unlock,
       playSfx,
+      stopSfxKeys,
       startAmbient,
       stopAmbient,
       config,
     }),
-    [muted, volume, unlocked, setMuted, setVolume, toggleMuted, unlock, playSfx, startAmbient, stopAmbient, config]
+    [muted, volume, unlocked, setMuted, setVolume, toggleMuted, unlock, playSfx, stopSfxKeys, startAmbient, stopAmbient, config]
   );
 
   return <GameAudioContext.Provider value={value}>{children}</GameAudioContext.Provider>;
