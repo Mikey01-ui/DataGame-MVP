@@ -8,11 +8,16 @@ export const HACK_LINES = [
   { text: "[OK] Op 3 evidence — Payload Cleared: VERIFIED", className: "ht-g" },
   { text: "[OK] Op 4 evidence — Flow Map: CLEAN", className: "ht-g" },
   { text: "[NOTICE] All four crew members present in secure channel", className: "ht-o" },
+  { text: "[OK] Briefing room: SEALED — no external comms", className: "ht-g" },
+  { text: "[OK] ECHO: standing by for framing session", className: "ht-g" },
   { text: "⚡ VOSS: You've got the room. Don't waste it.", className: "ht-a" },
+  { text: "Initialising Mission 5 — The Final Brief...", className: "ht-g" },
+  { text: "BREACH ESTABLISHED ██████████ 100%", className: "ht-g" },
 ];
 
 export const INTRO_CHAT = [
-  { delay: 1200, sender: "Echo", text: "Four cards. Let's pick framing and visualisation before anyone else sees this. Work through each card — I'll give you one line of feedback per choice.", tone: "bm-h" as const },
+  { delay: 500, sender: "Voss", text: "You've got the room. Don't waste it.", tone: "bm-d" as const },
+  { delay: 1700, sender: "Echo", text: "Four cards. Let's pick framing and visualisation before anyone else sees this. Work through each card — I'll give you one line of feedback per choice.", tone: "bm-h" as const },
 ];
 
 export const EVIDENCE_CARDS = [
