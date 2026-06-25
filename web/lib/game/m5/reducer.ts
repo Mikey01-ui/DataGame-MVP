@@ -1,4 +1,4 @@
-import { CREW_ORDER, CREW_QUESTIONS, ECHO_FRAME, ECHO_VIZ, M5_REQUIRED_COMMITS } from "@/lib/game/m5/data";
+import { CREW_HINTS, CREW_ORDER, CREW_QUESTIONS, ECHO_FRAME, ECHO_VIZ, M5_REQUIRED_COMMITS } from "@/lib/game/m5/data";
 import { restoreGameState } from "@/lib/game/sessionPersist";
 import type { ChatMessage, CrewId, M5GameAction, M5GameState } from "@/lib/game/m5/types";
 
@@ -55,6 +55,7 @@ export function createInitialM5State(): M5GameState {
     ships: null,
     gameOver: false,
     failReason: null,
+    hintsUsed: 0,
   };
 }
 
@@ -213,6 +214,17 @@ export function m5Reducer(state: M5GameState, action: M5GameAction): M5GameState
       return { ...state, phase: "debrief" };
     case "RESET_MISSION":
       return createInitialM5State();
+    case "REQUEST_HINT": {
+      if (state.phase !== "briefing" || state.gameOver) return state;
+      const crewId = state.activeCrew;
+      if (!crewId || state.crewState[crewId].status !== "asking") return state;
+      const withHint: M5GameState = {
+        ...state,
+        hintsUsed: state.hintsUsed + 1,
+        messages: pushChat(state, "Voss", CREW_HINTS[crewId], "bm-h"),
+      };
+      return addDetection(withHint, 8);
+    }
     case "ADD_CHAT":
       return { ...state, messages: pushChat(state, action.sender, action.text, action.tone ?? "bm-d") };
     default:
@@ -246,6 +258,7 @@ export function hydrateM5State(raw: Record<string, unknown> | null | undefined):
     ...restored,
     gameOver,
     failReason,
+    hintsUsed: restored.hintsUsed ?? 0,
     phase: gameOver ? "failed" : restored.phase,
   };
 }

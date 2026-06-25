@@ -94,6 +94,13 @@ export const CREW_QUESTIONS: Record<CrewId, { text: string; opts: string[]; ans:
   kade: { text: '"The flow diagram looks clean. What does a bottleneck in a data pipeline actually mean for an operation like this?"', opts: ["A step where several dependencies converge — if it fails, everything downstream stalls.", "A step that simply runs slower than the others, delaying the overall process without ever actually breaking the pipeline itself.", "A point where too many separate sources feed in and the data quality quietly degrades over time."], ans: 0, commit: "KADE: Correct. That's the one thing I needed to hear. I'm in.", sceptical: "KADE: That's a timing or quality issue, not a dependency chain. There's a difference. Think again." },
 };
 
+export const CREW_HINTS: Record<CrewId, string> = {
+  zex: "A node map proves the four leads connect — it says nothing about whether the system is live right now. Claim links, not live status.",
+  atlas: "When data crosses departments, governance follows formal policy accountability — not whoever created it or uses it most.",
+  nova: "Anonymisation isn't the test. It fails when the purpose or basis of collection is the harm — consent, targeting, intent.",
+  kade: "A bottleneck is where dependencies converge — if it fails, everything downstream stalls. Not just 'slower'.",
+};
+
 export const CREW_ORDER: CrewId[] = ["zex", "atlas", "nova", "kade"];
 
 export const CREW_META: Record<CrewId, { name: string; domain: string; color: string; initial: string; avatarBg: string }> = {

@@ -31,6 +31,7 @@ export type M5GameState = {
   ships: boolean | null;
   gameOver: boolean;
   failReason: "detection" | "vote" | null;
+  hintsUsed: number;
 };
 
 export type M5GameAction =
@@ -46,4 +47,5 @@ export type M5GameAction =
   | { type: "ADVANCE_CREW"; crewId: CrewId }
   | { type: "TRIGGER_VOTE" }
   | { type: "RESET_MISSION" }
+  | { type: "REQUEST_HINT" }
   | { type: "ADD_CHAT"; sender: string; text: string; tone?: ChatTone };

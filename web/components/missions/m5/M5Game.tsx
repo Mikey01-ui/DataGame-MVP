@@ -24,9 +24,13 @@ import { m5ReportSnapshot } from "@/lib/finale/missionReportSnapshot";
 import { persistMissionReport } from "@/lib/finale/persistMissionReport";
 import { usePersistFailedMissionReport } from "@/lib/finale/usePersistFailedMissionReport";
 import { M5GameProvider, useM5Game } from "@/lib/game/m5/context";
-import { getDetectionClass } from "@/lib/game/m5/reducer";
 import { useM5MissionAudio } from "@/lib/audio/useM5MissionAudio";
+import { AudioToggle } from "@/components/audio/AudioToggle";
+import { DET_INFO } from "@/components/missions/margus-m1/gameData";
 import type { ChatMessage, CrewId } from "@/lib/game/m5/types";
+
+const M5_DET_CAUSE =
+  "Detection rises when you misframe the echo or give the crew an unconvincing answer. Keep it low to keep the crew on side.";
 
 const M5_SENDER_COLORS: Record<string, string> = {
   Echo: "var(--purple-light)",
@@ -107,7 +111,12 @@ function M5GameInner() {
   const router = useRouter();
   const [voteCardVisible, setVoteCardVisible] = useState(false);
   const timer = `${String(Math.floor(state.timerSec / 60)).padStart(2, "0")}:${String(state.timerSec % 60).padStart(2, "0")}`;
-  const detClass = getDetectionClass(state.detection);
+  const det = Math.min(100, Math.round(state.detection));
+  const detState = det < 30 ? "DARK" : det < 60 ? "SCANNING" : det < 80 ? "ALERT" : "CRITICAL";
+  const detWrapCls = det < 30 ? "det-green" : det < 60 ? "det-amber" : "det-red";
+  const detBarCls = det < 30 ? "det-bar-green" : det < 60 ? "det-bar-amber" : "det-bar-red";
+  const detIcon = det < 30 ? "fa-shield-alt" : det < 60 ? "fa-eye" : det < 80 ? "fa-exclamation-triangle" : "fa-skull";
+  const detInfo = DET_INFO[detState] ?? DET_INFO.DARK;
   useM5MissionAudio({
     phase: state.phase,
     hackDone: state.hackDone,
@@ -129,6 +138,23 @@ function M5GameInner() {
 
   const skipToVoteCard = useCallback(() => setVoteCardVisible(true), []);
   const openDebrief = useCallback(() => dispatch({ type: "TRIGGER_VOTE" }), [dispatch]);
+
+  const [hintCd, setHintCd] = useState(0);
+  useEffect(() => {
+    if (hintCd <= 0) return;
+    const t = setTimeout(() => setHintCd((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [hintCd]);
+  const hintReady =
+    state.phase === "briefing" &&
+    !state.gameOver &&
+    state.activeCrew !== null &&
+    state.crewState[state.activeCrew].status === "asking";
+  const requestHint = useCallback(() => {
+    if (hintCd > 0 || !hintReady) return;
+    dispatch({ type: "REQUEST_HINT" });
+    setHintCd(30);
+  }, [hintCd, hintReady, dispatch]);
 
   const completeMission = useCallback(async () => {
     const snapshot = m5ReportSnapshot(state);
@@ -160,20 +186,30 @@ function M5GameInner() {
               </div>
               <div className="hdr-center">MISSION 05 OF 05 / THE FINAL BRIEF</div>
               <div className="hdr-right">
-                <span id="det-display" className={detClass}>
+                <span id="det-display" className={detWrapCls}>
                   <span id="det-icon">
-                    <i className="fas fa-shield-alt" aria-hidden />
+                    <i className={`fas ${detIcon}`} aria-hidden />
                   </span>
-                  <span id="det-pct">{state.detection}%</span>
+                  <span id="det-pct">{det}%</span>
                   <span className="det-bar-wrap">
-                    <span id="det-bar" className={`det-bar-${detClass.replace("det-", "")}`} style={{ width: `${state.detection}%` }} />
+                    <span id="det-bar" className={detBarCls} style={{ width: `${det}%` }} />
                   </span>
-                  <span style={{ fontSize: 10, letterSpacing: 1.5, opacity: 0.7 }}>DARK</span>
+                  <span id="det-label" style={{ fontSize: 10, letterSpacing: 1.5, opacity: 0.7 }}>{detState}</span>
+                </span>
+                <span className="det-info-wrap" tabIndex={0} aria-label="Detection status info">
+                  <i className="fas fa-circle-info det-info-i" aria-hidden />
+                  <div className="det-info-pop" role="tooltip">
+                    <div className="dip-ttl" style={{ color: detInfo.color }}>{detState}</div>
+                    <div className="dip-desc">{detInfo.desc}</div>
+                    <div className="dip-cause">{M5_DET_CAUSE}</div>
+                  </div>
                 </span>
                 <span style={{ color: "rgba(0,196,28,.2)", margin: "0 4px" }}>|</span>
                 <span id="timer">{timer}</span>
                 <span className="live-dot" />
                 <span style={{ letterSpacing: 1, fontSize: 10 }}>LIVE</span>
+                <span style={{ color: "rgba(0,196,28,.2)", margin: "0 4px" }}>|</span>
+                <AudioToggle compact />
               </div>
             </div>
 
@@ -355,11 +391,39 @@ function M5GameInner() {
                   <M5MissionChannel messages={state.messages} />
                   <div className="voss-footer">
                     <div className="voss-input-bar">
+                      <div className="hint-wrap">
+                        <button id="hint-btn" type="button" disabled={hintCd > 0 || !hintReady} onClick={requestHint} aria-label="Request hint">
+                          <i className="fas fa-lightbulb" aria-hidden />
+                        </button>
+                        <div className="hint-tooltip">Request hint · +8% detection</div>
+                        <div id="hint-cd" className={hintCd > 0 ? "show" : ""}>{hintCd > 0 ? `${hintCd}s` : ""}</div>
+                      </div>
                       <input id="voss-input" type="text" placeholder="// channel encrypted — read only" disabled readOnly />
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className="m5-statusbar">
+              <span className="m5-sb-tag">
+                <i className="fas fa-satellite-dish" aria-hidden /> OPERATION OMNI
+              </span>
+              <span className="m5-sb-div" />
+              <span className="m5-sb-crew">
+                <i className="fas fa-users" aria-hidden /> CREW COMMITTED
+                <span className="m5-sb-pips">
+                  {CREW_ORDER.map((id, i) => (
+                    <span key={id} className={`m5-sb-pip${i < state.commits ? " on" : ""}`} />
+                  ))}
+                </span>
+                <span className="m5-sb-count">
+                  {state.commits}/{CREW_ORDER.length}
+                </span>
+              </span>
+              <span className="m5-sb-clock">
+                {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              </span>
             </div>
           </>
         )}
