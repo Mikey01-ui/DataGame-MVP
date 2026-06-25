@@ -7,7 +7,7 @@
     "filename": "// BRIEFING_TRANSMISSION.mp4",
     "aspectLabel": "16:9 — HD",
     "placeholderText": "// video briefing — coming soon",
-    "src": null,
+    "src": "/media/intro.mp4",
     "poster": null
   },
   "readIntroButton": "// Read Introduction",
