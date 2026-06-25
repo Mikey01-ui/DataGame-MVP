@@ -37,7 +37,7 @@ export function M5VoteOverlay({ active, commits, crewState, onContinue }: Props)
           {commits}/4 specialists committed. The hack is a go.
         </div>
         <div className="vote-sub" id="vote-sub">
-          OMNI vault access initiated. Operation complete.
+          OMNI vault access granted. Operation complete.
         </div>
         <button type="button" className="vote-cta" onClick={onContinue}>
           VIEW DEBRIEF →

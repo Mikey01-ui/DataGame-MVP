@@ -32,7 +32,7 @@ export function M5SynthOverlay({ active, ships, commits, crewState, onSkip }: Pr
     setLabel("");
     const t1 = setTimeout(() => setShowCenter(true), 1800);
     const t2 = setTimeout(() => {
-      setLabel(ships ? "✓ OPERATION SHIPS — VAULT ACCESS GRANTED" : "✗ MISSION FAILED — THRESHOLD NOT MET");
+      setLabel(ships ? "✓ OPERATION COMPLETE — VAULT ACCESS GRANTED" : "✗ MISSION FAILED — THRESHOLD NOT MET");
     }, 2200);
     return () => {
       clearTimeout(t1);
