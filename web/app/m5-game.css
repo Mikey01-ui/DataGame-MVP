@@ -9,7 +9,7 @@
   content:'';
   position:fixed;
   inset:0;
-  background-image:linear-gradient(rgba(0,196,28,0.11) 1px,transparent 1px),linear-gradient(90deg,rgba(0,196,28,0.11) 1px,transparent 1px);
+  background-image:linear-gradient(rgba(143,68,232,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(143,68,232,0.06) 1px,transparent 1px);
   background-size:40px 40px;
   background-position:0 36px;
   pointer-events:none;
@@ -35,7 +35,7 @@
   background:radial-gradient(ellipse 60% 50% at 30% 50%,rgba(84,0,173,0.16) 0%,transparent 70%),radial-gradient(ellipse 50% 60% at 70% 60%,rgba(0,196,28,0.11) 0%,transparent 70%);
 }
 .m5-game #hdr { min-height:54px; background:linear-gradient(180deg,rgba(34,24,41,.96) 0%,rgba(30,15,26,.94) 100%);
-  border-bottom:1px solid rgba(0,196,28,.28); display:flex; align-items:center; padding:6px 18px; flex-shrink:0; z-index:3; position:relative; }
+  border-bottom:1px solid rgba(143,68,232,.28); display:flex; align-items:center; padding:6px 18px; flex-shrink:0; z-index:3; position:relative; }
 .m5-game .hdr-left { font-family:var(--font-display); font-size:clamp(12px,1.2vw,15px); color:var(--cyan); letter-spacing:1.5px; }
 .m5-game .hdr-center { flex:1; text-align:center; font-family:var(--font-display); font-size:clamp(12px,1.2vw,15px); color:var(--purple-light); letter-spacing:2px; }
 .m5-game .hdr-right { display:flex; align-items:center; gap:10px; font-family:var(--font-mono); font-size:clamp(13px,1.3vw,16px); color:var(--text); }
@@ -49,7 +49,7 @@
 .m5-game #det-bar.det-bar-green { background:var(--green-stable); }
 .m5-game #det-bar.det-bar-amber { background:var(--orange); }
 .m5-game #det-bar.det-bar-red { background:var(--pink); }
-.m5-game #step-banner { height:44px; background:rgba(84,0,173,0.10); border-bottom:1px solid rgba(0,196,28,.22); display:flex; align-items:center; padding:0 18px; font-size:clamp(14px,1.5vw,18px); color:var(--text-b); flex-shrink:0; z-index:3; position:relative; }
+.m5-game #step-banner { height:44px; background:rgba(84,0,173,0.10); border-bottom:1px solid rgba(143,68,232,.22); display:flex; align-items:center; padding:0 18px; font-size:clamp(14px,1.5vw,18px); color:var(--text-b); flex-shrink:0; z-index:3; position:relative; }
 .m5-game #step-banner::before { content:'▶ '; color:var(--orange); margin-right:8px; }
 .m5-game #main-row { display:flex; flex:1; overflow:hidden; min-height:0; position:relative; z-index:2; }
 .m5-game .m5-statusbar { flex-shrink:0; height:32px; display:flex; align-items:center; gap:12px; padding:0 16px; background:linear-gradient(180deg,rgba(34,24,41,.96),rgba(30,15,26,.94)); border-top:1px solid rgba(143,68,232,.28); font-family:var(--font-mono); font-size:11px; letter-spacing:1px; color:var(--text-b); position:relative; z-index:3; }
