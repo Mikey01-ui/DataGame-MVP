@@ -49,7 +49,11 @@ body.m4-tutorial-active .bg-grid { display:none; }
 .m4-game .m4-step-status { font-size:14px; }
 .m4-game .flow-canvas-footer { flex-shrink:0; display:flex; align-items:center; gap:12px; padding:8px 14px; background:rgba(8,12,20,.9); border-top:1px solid rgba(0,196,28,.18); }
 .m4-game #btn-submit-sort { padding:10px 18px; background:rgba(247,148,33,.32); border:1px solid var(--orange); color:var(--orange); font-family:var(--font-display); font-size:12px; font-weight:700; border-radius:4px; cursor:pointer; }
-.m4-game #btn-submit-sort:disabled { opacity:.4; cursor:not-allowed; }
+.m4-game #btn-submit-sort.ready { box-shadow:0 0 10px rgba(247,148,33,.22); animation:m4SubmitPulse 2s ease-in-out infinite; }
+.m4-game #btn-submit-sort.btn-sweep { position:relative; overflow:hidden; background-color:rgba(247,148,33,.06); }
+.m4-game #btn-submit-sort:disabled:not(.btn-sweep) { opacity:.4; cursor:not-allowed; }
+.m4-game #btn-submit-sort.btn-sweep:disabled { opacity:1; cursor:default; }
+@keyframes m4SubmitPulse{0%,100%{box-shadow:0 0 6px rgba(247,148,33,.2)}50%{box-shadow:0 0 16px rgba(247,148,33,.45)}}
 .m4-game #right-rail { flex:1; display:flex; flex-direction:column; background:linear-gradient(180deg,rgba(34,24,41,.98) 0%,rgba(30,15,26,.98) 100%); min-height:0; }
 .m4-game .datasets-panel { flex-shrink:0; padding:10px 12px; border-bottom:1px solid rgba(0,196,28,.2); }
 .m4-game .datasets-panel-hdr { font-family:var(--font-display); font-size:13px; font-weight:700; color:var(--text-w); }

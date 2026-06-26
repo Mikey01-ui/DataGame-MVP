@@ -3,7 +3,7 @@
   "ambient": {
     "type": "audio",
     "src": "/media/m3/ambient-the-plan.mp3?v=1",
-    "volume": 0.22
+    "volume": 0.2
   },
   "sfx": {
     "correct": "/media/m3/sfx-correct.mp3",

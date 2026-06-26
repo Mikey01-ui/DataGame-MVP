@@ -2,14 +2,14 @@
   "missionId": "m4",
   "ambient": {
     "type": "audio",
-    "src": "/media/m4/ambient-process.mp3",
+    "src": "/media/m3/ambient-the-plan.mp3?v=1",
     "volume": 0.2
   },
   "sfx": {
     "correct": "/media/m3/sfx-correct.mp3",
     "wrong": "/media/m3/sfx-wrong.mp3",
-    "detectionWarn": "/media/m4/sfx-detection-warn.mp3",
-    "gameOver": "/media/m4/sfx-game-over.mp3",
+    "detectionWarn": "/media/m3/sfx-detection-warn.mp3",
+    "gameOver": "/media/m3/sfx-game-over.mp3",
     "missionPass": "/media/shared/sfx-level-passed.mp3?v=1"
   }
 }

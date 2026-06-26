@@ -54,7 +54,7 @@ export function useM5MissionAudio(state: M5AudioState) {
     }
 
     if (!p.gameOver && state.gameOver) {
-      audio.playSfx("wrong", 0.85);
+      audio.playSfx("gameOver");
     }
 
     prev.current = {

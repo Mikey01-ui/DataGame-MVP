@@ -33,7 +33,7 @@ export const M1_SFX_KEYS = ["correct", "wrong", "detectionWarn", "gameOver", "mi
 
 export const M2_SFX_KEYS = ["correct", "wrong", "detectionWarn", "gameOver", "missionPass"] as const;
 
-export const M5_SFX_KEYS = ["correct", "wrong", "detectionWarn", "missionPass"] as const;
+export const M5_SFX_KEYS = ["correct", "wrong", "detectionWarn", "gameOver", "missionPass"] as const;
 
 export type M3SfxKey = (typeof M3_SFX_KEYS)[number];
 export type M4SfxKey = (typeof M4_SFX_KEYS)[number];

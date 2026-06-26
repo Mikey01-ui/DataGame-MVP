@@ -20,6 +20,21 @@ function M3RoutingPanel() {
   const { state, dispatch } = useM3Game();
   const routed = Object.keys(state.assigned).length;
   const selected = DATASETS.find((d) => d.id === state.selectedId);
+  const SIGNOFF_SWEEP_MS = 3500;
+  const [signoffReady, setSignoffReady] = useState(false);
+  const [signoffEnabled, setSignoffEnabled] = useState(false);
+
+  useEffect(() => {
+    if (routed < 10 || state.signOffStarted) {
+      setSignoffReady(false);
+      setSignoffEnabled(false);
+      return;
+    }
+    setSignoffReady(true);
+    setSignoffEnabled(false);
+    const t = window.setTimeout(() => setSignoffEnabled(true), SIGNOFF_SWEEP_MS);
+    return () => window.clearTimeout(t);
+  }, [routed, state.signOffStarted]);
 
   return (
     <>
@@ -104,7 +119,14 @@ function M3RoutingPanel() {
               ))}
             </div>
             <div id="routed-count">Routed: {routed} / 10</div>
-            <button type="button" id="signoff-btn" className={routed >= 10 ? "ready" : ""} disabled={routed < 10} onClick={() => dispatch({ type: "REQUEST_SIGNOFF" })}>
+            <button
+              type="button"
+              id="signoff-btn"
+              className={`${signoffReady ? "ready btn-sweep" : ""}${signoffReady && !signoffEnabled ? " is-locked" : ""}`}
+              style={{ "--sweep-ms": `${SIGNOFF_SWEEP_MS}ms` } as React.CSSProperties}
+              disabled={!signoffEnabled || state.signOffStarted}
+              onClick={() => dispatch({ type: "REQUEST_SIGNOFF" })}
+            >
               REQUEST NOVA SIGN-OFF
             </button>
           </div>

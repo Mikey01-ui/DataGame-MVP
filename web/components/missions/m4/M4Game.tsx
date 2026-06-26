@@ -21,6 +21,7 @@ const FINALIZE_STAGES = [
   "Matching artifacts to department actions…",
   "Building custody chain for debrief…",
 ];
+const SUBMIT_SWEEP_MS = 3500;
 
 function M4GameInner() {
   const { state, dispatch } = useM4Game();
@@ -30,6 +31,8 @@ function M4GameInner() {
   const [popHidden, setPopHidden] = useState(false);
   const [previewFileId, setPreviewFileId] = useState<string | null>(null);
   const [finalizeStage, setFinalizeStage] = useState(0);
+  const [submitReady, setSubmitReady] = useState(false);
+  const [submitEnabled, setSubmitEnabled] = useState(false);
   const linked = Object.keys(state.picks).length;
   const candidates = getDatasetCandidatesForStep(state.selectedStepId, state.picks);
   const stepLinked =
@@ -70,6 +73,18 @@ function M4GameInner() {
     if (!el) return;
     el.scrollTop = el.scrollHeight;
   }, [state.messages]);
+
+  useEffect(() => {
+    if (linked < 8 || state.submitted) {
+      setSubmitReady(false);
+      setSubmitEnabled(false);
+      return;
+    }
+    setSubmitReady(true);
+    setSubmitEnabled(false);
+    const t = window.setTimeout(() => setSubmitEnabled(true), SUBMIT_SWEEP_MS);
+    return () => window.clearTimeout(t);
+  }, [linked, state.submitted]);
 
   useEffect(() => {
     if (!state.submitted || state.phase === "debrief") {
@@ -128,7 +143,14 @@ function M4GameInner() {
                     Linked: {linked} / 8
                     {state.wrongAttempts > 0 ? ` · ${state.wrongAttempts} wrong` : ""}
                   </span>
-                  <button type="button" id="btn-submit-sort" disabled={linked < 8 || state.submitted} onClick={() => dispatch({ type: "SUBMIT" })}>
+                  <button
+                    type="button"
+                    id="btn-submit-sort"
+                    className={`${submitReady && !state.submitted ? "ready btn-sweep" : ""}${submitReady && !submitEnabled && !state.submitted ? " is-locked" : ""}`}
+                    style={{ "--sweep-ms": `${SUBMIT_SWEEP_MS}ms` } as React.CSSProperties}
+                    disabled={linked < 8 || state.submitted || !submitEnabled}
+                    onClick={() => dispatch({ type: "SUBMIT" })}
+                  >
                     {state.submitted ? "FINALIZING…" : "FINALIZE PROCESS MAP →"}
                   </button>
                 </div>
