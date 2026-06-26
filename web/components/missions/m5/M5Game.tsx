@@ -204,11 +204,11 @@ function M5GameInner() {
                     <div className="dip-cause">{M5_DET_CAUSE}</div>
                   </div>
                 </span>
-                <span style={{ color: "rgba(0,196,28,.2)", margin: "0 4px" }}>|</span>
+                <span style={{ color: "rgba(143,68,232,.2)", margin: "0 4px" }}>|</span>
                 <span id="timer">{timer}</span>
                 <span className="live-dot" />
                 <span style={{ letterSpacing: 1, fontSize: 10 }}>LIVE</span>
-                <span style={{ color: "rgba(0,196,28,.2)", margin: "0 4px" }}>|</span>
+                <span style={{ color: "rgba(143,68,232,.2)", margin: "0 4px" }}>|</span>
                 <AudioToggle compact />
               </div>
             </div>

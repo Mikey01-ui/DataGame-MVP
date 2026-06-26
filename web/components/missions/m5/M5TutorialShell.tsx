@@ -224,7 +224,7 @@ export const M5TutorialShell = forwardRef<M5TutorialShellHandle>(function M5Tuto
               </span>
               <span style={{ fontSize: 10, letterSpacing: 1.5, opacity: 0.7 }}>DARK</span>
             </span>
-            <span style={{ color: "rgba(0,196,28,.2)", margin: "0 4px" }}>|</span>
+            <span style={{ color: "rgba(143,68,232,.2)", margin: "0 4px" }}>|</span>
             <span id="timer">00:00</span>
             <span className="live-dot" />
             <span style={{ letterSpacing: 1, fontSize: 10 }}>LIVE</span>
